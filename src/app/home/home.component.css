@@ -1,0 +1,75 @@
+/******************************主容器****************************/
+.container-fluid{
+  color: white;
+  background: #151A30;
+  min-height: 100vh;
+  background-image: url(/assets/images/bg3.jpg);
+  background-repeat: no-repeat;
+  -webkit-background-size: 100% 100%;
+  background-size: 100% 100%;
+}
+/****************************手机搜索按钮****************************/
+.mobile-nav .search-nav{
+  display: block;
+}
+.mobile-nav .service-search, .mobile-nav .service-select{
+  display: none;
+}
+
+/*bootstrap*/
+.form-horizontal{
+  margin-top: 8px;
+}
+.form-horizontal .form-group{
+  position: relative;
+}
+.service-select .form-group button{
+  position: absolute;
+  top: 34px;
+  left: 20px;
+}
+.form-horizontal .form-control{
+  margin-bottom: 5px;
+}
+.form-horizontal .form-control>option:hover{
+  color:#01D1DB;
+}
+.form-horizontal .form-control{
+  background: rgba(255,255,255,0.11);
+  border: none;
+  color: white;
+}
+.form-horizontal .form-control::placeholder{
+  color: #87FFFF;
+}
+
+/*****************************主体******************************/
+.main{
+  /*min-height: 92vh;
+  padding-top: 1vh;
+  position: relative;*/
+}
+/*弹窗改造*/
+body .ui-dialog .ui-dialog-titlebar {
+  border: 1px solid #0071bc;
+  background-color: #0071bc;
+  color: #ffffff;
+  padding: 0.571em 1.143em;
+  font-weight: 700;
+  border-bottom: 0 none;
+}
+.ui-dialog .ui-dialog-titlebar {
+  padding: 0.5em 0.75em;
+}
+
+@media (max-width: 992px) {
+  .container-fluid{
+    background-repeat: no-repeat;
+    -webkit-background-size: cover;
+    background-size: cover;
+  }
+  .mobile-nav .service-search, .mobile-nav .service-select{
+    display: block;
+  }
+}
+

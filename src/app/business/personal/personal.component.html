@@ -1,0 +1,74 @@
+<!--个人信息-->
+<div class="content">
+<div class="content-header">
+  <h4 class="text-center">
+    个人信息
+    <small>General Information</small>
+  </h4>
+</div>
+<div class="content-information">
+  <div class="form-horizontal">
+    <div class="form-group">
+      <label for="name" class="col-sm-1 control-label" disabled="">姓名</label>
+      <div class="col-sm-5">
+        <input type="text" class="form-control" id="name" name="name" [value]="userInfo.name" [disabled]="btnProfileTxt">
+      </div>
+      <label for="duty" class="col-sm-1 control-label">职务</label>
+      <div class="col-sm-5">
+        <input type="text" class="form-control" id="duty" name="duty" [value]="userInfo.duty" [disabled]="btnProfileTxt">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="phone" class="col-sm-1 control-label">电话</label>
+      <div class="col-sm-5">
+        <input type="text" class="form-control" id="phone" name="remark" [value]="userInfo.phone" [disabled]="btnProfileTxt">
+      </div>
+      <label for="email" class="col-sm-1 control-label">邮箱</label>
+      <div class="col-sm-5">
+        <input type="text" class="form-control" id="email" name="remark" [value]="userInfo.email" [disabled]="btnProfileTxt">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="adress" class="col-sm-1 control-label" >地址</label>
+      <div class="col-sm-5">
+        <input type="text" class="form-control" id="adress" name="remark" [value]="userInfo.address" [disabled]="btnProfileTxt">
+      </div>
+      <label for="remark" class="col-sm-1 control-label">备注</label>
+      <div class="col-sm-5">
+        <input type="text" class="form-control" id="remark" name="remark" [value]="userInfo.remark" [disabled]="btnProfileTxt">
+      </div>
+    </div>
+    <div class="form-group text-center style-border">
+      <button class="btn btn-lg" type="button" [ngClass]="{'btn-primary': btnProfileTxt, 'btn-danger': !btnProfileTxt}" (click)="updataProfile()">{{btnProfileTxt? '修改个人资料': '提交'}}</button>
+    </div>
+  </div>
+</div>
+<!--密码分割线-->
+<div class="content-header">
+  <h4 class="text-center">
+    密码修改
+    <small>Change Password</small>
+  </h4>
+</div>
+<div class="content-information">
+  <div class="form-horizontal">
+    <div class="form-group">
+      <label for="password" class="col-sm-1 control-label">密码</label>
+      <div class="col-sm-5">
+        <input type="text" class="form-control" id="password" name="name">
+      </div>
+      <label for="confirmPassword" class="col-sm-1 control-label">确认密码</label>
+      <div class="col-sm-5">
+        <input type="text" class="form-control" id="confirmPassword" name="duty">
+      </div>
+    </div>
+    <div class="form-group text-center style-border">
+      <button class="btn btn-lg btn-danger" type="button" (click)="updataPaaword()">{{btnPasswordTxt? '修改密码': '确认修改'}}</button>
+      <!--<p-calendar [(ngModel)]="value" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2030"></p-calendar>-->
+      <p-calendar [(ngModel)]="value" [locale]="es" dateFormat="dd/mm/yy"></p-calendar>
+      <span>{{value | date:'yyyy-MM-dd'}}</span>
+    </div>
+  </div>
+</div>
+</div>
+

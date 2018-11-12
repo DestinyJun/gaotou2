@@ -1,0 +1,56 @@
+<div class="main">
+    <div class="row">
+      <!--3d柱状图-->  <!--左部分-->
+      <div class="col-lg-3 col-md-3">
+        <div class="accumulation3d">
+          <p class="text-center" style="color: #87FFFF;line-height: 40vh;">暂无全国数据，敬请期待...</p>
+        </div>
+        <div class="accumulation">
+          <p class="text-center" style="color: #87FFFF;line-height: 40vh">暂无全国数据，敬请期待...</p>
+        </div>
+      </div>
+      <!--离散地图分布图--> <!--中部分-->
+      <div class="col-lg-6 col-md-6">
+        <div class="map">
+          <div class="tab-map">
+            <div class="location" (click)="provinceClick()">
+              <i class="fa fa-caret-down" aria-hidden="true"></i>
+              <span>当前的位置是：</span>
+              <span>{{selectDate}}</span>
+            </div>
+            <div class="province-city">
+              <ul class="select-list-province" *ngIf="provinceShow">
+                <li *ngFor="let item of province"
+                    (mouseenter)="provinceMouseEnter(item.province)"
+                    (click)="provinceDataClick(item)"
+                >
+                  {{item.province}}
+                </li>
+              </ul>
+              <ul class="select-list-city" *ngIf="cityShow">
+                <li *ngFor="let item of city"
+                    (click)="cityDataClick(item)"
+                >
+                  {{item.city}}
+                </li>
+              </ul>
+            </div>
+          </div>
+          <!--<div class="top-map" id="center_map" echarts [options]="optionsMap" (chartClick)="mapClick($event)"></div>-->
+          <div class="top-map" id="center_map"></div>
+          <!--<div class="top-map" id="center_map"></div>-->
+        </div>
+      </div>
+      <!--横向柱状图--> <!--下部分-->
+      <div class="col-lg-3 col-md-3">
+        <div class="crosswise-bar">
+          <p class="text-center" style="color: #87FFFF;line-height: 40vh;">暂无全国数据，敬请期待...</p>
+        </div>
+        <div class="today-income">
+          <p class="text-center" style="color: #87FFFF;line-height: 40vh;">暂无全国数据，敬请期待...</p>
+        </div>
+      </div>
+    </div>
+    <!--横向柱状图统计-->
+  </div>
+

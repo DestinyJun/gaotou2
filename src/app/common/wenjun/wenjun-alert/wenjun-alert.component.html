@@ -1,0 +1,30 @@
+<div class="bg-box" *ngIf="alertService.alertShow" [ngStyle]="{'color': config.titleColor}">
+  <div class="alert-window"
+       [ngStyle]="{
+       'background': config.background,
+       'width':config.width + 'vw',
+       'height':config.height + 'vh',
+       'margin-left': -(config.width/2) + 'vw',
+       'margin-top': -(config.height/2) + 'vh'
+       }"
+  >
+    <div class="alert-window-header" [ngStyle]="{'background':config.titleBgColor}">
+      <div class="row">
+        <div class="col-ld-12 col-md-12">
+          <span>{{config.alertTitle}}</span>
+          <div class="pull-right"
+               (click)="alertService.closeAlertShow()"
+               (mouseenter)="alertMouseenter($event)"
+               (mouseleave)="alertMouseleave($event)"
+          >
+            <i class="fa fa-window-close " aria-hidden="true"></i>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="alert-window-content">
+      <ng-content></ng-content>
+    </div>
+  </div>
+</div>

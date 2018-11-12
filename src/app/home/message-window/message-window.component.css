@@ -1,0 +1,46 @@
+.bg-box{
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: #091118;
+  background: rgba(9,17,24,0.5);
+  z-index: 2;
+}
+.alert-window{
+  position: absolute;
+  width: 50vw;
+  height:50vh;
+  left: 50%;
+  margin-left: -25vw;
+  top: 50%;
+  margin-top: -25vh;
+  background: rgba(39,52,64,0.8);
+  z-index: 1;
+}
+.alert-window-header{
+  height: 5vh;
+  line-height: 5vh;
+  background: #1a2128;
+  text-align: center;
+}
+.alert-window-header span{
+  margin-left: 10px;
+  font-size: 1.625rem;
+}
+.alert-window-header .pull-right{
+  height: 5vh;
+  width: 5vh;
+  cursor: pointer;
+  text-align: center;
+}
+.alert-window-header .pull-right:hover{
+  background: red;
+}
+.alert-window-content{
+  height:45vh;
+}
+.alert-window-content h1{
+  margin: 0;
+}
