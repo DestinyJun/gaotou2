@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {LocalStorageService} from '../../common/services/local-storage.service';
-import {HttpClient} from '@angular/common/http';
+import {UpdatePassword, UpdateUser, User} from '../../common/model/personal.model';
+import {DatePipe} from '@angular/common';
+import {PersonalService} from '../../common/services/personal.service';
 
 @Component({
   selector: 'app-personal',
@@ -16,20 +18,19 @@ export class PersonalComponent implements OnInit {
   // btn状态值判断
   public btnProfileTxt = true;
   public btnPasswordTxt = true;
-  public userInfo = {
-    name: '王小花',
-    duty: '项目经理',
-    phone: '18888888888',
-    email: '8888888888@qq.com',
-    address: '贵州省贵阳市云岩区黔灵山路',
-    remark: '这个孩子非常努力',
-  };
+  public userInfo: User = new User;
+  public confirmPassword: any;
+  public updateUser = new UpdateUser('', '', '', '', '', '', '');
+  public updatePassword = new UpdatePassword('', '', '');
   constructor(
+    private personalService: PersonalService,
     private localService: LocalStorageService,
-    private http: HttpClient,
+    private datePipe: DatePipe
   ) { }
 
   ngOnInit() {
+    this.userInfo = this.localService.userSessionStorage;
+    console.log(this.userInfo);
     // 发射实时客流
     this.localService.persons.next(this.persons);
     // 时间初始化
@@ -44,10 +45,48 @@ export class PersonalComponent implements OnInit {
       clear: 'Clear'
     };
   }
-  public updataProfile() {
-    this.btnProfileTxt = !this.btnProfileTxt;
+  public onSelectTime(event): void {
+    this.updateUser.birthday = this.datePipe.transform(event, 'yyyy-mm-dd');
+    this.userInfo.birthday = this.datePipe.transform(event, 'yyyy-MM-dd');
   }
-  public updataPaaword() {
-    this.btnPasswordTxt = !this.btnPasswordTxt;
+  public updateProfileClick() {
+    this.btnProfileTxt = true;
+    for (const prop in this.updateUser) {
+      if (this.updateUser.hasOwnProperty(prop)) {
+        this.updateUser[prop] = this.userInfo[prop];
+      }
+    }
+    console.log(this.updateUser);
+    this.personalService.updateProfile(this.updateUser).subscribe(
+      (value) => {
+        console.log(value);
+        if (value.status === '200') {
+
+        }
+
+      }
+    );
+  }
+  public updatePasswordClick() {
+    console.log('1111');
+    if (this.confirmPassword === this.updatePassword.newPassword) {
+      this.updatePassword.userName = this.localService.userSessionStorage.userName;
+      this.personalService.updatePassword(this.updatePassword).subscribe(
+        (value) => {
+          console.log(value);
+          if (value.status === '500') {
+            window.confirm(value.message);
+          } else if (value.status === '200') {
+            window.confirm(value.message);
+            this.btnPasswordTxt = true;
+          }
+        }
+      );
+    } else {
+      window.confirm('两处输入的密码不一致，请重新输入');
+    }
+  }
+  public logOut(): void {
+    this.localService.userSessionStorage = {};
   }
 }

@@ -14,29 +14,9 @@ import {DataService} from '../../common/services/data.service';
 import {ConfigModule, WenjunAlertService} from '../../common/wenjun';
 import {CityDataService} from '../../common/services/city-data.service';
 import {LocalStorageService} from '../../common/services/local-storage.service';
-
+import {Bar3dExportType, CarExportType, IncomeExportType} from '../../common/model/shared.model';
 declare let BMap;
 declare let BMapLib;
-
-interface CarExportType {
-  carNumType: string;
-  carArea: string;
-  carDate: string;
-}
-
-interface IncomeExportType {
-  incomeNumType: string;
-  incomeArea: string;
-  incomeDate: string;
-}
-
-interface Bar3dExportType {
-  Bar3dNumType: string;
-  Bar3dArea: string;
-  Bar3dDate: string;
-}
-
-
 @Component({
   selector: 'app-city-data',
   templateUrl: './city-data.component.html',
@@ -69,7 +49,7 @@ export class CityDataComponent implements OnInit, OnDestroy {
   ];
   public arryPie = [];
   public bar3dExcelShow = false;
-  public bar3dExportType: Bar3dExportType;
+  public bar3dExportType: Bar3dExportType =new Bar3dExportType();
 
   // 车流量实时数值
   public vehicleAmount = [];
@@ -86,7 +66,7 @@ export class CityDataComponent implements OnInit, OnDestroy {
   public carAreaName = '贵阳市';
   public optionsCarPieInstance: any;
   public carExcelShow = false;
-  public carExportType: CarExportType;
+  public carExportType: CarExportType = new CarExportType();
   public CarTypeisShow = true;
 
   /*****************************中部**************************/
@@ -140,7 +120,7 @@ export class CityDataComponent implements OnInit, OnDestroy {
   public IncomeTableData: any;
   public arryIncomePie = [];
   public incomeExcelShow = false;
-  public incomeExportType: IncomeExportType;
+  public incomeExportType: IncomeExportType = new IncomeExportType();
   public incomeTypeisShow = true;
 
   /**********************基础数据部分**********************/
@@ -204,22 +184,6 @@ export class CityDataComponent implements OnInit, OnDestroy {
     };
     // 发射也太数据名称
     this.localService.eventBus.next({title: '贵阳市高速业态大数据', flagState: 'city', flagName: this.dataToggle});
-    // 导出表格数据初始化
-    this.bar3dExportType = {
-      Bar3dNumType: '',
-      Bar3dArea: '',
-      Bar3dDate: ''
-    };
-    this.carExportType = {
-      carNumType: '',
-      carArea: '',
-      carDate: ''
-    };
-    this.incomeExportType = {
-      incomeNumType: '',
-      incomeArea: '',
-      incomeDate: ''
-    };
     // 图表更行
     this.updataEcharts();
     // 全屏点击事件
@@ -231,7 +195,6 @@ export class CityDataComponent implements OnInit, OnDestroy {
       }
     });
   }
-
   ngOnDestroy(): void {
     clearInterval(this.vehicleAmountCountClean);
     clearInterval(this.incomeAmountCountClean);
@@ -810,11 +773,9 @@ export class CityDataComponent implements OnInit, OnDestroy {
   public options3dBarInit(ec) {
     this.options3dBarInstance = ec;
   }
-
   public options3dPieInit(ec) {
     this.options3dPieInstance = ec;
   }
-
   public options3dBarClick(e) {
     this.colorList = [
       '#356981', '#356981', '#356981', '#356981', '#356981', '#356981',
@@ -868,7 +829,6 @@ export class CityDataComponent implements OnInit, OnDestroy {
       ]
     };
   }
-
   public options3dPieClick(e): void {
     this.router.navigate(['/home/serzone', {name: e.name}]);
   }
@@ -877,16 +837,13 @@ export class CityDataComponent implements OnInit, OnDestroy {
   public bar3dDateChange(e) {
     this.bar3dExportType.Bar3dDate = e.srcElement.value;
   }
-
   public bar3dTypeChange(e) {
     this.bar3dExportType.Bar3dNumType = e.srcElement.options[e.srcElement.selectedIndex].innerText;
   }
-
   public bar3dAreaChange(e) {
     this.bar3dExportType.Bar3dArea = e.srcElement.options[e.srcElement.selectedIndex].innerText;
     console.log(this.bar3dExportType.Bar3dArea);
   }
-
   public bar3dExportClick() {
     if (!(this.bar3dExportType.Bar3dDate === '')
       || !(this.bar3dExportType.Bar3dNumType === '')
@@ -903,11 +860,9 @@ export class CityDataComponent implements OnInit, OnDestroy {
       window.alert('请把数据选择全在提交');
     }
   }
-
   public open3dBarExcel() {
     this.bar3dExcelShow = true;
   }
-
   public close3dBarExcel() {
     this.bar3dExcelShow = false;
   }
@@ -1029,7 +984,6 @@ export class CityDataComponent implements OnInit, OnDestroy {
     );
 
   }
-
   public closeCarShow(): void {
     document.body.className = '';
     this.alertCarShow = false;
@@ -1039,14 +993,12 @@ export class CityDataComponent implements OnInit, OnDestroy {
   public optionsCarPieInit(ec): void {
     this.optionsCarPieInstance = ec;
   }
-
   public optionsCarPieClick(e) {
     // this.carAreaName = e.name;
     this.router.navigate(['/home/serzone', {name: e.name}]);
     this.CarTypeisShow = false;
     // this.carTableData = this.dataService.getJsonObj(8, 1000, 100, this.alertCarTitle);
   }
-
   public carBtnClick(e): void {
     if (e.srcElement.innerText === '小车') {
       this.alertCarTitle = '小车' + '车辆分布统计';
@@ -1226,7 +1178,6 @@ export class CityDataComponent implements OnInit, OnDestroy {
       );
     }
   }
-
   public carTableClick(e) {
     this.router.navigate(['/home/serzone', {name: e}]);
   }
@@ -1278,15 +1229,12 @@ export class CityDataComponent implements OnInit, OnDestroy {
   public carDateChange(e) {
     this.carExportType.carDate = e.srcElement.value;
   }
-
   public carTypeChange(e) {
     this.carExportType.carNumType = e.srcElement.options[e.srcElement.selectedIndex].innerText;
   }
-
   public carAreaChange(e) {
     this.carExportType.carArea = e.srcElement.options[e.srcElement.selectedIndex].innerText;
   }
-
   public carExportClick() {
     if (!(this.carExportType.carDate === '') || !(this.carExportType.carNumType === '') || !(this.carExportType.carArea === '')) {
       this.carExcelShow = false;
@@ -1301,11 +1249,9 @@ export class CityDataComponent implements OnInit, OnDestroy {
       window.alert('请把数据选择全在提交');
     }
   }
-
   public openCarExcel() {
     this.carExcelShow = true;
   }
-
   public closeCarExcel() {
     this.carExcelShow = false;
   }
@@ -1818,9 +1764,14 @@ export class CityDataComponent implements OnInit, OnDestroy {
 
       // market事件
       marker.addEventListener('mouseover', function () {
+        const opts = {
+          width : 0,
+          height: 0,
+          background: 'red'
+        };
         // 信息窗口
-        const sContent = `<div style="background: red;"><h5>${name}</h5></div>`;
-        const infoWindow = new BMap.InfoWindow(sContent, {enableCloseOnClick: true});
+        const sContent = `<div><h5>${name}</h5></div>`;
+        const infoWindow = new BMap.InfoWindow(sContent, opts, {enableCloseOnClick: true});
         this.openInfoWindow(infoWindow);
       });
       marker.addEventListener('click', function () {
@@ -1915,7 +1866,6 @@ export class CityDataComponent implements OnInit, OnDestroy {
       }
     );
   }
-
   public provinceMouseEnter(item) {
     if (item === '全国') {
       this.cityShow = false;
@@ -1942,7 +1892,6 @@ export class CityDataComponent implements OnInit, OnDestroy {
       this.citeDate = '暂未开通';
     }
   }
-
   public provinceDataClick(item) {
     this.selectDate = item.province;
     if (item.name === '全国') {
@@ -1955,7 +1904,6 @@ export class CityDataComponent implements OnInit, OnDestroy {
       window.confirm('此地区暂未开通');
     }
   }
-
   public cityDataClick(item) {
     if (!(item.city === '贵阳市')) {
       window.confirm('此地区暂未开通');
@@ -1976,7 +1924,6 @@ export class CityDataComponent implements OnInit, OnDestroy {
       this.alertOfficeShow = true;
     }
   }
-
   // 办公室信息处理函数
   public tableOfficeClick(): void {
     this.alertOfficeShow = true;

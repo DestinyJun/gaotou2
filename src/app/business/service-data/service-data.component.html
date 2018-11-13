@@ -149,19 +149,29 @@
             <span *ngFor="let item of eventInfoUpTypes" (click)="eventInfoUpClick(item)">{{item}}</span>
           </div>
           <div class="event-table-processed-btn">
-            <div class="btn-toilet" (click)="openServersToiletAlert('服务区卫生间使用率')">
-              <p>卫生间使用率</p>
-              <p class="text-center">
-                <span>男洗手间：45%</span>
-                <span>女洗手间：50%</span>
-              </p>
+            <div class="col-lg-6 col-md-6">
+              <div class="btn-toilet" (click)="openServersToiletAlert('服务区卫生间使用率')">
+                <p>上行卫生间使用率</p>
+                <p class=""><span>男洗手间：45%</span></p>
+                <p><span>女洗手间：50%</span></p>
+              </div>
+              <div class="btn-carport" (click)="openServersToiletAlert('服务区停车位监控')">
+                <p>上行停车位数据监控</p>
+                <p class=""><span>大车剩余车位：256个</span></p>
+                <p><span>小车剩余车位：318个</span></p>
+              </div>
             </div>
-            <div class="btn-carport" (click)="openServersToiletAlert('服务区停车位监控')">
-              <p>停车位监控</p>
-              <p class="text-center">
-                <span>大车剩余车位：256个</span>
-                <span>小车剩余车位：318个</span>
-              </p>
+            <div class="col-lg-6 col-md-6">
+              <div class="btn-toilet" (click)="openServersToiletAlert('服务区卫生间使用率')">
+                <p>上行卫生间使用率</p>
+                <p class=""><span>男洗手间：45%</span></p>
+                <p><span>女洗手间：50%</span></p>
+              </div>
+              <div class="btn-carport" (click)="openServersToiletAlert('服务区停车位监控')">
+                <p>上行停车位数据监控</p>
+                <p class=""><span>大车剩余车位：256个</span></p>
+                <p><span>小车剩余车位：318个</span></p>
+              </div>
             </div>
           </div>
         </div>
@@ -197,7 +207,7 @@
           </div>
         </div>
         <div class="information-btn text-center">
-          <!--<span (click)="crosswiseClick()">信息修改</span>-->
+          <span (click)="crosswiseClick()">信息修改</span>
           <span (click)="openServicesPlan()">服务区平面图</span>
         </div>
       </div>
@@ -471,6 +481,7 @@
         <div class="col-ld-4 col-md-4">
           <div class="shop-echart-title">
             <span>店家业态数据统计</span>
+            <span class="table-export" (click)="serviceShopShowExport=true">表格导出</span>
           </div>
           <div class="shop-echart-content">
             <div echarts [options]="shopEchartLine" style="height: 34vh"></div>
@@ -478,6 +489,36 @@
           </div>
         </div>
       </div>
+    </div>
+    <div class="bg-excel" *ngIf="serviceShopShowExport">
+      <div class="alert-window-excel">
+        <div class="alert-window-excel-header">
+          <span>收入数据表格导出</span>
+          <div class="pull-right">
+            <i class="fa fa-window-close " aria-hidden="true" (click)="serviceShopShowExport=false"></i>
+          </div>
+        </div>
+        <div class="alert-window-excel-content">
+          <div class="alert-window-excel-content-list">
+            <label for="vehicleDates">请选择时间：</label>
+            <p-calendar id="vehicleDates" placeholder="请点击选择时间......" [locale]="esDate" [(ngModel)]="date6" [monthNavigator]="true" [yearNavigator]="true" yearRange="2017:2030"></p-calendar>
+          </div>
+          <div class="alert-window-excel-content-list">
+            <label for="carTypes">请选择类型：</label>
+            <select name="" id="carTypes" (change)="carTypeChange($event)">
+              <option value="">总数</option>
+              <option value="">小车</option>
+              <option value="">客车</option>
+              <option value="">货车</option>
+            </select>
+          </div>
+        </div>
+        <div class="alert-window-excel-footer text-center">
+          <button class="btn btn-primary" (click)="incomeExportClick()">确认导出</button>
+          <button class="btn btn-danger" (click)="closeincomeExcel()">取消导出</button>
+        </div>
+      </div>
+      <iframe src="" frameborder="0" style="position: absolute;top: 0;left: 0; height: 100vh;width:100vw;z-index: -1"></iframe>
     </div>
   </div>
 </div>
@@ -650,46 +691,6 @@
         </div>
       </div>
     </div>
-    <!--<div class="bg-excel" *ngIf="incomeExcelShow">
-      <div class="alert-window-excel">
-        <div class="alert-window-excel-header">
-          <span>收入数据表格导出</span>
-          <div class="pull-right">
-            <i class="fa fa-window-close " aria-hidden="true" (click)="closeincomeExcel()"></i>
-          </div>
-        </div>
-        <div class="alert-window-excel-content">
-          <div class="alert-window-excel-content-list">
-            <label for="incomeDates">请选择时间：</label>
-            <input type="date" id="incomeDates" (change)="incomeDateChange($event)">
-          </div>
-          <div class="alert-window-excel-content-list">
-            <label for="incomeTypes">请选择类型：</label>
-            <select name="" id="incomeTypes" (change)="incomeTypeChange($event)">
-              <option value="">总数</option>
-              <option value="">小车</option>
-              <option value="">客车</option>
-              <option value="">货车</option>
-            </select>
-          </div>
-          <div class="alert-window-excel-content-list">
-            <label for="incomeArea">请选择片区：</label>
-            <select name="" id="incomeArea" (change)="incomeAreaChange($event)">
-              <option value="">东部片区</option>
-              <option value="">西部片区</option>
-              <option value="">南部片区</option>
-              <option value="">北部</option>
-              <option value="">中部</option>
-            </select>
-          </div>
-
-        </div>
-        <div class="alert-window-excel-footer text-center">
-          <button class="btn btn-primary" (click)="incomeExportClick()">确认导出</button>
-          <button class="btn btn-danger" (click)="closeincomeExcel()">取消导出</button>
-        </div>
-      </div>
-    </div>-->
   </div>
 </div>
 
@@ -1030,7 +1031,7 @@
   </div>
 </div>
 <!--服务区平面图弹窗-->
-<div class="bg-box" *ngIf="servicesPlan" >
+<div class="bg-box" [hidden]="!servicesPlan" >
   <div class="alert-window" style="height:80vh; margin-top: -40vh;">
     <div class="alert-window-header">
       <div class="row">
@@ -1062,6 +1063,7 @@
              </div>
            </div>-->
           <div class="services-plan" echarts [options]="servicesMap"></div>
+         <!-- <div class="services-plan" id="servicesMap"></div>-->
         </div>
       </div>
     </div>

@@ -8,7 +8,7 @@
       <span>{{headerTitle}}</span>
     </div>
     <div class="header-admin">
-      <img src="assets/images/timg.jpg" alt="" class="header-admin-img img-circle" [routerLink]="['/home/personal']">
+      <img src="assets/images/timg.jpg" alt="" aria-haspopup="true" aria-expanded="false" data-toggle="dropdown" class="header-admin-img img-circle">
       <div class="header-admin-time text-center">
         <span>北京时间 <span style="margin-left: 0.2vw">{{dataTime | date:'yyyy-MM-dd HH:mm:ss'}}</span></span>
       </div>
@@ -20,6 +20,18 @@
         </div>
         <span>人/次</span>
       </div>
+    </div>
+    <div class="btn-group" style="z-index: 999">
+      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Action <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu">
+        <li><a href="#">Action</a></li>
+        <li><a href="#">Another action</a></li>
+        <li><a href="#">Something else here</a></li>
+        <li role="separator" class="divider"></li>
+        <li><a href="#">Separated link</a></li>
+      </ul>
     </div>
   </div>
 </div>
@@ -105,3 +117,4 @@
     </div>
   </div>
 </div>
+

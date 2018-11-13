@@ -6,31 +6,31 @@ export class LocalStorageService {
   // 顶一个可订阅的项目
   public eventBus: Subject<any> = new Subject<any>();
   public persons: Subject<any> = new Subject<any>();
-  public sessionStorage: any;
+  public userSessionStorage: any;
   constructor() {
     if (!sessionStorage) {
       throw new Error('Current browser does not support Local Storage');
     }
-    this.sessionStorage = sessionStorage;
+    this.userSessionStorage = sessionStorage;
   }
   public set(key: string, value: string): void {
-    this.sessionStorage[key] = value;
+    this.userSessionStorage[key] = value;
   }
 
   public get(key: string): string {
-    return this.sessionStorage[key] || false;
+    return this.userSessionStorage[key] || false;
   }
 
   public setObject(key: string, value: any): void {
-    this.sessionStorage[key] = JSON.stringify(value);
+    this.userSessionStorage[key] = JSON.stringify(value);
   }
 
   public getObject(key: string): any {
-    return JSON.parse(this.sessionStorage[key] || '{}');
+    return JSON.parse(this.userSessionStorage[key] || '{}');
   }
 
   public remove(key: string): any {
-    this.sessionStorage.removeItem(key);
+    this.userSessionStorage.removeItem(key);
   }
 }
 

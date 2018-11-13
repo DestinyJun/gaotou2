@@ -27,4 +27,21 @@
   border: none;
   color: white;
 }
+.p-calendar{
+  background: rgba(255,255,255,0.11);
+  width: 100%;
+  color: red;
+}
+.ui-inputtext{
+  width: 500px;
+  font-size: 14px;
+  color: #333333;
+  background: #ffffff;
+  padding: 0.429em;
+  border: 1px solid #a6a6a6;
+  -webkit-transition: border-color 0.2s;
+  transition: border-color 0.2s;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
 

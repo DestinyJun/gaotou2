@@ -13,7 +13,7 @@ import {LocalStorageService} from '../../common/services/local-storage.service';
 import {Bar3dExportType, CarExportType, IncomeExportType} from '../../common/model/shared.model';
 declare let BMap;
 declare let BMapLib;
-declare let BMap_Symbol_SHAPE_BACKWARD_OPEN_ARROW;
+declare let BMAP_SATELLITE_MAP;
 @Component({
   selector: 'app-service-data',
   templateUrl: './service-data.component.html',
@@ -25,9 +25,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   public vehicleAmountCountClean: any;
   public incomeAmountCountClean: any;
   public personAmountCountClean: any;
-  // 实时客流量
-  public personNum = 2000;
-  public persons = [];
   // 服务区名称
   public serviceZoneTitle: string;
   public citys = ['贵阳市', '遵义市', '六盘水市', '安顺市', '毕节市', '铜仁市', '黔东南苗族侗族自治州', '黔南布依族苗族自治州', '黔西南布依族苗族自治州'];
@@ -43,14 +40,11 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   public alertBarTitle: string;
   public options3dBar = {};
   public options3dBarInstance: any;
-  public options3dPie = {};
   public options3dLine = {};
-  public options3dPieInstance: any;
   public colorList = [
     '#356981', '#356981', '#356981', '#356981', '#356981', '#356981',
     '#356981', '#356981', '#356981', '#356981', '#356981 ', '#356981'
   ];
-  public arryPie = [];
   public bar3dExcelShow = false;
   public bar3dExportType: Bar3dExportType = new Bar3dExportType();
 
@@ -77,6 +71,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   public videoBottomShopUrl: string;
   // 服务区商家信息弹窗
   public serviceShopShow = false;
+  public serviceShopShowExport = false;
   public serviceShopTitle: string;
   // 服务区信息修改
   public selectFormModule: FormGroup;
@@ -90,7 +85,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   public videoBottomOpen = [];
   // 事件弹窗
   public eventListInfos: EventListInfo[];
-  public eventInfoUpTypes = ['经营类', '合同类', '工程类', '卫生类', '监控类', '系统类'];
+  public eventInfoUpTypes = ['党建类', '经营类', '合同类', '工程类', '卫生类', '监控类', '系统类'];
   public eventListInfo: EventListInfo = new EventListInfo();
   public eventAlertShow = false;
   public eventAlertListShow = true;
@@ -101,9 +96,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   public waitTitle: string;
 
   /***********************右边************************/
-  // 业态经营数据前十排名
-  public crosswiseBar = {};
-  public crosswiseBarDate = '当日';
   // 另外收入排名+表格导出
   public alertCrosswiseShow = false;
   public crosswiseExcelShow = false;
@@ -120,7 +112,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   // 服务区基本信息之园区平面图
   public servicesPlan = false;
   public servicesMap = {};
-
   // 实时收入
   public incomeAmount = [];
 
@@ -174,28 +165,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       today: '今天',
       clear: '清除'
     };
-    // 导出表格数据初始化
-    this.bar3dExportType = {
-      Bar3dNumType: '',
-      Bar3dArea: '',
-      Bar3dDate: ''
-    };
-    this.carExportType = {
-      carNumType: '',
-      carArea: '',
-      carDate: ''
-    };
-    this.CrosswiseExportType = {
-      incomeNumType: '',
-      incomeArea: '',
-      incomeDate: ''
-    };
-    this.incomeExportType = {
-      incomeNumType: '',
-      incomeArea: '',
-      incomeDate: ''
-    };
-
     // 视频弹窗时间选择表单
     this.selectFormModule = this.fb.group({
       videoDate: ['', [Validators.required]],
@@ -212,27 +181,13 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
         // console.log(this.serviceZonePoint);
       }
     );
-
     /*****************************右边**********************/
     // 服务区信息数据
     this.serviceBasicInformation1 = this.dataService.serviceBasicInformation1;
     this.serviceBasicInformation2 = this.dataService.serviceBasicInformation2;
-
     // 数据更行
     this.upData();
-    // this.uploadSerViceData();
-
-    // 函数测试
-    // this.openServiceShop({name: 1});
   }
-  /*public uploadSerViceData(): void {
-    this.serareaService.getServiceShopMsg().subscribe(
-      (val) => {
-        console.log(val);
-      }
-    );
-  }*/
-
   ngOnDestroy(): void {
     clearInterval(this.vehicleAmountCountClean);
     clearInterval(this.incomeAmountCountClean);
@@ -1107,7 +1062,9 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     this.serareaService.searchCarTotal({id: 1}).subscribe(
       (value) => {
         console.log(value);
-        this.vehicleAmount = value.data.toString().split('');
+        if (value.data) {
+          this.vehicleAmount = value.data.toString().split('');
+        }
       }
     );
   }
@@ -1475,7 +1432,8 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     this.videoPublicShow = true;
     this.publicVideoTitle = e.cameraName;
     videoUrlHtml = videoUrlHtml + `
-         <object type='application/x-vlc-plugin' pluginspage="http://www.videolan.org/" id='vlc' events='false' width="100%" height="99%">
+
+<object type='application/x-vlc-plugin' pluginspage="http://www.videolan.org/" id='vlc' events='false' width="100%" height="99%">
               <param name='mrl' value='${e.outUrl}' />
               <param name='volume' value='50' />
               <param name='autoplay' value='true' />
@@ -1579,48 +1537,60 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     this.eventAlertInfoUp = false;
   }
  // 服务区基本信息之园区平面图
- public openServicesPlan() {
+  public openServicesPlan() {
    document.body.className = 'ui-overflow-hidden';
    this.servicesPlan = true;
-   this.servicesMap = {
-     legend: {
-       orient: 'vertical',
-       y: 'bottom',
-       x: 'right',
-       data: ['pm2.5'],
-       textStyle: {
-         color: '#fff'
-       }
-     },
-     bmap: {
-       center: [106.70604, 26.901521],
-       zoom: 20,
-       roam: true,
-       mapStyle: {
-         'styleJson': [
-           {
-             'featureType': 'background',
-             'elementType': 'all',
-             'stylers': {
-               'color': '#273440'
-             }
-           }
-         ]
-       }
-     },
-   };
+    // 百度地图
+    this.servicesMap = {
+      legend: {
+        orient: 'vertical',
+        y: 'bottom',
+        x: 'right',
+        data: ['pm2.5'],
+        textStyle: {
+          color: '#fff'
+        }
+      },
+      bmap: {
+        center: [106.70604, 26.901521],
+        zoom: 20,
+        roam: true,
+        mapStyle: {
+          'styleJson': [
+            {
+              'featureType': 'background',
+              'elementType': 'all',
+              'stylers': {
+                'color': '#273440'
+              }
+            }
+          ]
+        }
+      },
+    };
  }
- public closeServicesPlan() {
+  public closeServicesPlan() {
    document.body.className = '';
    this.servicesPlan = false;
  }
+  // 服务期信息修改
+  public crosswiseClick(): void {
+    this.alertCrosswiseShow = true;
+    document.body.className = 'ui-overflow-hidden';
+  }
+  public closeCrosswiseShow(): void {
+    document.body.className = '';
+    this.alertCrosswiseShow = false;
+  }
 
   // 实时收入监控
   public incomeAmountCount(): void {
     this.serareaService.searchIncomeTotal({id: 1}).subscribe(
       (value) => {
         // console.log(value);
-        this.incomeAmount = Math.ceil(value.data).toString().split('');
+        if (value.data) {
+          this.incomeAmount = Math.ceil(value.data).toString().split('');
+        }
       }
     );
   }
@@ -2067,26 +2037,28 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     this.packOption3();
 
     // 车流监控
-    this.vehicleAmountCountClean = setInterval(() => {
+   /* this.vehicleAmountCountClean = setInterval(() => {
       this.vehicleAmountCount();
       this.CarTypes();
-    }, 5000);
+    }, 5000);*/
 
     // 收入监控
-    this.incomeAmountCountClean = setInterval(() => {
+    /*this.incomeAmountCountClean = setInterval(() => {
       this.incomeAmountCount();
       this.IncomeTypes();
-    }, 5000);
+    }, 5000);*/
 
     // 实时客流
-    this.personAmountCountClean = setInterval(() => {
+    /*this.personAmountCountClean = setInterval(() => {
       this.serareaService.searchPersonTotal({id: 1}).subscribe(
         (val) => {
           console.log(val);
-          this.localService.persons.next(val.data.total.toString().split(''));
+          if (val.val.data.total) {
+            // this.localService.persons.next(val.data.total.toString().split(''));
+          }
         }
       );
-    }, 5000);
+    }, 5000);*/
 
 
     // 事件列表

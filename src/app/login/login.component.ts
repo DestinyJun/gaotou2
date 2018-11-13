@@ -35,18 +35,19 @@ export class LoginComponent implements OnInit {
     if (this.myFromModule.valid) {
       // console.log(this.myFromModule.value);
       this.loginService.getLogin(this.myFromModule.value).subscribe(
-        (data) => {
-          if (data.status === '200') {
-            window.alert(data.message);
+        (value) => {
+          if (value.status === '200') {
+            console.log(value);
+            window.alert(value.message);
             // 本地存储信息
-            for ( const i in data.obj) {
-              if (data.obj.hasOwnProperty(i)) {
-                this.localSessionStorage.set(i, data.obj[i]);
+            for ( const prop in value.data) {
+              if (value.data.hasOwnProperty(prop)) {
+                this.localSessionStorage.set(prop, value.data[prop]);
               }
             }
             this.route.navigate(['/home/whole']);
           } else {
-            window.alert(data.message);
+            window.alert(value.message);
           }
       });
     } else {
