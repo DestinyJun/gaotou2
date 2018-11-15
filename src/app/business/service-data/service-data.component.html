@@ -192,29 +192,29 @@
         </div>
         <div class="information-info" >
           <!--公共属性-->
-          <div class="col-lg-6 col-md-6" *ngFor="let item of serviceInfo?.commonAttributeValues">
+          <div class="col-lg-6 col-md-6" *ngFor="let prop of serviceInfo?.commonAttributeValues">
             <div>
               <p class="clearfix">
-                <span class="pull-left text-c1">{{item.attributeDesc}}：</span>
-                <span class="pull-right">{{item.value}}</span>
+                <span class="pull-left text-c1">{{prop.attributeDesc}}：</span>
+                <span class="pull-right">{{prop.value}}</span>
               </p>
             </div>
           </div>
           <!--上行属性-->
-          <div class="col-lg-6 col-md-6" *ngFor="let item of serviceInfo?.upAttributeValues.attributeValues">
+          <div class="col-lg-6 col-md-6" *ngFor="let prop of serviceInfo?.upAttributeValues.attributeValues">
             <div>
               <p class="clearfix">
-                <span class="pull-left text-c1">{{item.attributeDesc}}：</span>
-                <span class="pull-right">{{item.value}}</span>
+                <span class="pull-left text-c1">{{prop.attributeDesc}}：</span>
+                <span class="pull-right">{{iproptem.value}}</span>
               </p>
             </div>
           </div>
           <!--下行属性-->
-          <div class="col-lg-6 col-md-6" *ngFor="let item of serviceInfo?.downAttributeValues.attributeValues">
+          <div class="col-lg-6 col-md-6" *ngFor="let prop of serviceInfo?.downAttributeValues.attributeValues">
             <div>
               <p class="clearfix">
-                <span class="pull-left text-c1">{{item.attributeDesc}}：</span>
-                <span class="pull-right">{{item.value}}</span>
+                <span class="pull-left text-c1">{{prop.attributeDesc}}：</span>
+                <span class="pull-right">{{prop.value}}</span>
               </p>
             </div>
           </div>
@@ -947,8 +947,8 @@
         <div class="col-lg-12 col-md-12">
           <div class="form-horizontal">
             <div class="form-group text-center style-border">
-              <span>确认修改</span>
-              <span>取消修改</span>
+              <span (click)="modifySerAraItemClick()">确认修改</span>
+              <span (click)="alertCrosswiseShow=false">取消修改</span>
             </div>
           </div>
         </div>

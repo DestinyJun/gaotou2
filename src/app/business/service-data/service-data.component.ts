@@ -7,13 +7,15 @@ import {DiagramService} from '../../common/services/diagram.service';
 import {ActivatedRoute} from '@angular/router';
 import {DataService} from '../../common/services/data.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {EventListInfo} from '../../common/model/service-data.model';
+import {AttributeValue, EventListInfo} from '../../common/model/service-data.model';
 import {ServiceDataService} from '../../common/services/service-data.service';
 import {LocalStorageService} from '../../common/services/local-storage.service';
 import {Bar3dExportType, CarExportType, IncomeExportType} from '../../common/model/shared.model';
+
 declare let BMap;
 declare let BMapLib;
 declare let BMAP_SATELLITE_MAP;
+
 @Component({
   selector: 'app-service-data',
   templateUrl: './service-data.component.html',
@@ -96,7 +98,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   public waitTitle: string;
 
   /***********************右边************************/
-  // 另外收入排名+表格导出
+    // 另外收入排名+表格导出
   public alertCrosswiseShow = false;
   public crosswiseExcelShow = false;
   public CrosswiseExportType: IncomeExportType = new IncomeExportType();
@@ -118,7 +120,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   // 实时收入
   public incomeAmount = [];
 
- // 当日收入类型占比分析
+  // 当日收入类型占比分析
   public optionsIncomeModel = {};
   // 收入类型弹窗
   public alertIncomeShow = false;
@@ -149,17 +151,24 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     private dataService: DataService,
     private serareaService: ServiceDataService,
     private localService: LocalStorageService
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     this.serareaService.searchSerAraItem(1).subscribe(
       (value) => {
         console.log(value.data);
         this.serviceInfo = value.data;
-      this.alterCommonAttributeValues = value.data.commonAttributeValues;
-      this.alterUpAttributeValues = value.data.upAttributeValues.attributeValues;
-      this.alterDownAttributeValues = value.data.downAttributeValues.attributeValues;
-        console.log( this.alterCommonAttributeValues)
+        value.data.commonAttributeValues.map((val, index) => {
+          this.alterCommonAttributeValues.push(this.cloneValue(val));
+        });
+        value.data.upAttributeValues.attributeValues.map((val, index) => {
+          this.alterUpAttributeValues.push(this.cloneValue(val));
+        });
+        value.data.downAttributeValues.attributeValues.map((val, index) => {
+          this.alterDownAttributeValues.push(this.cloneValue(val));
+        });
+        console.log(this.alterCommonAttributeValues);
       }
     );
     // 实时数据
@@ -198,11 +207,13 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     /*****************************数据更行**********************/
     this.upData();
   }
+
   ngOnDestroy(): void {
     clearInterval(this.vehicleAmountCountClean);
     clearInterval(this.incomeAmountCountClean);
     clearInterval(this.personAmountCountClean);
   }
+
   /************************左边***************************/
   // 3D柱状图图表配置
   public packOption3() {
@@ -432,7 +443,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
               itemStyle: {
                 opacity: 0.9,
                 color: function (params) {
-                  return ['#D06052', '#E29F39', '#9B90D5', '#46E7E2', '#78F991' ][params.value[1]];
+                  return ['#D06052', '#E29F39', '#9B90D5', '#46E7E2', '#78F991'][params.value[1]];
                 },
               },
               emphasis: {
@@ -452,6 +463,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       }
     );
   }
+
   //  3D柱状图的相关点击事件
   public barClick(e): void {
     const that = this;
@@ -658,7 +670,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
           color: '#fff',
           fontSize: 14
         }
-          },
+      },
       legend: {
         show: true,
         left: '10%',
@@ -690,6 +702,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       ],
       series: serieData
     };
+
     function types(value): string {
       let typeValue = '';
       switch (value) {
@@ -712,6 +725,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       return typeValue;
     }
   }
+
   public barCopyClick(e): void {
     this.alertBarShow = true;
     document.body.className = 'ui-overflow-hidden';
@@ -947,6 +961,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       ],
       series: serieData
     };
+
     function types(value): string {
       let typeValue = '';
       switch (value) {
@@ -969,14 +984,17 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       return typeValue;
     }
   }
+
   public closeBarShow() {
     this.alertBarShow = false;
     document.body.className = '';
   }
+
   // 3D柱状图弹窗操作
   public options3dBarInit(ec) {
     this.options3dBarInstance = ec;
   }
+
   public options3dBarClick(e) {
     this.colorList = [
       '#356981', '#356981', '#356981', '#356981', '#356981', '#356981',
@@ -984,63 +1002,67 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     ];
     this.colorList[e.dataIndex] = '#D43839';
     this.options3dBarInstance.setOption(this.options3dBar);
-   /* this.arryPie = [];
-    this.dataService.getrandomPie(9, 900, 50).map((val, index) => {
-      this.arryPie.push({value: val, name: this.business[index]});
-    });
-    this.options3dPie = {
-      title: {
-        text: `${this.serviceZoneTitle}年度${e.name}类型占比统计`,
-        x: 'center',
-        textStyle: {
-          color: '#fff',
-          fontSize: 16
-        }
-      },
-      tooltip: {
-        trigger: 'item',
-        formatter: '{b} : {d}%'
-      },
-      /!*legend: {
-        orient: 'vertical',
-        left: 'left',
-        data: ['贵阳市', '遵义市', '六盘水市', '安顺市', '毕节市', '铜仁市', '黔东南苗族侗族自治州', '黔南布依族苗族自治州','黔西南布依族苗族自治州'],
-        textStyle: {
-          color: 'white'
-        }
-      },*!/
-      series: [
-        {
-          name: `${e.name}总计：${e.value}`,
-          type: 'pie',
-          radius: '60%',
-          center: ['50%', '50%'],
-          data: this.arryPie,
-          itemStyle: {
-            color: function (params) {
-              return ['#CE2D79', '#BDD139', '#78E77D', '#09D4D6', '#3C75B9', '#6769B1', '#FF8C9D', '#2796C4', '#E57D0D'][params.dataIndex];
-            },
-            emphasis: {
-              shadowBlur: 10,
-              shadowOffsetX: 0,
-              shadowColor: 'rgba(0, 0, 0, 0.5)'
-            }
-          }
-        }
-      ]
-    };*/
+    /* this.arryPie = [];
+     this.dataService.getrandomPie(9, 900, 50).map((val, index) => {
+       this.arryPie.push({value: val, name: this.business[index]});
+     });
+     this.options3dPie = {
+       title: {
+         text: `${this.serviceZoneTitle}年度${e.name}类型占比统计`,
+         x: 'center',
+         textStyle: {
+           color: '#fff',
+           fontSize: 16
+         }
+       },
+       tooltip: {
+         trigger: 'item',
+         formatter: '{b} : {d}%'
+       },
+       /!*legend: {
+         orient: 'vertical',
+         left: 'left',
+         data: ['贵阳市', '遵义市', '六盘水市', '安顺市', '毕节市', '铜仁市', '黔东南苗族侗族自治州', '黔南布依族苗族自治州','黔西南布依族苗族自治州'],
+         textStyle: {
+           color: 'white'
+         }
+       },*!/
+       series: [
+         {
+           name: `${e.name}总计：${e.value}`,
+           type: 'pie',
+           radius: '60%',
+           center: ['50%', '50%'],
+           data: this.arryPie,
+           itemStyle: {
+             color: function (params) {
+               return ['#CE2D79', '#BDD139', '#78E77D', '#09D4D6', '#3C75B9', '#6769B1', '#FF8C9D', '#2796C4', '#E57D0D'][params.dataIndex];
+             },
+             emphasis: {
+               shadowBlur: 10,
+               shadowOffsetX: 0,
+               shadowColor: 'rgba(0, 0, 0, 0.5)'
+             }
+           }
+         }
+       ]
+     };*/
   }
+
   // 表格导出
   public bar3dDateChange(e) {
     this.bar3dExportType.Bar3dDate = e.srcElement.value;
   }
+
   public bar3dTypeChange(e) {
     this.bar3dExportType.Bar3dNumType = e.srcElement.options[e.srcElement.selectedIndex].innerText;
   }
+
   public bar3dAreaChange(e) {
     this.bar3dExportType.Bar3dArea = e.srcElement.options[e.srcElement.selectedIndex].innerText;
     console.log(this.bar3dExportType.Bar3dArea);
   }
+
   public bar3dExportClick() {
     if (!(this.bar3dExportType.Bar3dDate === '')
       || !(this.bar3dExportType.Bar3dNumType === '') || !(this.bar3dExportType.Bar3dArea === '')) {
@@ -1056,13 +1078,16 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       window.alert('请把数据选择全在提交');
     }
   }
+
   public open3dBarExcel() {
     this.bar3dExcelShow = true;
   }
+
   // 选择时间
   public selsectDateClick(param): void {
     console.log(param.onFocus);
   }
+
   public close3dBarExcel() {
     this.bar3dExcelShow = false;
   }
@@ -1078,6 +1103,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       }
     );
   }
+
   // 车辆类型占比图表配置
   public CarTypes() {
     this.serareaService.searchCarTotalPie({id: 1}).subscribe(
@@ -1121,6 +1147,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       }
     );
   }
+
   // 车型日分布类型占比饼状图相关点击事件
   public parkClick(e): void {
     this.alertCarShow = true;
@@ -1131,10 +1158,12 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     });
     this.carTableData = this.dataService.getJsonObj(8, 1000, 100, this.alertCarTitle);
   }
+
   public closeCarShow(): void {
     document.body.className = '';
     this.alertCarShow = false;
   }
+
   public carBtnClick(e): void {
     if (e.srcElement.innerText === '小车') {
       this.alertCarTitle = '小车';
@@ -1170,16 +1199,20 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       this.carTableData = this.dataService.getJsonObj(8, 1000, 100, this.alertCarTitle);
     }
   }
+
   // 表格导出
   public carDateChange(e) {
     this.carExportType.carDate = e.srcElement.value;
   }
+
   public carTypeChange(e) {
     this.carExportType.carNumType = e.srcElement.options[e.srcElement.selectedIndex].innerText;
   }
+
   public carAreaChange(e) {
     this.carExportType.carArea = e.srcElement.options[e.srcElement.selectedIndex].innerText;
   }
+
   public carExportClick() {
     if (!(this.carExportType.carDate === '') || !(this.carExportType.carNumType === '') || !(this.carExportType.carArea === '')) {
       this.carExcelShow = false;
@@ -1194,9 +1227,11 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       window.alert('请把数据选择全在提交');
     }
   }
+
   public openCarExcel() {
     this.carExcelShow = true;
   }
+
   public closeCarExcel() {
     this.carExcelShow = false;
   }
@@ -1221,17 +1256,19 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       }
     );
   }
+
   // 中部服务商家操作
   public closeMerchantVideo(): void {
     document.body.className = '';
     this.videoAlertShow = false;
   }
-  public videoShopListClick(e): void{
+
+  public videoShopListClick(e): void {
     this.videoBottomShopUrl = '';
     if (e === null || e === '' || e === undefined) {
       document.getElementById('shopWindowShop').innerHTML = `<h1 class="text-center">暂时没安装摄像头</h1>`;
     } else {
-      this.videoBottomShopUrl =  this.videoBottomShopUrl +  `
+      this.videoBottomShopUrl = this.videoBottomShopUrl + `
         <div class="video-play" style="height: 66vh">
            <object type='application/x-vlc-plugin' pluginspage="http://www.videolan.org/" id='vlc' events='false' width="100%" height="96%">
               <param name='mrl' value='${e}' />
@@ -1246,10 +1283,12 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       document.getElementById('shopWindowShop').innerHTML = this.videoBottomShopUrl;
     }
   }
+
   public closeServiceShop(): void {
     document.body.className = '';
     this.serviceShopShow = false;
   }
+
   // 商家信息/视频弹窗
   public openServiceShop(item): void {
     console.log();
@@ -1350,7 +1389,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     };
 
     // 面积图
-    const areaMouth = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']
+    const areaMouth = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'];
     const areaData = function () {
       const a = [];
       areaMouth.map(() => {
@@ -1401,7 +1440,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
             y2: 1,
             colorStops: [
               {
-              offset: 0, color: '#1876be' // 0% 处的颜色
+                offset: 0, color: '#1876be' // 0% 处的颜色
               },
               {
                 offset: 0.3, color: '#1876be' // 0% 处的颜色
@@ -1410,8 +1449,8 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
                 offset: 0.6, color: '#1876be' // 0% 处的颜色
               },
               {
-              offset: 1, color: 'transparent' // 100% 处的颜色
-            }],
+                offset: 1, color: 'transparent' // 100% 处的颜色
+              }],
             globalCoord: false // 缺省为 false
           }
         },
@@ -1419,6 +1458,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     };
 
   }
+
   public openMerchantVideo(item): void {
     this.videoBottomShopUrl = `
         <object type='application/x-vlc-plugin' pluginspage="http://www.videolan.org/" id='vlc' events='false' width="100%" height="96%">
@@ -1434,6 +1474,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       document.getElementById('shopVideo').innerHTML = this.videoBottomShopUrl;
     }, 100);
   }
+
   // 服务区公共视频监控
   public openPublicVideo(e) {
     this.videoShopList = e;
@@ -1460,10 +1501,12 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       document.getElementById('publicVideo').innerHTML = videoUrlHtml;
     }, 100);
   }
+
   public closePublicVideo() {
-     document.body.className = '';
-     this.videoPublicShow = false;
+    document.body.className = '';
+    this.videoPublicShow = false;
   }
+
   public publicTopVideoGroupOver(videoList, i): void {
     videoList.map(() => {
       this.videoTopOpen.push(false);
@@ -1477,9 +1520,11 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       this.publicVideoList = videoList;
     }
   }
+
   public publicTopVideoGroupLeave(i): void {
     this.videoTopOpen[i] = false;
   }
+
   public publicTopBottomGroupOver(videoList, i): void {
     videoList.map(() => {
       this.videoBottomOpen.push(false);
@@ -1493,28 +1538,35 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       this.publicVideoList = videoList;
     }
   }
+
   public publicTopBottomGroupLeave(i): void {
     this.videoBottomOpen[i] = false;
   }
+
   // 事件弹窗
   public openEventAlert(e): void {
     document.body.className = 'ui-overflow-hidden';
     this.eventAlertShow = true;
     this.eventListInfo = e;
   }
+
   public closeEventAlert() {
     document.body.className = '';
     this.eventAlertShow = false;
   }
+
   public eventAlertListCtrlw(): void {
     this.eventAlertListShow = true;
   }
+
   public eventAlertListCtrly(): void {
     this.eventAlertListShow = false;
   }
+
   public eventListInfoClick(e): void {
     this.eventListInfo = e;
   }
+
   public eventInfoUpClick(e): void {
     if (e !== '经营类') {
       this.waitTitle = e;
@@ -1524,12 +1576,14 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       this.eventAlertInfoUp = true;
     }
   }
+
   // 厕所弹窗
   public openServersToiletAlert(e) {
     document.body.className = 'ui-overflow-hidden';
     this.waitTitle = e;
     this.serversToiletAlertShow = true;
   }
+
   public closeServersToiletAlert() {
     document.body.className = '';
     this.serversToiletAlertShow = false;
@@ -1542,14 +1596,89 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     this.serviceBasicAlert = true;
     this.serviceBasicAlertTitle = name;
   }
+
   public closeServiceInfoUpAlert() {
     document.body.className = '';
     this.eventAlertInfoUp = false;
   }
- // 服务区基本信息之园区平面图
+
+  // 遍历修改后的数据，并把它赋值给car1
+  public cloneValue(c: any): any {
+    const car = {};
+    for (const prop in c) {
+      if (c) {
+        car[prop] = c[prop];
+      }
+    }
+    return car;
+  }
+
+  // 服务区信息修改
+  public modifySerAraItemClick(): void {
+    this.serareaService.modifySerAraItem(
+      {
+        administrativeAreaId: 3,
+        administrativeAreaName: '贵阳市',
+        chiefName: null,
+        chiefPhone: null,
+        chiefUserId: 1,
+        commonAttributeValues: this.alterCommonAttributeValues,
+        deptId: 5,
+        deptName: '久长服务区',
+        downAttributeValues: {
+          attributeValues: this.alterDownAttributeValues,
+          destination: '遵义',
+          flag: '3',
+          flagName: '下行',
+          id: 2,
+          source: '贵阳',
+        },
+        id: 1,
+        organizationId: 1,
+        organizationName: '贵州高投服务管理有限公司',
+        serviceAreaName: '久长服务区',
+        upAttributeValues: {
+          attributeValues: this.alterUpAttributeValues,
+          destination: '贵阳',
+          flag: '2',
+          flagName: '上行',
+          id: 1,
+          source: '遵义',
+        },
+      }
+    ).subscribe(
+      (data) => {
+        console.log(data);
+        if (data.status === '200') {
+          window.alert(data.message);
+          this.alterCommonAttributeValues = [];
+          this.alterUpAttributeValues = [];
+          this.alterDownAttributeValues = [];
+          this.serareaService.searchSerAraItem(1).subscribe(
+            (value) => {
+              console.log(value.data);
+              this.serviceInfo = value.data;
+              value.data.commonAttributeValues.map((val, index) => {
+                this.alterCommonAttributeValues.push(this.cloneValue(val));
+              });
+              value.data.upAttributeValues.attributeValues.map((val, index) => {
+                this.alterUpAttributeValues.push(this.cloneValue(val));
+              });
+              value.data.downAttributeValues.attributeValues.map((val, index) => {
+                this.alterDownAttributeValues.push(this.cloneValue(val));
+              });
+              console.log(this.alterCommonAttributeValues);
+            }
+          );
+        }
+      }
+    );
+  }
+
+  // 服务区基本信息之园区平面图
   public openServicesPlan() {
-   document.body.className = 'ui-overflow-hidden';
-   this.servicesPlan = true;
+    document.body.className = 'ui-overflow-hidden';
+    this.servicesPlan = true;
     // 百度地图
     this.servicesMap = {
       legend: {
@@ -1578,16 +1707,19 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
         }
       },
     };
- }
+  }
+
   public closeServicesPlan() {
-   document.body.className = '';
-   this.servicesPlan = false;
- }
+    document.body.className = '';
+    this.servicesPlan = false;
+  }
+
   // 服务期信息修改
   public crosswiseClick(): void {
     this.alertCrosswiseShow = true;
     document.body.className = 'ui-overflow-hidden';
   }
+
   public closeCrosswiseShow(): void {
     document.body.className = '';
     this.alertCrosswiseShow = false;
@@ -1604,6 +1736,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       }
     );
   }
+
   // 收入类型占比图表配置
   public IncomeTypes() {
     this.serareaService.searchIncomeTotalPie({id: 1}).subscribe(
@@ -1647,6 +1780,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       }
     );
   }
+
   // 收入类型相关操作
   public incomeClick(e): void {
     this.alertIncomeShow = true;
@@ -1690,18 +1824,22 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     };
     this.IncomeTableData = this.dataService.getIncomeObj(8, 1000, 100, this.alertIncomeTitle);
   }
+
   public closeIncomeShow(): void {
     document.body.className = '';
     this.alertIncomeShow = false;
   }
+
   // 收入类型弹窗
   public optionsIncomePieInit(ec): void {
     // this.optionsCarPieInstance = ec;
   }
+
   public optionsIncomePieClick(e) {
     this.IncomeAreaName = e.name;
     this.IncomeTableData = this.dataService.getIncomeObj(8, 1000, 100, this.alertIncomeTitle);
   }
+
   public IncomeBtnClick(e): void {
     if (e.srcElement.innerText === '收入总数') {
       this.alertIncomeTitle = '收入总数';
@@ -2004,16 +2142,20 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       this.IncomeTableData = this.dataService.getIncomeObj(8, 1000, 100, this.alertIncomeTitle);
     }
   }
+
   // 表格导出
   public incomeDateChange(e) {
     this.incomeExportType.incomeDate = e.srcElement.value;
   }
+
   public incomeTypeChange(e) {
     this.incomeExportType.incomeNumType = e.srcElement.options[e.srcElement.selectedIndex].innerText;
   }
+
   public incomeAreaChange(e) {
     this.incomeExportType.incomeArea = e.srcElement.options[e.srcElement.selectedIndex].innerText;
   }
+
   public incomeExportClick() {
     if (!(this.incomeExportType.incomeDate === '') || !(this.incomeExportType.incomeNumType === '') || !(this.incomeExportType.incomeArea === '')) {
       this.incomeExcelShow = false;
@@ -2028,9 +2170,11 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       window.alert('请把数据选择全在提交');
     }
   }
+
   public openIncomeExcel() {
     this.incomeExcelShow = true;
   }
+
   public closeincomeExcel() {
     this.incomeExcelShow = false;
   }
@@ -2041,16 +2185,17 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   public goBack(): void {
     history.back();
   }
+
   // 数据更新加载
   public upData() {
     //  高速服液态数据3d统计
     this.packOption3();
 
     // 车流监控
-   /* this.vehicleAmountCountClean = setInterval(() => {
-      this.vehicleAmountCount();
-      this.CarTypes();
-    }, 5000);*/
+    /* this.vehicleAmountCountClean = setInterval(() => {
+       this.vehicleAmountCount();
+       this.CarTypes();
+     }, 5000);*/
 
     // 收入监控
     /*this.incomeAmountCountClean = setInterval(() => {
