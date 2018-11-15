@@ -104,8 +104,11 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   // 服务区基本信息数据
   public serviceBasicAlert = true;
   public serviceBasicAlertTitle: string;
-  public serviceBasicInformation1: any;
-  public serviceBasicInformation2: any;
+  public serviceInfo: any;
+  public alterCommonAttributeValues = [];
+  public alterUpAttributeValues = [];
+  public alterDownAttributeValues = [];
+
   public shopEchartLine = {};
   public shopEchartArea = {};
 
@@ -149,6 +152,16 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this.serareaService.searchSerAraItem(1).subscribe(
+      (value) => {
+        console.log(value.data);
+        this.serviceInfo = value.data;
+      this.alterCommonAttributeValues = value.data.commonAttributeValues;
+      this.alterUpAttributeValues = value.data.upAttributeValues.attributeValues;
+      this.alterDownAttributeValues = value.data.downAttributeValues.attributeValues;
+        console.log( this.alterCommonAttributeValues)
+      }
+    );
     // 实时数据
     this.vehicleAmountCount();
     this.CarTypes();
@@ -181,11 +194,8 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
         // console.log(this.serviceZonePoint);
       }
     );
-    /*****************************右边**********************/
-    // 服务区信息数据
-    this.serviceBasicInformation1 = this.dataService.serviceBasicInformation1;
-    this.serviceBasicInformation2 = this.dataService.serviceBasicInformation2;
-    // 数据更行
+
+    /*****************************数据更行**********************/
     this.upData();
   }
   ngOnDestroy(): void {
