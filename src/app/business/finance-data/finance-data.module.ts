@@ -7,7 +7,7 @@ import { FinanceDataComponent } from './finance-data.component';
 import {FormsModule} from '@angular/forms';
 import {WenjunAlertModule} from '../../common/wenjun';
 import { FinanceDataService } from '../../common/services/finance-data.service';
-import {CalendarModule} from 'primeng/primeng';
+import {CalendarModule, ScrollPanelModule} from 'primeng/primeng';
 
 @NgModule({
   imports: [
@@ -16,7 +16,8 @@ import {CalendarModule} from 'primeng/primeng';
     FinanceDataRoutingModule,
     SharedModule,
     WenjunAlertModule,
-    CalendarModule
+    CalendarModule,
+    ScrollPanelModule
   ],
   declarations: [FinanceDataComponent],
   entryComponents: [],

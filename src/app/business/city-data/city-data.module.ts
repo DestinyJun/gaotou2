@@ -6,7 +6,7 @@ import { CityDataComponent } from './city-data.component';
 import {CityDataRoutingModule} from './city-data.routing.module';
 import {WenjunAlertModule} from '../../common/wenjun';
 import { CityDataService } from '../../common/services/city-data.service';
-import {CalendarModule} from 'primeng/primeng';
+import {CalendarModule, ScrollPanelModule} from 'primeng/primeng';
 
 @NgModule({
   imports: [
@@ -14,7 +14,8 @@ import {CalendarModule} from 'primeng/primeng';
     CityDataRoutingModule,
     SharedModule,
     WenjunAlertModule,
-    CalendarModule
+    CalendarModule,
+    ScrollPanelModule
   ],
   declarations: [CityDataComponent],
   providers: [CityDataService]

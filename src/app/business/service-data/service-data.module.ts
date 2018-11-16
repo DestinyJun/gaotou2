@@ -5,14 +5,15 @@ import { ServiceDataComponent } from './service-data.component';
 import {ServiceDataRoutingModule} from './service-data.routing.module';
 import { ServiceDataService } from '../../common/services/service-data.service';
 import { FinanceDataService } from '../../common/services/finance-data.service';
-import {CalendarModule} from 'primeng/primeng';
+import {CalendarModule, ScrollPanelModule} from 'primeng/primeng';
 
 @NgModule({
   imports: [
     CommonModule,
     ServiceDataRoutingModule,
     SharedModule,
-    CalendarModule
+    CalendarModule,
+    ScrollPanelModule
   ],
   declarations: [ServiceDataComponent],
   providers: [ServiceDataService, FinanceDataService]

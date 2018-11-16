@@ -1,7 +1,7 @@
 import {
   Component,
   ComponentFactoryResolver, OnDestroy,
-  OnInit,
+  OnInit, ViewEncapsulation,
 } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {NgxEchartsService} from 'ngx-echarts';
@@ -20,7 +20,8 @@ declare let BMapLib;
 @Component({
   selector: 'app-city-data',
   templateUrl: './city-data.component.html',
-  styleUrls: ['./city-data.component.css']
+  styleUrls: ['./city-data.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class CityDataComponent implements OnInit, OnDestroy {
   /***********************基础信息************************/

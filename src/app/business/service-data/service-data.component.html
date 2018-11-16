@@ -122,24 +122,26 @@
             <span></span><span></span><span></span><span></span>
             <p>未处理事件</p>
           </div>
-          <table class="table" cellspacing="5px">
-            <thead class="table-header">
+          <p-scrollPanel [style]="{width: '100%', height: '30vh'}" styleClass="custom">
+            <table class="table" cellspacing="5px">
+              <thead class="table-header">
               <tr>
                 <td>时间</td>
                 <td>事件类型</td>
                 <td>事件描述</td>
                 <td>状态</td>
               </tr>
-            </thead>
-            <tbody class="table-body">
+              </thead>
+              <tbody class="table-body">
               <tr *ngFor="let item of eventListInfos" (click)="openEventAlert(item)">
-              <td>{{item?.time}}</td>
-              <td>{{item?.type}}</td>
-              <td>{{item?.description}}</td>
-              <td style="color:#CF5B56">{{item?.state}}</td>
-            </tr>
-            </tbody>
-          </table>
+                <td>{{item?.time}}</td>
+                <td>{{item?.type}}</td>
+                <td>{{item?.description}}</td>
+                <td style="color:#CF5B56">{{item?.state}}</td>
+              </tr>
+              </tbody>
+            </table>
+          </p-scrollPanel>
         </div>
         <!--事件上报-->
         <div class="col-lg-6 col-md-6 event-table-processed">
@@ -147,35 +149,37 @@
             <span></span><span></span><span></span><span></span>
             <p>事件上报</p>
           </div>
-          <div class="event-table-processed-type">
-            <span *ngFor="let item of eventInfoUpTypes" (click)="eventInfoUpClick(item)">{{item}}</span>
-          </div>
-          <div class="event-table-processed-btn">
-            <div class="col-lg-6 col-md-6">
-              <div class="btn-toilet" (click)="openServersToiletAlert('服务区卫生间使用率')">
-                <p>上行卫生间使用率</p>
-                <p class=""><span>男洗手间：45%</span></p>
-                <p><span>女洗手间：50%</span></p>
+          <p-scrollPanel [style]="{width: '100%', height: '30vh'}" styleClass="custom">
+            <div class="event-table-processed-type">
+              <span *ngFor="let item of eventInfoUpTypes" (click)="eventInfoUpClick(item)">{{item}}</span>
+            </div>
+            <div class="event-table-processed-btn">
+              <div class="col-lg-6 col-md-6">
+                <div class="btn-toilet" (click)="openServersToiletAlert('服务区卫生间使用率')">
+                  <p>上行卫生间使用率</p>
+                  <p class=""><span>男洗手间：45%</span></p>
+                  <p><span>女洗手间：50%</span></p>
+                </div>
+                <div class="btn-carport" (click)="openServersToiletAlert('服务区停车位监控')">
+                  <p>上行停车位数据监控</p>
+                  <p class=""><span>大车剩余车位：256个</span></p>
+                  <p><span>小车剩余车位：318个</span></p>
+                </div>
               </div>
-              <div class="btn-carport" (click)="openServersToiletAlert('服务区停车位监控')">
-                <p>上行停车位数据监控</p>
-                <p class=""><span>大车剩余车位：256个</span></p>
-                <p><span>小车剩余车位：318个</span></p>
+              <div class="col-lg-6 col-md-6">
+                <div class="btn-toilet" (click)="openServersToiletAlert('服务区卫生间使用率')">
+                  <p>上行卫生间使用率</p>
+                  <p class=""><span>男洗手间：45%</span></p>
+                  <p><span>女洗手间：50%</span></p>
+                </div>
+                <div class="btn-carport" (click)="openServersToiletAlert('服务区停车位监控')">
+                  <p>上行停车位数据监控</p>
+                  <p class=""><span>大车剩余车位：256个</span></p>
+                  <p><span>小车剩余车位：318个</span></p>
+                </div>
               </div>
             </div>
-            <div class="col-lg-6 col-md-6">
-              <div class="btn-toilet" (click)="openServersToiletAlert('服务区卫生间使用率')">
-                <p>上行卫生间使用率</p>
-                <p class=""><span>男洗手间：45%</span></p>
-                <p><span>女洗手间：50%</span></p>
-              </div>
-              <div class="btn-carport" (click)="openServersToiletAlert('服务区停车位监控')">
-                <p>上行停车位数据监控</p>
-                <p class=""><span>大车剩余车位：256个</span></p>
-                <p><span>小车剩余车位：318个</span></p>
-              </div>
-            </div>
-          </div>
+          </p-scrollPanel>
         </div>
       </div>
     </div>
@@ -191,33 +195,35 @@
           <p>{{serviceZoneTitle}}基本信息</p>
         </div>
         <div class="information-info" >
-          <!--公共属性-->
-          <div class="col-lg-6 col-md-6" *ngFor="let prop of serviceInfo?.commonAttributeValues">
-            <div>
-              <p class="clearfix">
-                <span class="pull-left text-c1">{{prop.attributeDesc}}：</span>
-                <span class="pull-right">{{prop.value}}</span>
-              </p>
+          <p-scrollPanel [style]="{width: '100%', height: '40vh'}" styleClass="custom">
+            <!--公共属性-->
+            <div class="col-lg-6 col-md-6" *ngFor="let prop of serviceInfo?.commonAttributeValues">
+              <div>
+                <p class="clearfix">
+                  <span class="pull-left text-c1">{{prop.attributeDesc}}：</span>
+                  <span class="pull-right">{{prop.value}}</span>
+                </p>
+              </div>
             </div>
-          </div>
-          <!--上行属性-->
-          <div class="col-lg-6 col-md-6" *ngFor="let prop of serviceInfo?.upAttributeValues.attributeValues">
-            <div>
-              <p class="clearfix">
-                <span class="pull-left text-c1">{{prop.attributeDesc}}：</span>
-                <span class="pull-right">{{iproptem.value}}</span>
-              </p>
+            <!--上行属性-->
+            <div class="col-lg-6 col-md-6" *ngFor="let prop of serviceInfo?.upAttributeValues.attributeValues">
+              <div>
+                <p class="clearfix">
+                  <span class="pull-left text-c1">{{prop.attributeDesc}}：</span>
+                  <span class="pull-right">{{iproptem.value}}</span>
+                </p>
+              </div>
             </div>
-          </div>
-          <!--下行属性-->
-          <div class="col-lg-6 col-md-6" *ngFor="let prop of serviceInfo?.downAttributeValues.attributeValues">
-            <div>
-              <p class="clearfix">
-                <span class="pull-left text-c1">{{prop.attributeDesc}}：</span>
-                <span class="pull-right">{{prop.value}}</span>
-              </p>
+            <!--下行属性-->
+            <div class="col-lg-6 col-md-6" *ngFor="let prop of serviceInfo?.downAttributeValues.attributeValues">
+              <div>
+                <p class="clearfix">
+                  <span class="pull-left text-c1">{{prop.attributeDesc}}：</span>
+                  <span class="pull-right">{{prop.value}}</span>
+                </p>
+              </div>
             </div>
-          </div>
+          </p-scrollPanel>
         </div>
         <div class="information-btn text-center">
           <span (click)="crosswiseClick()">信息修改</span>

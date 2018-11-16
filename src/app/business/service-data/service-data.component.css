@@ -334,17 +334,19 @@
   margin-bottom: 1vh;
 }
 .right .information-info{
+  height: 40vh;
   overflow: hidden;
   font-size: 0.8rem;
+  margin-bottom: 1vh;
 }
 .right .information-info p>span{
   margin-top: 1vh;
 }
 .right .information-btn{
+  height: 3vh;
   position: absolute;
   bottom: 1vh;
   width: 100%;
-  margin-top: 5vh;
 }
 .right .information-btn span{
   display: inline-block;
@@ -881,7 +883,6 @@ p{
 .pagination > li > a > input{
   width: 5vw;
 }
-
 /*表单样式覆盖*/
 .form-horizontal{
   margin-top: 15px;
@@ -920,11 +921,22 @@ p{
   border-bottom-left-radius: 0;
 }
 
+/***********************************primeng虚拟滚动*****************************/
+.custom .ui-scrollpanel-wrapper {
+  border: none; /*控制滚动轴背景色*/
+}
+
+.custom .ui-scrollpanel-bar {
+  background-color: transparent;
+  opacity: 1;
+  transition: background-color .3s;
+}
+
+.custom .ui-scrollpanel-bar:hover {
+  background-color: #135ba1;
+}
+
 /*********************bootstrap样式扩展************************/
-
-
-
-
 a.list-group-item,
 button.list-group-item {
   color: white;

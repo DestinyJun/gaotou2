@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {VideoWindowService} from '../../common/services/video-window.service';
 import {LocalStorageService} from '../../common/services/local-storage.service';
 import {ServiceAreaNode, TreeNode} from '../../common/model/video-window.model';
@@ -7,7 +7,8 @@ import {ServiceAreaNode, TreeNode} from '../../common/model/video-window.model';
 @Component({
   selector: 'app-video-window',
   templateUrl: './video-window.component.html',
-  styleUrls: ['./video-window.component.css']
+  styleUrls: ['./video-window.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class VideoWindowComponent implements OnInit {
   // 实时客流量

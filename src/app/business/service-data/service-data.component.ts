@@ -1,6 +1,6 @@
 import {
   Component, ElementRef, OnDestroy,
-  OnInit,
+  OnInit, ViewEncapsulation,
 } from '@angular/core';
 import {Data3dService} from '../../common/services/data3d.service';
 import {DiagramService} from '../../common/services/diagram.service';
@@ -19,7 +19,8 @@ declare let BMAP_SATELLITE_MAP;
 @Component({
   selector: 'app-service-data',
   templateUrl: './service-data.component.html',
-  styleUrls: ['./service-data.component.css']
+  styleUrls: ['./service-data.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class ServiceDataComponent implements OnInit, OnDestroy {
   /***********************基础信息************************/

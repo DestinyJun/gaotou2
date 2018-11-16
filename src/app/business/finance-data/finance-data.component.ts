@@ -158,7 +158,7 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
     this.localService.eventBus.next({title: '贵州省高速业态大数据',  flagState: 'finance', flagName: this.dataToggle});
     // 图表更行
     this.updataEcharts();
-    this.testArray();
+    this.initialize();
     // 全屏点击事件
     window.document.addEventListener('click', (e) => {
       this.flag = e.srcElement.parentElement.className;
@@ -168,11 +168,24 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
       }
     });
     window.addEventListener('resize', function (e) {
-
     });
   }
-  public testArray(): void {
-
+  public initialize(): void {
+    this.financeDataService.searchEventCategory().subscribe(
+      (value) => {
+        if (value.status === '200') {
+          console.log(value.data);
+          this.financeDataService.searchEventCategoryCount({id: 2, list: value.data}).subscribe(
+            (item) => {
+              console.log(item);
+              if (item.status === '200') {
+                this.eventTypes = item.data;
+              }
+            }
+          );
+        }
+      }
+    );
   }
   ngOnDestroy(): void {
     clearInterval(this.vehicleAmountCountClean);
@@ -2666,26 +2679,27 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
     this.backCrosswiseBar('revenue');
 
     // 车流监控
-    this.vehicleAmountCountClean = setInterval(() => {
-      this.vehicleAmountCount();
-      this.CarTypes();
-    }, 5000);
+   /* this.vehicleAmountCountClean = setInterval(() => {
+
+    }, 5000);*/
+    this.vehicleAmountCount();
+    this.CarTypes();
 
     // 收入监控
     this.incomeAmountCountClean = setInterval(() => {
-      this.incomeAmountCount();
-      this.IncomeTypes();
     }, 5000);
+    this.incomeAmountCount();
+    this.IncomeTypes();
 
     // 实时客流
     this.personAmountCountClean = setInterval(() => {
-      this.financeDataService.searchPersonTotal({id: 2}).subscribe(
-        (val) => {
-          // console.log(val.data.toString().split(''));
-          this.localService.persons.next(val.data.toString().split(''));
-        }
-      );
     }, 5000);
+    this.financeDataService.searchPersonTotal({id: 2}).subscribe(
+      (val) => {
+        // console.log(val.data.toString().split(''));
+        this.localService.persons.next(val.data.toString().split(''));
+      }
+    );
 
     // 月度所有服务区车辆流量柱状图统计
     this.optionsCar = {
