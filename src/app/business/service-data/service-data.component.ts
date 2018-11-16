@@ -159,7 +159,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       this.alterCommonAttributeValues = value.data.commonAttributeValues;
       this.alterUpAttributeValues = value.data.upAttributeValues.attributeValues;
       this.alterDownAttributeValues = value.data.downAttributeValues.attributeValues;
-        console.log( this.alterCommonAttributeValues)
+        console.log( this.alterCommonAttributeValues);
       }
     );
     // 实时数据

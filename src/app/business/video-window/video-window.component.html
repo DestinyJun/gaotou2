@@ -65,7 +65,10 @@
   <div class="main-right">
     <div class="col-lg-2 col-md-2 col-sm-2 ">
       <div class="control">
-        <tree [tree]="tree" (nodeSelected)="logEvent($event)"></tree>
+        <p-scrollPanel [style]="{width: '100%', height: '85vh'}" styleClass="custom">
+          <p-tree [style]="{width: '100%', height: 'auto', color: '#87FFFF',background: 'transparent',border: 'none'}" [value]="areaTrees" selectionMode="single" [loading]="loading" [(selection)]="areaTree"
+                  (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="nodeUnselect($event)"></p-tree>
+        </p-scrollPanel>
       </div>
     </div>
   </div>
