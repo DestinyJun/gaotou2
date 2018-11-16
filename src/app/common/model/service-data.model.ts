@@ -7,6 +7,7 @@ export class EventListInfo {
   plan?: string;
   solution?: string;
 }
+
 export class EventInfoUpType {
   business = '经营类';
   compact = '合同类';
@@ -15,4 +16,11 @@ export class EventInfoUpType {
   monitoring = '监控类';
   system = '系统类';
 }
-export class EventInfoUp {}
+
+export class AttributeValue {
+  attributeDesc: '经度';
+  attributeId: 15;
+  attributeName: 'longitude';
+  id: 479;
+  value: '106.705393';
+}

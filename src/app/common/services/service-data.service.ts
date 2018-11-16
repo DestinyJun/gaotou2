@@ -56,6 +56,10 @@ export class ServiceDataService {
   public searchPersonTotal(params): Observable<any> {
     return this.http.get(`${this.globalService.urlc}/realTime/passenger/serviceArea/getPassengerDistribute/${params.id}`);
   }
+  // 修改服务区信息
+  public modifySerAraItem(params): Observable<any> {
+    return this.http.post(`${this.globalService.urls}/serviceArea/update`, params);
+  }
   // 查询服务区信息
   public searchSerAraItem(id): Observable<any> {
     return this.http.get(`${this.globalService.urls}/serviceArea/queryById/${id}`);
