@@ -1,5 +1,8 @@
 import {Component, HostListener, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
+import {GlobalService} from '../../common/services/global.service';
+import {HttpClient} from '@angular/common/http';
+import {LocalStorageService} from '../../common/services/local-storage.service';
 
 @Component({
   selector: 'app-nav',
@@ -7,6 +10,8 @@ import {Router} from '@angular/router';
   styleUrls: ['./nav.component.css']
 })
 export class NavComponent implements OnInit {
+  public urlList: any;
+  public urlIcon = ['fa fa-area-chart', 'fa fa-bar-chart', 'fa fa-line-chart', 'fa fa-video-camera', 'fa fa-pie-chart', 'fa fa-server'];
   public navOpacity = '0.4';
   public navHeight = '50px';
   @HostListener('mouseenter') onMouserEnter() {
@@ -28,9 +33,26 @@ export class NavComponent implements OnInit {
   }
   constructor(
     private router: Router,
+    private globalService: GlobalService,
+    private localSessionStorage: LocalStorageService,
+    private http: HttpClient
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.http.get(`${this.globalService.urla}/authenticator/init/business/accessToken/${this.globalService.accessToken}`).subscribe(
+      (value) => {
+        let a: any;
+        a = value;
+        console.log(a.status);
+        if (a.status === '200') {
+          this.urlList = a.data.menuAscxs;
+          console.log(this.urlList);
+        } else {
+          window.alert('初始化菜单失败');
+        }
+      }
+    );
+  }
   public wholeClick(): void {
     this.router.navigate(['home/whole']);
   }

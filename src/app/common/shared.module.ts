@@ -13,7 +13,6 @@ import {DataService} from './services/data.service';
 import { TableMenuComponent } from './components/table-menu/table-menu.component';
 import { TimerShaftCrosswiseComponent } from './components/timer-shaft-crosswise/timer-shaft-crosswise.component';
 import { TimerShaftLengthwaysComponent } from './components/timer-shaft-lengthways/timer-shaft-lengthways.component';
-import { WenjunAlertComponent } from './wenjun/wenjun-alert/wenjun-alert.component';
 
 @NgModule({
   declarations: [TableMenuComponent, TimerShaftCrosswiseComponent, TimerShaftLengthwaysComponent],

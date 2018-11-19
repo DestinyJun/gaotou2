@@ -11,6 +11,7 @@ export class LoginService {
   ) { }
   // 登陆
   public getLogin(params): Observable<any> {
-    return this.http.post(`${this.globalService.urls}/common/auth/login`, params);
+    // return this.http.post(`${this.globalService.urls}/common/auth/login`, params);
+    return this.http.post(`${this.globalService.urla}/authenticator/login`, params);
   }
 }

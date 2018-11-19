@@ -29,7 +29,7 @@ export class PersonalComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.userInfo = this.localService.userSessionStorage;
+    this.userInfo = JSON.parse(this.localService.userSessionStorage.userDTO);
     console.log(this.userInfo);
     // 发射实时客流
     this.localService.persons.next(this.persons);
@@ -45,10 +45,12 @@ export class PersonalComponent implements OnInit {
       clear: 'Clear'
     };
   }
+  // 选择日期
   public onSelectTime(event): void {
     this.updateUser.birthday = this.datePipe.transform(event, 'yyyy-mm-dd');
     this.userInfo.birthday = this.datePipe.transform(event, 'yyyy-MM-dd');
   }
+  // 更新个人信息
   public updateProfileClick() {
     this.btnProfileTxt = true;
     for (const prop in this.updateUser) {
@@ -63,7 +65,6 @@ export class PersonalComponent implements OnInit {
         if (value.status === '200') {
 
         }
-
       }
     );
   }

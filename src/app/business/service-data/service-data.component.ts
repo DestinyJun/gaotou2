@@ -1544,6 +1544,25 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     this.videoBottomOpen[i] = false;
   }
 
+  // 为处理事件统计
+  public initialize(): void {
+    this.serareaService.searchEventCategory().subscribe(
+      (value) => {
+        if (value.status === '200') {
+          this.serareaService.searchEventCategoryCount({id: 2, list: value.data}).subscribe(
+            (item) => {
+              console.log(item);
+              if (item.status === '200') {
+                // this.eventTypes = item.data;
+              }
+            }
+          );
+        }
+      }
+    );
+  }
+  // 事件上报
+
   // 事件弹窗
   public openEventAlert(e): void {
     document.body.className = 'ui-overflow-hidden';

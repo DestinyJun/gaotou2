@@ -7,6 +7,7 @@ export class LocalStorageService {
   public eventBus: Subject<any> = new Subject<any>();
   public persons: Subject<any> = new Subject<any>();
   public userSessionStorage: any;
+  public accessTokenStorage: any;
   constructor() {
     if (!sessionStorage) {
       throw new Error('Current browser does not support Local Storage');

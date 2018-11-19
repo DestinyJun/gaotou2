@@ -65,6 +65,6 @@ export class FinanceDataService {
   }
   public searchEventCategoryCount(params): Observable<any> {
     console.log(params.list);
-    return this.http.post(`${this.globalService.urls}/event/administrativeArea/countNoProcess/${params.id}`, params.list);
+    return this.http.post(`${this.globalService.urlc}/event/administrativeArea/countNoProcess/${params.id}`, params.list);
   }
 }

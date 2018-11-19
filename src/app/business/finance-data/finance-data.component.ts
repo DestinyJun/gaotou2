@@ -158,7 +158,6 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
     this.localService.eventBus.next({title: '贵州省高速业态大数据',  flagState: 'finance', flagName: this.dataToggle});
     // 图表更行
     this.updataEcharts();
-    this.initialize();
     // 全屏点击事件
     window.document.addEventListener('click', (e) => {
       this.flag = e.srcElement.parentElement.className;
@@ -169,23 +168,6 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
     });
     window.addEventListener('resize', function (e) {
     });
-  }
-  public initialize(): void {
-    this.financeDataService.searchEventCategory().subscribe(
-      (value) => {
-        if (value.status === '200') {
-          console.log(value.data);
-          this.financeDataService.searchEventCategoryCount({id: 2, list: value.data}).subscribe(
-            (item) => {
-              console.log(item);
-              if (item.status === '200') {
-                this.eventTypes = item.data;
-              }
-            }
-          );
-        }
-      }
-    );
   }
   ngOnDestroy(): void {
     clearInterval(this.vehicleAmountCountClean);
@@ -1246,369 +1228,6 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
   }
 
   /*********************************中部*****************************/
-  // 中部服务区分布图
-  public centerMap() {
-    this.centerMapS.getCenterMapData().subscribe(
-      (value) => {
-        const convertData = function (datas) {
-          const res = [];
-          for (let i = 0; i < datas.length; i++) {
-            const geoCoord = value.geoCoordMap[datas[i].name];
-            if (geoCoord) {
-              res.push({
-                name: datas[i].name,
-                value: geoCoord.concat(datas[i].value)
-              });
-            }
-          }
-          return res;
-        };
-        const convertedData = [
-          convertData(value.data),
-          convertData(value.data.sort(function (a, b) {
-            return b.value - a.value;
-          }).slice(0, 6))
-        ];
-        this.optionsMap = {
-          animation: true,
-          animationDuration: 1000,
-          animationEasing: 'cubicInOut',
-          animationDurationUpdate: 1000,
-          animationEasingUpdate: 'cubicInOut',
-          backgroundColor: '#04243E',
-          title: [
-            {
-              text: this.dataToggle + value.title,
-              left: 'center',
-              textStyle: {
-                color: '#fff',
-                fontSize: 14
-              }
-            },
-            {
-              id: 'statistic',
-              right: 120,
-              top: 40,
-              width: 100,
-              textStyle: {
-                color: '#fff',
-                fontSize: 14
-              }
-            }
-          ],
-          toolbox: {
-            iconStyle: {
-              normal: {
-                borderColor: '#fff'
-              },
-              emphasis: {
-                borderColor: '#b1e4ff'
-              }
-            }
-          },
-          geo: {
-            map: value.address,
-            left: 'center',
-            // right: 'center',
-            center: value.center,
-            zoom: 1.3,
-            label: {
-              emphasis: {
-                show: false
-              }
-            },
-            roam: true,
-            itemStyle: {
-              normal: {
-                areaColor: '#323c48',
-                borderColor: '#111'
-              },
-              emphasis: {
-                areaColor: '#2a333d'
-              }
-            }
-          },
-          tooltip: {
-            trigger: 'item'
-          },
-          /*grid: {
-            right: 40,
-            top: 100,
-            bottom: 40,
-            width: '30%'
-          },
-          xAxis: {
-            type: 'value',
-            scale: true,
-            position: 'top',
-            boundaryGap: false,
-            splitLine: {show: false},
-            axisLine: {show: false},
-            axisTick: {show: false},
-            axisLabel: {margin: 2, textStyle: {color: '#aaa'}},
-          },
-          yAxis: {
-            type: 'category',
-            name: 'TOP 20',
-            nameGap: 16,
-            axisLine: {show: false, lineStyle: {color: '#ddd'}},
-            axisTick: {show: false, lineStyle: {color: '#ddd'}},
-            axisLabel: {interval: 0, textStyle: {color: '#ddd'}},
-            data: []
-          },*/
-          series: [
-            {
-              name: '服务区驻车量',
-              type: 'effectScatter',
-              coordinateSystem: 'geo',
-              data: convertedData[0],
-              symbolSize: function (val) {
-                return Math.max(val[2] / 10, 8);
-              },
-              label: {
-                normal: {
-                  formatter: '{b}',
-                  position: 'right',
-                  show: false
-                },
-                emphasis: {
-                  show: true
-                }
-              },
-              itemStyle: {
-                normal: {
-                  color: '#ddb926'
-                }
-              }
-            },
-          ]
-        };
-      }
-    );
-  }
-  // 中部省级服务区切换
-  public centerMap1() {
-    const geoCoordMap = {
-      '贵阳': [106.645382, 26.655177],
-      '遵义': [106.924791, 27.73378],
-      '铜仁': [109.194557, 27.752195],
-      '毕节': [105.29893, 27.305249],
-      '六盘水': [104.834398, 26.612807],
-      '安顺': [105.956633, 26.269129],
-      '凯里': [107.994134, 26.579727],
-      '都匀': [107.529602, 26.256688],
-      '兴义': [105.206943, 25.457651],
-    };
-    const geoValue = [
-      {name: '贵阳', value: 150},
-      {name: '遵义', value: 130},
-      {name: '铜仁', value: 100},
-      {name: '毕节', value: 98},
-      {name: '六盘水', value: 155},
-      {name: '安顺', value: 103},
-      {name: '凯里', value: 60},
-      {name: '都匀', value: 55},
-      {name: '兴义', value: 156},
-    ];
-    const convertData = function (data) {
-      const res = [];
-      for (let i = 0; i < data.length; i++) {
-        const geoCoord = geoCoordMap[data[i].name];
-        if (geoCoord) {
-          res.push({
-            name: data[i].name,
-            value: geoCoord.concat(data[i].value)
-          });
-        }
-      }
-      return res;
-    };
-    let series = [
-      {
-        name: '服务区驻车量',
-        type: 'effectScatter',
-        effectType: 'ripple',
-        coordinateSystem: 'bmap',
-        data: convertData(geoValue),
-        symbolSize: function (val) {
-          return Math.max(val[2] / 5, 8);
-        },
-        label: {
-          normal: {
-            formatter: '{b}',
-            position: 'right',
-            show: false
-          },
-          emphasis: {
-            show: true
-          }
-        },
-        itemStyle: {
-          normal: {
-            color: '#ddb926'
-          }
-        }
-      },
-    ];
-    this.optionsMap = {
-      tooltip: {
-        trigger: 'item',
-        formatter: function (params) {
-          return `<div><p>${params.name}高速服务区</p><p>驻车量：${params.value[2]}</p></div>`;
-        }
-      },
-      legend: {
-        orient: 'vertical',
-        y: 'bottom',
-        x: 'right',
-        data: ['pm2.5'],
-        textStyle: {
-          color: '#fff'
-        }
-      },
-      visualMap: {
-        min: 0,
-        max: 200,
-        calculable: true,
-        show: false,
-        inRange: {
-          color: ['#FEC93F', '#2796C4', '#B171BF', '#F52C11']
-        },
-        textStyle: {
-          color: '#fff'
-        }
-      },
-      bmap: {
-        center: [106.648831, 26.652078],
-        zoom: 8,
-        roam: true,
-        mapStyle: {
-          'styleJson': [
-            {
-              'featureType': 'water',
-              'elementType': 'all',
-              'stylers': {
-                'color': '#031628'
-              }
-            },
-            {
-              'featureType': 'land',
-              'elementType': 'geometry',
-              'stylers': {
-                'color': '#2A333D'
-              }
-            },
-            {
-              'featureType': 'highway',
-              'elementType': 'all',
-              'stylers': {
-                'visibility': 'on'
-              }
-            },
-            {
-              'featureType': 'arterial',
-              'elementType': 'geometry.fill',
-              'stylers': {
-                'color': '#000000'
-              }
-            },
-            {
-              'featureType': 'arterial',
-              'elementType': 'geometry.stroke',
-              'stylers': {
-                'color': '#0b3d51'
-              }
-            },
-            {
-              'featureType': 'local',
-              'elementType': 'geometry',
-              'stylers': {
-                'color': '#000000'
-              }
-            },
-            {
-              'featureType': 'railway',
-              'elementType': 'geometry.fill',
-              'stylers': {
-                'color': '#000000'
-              }
-            },
-            {
-              'featureType': 'railway',
-              'elementType': 'geometry.stroke',
-              'stylers': {
-                'color': '#08304b'
-              }
-            },
-            {
-              'featureType': 'subway',
-              'elementType': 'geometry',
-              'stylers': {
-                'lightness': -70
-              }
-            },
-            {
-              'featureType': 'building',
-              'elementType': 'geometry.fill',
-              'stylers': {
-                'color': '#000000'
-              }
-            },
-            {
-              'featureType': 'all',
-              'elementType': 'labels.text.fill',
-              'stylers': {
-                'color': '#01D1DB'
-              }
-            },
-            {
-              'featureType': 'all',
-              'elementType': 'labels.text.stroke',
-              'stylers': {
-                'color': '#000000'
-              }
-            },
-            {
-              'featureType': 'building',
-              'elementType': 'geometry',
-              'stylers': {
-                'color': '#022338'
-              }
-            },
-            {
-              'featureType': 'green',
-              'elementType': 'geometry',
-              'stylers': {
-                'color': '#062032'
-              }
-            },
-            {
-              'featureType': 'boundary',
-              'elementType': 'all',
-              'stylers': {
-                'color': '#465b6c'
-              }
-            },
-            {
-              'featureType': 'manmade',
-              'elementType': 'all',
-              'stylers': {
-                'color': '#022338'
-              }
-            },
-            {
-              'featureType': 'label',
-              'elementType': 'all',
-              'stylers': {
-                'visibility': 'on'
-              }
-            }
-          ]
-        }
-      },
-      series: series
-    };
-  }
   // 中部百度地图画省边界外
   public centerMap2() {
     const that = this;
@@ -1961,6 +1580,23 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
     } else {
       this.alertOfficeShow = true;
     }
+  }
+  // 为处理事件统计
+  public initialize(): void {
+    this.financeDataService.searchEventCategory().subscribe(
+      (value) => {
+        if (value.status === '200') {
+          this.financeDataService.searchEventCategoryCount({id: 2, list: value.data}).subscribe(
+            (item) => {
+              console.log(item);
+              if (item.status === '200') {
+                this.eventTypes = item.data;
+              }
+            }
+          );
+        }
+      }
+    );
   }
   // 办公室信息处理函数
   public tableOfficeClick(): void {
@@ -2669,7 +2305,7 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
     // 地图
     this.centerMap2();
     // 事件
-    this.eventTypes = this.dataService.eventTypes;
+    this.initialize();
     // 办公
     this.officeTypes = this.dataService.officeTypes;
     // 个人

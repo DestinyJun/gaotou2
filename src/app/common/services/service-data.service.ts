@@ -64,4 +64,16 @@ export class ServiceDataService {
   public searchSerAraItem(id): Observable<any> {
     return this.http.get(`${this.globalService.urls}/serviceArea/queryById/${id}`);
   }
+  // 事件分类
+  public searchEventCategory(): Observable<any> {
+    return this.http.get(`${this.globalService.urls}/common/config/eventCategory/getAll`);
+  }
+  public searchEventCategoryCount(params): Observable<any> {
+    console.log(params.list);
+    return this.http.post(`${this.globalService.urlc}/event/serviceArea/countNoProcess/${params.id}`, params.list);
+  }
+  // 事件上报
+  public searchEventsReported(): Observable<any> {
+    return this.http.post(`${this.globalService.urlc}/event/serviceArea/reportEvent`, {});
+  }
 }

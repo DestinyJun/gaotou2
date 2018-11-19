@@ -199,6 +199,7 @@ export class CityDataComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     clearInterval(this.vehicleAmountCountClean);
     clearInterval(this.incomeAmountCountClean);
+    clearInterval(this.personAmountCountClean);
   }
 
   /**********************************左边*****************************/
