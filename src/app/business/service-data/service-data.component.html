@@ -133,17 +133,17 @@
               </tr>
               </thead>
               <tbody class="table-body">
-              <tr *ngFor="let item of eventListInfos" (click)="openEventAlert(item)">
-                <td>{{item?.time}}</td>
-                <td>{{item?.type}}</td>
-                <td>{{item?.description}}</td>
-                <td style="color:#CF5B56">{{item?.state}}</td>
+              <tr *ngFor="let item of eventList" (click)="openEventAlert(item)">
+                <td>{{item?.occurTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                <td>{{item?.eventCategoryName}}</td>
+                <td>{{item?.eventDescripte}}</td>
+                <td style="color:#CF5B56">{{item?.processState===2?'未处理':'已处理'}}</td>
               </tr>
               </tbody>
             </table>
           </p-scrollPanel>
         </div>
-        <!--事件上报-->
+        <!--事件上报/卫生间/停车位-->
         <div class="col-lg-6 col-md-6 event-table-processed">
           <div class="event-table-processed-title title text-center">
             <span></span><span></span><span></span><span></span>
@@ -151,7 +151,7 @@
           </div>
           <p-scrollPanel [style]="{width: '100%', height: '30vh'}" styleClass="custom">
             <div class="event-table-processed-type">
-              <span *ngFor="let item of eventInfoUpTypes" (click)="eventInfoUpClick(item)">{{item}}</span>
+              <span *ngFor="let item of eventInfoUpTypes" [ngStyle]=" {'float': item.eventCategoryName === '党建类'?'right': 'none', 'margin-right': item.eventCategoryName === '党建类'?'5vw':'none'}" (click)="eventInfoUpClick(item)">{{item.eventCategoryName}}</span>
             </div>
             <div class="event-table-processed-btn">
               <div class="col-lg-6 col-md-6">
@@ -730,103 +730,80 @@
       <div class="row">
         <div class="col-lg-12 col-md-12">
           <div>
-            <button class="btn" [ngClass]="{'btn-warning': eventAlertListShow}" (click)="eventAlertListCtrlw()">未处理事件</button>
-            <button class="btn" [ngClass]="{'btn-warning': !eventAlertListShow}" (click)="eventAlertListCtrly()">已处理事件</button>
+            <button class="btn" [ngStyle]="{'color':!eventAlertListShow?'black': 'white'}" [ngClass]="{'btn-primary': eventAlertListShow}" (click)="eventAlertListCtrlw()">未处理事件</button>
+            <button class="btn" [ngStyle]="{'color':eventAlertListShow?'black': 'white'}" [ngClass]="{'btn-primary': !eventAlertListShow}" (click)="eventAlertListCtrly()">已处理事件</button>
           </div>
         </div>
-        <div class="col-lg-6 col-md-6" *ngIf="eventAlertListShow">
-          <div class="table-responsive">
-            <table class="table">
-              <thead class="table-header">
-              <tr>
-                <td>时间</td>
-                <td>事件类型</td>
-                <td>事件描述</td>
-                <td>状态</td>
-              </tr>
-              </thead>
-              <tbody class="table-body">
-              <tr class="table-tr" style="color: #E57D0D" *ngFor="let item of eventListInfos" (click)="eventListInfoClick(item)">
-                <td>{{item?.time}}</td>
-                <td>{{item?.type}}</td>
-                <td>{{item?.description}}</td>
-                <td style="color:#CF5B56">{{item?.state}}</td>
-              </tr>
-              </tbody>
-            </table>
-          </div>
+        <div class="col-lg-8 col-md-8" *ngIf="eventAlertListShow">
+          <p-scrollPanel [style]="{width: '100%', height: '65vh'}" styleClass="custom">
+            <div class="table-responsive">
+              <table class="table">
+                <thead class="table-header">
+                <tr>
+                  <td>时间</td>
+                  <td>事件类型</td>
+                  <td>事件描述</td>
+                  <td>状态</td>
+                </tr>
+                </thead>
+                <tbody class="table-body">
+                  <tr *ngFor="let item of eventListNoProcess" style="color: #00ECF1" (click)="eventListInfosClick(item)">
+                    <td>{{item?.occurTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                    <td>{{item?.eventCategoryName}}</td>
+                    <td>{{item?.eventDescripte}}</td>
+                    <td style="color:#CF5B56">{{item?.processState===2?'未处理':'已处理'}}</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </p-scrollPanel>
         </div>
-        <div class="col-ld-6 col-md-6" *ngIf="!eventAlertListShow">
-          <div class="table-responsive">
-            <table class="table" cellspacing="5px">
-              <thead class="table-header">
-              <tr>
-                <td>时间</td>
-                <td>事件类型</td>
-                <td>事件描述</td>
-                <td>状态</td>
-              </tr>
-              </thead>
-              <tbody class="table-body">
-              <tr class="table-tr" style="color: #00ECF1">
-                <td>3分钟之前</td>
-                <td>经营类</td>
-                <td>妹妹小吃账户异常</td>
-                <td style="color: #68E868">已处理</td>
-              </tr>
-              <tr class="table-tr" style="color: #00ECF1">
-                <td>3分钟之前</td>
-                <td>经营类</td>
-                <td>妹妹小吃账户异常</td>
-                <td style="color: #68E868">已处理</td>
-              </tr>
-              <tr class="table-tr" style="color: #00ECF1">
-                <td>3分钟之前</td>
-                <td>经营类</td>
-                <td>妹妹小吃账户异常</td>
-                <td style="color: #68E868">已处理</td>
-              </tr>
-              <tr class="table-tr" style="color: #00ECF1">
-                <td>3分钟之前</td>
-                <td>经营类</td>
-                <td>妹妹小吃账户异常</td>
-                <td style="color: #68E868">已处理</td>
-              </tr>
-              <tr class="table-tr" style="color: #00ECF1">
-                <td>3分钟之前</td>
-                <td>经营类</td>
-                <td>妹妹小吃账户异常</td>
-                <td style="color: #68E868">已处理</td>
-              </tr>
-              <tr class="table-tr" style="color: #00ECF1">
-                <td>3分钟之前</td>
-                <td>经营类</td>
-                <td>妹妹小吃账户异常</td>
-                <td style="color: #68E868">已处理</td>
-              </tr>
-              </tbody>
-            </table>
-          </div>
+        <div class="col-lg-8 col-md-8" *ngIf="!eventAlertListShow">
+          <p-scrollPanel [style]="{width: '100%', height: '65vh'}" styleClass="custom">
+            <div class="table-responsive">
+              <table class="table event-table-untreated" cellspacing="5px">
+                <thead class="table-header">
+                  <tr>
+                    <td>时间</td>
+                    <td>事件类型</td>
+                    <td>事件描述</td>
+                    <td>状态</td>
+                  </tr>
+                </thead>
+                <tbody class="table-body">
+                  <tr *ngFor="let item of eventListProcess" style="color: #00ECF1" (click)="eventListInfosClick(item)">
+                    <td>{{item?.occurTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                    <td>{{item?.eventCategoryName}}</td>
+                    <td>{{item?.eventDescripte}}</td>
+                    <td style="color: #68E868">{{item?.processState===2?'未处理':'已处理'}}</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </p-scrollPanel>
         </div>
-        <div class="col-lg-6 col-md-6">
-          <h4 class="text-center">事件详情信息</h4>
+        <div class="col-lg-4 col-md-4">
+          <h4>事件详情信息</h4>
           <p>
-            事件发生时间：<span>{{eventListInfo?.time}}</span>
+            <span style="color:#4B8FD6">事件发生时间：</span><span>{{eventListInfo?.occurTime | date:'yyyy-MM-dd HH:mm:ss'}}</span>
           </p>
           <p>
-            事件发生类型：<span>{{eventListInfo?.type}}</span>
+            <span style="color:#4B8FD6">事件类型：</span><span>{{eventListInfo?.eventCategoryName}}</span>
           </p>
           <p>
-            事件处理情况： <span>{{eventListInfo?.state}}</span>
+            <span style="color:#4B8FD6">事件发生地点：</span><span>{{eventListInfo?.eventSubject}}</span>
           </p>
           <p>
-            事件发生对象： <span>{{eventListInfo?.personage}}</span>
+            <span style="color:#4B8FD6">事件名称：</span><span>{{eventListInfo?.eventName}}</span>
           </p>
           <p>
-            事件处理预案： <span>{{eventListInfo?.plan}}</span>
+            <span style="color:#4B8FD6">事件描述：</span><span>{{eventListInfo?.eventDescripte}}</span>
           </p>
           <p>
-            事件处理方式：<span>{{eventListInfo?.solution}}</span>
+            <span style="color:#4B8FD6">事件负责人：</span><span>{{eventListInfo?.principal}}</span>
+          </p>
+          <p>
+            <span>处理状态：</span><span [ngStyle]="{'color':eventListInfo?.processState===1?'#68E868': '#C05854'}">{{eventListInfo?.processState===1?'已处理':'未处理'}}</span>
           </p>
         </div>
       </div>
@@ -851,16 +828,23 @@
         <div class="col-ld-12 col-md-12">
           <form class="form-horizontal">
             <div class="form-group">
-              <label for="type" class="col-sm-2 control-label" disabled="">事件类型</label>
+              <label for="eventName" class="col-sm-2 control-label" disabled="">事件名称：</label>
               <div class="col-sm-4">
-                <select type="text" class="form-control" id="type" name="type">
-                  <option value="0" style="color: black">请选择类型...</option>
-                  <option *ngFor="let item of eventInfoUpTypes" [value]="item" style="color: black">{{item}}</option>
-                </select>
+                <input type="text" class="form-control" id="eventName" name="type">
               </div>
-              <label for="personage" class="col-sm-2 control-label" disabled="">责任人</label>
+              <label for="principal" class="col-sm-2 control-label" disabled="">责任人</label>
               <div class="col-sm-4">
-                <input type="text" class="form-control" id="personage" name="type">
+                <input type="text" class="form-control" id="principal" name="type">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="eventSubject" class="col-sm-2 control-label" disabled="">事件发生主体：</label>
+              <div class="col-sm-4">
+                <input type="text" class="form-control" id="eventSubject" name="type">
+              </div>
+              <label for="occurTime" class="col-sm-2 control-label" disabled="">事件发生时间</label>
+              <div class="col-sm-4">
+                <input type="text" class="form-control" id="occurTime" name="type">
               </div>
             </div>
             <div class="form-group">

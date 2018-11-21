@@ -20,7 +20,7 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.globalService.searchList({page: 1, nums: 1000}).subscribe(
       (val) => {
-        console.log(val);
+        // console.log(val);
       }
     );
   }

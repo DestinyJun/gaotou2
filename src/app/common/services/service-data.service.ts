@@ -64,16 +64,24 @@ export class ServiceDataService {
   public searchSerAraItem(id): Observable<any> {
     return this.http.get(`${this.globalService.urls}/serviceArea/queryById/${id}`);
   }
-  // 事件分类
-  public searchEventCategory(): Observable<any> {
-    return this.http.get(`${this.globalService.urls}/common/config/eventCategory/getAll`);
-  }
   public searchEventCategoryCount(params): Observable<any> {
     console.log(params.list);
     return this.http.post(`${this.globalService.urlc}/event/serviceArea/countNoProcess/${params.id}`, params.list);
   }
+  // 未处理事件列表
+  public searchNotPoocessEventsList(params): Observable<any> {
+    return this.http.get(`${this.globalService.urlc}/event/serviceArea/1/notPoocess/queryByPaging/${params.page}/${params.nums}`);
+  }
+  // 根据事件类型及状态查询事件列表
+  public searchEventsTypeList(params): Observable<any> {
+    return this.http.get(`${this.globalService.urlc}/event/serviceArea/1/eventCategory/${params.eventCategoryCode}/eventState/${params.processState}/queryByPaging/${params.page}/${params.nums}`);
+  }
+  // 事件分类
+  public searchEventCategory(): Observable<any> {
+    return this.http.get(`${this.globalService.urls}/common/config/eventCategory/getAll`);
+  }
   // 事件上报
-  public searchEventsReported(): Observable<any> {
-    return this.http.post(`${this.globalService.urlc}/event/serviceArea/reportEvent`, {});
+  public searchEventsReported(params): Observable<any> {
+    return this.http.post(`${this.globalService.urlc}/event/serviceArea/reportEvent`, params);
   }
 }

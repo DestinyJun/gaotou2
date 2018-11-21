@@ -112,8 +112,8 @@
                 </tr>
                 </thead>
                 <tbody class="table-body">
-                <tr *ngFor="let item  of eventTypes" (click)="tableEventClick(item.name)">
-                  <td>{{item.eventCategoryName }}</td>
+                <tr *ngFor="let item  of eventTypes" (click)="tableEventClick(item.eventCategoryName)">
+                  <td>{{item.eventCategoryName}}</td>
                   <td class="hot">未处理<span *ngIf="!(item.count === 0)">{{item.number}}</span></td>
                 </tr >
                 </tbody>

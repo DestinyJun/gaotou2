@@ -48,7 +48,7 @@ export class NavComponent implements OnInit {
           this.urlList = a.data.menuAscxs;
           console.log(this.urlList);
         } else {
-          window.alert('初始化菜单失败');
+          // window.alert('初始化菜单失败');
         }
       }
     );

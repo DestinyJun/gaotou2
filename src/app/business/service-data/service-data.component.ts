@@ -87,9 +87,13 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   public videoTopOpen = [];
   public videoBottomOpen = [];
   // 事件弹窗
-  public eventListInfos: EventListInfo[];
-  public eventInfoUpTypes = ['党建类', '经营类', '合同类', '工程类', '卫生类', '监控类', '系统类'];
-  public eventListInfo: EventListInfo = new EventListInfo();
+  public eventList: EventListInfo[];
+  public eventListInfo: EventListInfo;
+  public eventListProcess: EventListInfo[];
+  public eventListNoProcess: EventListInfo[];
+  public eventInfoUpTypes = [];
+  // public eventInfoUpTypes = ['党建类', '经营类', '合同类', '工程类', '卫生类', '监控类', '系统类'];
+  public eventListInfoChildern: EventListInfo[];
   public eventAlertShow = false;
   public eventAlertListShow = true;
   public eventAlertInfoUp = false;
@@ -1544,66 +1548,74 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     this.videoBottomOpen[i] = false;
   }
 
-  // 为处理事件统计
-  public initialize(): void {
-    this.serareaService.searchEventCategory().subscribe(
+  // 未处理事件统计
+  public eventNotPoocess(): void {
+    this.serareaService.searchNotPoocessEventsList({page: 1, nums: 1000}).subscribe(
       (value) => {
+        console.log(value);
         if (value.status === '200') {
-          this.serareaService.searchEventCategoryCount({id: 2, list: value.data}).subscribe(
-            (item) => {
-              console.log(item);
-              if (item.status === '200') {
-                // this.eventTypes = item.data;
-              }
-            }
-          );
+          this.eventList = value.data.contents;
         }
       }
     );
   }
-  // 事件上报
 
-  // 事件弹窗
-  public openEventAlert(e): void {
+  // 未处理事件弹窗
+  public openEventAlert(item): void {
     document.body.className = 'ui-overflow-hidden';
     this.eventAlertShow = true;
-    this.eventListInfo = e;
+    console.log(item);
+    // 未处理
+    this.serareaService.searchEventsTypeList({eventCategoryCode: item.eventCategoryCode, processState: 2, page: 1, nums: 1000}).subscribe(
+      (value) => {
+        console.log(value);
+        if (value.status === '200') {
+          this.eventListNoProcess = value.data.contents;
+        }
+      }
+    );
+    // 已处理
+    this.serareaService.searchEventsTypeList({eventCategoryCode: item.eventCategoryCode, processState: 1, page: 1, nums: 1000}).subscribe(
+      (value) => {
+        console.log(value);
+        if (value.status === '200') {
+          this.eventListProcess = value.data.contents;
+        }
+      }
+    );
+    // this.eventListInfoChildern = item;
   }
-
   public closeEventAlert() {
     document.body.className = '';
     this.eventAlertShow = false;
   }
-
+  // 未处理事件弹窗的tab切换
   public eventAlertListCtrlw(): void {
     this.eventAlertListShow = true;
   }
-
   public eventAlertListCtrly(): void {
     this.eventAlertListShow = false;
   }
-
-  public eventListInfoClick(e): void {
-    this.eventListInfo = e;
+  public eventListInfosClick(item): void {
+    console.log(item);
+    this.eventListInfo = item;
   }
-
+  // 事件上报
   public eventInfoUpClick(e): void {
-    if (e !== '经营类') {
-      this.waitTitle = e;
+    if (e.eventCategoryName !== '经营类') {
+      this.waitTitle = e.eventCategoryName;
       this.serversToiletAlertShow = true;
     } else {
-      this.eventAlertInfoUpTitle = e;
+      this.eventAlertInfoUpTitle = e.eventCategoryName;
       this.eventAlertInfoUp = true;
     }
   }
-
-  // 厕所弹窗
+  // 卫生间及停车位弹窗
   public openServersToiletAlert(e) {
     document.body.className = 'ui-overflow-hidden';
     this.waitTitle = e;
     this.serversToiletAlertShow = true;
   }
-
   public closeServersToiletAlert() {
     document.body.className = '';
     this.serversToiletAlertShow = false;
@@ -1616,7 +1628,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     this.serviceBasicAlert = true;
     this.serviceBasicAlertTitle = name;
   }
-
   public closeServiceInfoUpAlert() {
     document.body.className = '';
     this.eventAlertInfoUp = false;
@@ -1728,7 +1739,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       },
     };
   }
-
   public closeServicesPlan() {
     document.body.className = '';
     this.servicesPlan = false;
@@ -1739,7 +1749,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     this.alertCrosswiseShow = true;
     document.body.className = 'ui-overflow-hidden';
   }
-
   public closeCrosswiseShow(): void {
     document.body.className = '';
     this.alertCrosswiseShow = false;
@@ -1756,7 +1765,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       }
     );
   }
-
   // 收入类型占比图表配置
   public IncomeTypes() {
     this.serareaService.searchIncomeTotalPie({id: 1}).subscribe(
@@ -1844,7 +1852,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     };
     this.IncomeTableData = this.dataService.getIncomeObj(8, 1000, 100, this.alertIncomeTitle);
   }
-
   public closeIncomeShow(): void {
     document.body.className = '';
     this.alertIncomeShow = false;
@@ -1854,12 +1861,10 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   public optionsIncomePieInit(ec): void {
     // this.optionsCarPieInstance = ec;
   }
-
   public optionsIncomePieClick(e) {
     this.IncomeAreaName = e.name;
     this.IncomeTableData = this.dataService.getIncomeObj(8, 1000, 100, this.alertIncomeTitle);
   }
-
   public IncomeBtnClick(e): void {
     if (e.srcElement.innerText === '收入总数') {
       this.alertIncomeTitle = '收入总数';
@@ -2167,15 +2172,12 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   public incomeDateChange(e) {
     this.incomeExportType.incomeDate = e.srcElement.value;
   }
-
   public incomeTypeChange(e) {
     this.incomeExportType.incomeNumType = e.srcElement.options[e.srcElement.selectedIndex].innerText;
   }
-
   public incomeAreaChange(e) {
     this.incomeExportType.incomeArea = e.srcElement.options[e.srcElement.selectedIndex].innerText;
   }
-
   public incomeExportClick() {
     if (!(this.incomeExportType.incomeDate === '') || !(this.incomeExportType.incomeNumType === '') || !(this.incomeExportType.incomeArea === '')) {
       this.incomeExcelShow = false;
@@ -2190,11 +2192,9 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       window.alert('请把数据选择全在提交');
     }
   }
-
   public openIncomeExcel() {
     this.incomeExcelShow = true;
   }
-
   public closeincomeExcel() {
     this.incomeExcelShow = false;
   }
@@ -2205,7 +2205,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   public goBack(): void {
     history.back();
   }
-
   // 数据更新加载
   public upData() {
     //  高速服液态数据3d统计
@@ -2238,14 +2237,15 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
 
     // 事件列表
     this.backCenterDate();
-    this.eventListInfos = [
-      {time: '2018-08-12', type: '经营类', description: '收入数据异常', state: '未处理', personage: '妹妹小吃店1', plan: '立即派人去处理', solution: '大家使劲排查'},
-      {time: '2018-08-13', type: '经营类', description: '收入数据异常', state: '未处理', personage: '妹妹小吃店2', plan: '立即派人去处理', solution: '大家使劲排查'},
-      {time: '2018-08-14', type: '经营类', description: '收入数据异常', state: '未处理', personage: '妹妹小吃店3', plan: '立即派人去处理', solution: '大家使劲排查'},
-      {time: '2018-08-15', type: '经营类', description: '收入数据异常', state: '未处理', personage: '妹妹小吃店4', plan: '立即派人去处理', solution: '大家使劲排查'},
-      {time: '2018-08-16', type: '经营类', description: '收入数据异常', state: '未处理', personage: '妹妹小吃店5', plan: '立即派人去处理', solution: '大家使劲排查'},
-      {time: '2018-08-17', type: '经营类', description: '收入数据异常', state: '未处理', personage: '妹妹小吃店6', plan: '立即派人去处理', solution: '大家使劲排查'}
-    ];
-    this.eventListInfo = this.eventListInfos[0];
+    this.eventNotPoocess();
+    // 事件上报类型
+    this.serareaService.searchEventCategory().subscribe(
+      (value) => {
+        console.log(value);
+        if (value.status === '200') {
+          this.eventInfoUpTypes = value.data;
+        }
+      }
+    );
   }
 }

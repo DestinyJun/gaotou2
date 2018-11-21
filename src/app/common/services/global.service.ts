@@ -21,7 +21,7 @@ export class GlobalService {
     private localSessionStorage: LocalStorageService
   ) {
     console.log(this.localSessionStorage.userSessionStorage.userDTO);
-    this.accessToken = JSON.parse(this.localSessionStorage.userSessionStorage.authentication).accessToken;
+    // this.accessToken = JSON.parse(this.localSessionStorage.userSessionStorage.authentication).accessToken;
     // this.headers = {headers: new HttpHeaders({'accessToken': this.accessToken})};
     // this.userInfo = JSON.parse(this.localSessionStorage.userSessionStorage.userDTO);
   }
