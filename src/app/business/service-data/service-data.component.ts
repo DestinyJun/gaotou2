@@ -7,7 +7,7 @@ import {DiagramService} from '../../common/services/diagram.service';
 import {ActivatedRoute} from '@angular/router';
 import {DataService} from '../../common/services/data.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {AttributeValue, EventListInfo} from '../../common/model/service-data.model';
+import {AttributeValue, EventListInfo, UploadEventInfoUp} from '../../common/model/service-data.model';
 import {ServiceDataService} from '../../common/services/service-data.service';
 import {LocalStorageService} from '../../common/services/local-storage.service';
 import {Bar3dExportType, CarExportType, IncomeExportType} from '../../common/model/shared.model';
@@ -92,8 +92,8 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   public eventListProcess: EventListInfo[];
   public eventListNoProcess: EventListInfo[];
   public eventInfoUpTypes = [];
-  // public eventInfoUpTypes = ['党建类', '经营类', '合同类', '工程类', '卫生类', '监控类', '系统类'];
-  public eventListInfoChildern: EventListInfo[];
+  public uploadEventInfoUp: UploadEventInfoUp = new UploadEventInfoUp();
+  // public eventListInfoChildern: EventListInfo[];
   public eventAlertShow = false;
   public eventAlertListShow = true;
   public eventAlertInfoUp = false;
@@ -160,6 +160,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    console.log(this.localService.getObject('userDTO'));
     this.serareaService.searchSerAraItem(1).subscribe(
       (value) => {
         console.log(value.data);
@@ -226,10 +227,9 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     this.serareaService.search3DBar({id: 2, parameter: ['revenue', 'passenger', 'vehicle']}).subscribe(
       (val) => {
         console.log(val);
-        this.options3dArray = val.data;
-        const xdata = this.options3dArray.xdata;
-        const yData = this.options3dArray.yData;
-        const coordinate = this.options3dArray.coordinate;
+        const xdata = val.data.xdata;
+        const yData = val.data.yData;
+        const coordinate = val.data.coordinate;
         this.options3d = {
           tooltip: {
             show: true,
@@ -247,7 +247,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
           xAxis3D: {
             type: 'category',
             name: '月份',
-            data: this.options3dArray.xdata,
+            data: xdata,
             splitLine: {show: false},
             nameTextStyle: {
               color: 'transparent'
@@ -348,7 +348,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     // 用电量用水量
     this.serareaService.search3DBar({id: 2, parameter: ['electric', 'water']}).subscribe(
       (val) => {
-        this.options3dArray = val.data;
+        console.log(val);
         const xdata = val.data.xdata;
         const yData = val.data.yData;
         const coordinate = val.data.coordinate;
@@ -369,7 +369,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
           xAxis3D: {
             type: 'category',
             name: '月份',
-            data: xdata,
+            data: val.data.xdata,
             splitLine: {show: false},
             nameTextStyle: {
               color: 'transparent'
@@ -382,7 +382,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
           },
           yAxis3D: {
             type: 'category',
-            data: yData,
+            data: val.data.yData,
             name: '类型',
             splitLine: {show: false},
             nameTextStyle: {
@@ -1602,13 +1602,36 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   }
   // 事件上报
   public eventInfoUpClick(e): void {
+    console.log(e);
     if (e.eventCategoryName !== '经营类') {
       this.waitTitle = e.eventCategoryName;
       this.serversToiletAlertShow = true;
     } else {
+      this.uploadEventInfoUp.eventCategoryCode = e.categoryCode;
+      this.uploadEventInfoUp.eventCategoryName = e.eventCategoryName;
       this.eventAlertInfoUpTitle = e.eventCategoryName;
       this.eventAlertInfoUp = true;
     }
+  }
+  public closeEventInfoUpClick(): void {
+    // document.body.className = '';
+    this.eventAlertInfoUp = false;
+  }
+  public serviceInfoUpAlertClick() {
+    document.body.className = '';
+    this.eventAlertInfoUp = false;
+    this.uploadEventInfoUp.administrativeAreaId = 2;
+    this.uploadEventInfoUp.serviceAreaId = 1;
+    this.uploadEventInfoUp.reportUserId = this.localService.getObject('userDTO').id;
+    this.uploadEventInfoUp.reportUserName = this.localService.getObject('userDTO').realName;
+    this.serareaService.searchEventsReported(this.uploadEventInfoUp).subscribe(
+      (value) => {
+        console.log(value);
+        if (value === '200') {
+          window.alert(value.message)
+        }
+      }
+    );
   }
   // 卫生间及停车位弹窗
   public openServersToiletAlert(e) {
@@ -1627,10 +1650,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     document.body.className = 'ui-overflow-hidden';
     this.serviceBasicAlert = true;
     this.serviceBasicAlertTitle = name;
-  }
-  public closeServiceInfoUpAlert() {
-    document.body.className = '';
-    this.eventAlertInfoUp = false;
   }
 
   // 遍历修改后的数据，并把它赋值给car1

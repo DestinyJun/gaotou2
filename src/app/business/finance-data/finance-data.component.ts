@@ -181,6 +181,7 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
     // 车流客流人流
     this.financeDataService.search3DBar({id: 2, parameter: ['revenue', 'passenger', 'vehicle']}).subscribe(
       (val) => {
+        console.log(val);
         this.options3dArray = val.data;
         const xdata = this.options3dArray.xdata;
         const yData = this.options3dArray.yData;

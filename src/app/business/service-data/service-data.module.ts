@@ -6,12 +6,15 @@ import {ServiceDataRoutingModule} from './service-data.routing.module';
 import { ServiceDataService } from '../../common/services/service-data.service';
 import { FinanceDataService } from '../../common/services/finance-data.service';
 import {CalendarModule, ScrollPanelModule} from 'primeng/primeng';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 @NgModule({
   imports: [
     CommonModule,
     ServiceDataRoutingModule,
     SharedModule,
+    FormsModule,
+    ReactiveFormsModule,
     CalendarModule,
     ScrollPanelModule
   ],
