@@ -29,8 +29,8 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
   public personAmountCountClean: any;
   /****************************左边***************************/
     // 3D柱状图配置
-  public options3d = {};
-  public options3dCopy = {};
+  public options3d: any;
+  public options3dCopy: any;
   public options3dArray: any;
   // 3D柱状图弹窗
   public alertBarShow = false;
@@ -181,12 +181,16 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
     // 车流客流人流
     this.financeDataService.search3DBar({id: 2, parameter: ['revenue', 'passenger', 'vehicle']}).subscribe(
       (val) => {
-        console.log(val);
-        this.options3dArray = val.data;
+      /*  val.data.coordinate.map((item, index) => {
+          item.push(1);
+        });*/
+        this.options3d = val.data;
+        console.log(this.options3d);
+        /*this.options3dArray = val.data;
         const xdata = this.options3dArray.xdata;
         const yData = this.options3dArray.yData;
-        const coordinate = this.options3dArray.coordinate;
-        this.options3d = {
+        const coordinate = this.options3dArray.coordinate;*/
+       /* this.options3d = {
           tooltip: {
             show: true,
             trigger: 'item',
@@ -264,7 +268,7 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
               type: 'bar3D',
               barWidth: 30, // 柱图宽度
               // data: this.data3dS.data3dFac(), // 这种方式点击函数打不开
-              /*data的两种的请求方式*/
+              /!*data的两种的请求方式*!/
               data: coordinate.map(function (item) {
                 return {value: [item[0], item[1], item[2], item[3]]};
               }),
@@ -298,17 +302,21 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
               }
             }
           ]
-        };
+        };*/
       }
     );
     // 用电量用水量
     this.financeDataService.search3DBar({id: 2, parameter: ['electric', 'water']}).subscribe(
       (val) => {
-        this.options3dArray = val.data;
+       /* val.data.coordinate.map((item, index) => {
+          item.push(2);
+        });*/
+        this.options3dCopy = val.data;
+      /*  this.options3dArray = val.data;
         const xdata = val.data.xdata;
         const yData = val.data.yData;
-        const coordinate = val.data.coordinate;
-        this.options3dCopy = {
+        const coordinate = val.data.coordinate;*/
+        /*this.options3dCopy = {
           tooltip: {
             show: true,
             trigger: 'item',
@@ -386,7 +394,7 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
               type: 'bar3D',
               barWidth: 30, // 柱图宽度
               // data: this.data3dS.data3dFac(), // 这种方式点击函数打不开
-              /*data的两种的请求方式*/
+              /!*data的两种的请求方式*!/
               data: coordinate.map(function (item) {
                 return {value: [item[0], item[1], item[2], item[3]]};
               }),
@@ -420,165 +428,25 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
               }
             }
           ]
-        };
+        };*/
       }
     );
   }
   // 3D柱状图的相关点击事件
-  public barClick(e): void {
-    this.alertBarShow = true;
-    document.body.className = 'ui-overflow-hidden';
-    const yType = ['经营收入', '客流量', '车流量'];
-    const itemType = ['revenue', 'passenger', 'vehicle'];
-    const colorList = [
-      '#356981', '#356981', '#356981', '#356981', '#356981', '#356981',
-      '#356981', '#356981', '#356981', '#356981', '#356981 ', '#356981'
-    ];
-    colorList[e.data.value[0]] = '#D43839';
-    const xAxis = e.data.value[0];
-    const yAxis = e.data.value[1];
-    const total = e.data.value[3];
-    this.alertBarTitle = yType[yAxis];
+  public onOutOptions3d(e): void {
+    console.log(e);
     // 柱状图
-    this.financeDataService.search3DAlertBar({id: 2, types: itemType[yAxis]}).subscribe(
+    this.financeDataService.search3DAlertBar({id: 2, types: e.bar.types}).subscribe(
       (val) => {
         console.log(val);
-        this.options3dBar = {
-          title: [
-            {
-              text: `贵州省所有服务区年度${types(yAxis)}统计`,
-              left: 'center',
-              textStyle: {
-                color: '#fff',
-                fontSize: 16
-              }
-            },
-          ],
-          dataZoom: [
-            {
-              type: 'inside'
-            }
-          ],
-          tooltip: {
-            trigger: 'axis',
-            axisPointer: {
-              type: 'shadow'
-            }
-          },
-          grid: {
-            left: '5%',
-            right: '3%',
-            bottom: '10%'
-          },
-          xAxis: {
-            type: 'category',
-            data: val.data.xData,
-            splitLine: {show: false},
-            nameTextStyle: {
-              color: 'white'
-            },
-            axisLine: {
-              lineStyle: {
-                color: 'white'
-              }
-            },
-          },
-          yAxis: {
-            type: 'value',
-            name: '数值',
-            splitLine: {show: false},
-            nameTextStyle: {
-              align: 'left',
-              color: 'white'
-            },
-            axisLine: {
-              lineStyle: {
-                color: 'white'
-              }
-            },
-          },
-          series: [
-            {
-              data: val.data.coordinate,
-              type: 'bar',
-              label: {
-                // 柱状图的数值是否显示
-                show: true,
-                textStyle: {
-                  fontSize: 16,
-                  borderWidth: 1
-                }
-              },
-              itemStyle: {
-                color: function (params) {
-                  return colorList[params.dataIndex];
-                },
-              }
-            }]
-        };
       }
     );
     // 类型占比扇形图
-    this.financeDataService.search3DAlertPie({id: 2, xType: xAxis, types: itemType[yAxis]}).subscribe(
+    this.financeDataService.search3DAlertPie({id: 2, xType: e.pie.xType, types: e.pie.types}).subscribe(
       (val) => {
         console.log(val);
-        this.options3dPie = {
-          title: {
-            text: `贵州省各市所有服务区年度${types(yAxis)}类型占比统计`,
-            x: 'center',
-            textStyle: {
-              color: '#fff',
-              fontSize: 16
-            }
-          },
-          tooltip: {
-            trigger: 'item',
-            formatter: '{a} <br/>{b} : {c} ({d}%)'
-          },
-          series: [
-            {
-              name: `${types(yAxis)}总计：${total}`,
-              type: 'pie',
-              radius: '60%',
-              center: ['50%', '50%'],
-              data: val.data,
-              itemStyle: {
-                color: function (params) {
-                  return ['#CE2D79', '#BDD139', '#78E77D', '#09D4D6', '#3C75B9',
-                    '#6769B1', '#FF8C9D', '#2796C4', '#E57D0D'][params.dataIndex];
-                },
-                emphasis: {
-                  shadowBlur: 10,
-                  shadowOffsetX: 0,
-                  shadowColor: 'rgba(0, 0, 0, 0.5)'
-                }
-              }
-            }
-          ]
-        };
       }
     );
-    function types(value): string {
-      let typeValue = '';
-      switch (value) {
-        case 0:
-          typeValue = yType[0];
-          break;
-        case 1:
-          typeValue = yType[1];
-          break;
-        case 2:
-          typeValue = yType[2];
-          break;
-        case 3:
-          typeValue = yType[3];
-          break;
-        case 4:
-          typeValue = yType[4];
-          break;
-      }
-      return typeValue;
-    }
   }
   public barCopyClick(e): void {
     this.alertBarShow = true;
