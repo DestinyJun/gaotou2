@@ -23,7 +23,7 @@
           (outOptions3d)="onOutOptions3d($event)"
         ></app-echart3d>
         <!--3D柱状图弹窗-->
-        <div class="bg-box" *ngIf="alertBarShow">
+        <div class="bg-box" [hidden]="!alertBarShow">
           <div class="alert-3D-bar">
             <div class="alert-3D-bar-header">
               <span>{{alertBarTitle}}</span>
@@ -33,10 +33,10 @@
             </div>
             <div class="row bar3D-charts">
               <div class="col-ld-6 col-md-6">
-
+                <app-echart-basicbar [options3dBarData]="options3dBar"></app-echart-basicbar>
               </div>
               <div class="col-ld-6 col-md-6">
-
+                <app-echart-pie [options3dPieData]="options3dPie"></app-echart-pie>
               </div>
               <span class="toggle-btn-area-table" (click)="open3dBarExcel()">表格导出</span>
             </div>

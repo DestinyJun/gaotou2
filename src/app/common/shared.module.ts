@@ -15,9 +15,17 @@ import { TimerShaftLengthwaysComponent } from './components/timer-shaft-lengthwa
 import { Echart3dComponent } from './components/echart3d/echart3d.component';
 import {CalendarModule} from 'primeng/primeng';
 import { EchartBasicbarComponent } from './components/echart-basicbar/echart-basicbar.component';
+import { EchartPieComponent } from './components/echart-pie/echart-pie.component';
 
 @NgModule({
-  declarations: [TableMenuComponent, TimerShaftCrosswiseComponent, TimerShaftLengthwaysComponent, Echart3dComponent, EchartBasicbarComponent],
+  declarations: [
+    TableMenuComponent,
+    TimerShaftCrosswiseComponent,
+    TimerShaftLengthwaysComponent,
+    Echart3dComponent,
+    EchartBasicbarComponent,
+    EchartPieComponent
+  ],
   imports: [
     CommonModule,
     HttpClientModule,
@@ -34,7 +42,9 @@ import { EchartBasicbarComponent } from './components/echart-basicbar/echart-bas
     TableMenuComponent,
     TimerShaftCrosswiseComponent,
     TimerShaftLengthwaysComponent,
-    Echart3dComponent
+    Echart3dComponent,
+    EchartBasicbarComponent,
+    EchartPieComponent
   ],
   providers: [
     EventsService,

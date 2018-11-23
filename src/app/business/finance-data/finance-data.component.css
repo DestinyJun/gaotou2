@@ -574,12 +574,8 @@
 .toggle-btn-area-table:hover,.toggle-btn-area-date:hover{
   cursor: pointer;
 }
-.alert-3D-bar-bar{
-  height: 55vh;
-}
-.alert-3D-bar-pie{
-  height: 55vh;
-}
+
+
 .echart-btn{
   position: relative;
 }
