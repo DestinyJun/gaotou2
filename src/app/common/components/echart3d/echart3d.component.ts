@@ -18,7 +18,7 @@ export class Echart3dComponent implements OnInit, OnChanges {
       '#E29F39': ['用水量', 'water'],
   };
   // 3D柱状图配置
-  @Input() public options3dData: any;
+  @Input() public option: any;
   @Input() public color: [string];
   @Output() public outOptions3d = new EventEmitter<any>();
   public options3d = {};
@@ -26,7 +26,7 @@ export class Echart3dComponent implements OnInit, OnChanges {
 
   ngOnInit() {}
   ngOnChanges(changes: SimpleChanges): void {
-    if (this.options3dData) {
+    if (this.option) {
       this.initializationData();
     }
   }
@@ -36,9 +36,9 @@ export class Echart3dComponent implements OnInit, OnChanges {
 
   public options3dOption(): void {
     const that = this;
-    const xdata = this.options3dData.xdata;
-    const yData = this.options3dData.yData;
-    const coordinate = this.options3dData.coordinate;
+    const xdata = this.option.xdata;
+    const yData = this.option.yData;
+    const coordinate = this.option.coordinate;
     this.options3d = {
       tooltip: {
         show: true,

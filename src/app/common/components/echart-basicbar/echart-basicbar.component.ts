@@ -5,7 +5,7 @@ import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges
   styleUrls: ['./echart-basicbar.component.css']
 })
 export class EchartBasicbarComponent implements OnInit, OnChanges {
-  @Input() public options3dBarData: any;
+  @Input() public option: any;
   @Output() public outOptions3dBar = new EventEmitter<any>();
   public options3dBar = {};
   public options3dBarInstance: any;
@@ -17,8 +17,8 @@ export class EchartBasicbarComponent implements OnInit, OnChanges {
 
   ngOnInit() {}
   ngOnChanges(changes: SimpleChanges): void {
-    if (this.options3dBarData) {
-       if (this.options3dBarData.data) {
+    if (this.option) {
+       if (this.option.data) {
          this.optionsBar();
        }
     }
@@ -29,11 +29,11 @@ export class EchartBasicbarComponent implements OnInit, OnChanges {
       '#356981', '#356981', '#356981', '#356981', '#356981', '#356981',
       '#356981', '#356981', '#356981', '#356981', '#356981 ', '#356981'
     ];
-    this.colorList[this.options3dBarData.xType] = '#D43839';
+    this.colorList[this.option.xType] = '#D43839';
     this.options3dBar = {
       title: [
         {
-          text: `${this.options3dBarData.title}`,
+          text: `${this.option.title}`,
           left: 'center',
           textStyle: {
             color: '#fff',
@@ -59,7 +59,7 @@ export class EchartBasicbarComponent implements OnInit, OnChanges {
       },
       xAxis: {
         type: 'category',
-        data: this.options3dBarData.data.xData,
+        data: this.option.data.xData,
         splitLine: {show: false},
         nameTextStyle: {
           color: 'white'
@@ -86,7 +86,7 @@ export class EchartBasicbarComponent implements OnInit, OnChanges {
       },
       series: [
         {
-          data: this.options3dBarData.data.coordinate,
+          data: this.option.data.coordinate,
           type: 'bar',
           label: {
             // 柱状图的数值是否显示
