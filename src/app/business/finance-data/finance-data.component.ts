@@ -31,16 +31,12 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
     // 3D柱状图配置
   public options3d: any;
   public options3dCopy: any;
-  // 3D柱状图弹窗
-  public alertBarShow = false;
+  public alertBarShow = false;  // 3D柱状图弹窗
   public alertBarTitle: string;
   public options3dBar = {};
   public options3dPie = {};
-  public colorList = [
-    '#29AAE3', '#29AAE3', '#29AAE3', '#29AAE3', '#29AAE3', '#29AAE3',
-    '#29AAE3', '#29AAE3', '#29AAE3', '#29AAE3', '#29AAE3 ', '#29AAE3'
-  ];
-  public bar3dExcelShow = false;
+  public outOptions3d: any; // 3D图组件传出来的值
+  public bar3dExcelShow = false;  // 3D图统计的表格导出
   public bar3dExportType: Bar3dExportType = new Bar3dExportType;
 
   // 车流量实时数值
@@ -189,24 +185,46 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
   }
   // 3D柱状图的相关点击事件
   public onOutOptions3d(e): void {
+    this.outOptions3d = e;
     document.body.className = 'ui-overflow-hidden';
     this.alertBarShow = true;
-    this.alertBarTitle = e.alertBarTitle;
+    this.alertBarTitle = this.outOptions3d.alertBarTitle;
     // 柱状图
-    this.financeDataService.search3DAlertBar({id: 2, types: e.bar.types}).subscribe(
+    this.financeDataService.search3DAlertBar({id: 2, types: this.outOptions3d.bar.types}).subscribe(
       (val) => {
         console.log(val);
         if (val.status === '200') {
-          this.options3dBar = val.data;
+          this.options3dBar = {
+            data: val.data,
+            xType: this.outOptions3d.pie.xType,
+            title: `贵州省所有服务区年度${this.outOptions3d.alertBarTitle}统计`
+          };
         }
       }
     );
     // 类型占比扇形图
-    this.financeDataService.search3DAlertPie({id: 2, xType: e.pie.xType, types: e.pie.types}).subscribe(
+    this.financeDataService.search3DAlertPie({id: 2, xType: this.outOptions3d.pie.xType, types: this.outOptions3d.pie.types}).subscribe(
       (val) => {
         if (val.status === '200') {
-          this.options3dPie = val.data;
-          console.log(this.options3dPie);
+          this.options3dPie = {
+            data: val.data,
+            title: `贵州省所有服务区年度${this.outOptions3d.alertBarTitle}类型占比统计`,
+            total: this.outOptions3d.total
+          };
+        }
+      }
+    );
+  }
+  public onOutOptions3dBar(e): void {
+    // 类型占比扇形图
+    this.financeDataService.search3DAlertPie({id: 2, xType: e.xType, types: this.outOptions3d.pie.types}).subscribe(
+      (val) => {
+        if (val.status === '200') {
+          this.options3dPie = {
+            data: val.data,
+            title: `贵州省所有服务区年度${this.outOptions3d.alertBarTitle}类型占比统计`,
+            total: e.data,
+          };
         }
       }
     );
@@ -253,7 +271,6 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
   public vehicleAmountCount(): void {
     this.financeDataService.searchCarTotal({id: 2}).subscribe(
       (value) => {
-        console.log(value);
         this.vehicleAmount = value.data.toString().split('');
       }
     );
@@ -998,7 +1015,6 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
         if (value.status === '200') {
           this.financeDataService.searchEventCategoryCount({id: 2, list: value.data}).subscribe(
             (item) => {
-              console.log(item);
               if (item.status === '200') {
                 this.eventTypes = item.data;
               }
@@ -1031,7 +1047,6 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
     const colors = ['#2307EF', '#3B78B1', '#04A6BB'];
     this.financeDataService.searchTop10Bar({id: 2, type: type}).subscribe(
       (value) => {
-        console.log(value);
         const barData = [];
         const barArea = [];
         value.data.yAxis.map((val, index) => {
@@ -1149,7 +1164,6 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
   public IncomeTypes() {
     this.financeDataService.searchIncomeTotalPie({id: 2}).subscribe(
       (value) => {
-        console.log(value);
         this.optionsIncomeModel = {
           tooltip: {
             trigger: 'item',

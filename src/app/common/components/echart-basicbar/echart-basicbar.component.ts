@@ -1,6 +1,4 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {NgxEchartsService} from 'ngx-echarts';
-
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 @Component({
   selector: 'app-echart-basicbar',
   templateUrl: './echart-basicbar.component.html',
@@ -8,32 +6,41 @@ import {NgxEchartsService} from 'ngx-echarts';
 })
 export class EchartBasicbarComponent implements OnInit, OnChanges {
   @Input() public options3dBarData: any;
+  @Output() public outOptions3dBar = new EventEmitter<any>();
   public options3dBar = {};
   public options3dBarInstance: any;
-  constructor(
-    private es: NgxEchartsService,
-  ) { }
+  public colorList = [
+    '#356981', '#356981', '#356981', '#356981', '#356981', '#356981',
+    '#356981', '#356981', '#356981', '#356981', '#356981 ', '#356981'
+  ];
+  constructor() { }
 
   ngOnInit() {}
   ngOnChanges(changes: SimpleChanges): void {
-    this.optionsBar();
+    if (this.options3dBarData) {
+       if (this.options3dBarData.data) {
+         this.optionsBar();
+       }
+    }
   }
   public optionsBar(): void {
-    const colorList = [
+    const that = this;
+    this.colorList = [
       '#356981', '#356981', '#356981', '#356981', '#356981', '#356981',
       '#356981', '#356981', '#356981', '#356981', '#356981 ', '#356981'
     ];
+    this.colorList[this.options3dBarData.xType] = '#D43839';
     this.options3dBar = {
-     /* title: [
+      title: [
         {
-          text: `贵州省所有服务区年度${this.types(yAxis)}统计`,
+          text: `${this.options3dBarData.title}`,
           left: 'center',
           textStyle: {
             color: '#fff',
             fontSize: 16
           }
         },
-      ],*/
+      ],
       dataZoom: [
         {
           type: 'inside'
@@ -52,7 +59,7 @@ export class EchartBasicbarComponent implements OnInit, OnChanges {
       },
       xAxis: {
         type: 'category',
-        data: this.options3dBarData.xData,
+        data: this.options3dBarData.data.xData,
         splitLine: {show: false},
         nameTextStyle: {
           color: 'white'
@@ -79,7 +86,7 @@ export class EchartBasicbarComponent implements OnInit, OnChanges {
       },
       series: [
         {
-          data: this.options3dBarData.coordinate,
+          data: this.options3dBarData.data.coordinate,
           type: 'bar',
           label: {
             // 柱状图的数值是否显示
@@ -91,24 +98,27 @@ export class EchartBasicbarComponent implements OnInit, OnChanges {
           },
           itemStyle: {
             color: function (params) {
-              return colorList[params.dataIndex];
+              return that.colorList[params.dataIndex];
             },
           }
         }]
     };
   }
-  public options3dBarClick(e): void {
-   const colorList = [
-     '#356981', '#356981', '#356981', '#356981', '#356981', '#356981',
-     '#356981', '#356981', '#356981', '#356981', '#356981 ', '#356981'
-   ];
-   colorList[e.dataIndex] = '#D43839';
-   this.options3dBarInstance.setOption(this.options3dBar);
-   /*this.arryPie = [];
-   this.outOptions3dCopy.emit({id: 2, xType: e.xAxis, types: this.itemType[e.yAxis]});*/
- }
+  // 车型日分布类型占比饼状图弹窗
   public options3dBarInit(ec): void {
     this.options3dBarInstance = ec;
   }
-
+  public options3dBarClick(e): void {
+    console.log(e);
+    this.colorList = [
+      '#356981', '#356981', '#356981', '#356981', '#356981', '#356981',
+      '#356981', '#356981', '#356981', '#356981', '#356981 ', '#356981'
+    ];
+    this.colorList[e.dataIndex] = '#D43839';
+    this.options3dBarInstance.setOption(this.options3dBar);
+    this.outOptions3dBar.emit({
+      xType: e.dataIndex,
+      total: e.data,
+    });
+ }
 }

@@ -202,7 +202,6 @@ export class HeaderComponent implements OnInit {
       geoCoordParentMap[name] = v.properties.cp;
     });
     const convertParentData = function (datas) {
-      console.log(datas);
       const res = [];
       for (let i = 0; i < datas.length; i++) {
         const geoCoord = geoCoordParentMap[datas[i].name];

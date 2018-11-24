@@ -19,31 +19,30 @@ export class EchartPieComponent implements OnInit, OnChanges {
   ngOnInit() {}
   ngOnChanges(changes: SimpleChanges): void {
     if (this.options3dPieData) {
-      console.log(this.options3dPieData);
       this.optionsPie();
     }
   }
   public optionsPie(): void {
     this.options3dPie = {
-    /*  title: {
-        text: `贵州省各市所有服务区年度${this.types(yAxis)}类型占比统计`,
+      title: {
+        text: `贵州省各市所有服务区年度${this.options3dPieData.title}类型占比统计`,
         x: 'center',
         textStyle: {
           color: '#fff',
           fontSize: 16
         }
-      },*/
+      },
       tooltip: {
         trigger: 'item',
         formatter: '{a} <br/>{b} : {c} ({d}%)'
       },
       series: [
         {
-          // name: `${this.types(yAxis)}总计：${total}`,
+          name: `总计：${this.options3dPieData.total}`,
           type: 'pie',
           radius: '60%',
           center: ['50%', '50%'],
-          data: this.options3dPieData,
+          data: this.options3dPieData.data,
           itemStyle: {
             color: function (params) {
               return ['#CE2D79', '#BDD139', '#78E77D', '#09D4D6', '#3C75B9',
@@ -59,14 +58,14 @@ export class EchartPieComponent implements OnInit, OnChanges {
       ]
     };
   }
+  public options3dPieInit(ec) {
+    this.options3dPieInstance = ec;
+  }
   public options3dPieClick(e): void {
     if (e.name === '贵阳市') {
       this.router.navigate(['/home/city', {name: e.name}]);
     } else {
       window.alert (`很抱歉，${e.name}暂无数据`);
     }
-  }
-  public options3dPieInit(ec) {
-    this.options3dPieInstance = ec;
   }
 }

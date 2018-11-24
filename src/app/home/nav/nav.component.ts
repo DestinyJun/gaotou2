@@ -39,12 +39,10 @@ export class NavComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    console.log(this.localSessionStorage.userSessionStorage);
     this.http.get(`${this.globalService.urla}/authenticator/init/business/accessToken/${this.globalService.accessToken}`).subscribe(
       (value) => {
         let a: any;
         a = value;
-        console.log(a.status);
         if (a.status === '200') {
           this.urlList = a.data.menuAscxs;
           console.log(this.urlList);

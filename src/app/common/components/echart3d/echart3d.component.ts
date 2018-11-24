@@ -22,19 +22,7 @@ export class Echart3dComponent implements OnInit, OnChanges {
   @Input() public color: [string];
   @Output() public outOptions3d = new EventEmitter<any>();
   public options3d = {};
-  public colorList = [
-    '#29AAE3', '#29AAE3', '#29AAE3', '#29AAE3', '#29AAE3', '#29AAE3',
-    '#29AAE3', '#29AAE3', '#29AAE3', '#29AAE3', '#29AAE3 ', '#29AAE3'
-  ];
-  public bar3dExcelShow = false;
-  public bar3dExportType: Bar3dExportType = new Bar3dExportType;
-  // 时间初始化
-  public esDate: any;
-  public value: Date; // 时间选择器
-  public date6: Date;
-  constructor(
-    private router: Router,
-  ) { }
+  constructor() { }
 
   ngOnInit() {}
   ngOnChanges(changes: SimpleChanges): void {
@@ -168,8 +156,6 @@ export class Echart3dComponent implements OnInit, OnChanges {
   // 3D柱状图的相关点击事件
   public barClick(e): void {
     const xAxis = e.data.value[0];
-    const yAxis = e.data.value[1];
-    const total = e.data.value[3];
     const colorList = [
       '#356981', '#356981', '#356981', '#356981', '#356981', '#356981',
       '#356981', '#356981', '#356981', '#356981', '#356981 ', '#356981'
@@ -181,11 +167,9 @@ export class Echart3dComponent implements OnInit, OnChanges {
         xType: xAxis,
         types: this.elementType[e.color][1]
       },
-      alertBarTitle: this.elementType[e.color][0]
+      alertBarTitle: this.elementType[e.color][0],
+      total: e.data.value[3],
     });
-    console.log(e);
-
-
   }
 
 
