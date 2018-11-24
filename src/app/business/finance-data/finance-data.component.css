@@ -311,9 +311,6 @@
 .right .crosswise-btn>span:hover{
   cursor: pointer;
 }
-.right .crosswise-bar{
-  height: 40vh;
-}
 
 /*收入统计*/
 .right .income{

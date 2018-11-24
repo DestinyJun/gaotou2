@@ -1040,92 +1040,18 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
   }
 
   /*********************************右边*****************************/
-  // 业态经营数据前十排名
-  public backCrosswiseBar(type) {
-    const types = ['revenue', 'passenger', 'vehicle'];
-    const type1 = ['收入', '人流', '车流'];
-    const colors = ['#2307EF', '#3B78B1', '#04A6BB'];
+  // 业态经营数据前十排名相关操作
+  public backCrosswiseBar(type): void {
     this.financeDataService.searchTop10Bar({id: 2, type: type}).subscribe(
       (value) => {
-        const barData = [];
-        const barArea = [];
-        value.data.yAxis.map((val, index) => {
-          barArea.push(val.serviceName);
-        });
-        value.data.barDatas.map((val, index) => {
-          barData.push(
-            {
-              name: val.title,
-              type: 'bar',
-              stack: '总量',
-              color: colors[index],
-              label: {
-                normal: {
-                  show: true,
-                  position: 'insideRight'
-                }
-              },
-              data: val.datas,
-            }
-          );
-        });
-        this.crosswiseBar = {
-          tooltip : {
-            trigger: 'axis',
-            axisPointer : {            // 坐标轴指示器，坐标轴触发有效
-              type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
-            }
-          },
-          grid: {
-            top: '5%',
-            left: '1%',
-            right: '5%',
-            bottom: '5%',
-            containLabel: true
-          },
-          xAxis: {
-            type: 'value',
-            splitLine: {show: false},
-            axisLabel: {
-              formatter: '{value}'
-            },
-            nameTextStyle: {
-              color: 'white'
-            },
-            axisLine: {
-              lineStyle: {
-                color: 'white'
-              }
-            },
-          },
-          yAxis: {
-            type: 'category',
-            // name: '万元/辆/人次',
-            inverse: false,
-            splitLine: {show: false},
-            data: barArea,
-            axisLabel: {
-              margin: 20,
-            },
-            nameTextStyle: {
-              color: 'white'
-            },
-            axisLine: {
-              lineStyle: {
-                color: 'white'
-              }
-            },
-          },
-          series: barData
-        };
+        console.log(value);
+        this.crosswiseBar = value.data;
       }
     );
   }
-  // 业态经营数据前十排名相关操作
   public clickBtn(e): void {
     const types = ['revenue', 'vehicle', 'passenger'];
     const type1 = ['收入', '车流', '客流'];
-    console.log(e.srcElement.innerText);
     if (e.srcElement.innerText === '业态收入/万元') {
       this.dataStatus = '业态收入/万元';
       this.barStatus1 = true;
@@ -1143,14 +1069,9 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
       this.barStatus1 = false;
       this.barStatus2 = false;
       this.barStatus3 = true;
-      this.backCrosswiseBar(types[3]);
+      this.backCrosswiseBar(types[2]);
     }
   }
-  /*等候数据调试*/
-  public rankingClick(e) {
-    this.router.navigate(['/home/serzone', {name: e.name}]);
-  }
-
   // 实时收入监控
   public incomeAmountCount(): void {
     this.financeDataService.searchIncomeTotal({id: 2}).subscribe(
