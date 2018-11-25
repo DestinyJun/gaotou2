@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {CommonModule, DatePipe} from '@angular/common';
 import {SharedModule} from '../../common/shared.module';
 
 import { CityDataComponent } from './city-data.component';
@@ -21,6 +21,6 @@ import {DataService} from '../../common/services/data.service';
     ScrollPanelModule,
   ],
   declarations: [CityDataComponent],
-  providers: [CityDataService, DataService]
+  providers: [CityDataService, DataService, DatePipe]
 })
 export class CityDataModule { }

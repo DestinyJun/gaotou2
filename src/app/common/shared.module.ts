@@ -46,6 +46,7 @@ import { EventPersonComponent } from './components/event-person/event-person.com
     ScrollPanelModule
   ],
   exports: [
+    NgxEchartsModule,
     TableMenuComponent,
     TimerShaftCrosswiseComponent,
     TimerShaftLengthwaysComponent,

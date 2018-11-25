@@ -464,7 +464,8 @@
   background: red;
 }
 .alert-window-content{
-  height: 75vh;
+  /*overflow: auto;*/
+  height: 55vh;
   font-size: 1rem;
 }
 .alert-window-content-table{
@@ -618,6 +619,7 @@
   top: 8vh;
   left: 50%;
   transform: translateX(-70%);
+  cursor: pointer;
 }
 .bar3D-charts .toggle-btn-area-date{
   display: inline-block;
@@ -629,7 +631,7 @@
   top: 8vh;
   right: 4vw;
 }
-.toggle-btn-area-table:hover,.toggle-btn-area-date:hover{
+.toggle-btn-area-date:hover{
   position: relative;
   cursor: pointer;
 }

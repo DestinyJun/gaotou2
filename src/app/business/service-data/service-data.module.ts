@@ -1,12 +1,13 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {CommonModule, DatePipe} from '@angular/common';
 import {SharedModule} from '../../common/shared.module';
 import { ServiceDataComponent } from './service-data.component';
 import {ServiceDataRoutingModule} from './service-data.routing.module';
 import { ServiceDataService } from '../../common/services/service-data.service';
-import { FinanceDataService } from '../../common/services/finance-data.service';
 import {CalendarModule, ScrollPanelModule} from 'primeng/primeng';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {DataService} from '../../common/services/data.service';
+import {ButtonModule} from 'primeng/button';
 
 @NgModule({
   imports: [
@@ -16,9 +17,10 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
     FormsModule,
     ReactiveFormsModule,
     CalendarModule,
-    ScrollPanelModule
+    ScrollPanelModule,
+    ButtonModule
   ],
   declarations: [ServiceDataComponent],
-  providers: [ServiceDataService, FinanceDataService]
+  providers: [ServiceDataService, DataService, DatePipe]
 })
 export class ServiceDataModule { }

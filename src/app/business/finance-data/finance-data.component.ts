@@ -5,6 +5,7 @@ import {ConfigModule, WenjunAlertService} from '../../common/wenjun';
 import {FinanceDataService} from '../../common/services/finance-data.service';
 import {LocalStorageService} from '../../common/services/local-storage.service';
 import {Bar3dExportType, CarExportType, IncomeExportType} from '../../common/model/shared.model';
+import {DatePipe} from '@angular/common';
 declare let BMap;
 @Component({
   selector: 'app-finance-data',
@@ -14,6 +15,7 @@ declare let BMap;
 })
 export class FinanceDataComponent implements OnInit, OnDestroy {
   /***********************基础信息************************/
+  public esDate: any;  // 时间初始化
     // 组件销毁后清除时钟任务
   public vehicleAmountCountClean: any;
   public incomeAmountCountClean: any;
@@ -28,7 +30,8 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
   public options3dPie = {};
   public outOptions3d: any; // 3D图组件传出来的值
   public bar3dExcelShow = false;  // 3D图统计的表格导出
-  public bar3dExportType: Bar3dExportType = new Bar3dExportType;
+  public startTime3d: Date; // 时间选择器
+  public endTime3d: Date; // 时间选择器
   // 车辆监控
   public vehicleAmount: any;
   public optionsCarModel = {};
@@ -38,7 +41,8 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
   public arryCarPie = [];
   public carTableData: any;
   public carExcelShow = false;
-  public carExportType: CarExportType = new CarExportType();
+  public carStartTime: Date; // 时间选择器
+  public carEndTime: Date; // 时间选择器
   /*****************************中部**************************/
     // 省市联动
   public dataToggle = '贵州省';
@@ -78,17 +82,15 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
   public IncomeTableData: any;
   public arryIncomePie = [];
   public incomeExcelShow = false;
-  public incomeExportType: IncomeExportType = new IncomeExportType();
-  /**********************基础数据部分**********************/
-  public esDate: any;  // 时间初始化
-  public value: Date; // 时间选择器
-  public date6: Date;
+  public incomeStartTime: Date; // 时间选择器
+  public incomeEndTime: Date; // 时间选择器
   constructor(
     private dataService: DataService,
     private router: Router,
     private wenJunAlertService: WenjunAlertService,
     private financeDataService: FinanceDataService,
-    private localService: LocalStorageService
+    private localService: LocalStorageService,
+    private datePipe: DatePipe
   ) {}
 
   ngOnInit() {
@@ -198,29 +200,11 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
     document.body.className = '';
     this.alertBarShow = false;
   }
-  // 3D柱状图：表格导出
-  public bar3dDateChange(e) {
-    this.bar3dExportType.Bar3dDate = e.srcElement.value;
-  }
-  public bar3dTypeChange(e) {
-    this.bar3dExportType.Bar3dNumType = e.srcElement.options[e.srcElement.selectedIndex].innerText;
-  }
-  public bar3dAreaChange(e) {
-    this.bar3dExportType.Bar3dArea = e.srcElement.options[e.srcElement.selectedIndex].innerText;
-    console.log(this.bar3dExportType.Bar3dArea);
-  }
   public bar3dExportClick() {
-    if (!(this.bar3dExportType.Bar3dDate === '')
-      || !(this.bar3dExportType.Bar3dNumType === '')
-      || !(this.bar3dExportType.Bar3dArea === '')) {
-      this.bar3dExcelShow = false;
-      console.log(this.bar3dExportType);
-      // 导出表格数据初始化
-      this.bar3dExportType = {
-        Bar3dNumType: '',
-        Bar3dArea: '',
-        Bar3dDate: ''
-      };
+    const startTime = this.datePipe.transform(this.startTime3d, 'yyyyMMdd');
+    const endTime = this.datePipe.transform(this.endTime3d, 'yyyyMMdd');
+    if (this.startTime3d && this.endTime3d) {
+      window.location.assign(`http://120.78.137.182:8888/highway-interactive/report/province/3d/2/startDate/${startTime}/endDate/${endTime}`);
     } else {
       window.alert('请把数据选择全在提交');
     }
@@ -228,10 +212,6 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
   public open3dBarExcel() {
     this.bar3dExcelShow = true;
   }
-  public close3dBarExcel() {
-    this.bar3dExcelShow = false;
-  }
-
   // 车流监控
   public vehicleAmountCount(): void {
     this.financeDataService.searchCarTotal({id: 2}).subscribe(
@@ -321,25 +301,11 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
     this.router.navigate(['/home/serzone', {name: e}]);
   }
   // 车流监控：表格导出
-  public carDateChange(e) {
-    this.carExportType.carDate = e.srcElement.value;
-  }
-  public carTypeChange(e) {
-    this.carExportType.carNumType = e.srcElement.options[e.srcElement.selectedIndex].innerText;
-  }
-  public carAreaChange(e) {
-    this.carExportType.carArea = e.srcElement.options[e.srcElement.selectedIndex].innerText;
-  }
   public carExportClick() {
-    if (!(this.carExportType.carDate === '') || !(this.carExportType.carNumType === '') || !(this.carExportType.carArea === '')) {
-      this.carExcelShow = false;
-      console.log(this.carExportType);
-      // 导出表格数据初始化
-      this.carExportType = {
-        carNumType: '',
-        carArea: '',
-        carDate: ''
-      };
+    const startTime = this.datePipe.transform(this.carStartTime, 'yyyyMMdd');
+    const endTime = this.datePipe.transform(this.carEndTime, 'yyyyMMdd');
+    if (this.carStartTime && this.carEndTime) {
+      window.location.assign(`http://120.78.137.182:8888/highway-interactive/report/province/vihicle/2/startDate/${startTime}/endDate/${endTime}`);
     } else {
       window.alert('请把数据选择全在提交');
     }
@@ -698,7 +664,7 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
     this.eventListInfo = item;
   }
   // 办公室信息处理函数
-  public tableOfficeClick(): void {
+  public tableOfficeClick(e): void {
     this.alertOfficeShow = true;
   }
   public closeOfficeShow() {
@@ -706,7 +672,7 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
   }
 
   // 个人信息处理
-  public tablePersonClick() {
+  public tablePersonClick(e) {
     this.alertPersonShow = true;
   }
   public closePersonShow() {
@@ -838,27 +804,11 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
     this.router.navigate(['/home/serzone', {name: e}]);
   }
   // 表格导出
-  public incomeDateChange(e): void {
-    this.incomeExportType.incomeDate = e.srcElement.value;
-  }
-  public incomeTypeChange(e): void {
-    this.incomeExportType.incomeNumType = e.srcElement.options[e.srcElement.selectedIndex].innerText;
-  }
-  public incomeAreaChange(e): void {
-    this.incomeExportType.incomeArea = e.srcElement.options[e.srcElement.selectedIndex].innerText;
-  }
   public incomeExportClick(): void {
-    if (!(this.incomeExportType.incomeDate === '')
-      || !(this.incomeExportType.incomeNumType === '')
-      || !(this.incomeExportType.incomeArea === '')) {
-      this.incomeExcelShow = false;
-      console.log(this.incomeExportType);
-      // 导出表格数据初始化
-      this.incomeExportType = {
-        incomeNumType: '',
-        incomeArea: '',
-        incomeDate: ''
-      };
+    const startTime = this.datePipe.transform(this.incomeStartTime, 'yyyyMMdd');
+    const endTime = this.datePipe.transform(this.incomeEndTime, 'yyyyMMdd');
+    if (this.incomeStartTime && this.incomeEndTime) {
+      window.location.assign(`http://120.78.137.182:8888/highway-interactive/report/province/revenue/2/startDate/${startTime}/endDate/${endTime}`);
     } else {
       window.alert('请把数据选择全在提交');
     }

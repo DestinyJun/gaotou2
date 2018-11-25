@@ -6,11 +6,14 @@ import {SharedModule} from '../../common/shared.module';
 import { PersonalService } from '../../common/services/personal.service';
 import {RadioButtonModule} from 'primeng/radiobutton';
 import {CalendarModule} from 'primeng/calendar';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 @NgModule({
   imports: [
     CommonModule,
     PersonalRoutingModule,
     SharedModule,
+    FormsModule,
+    ReactiveFormsModule,
     CalendarModule,
     RadioButtonModule
   ],

@@ -11,6 +11,7 @@ import {AttributeValue, EventListInfo, UploadEventInfoUp} from '../../common/mod
 import {ServiceDataService} from '../../common/services/service-data.service';
 import {LocalStorageService} from '../../common/services/local-storage.service';
 import {Bar3dExportType, CarExportType, IncomeExportType} from '../../common/model/shared.model';
+import {DatePipe} from '@angular/common';
 
 declare let BMap;
 declare let BMapLib;
@@ -24,6 +25,7 @@ declare let BMAP_SATELLITE_MAP;
 })
 export class ServiceDataComponent implements OnInit, OnDestroy {
   /***********************基础信息************************/
+  public esDate: any;  // 时间初始化
     // 组件销毁后清除时钟任务
   public vehicleAmountCountClean: any;
   public incomeAmountCountClean: any;
@@ -49,7 +51,8 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     '#356981', '#356981', '#356981', '#356981', '#356981 ', '#356981'
   ];
   public bar3dExcelShow = false;
-  public bar3dExportType: Bar3dExportType = new Bar3dExportType();
+  public startTime3d: Date; // 时间选择器
+  public endTime3d: Date; // 时间选择器
 
   // 车辆收入数值表现
   public vehicleAmount = [];
@@ -61,7 +64,8 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   public carExcelShow = false;
   public arryCarPie = [];
   public alertCarTitle = '小车';
-  public carExportType: CarExportType = new CarExportType();
+  public carStartTime: Date; // 时间选择器
+  public carEndTime: Date; // 时间选择器
 
   /***********************中部************************/
   public incomeBottomData: any;
@@ -76,6 +80,8 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   public serviceShopShow = false;
   public serviceShopShowExport = false;
   public serviceShopTitle: string;
+  public shopStartTime: Date; // 时间选择器
+  public shopEndTime: Date; // 时间选择器
   // 服务区信息修改
   public selectFormModule: FormGroup;
   // 公共视频弹窗
@@ -137,25 +143,15 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   public IncomeTableData: any;
   public arryIncomePie = [];
   public incomeExcelShow = false;
-  public incomeExportType: IncomeExportType;
-  // 时间初始化
-  public rangeDates: Date[];
-  public minDate: Date;
-  public maxDate: Date;
-  public esDate: any;
-  public invalidDates: Array<Date>;
-  public value: Date; // 时间选择器
-  public date6: Date;
-
+  public incomeStartTime: Date; // 时间选择器
+  public incomeEndTime: Date; // 时间选择器
   constructor(
-    private el: ElementRef,
     private fb: FormBuilder,
-    private data3dS: Data3dService,
-    private diagrams: DiagramService,
     private routerInfo: ActivatedRoute,
     private dataService: DataService,
     private serareaService: ServiceDataService,
-    private localService: LocalStorageService
+    private localService: LocalStorageService,
+    private datePipe: DatePipe
   ) {
   }
 
@@ -1055,30 +1051,11 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   }
 
   // 表格导出
-  public bar3dDateChange(e) {
-    this.bar3dExportType.Bar3dDate = e.srcElement.value;
-  }
-
-  public bar3dTypeChange(e) {
-    this.bar3dExportType.Bar3dNumType = e.srcElement.options[e.srcElement.selectedIndex].innerText;
-  }
-
-  public bar3dAreaChange(e) {
-    this.bar3dExportType.Bar3dArea = e.srcElement.options[e.srcElement.selectedIndex].innerText;
-    console.log(this.bar3dExportType.Bar3dArea);
-  }
-
   public bar3dExportClick() {
-    if (!(this.bar3dExportType.Bar3dDate === '')
-      || !(this.bar3dExportType.Bar3dNumType === '') || !(this.bar3dExportType.Bar3dArea === '')) {
-      this.bar3dExcelShow = false;
-      console.log(this.bar3dExportType);
-      // 导出表格数据初始化
-      this.bar3dExportType = {
-        Bar3dNumType: '',
-        Bar3dArea: '',
-        Bar3dDate: ''
-      };
+    const startTime = this.datePipe.transform(this.startTime3d, 'yyyyMMdd');
+    const endTime = this.datePipe.transform(this.endTime3d, 'yyyyMMdd');
+    if (this.startTime3d && this.endTime3d) {
+      window.location.assign(`http://120.78.137.182:8888/highway-interactive/report/serviceArea/3d/1/startDate/${startTime}/endDate/${endTime}`);
     } else {
       window.alert('请把数据选择全在提交');
     }
@@ -1206,28 +1183,11 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   }
 
   // 表格导出
-  public carDateChange(e) {
-    this.carExportType.carDate = e.srcElement.value;
-  }
-
-  public carTypeChange(e) {
-    this.carExportType.carNumType = e.srcElement.options[e.srcElement.selectedIndex].innerText;
-  }
-
-  public carAreaChange(e) {
-    this.carExportType.carArea = e.srcElement.options[e.srcElement.selectedIndex].innerText;
-  }
-
   public carExportClick() {
-    if (!(this.carExportType.carDate === '') || !(this.carExportType.carNumType === '') || !(this.carExportType.carArea === '')) {
-      this.carExcelShow = false;
-      console.log(this.carExportType);
-      // 导出表格数据初始化
-      this.carExportType = {
-        carNumType: '',
-        carArea: '',
-        carDate: ''
-      };
+    const startTime = this.datePipe.transform(this.carStartTime, 'yyyyMMdd');
+    const endTime = this.datePipe.transform(this.carEndTime, 'yyyyMMdd');
+    if (this.carStartTime && this.carEndTime) {
+      window.location.assign(`http://120.78.137.182:8888/highway-interactive/report/serviceArea/vihicle/1/startDate/${startTime}/endDate/${endTime}`);
     } else {
       window.alert('请把数据选择全在提交');
     }
@@ -1463,7 +1423,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     };
 
   }
-
   public openMerchantVideo(item): void {
     this.videoBottomShopUrl = `
         <object type='application/x-vlc-plugin' pluginspage="http://www.videolan.org/" id='vlc' events='false' width="100%" height="96%">
@@ -1478,6 +1437,15 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       document.getElementById('shopVideo').innerHTML = this.videoBottomShopUrl;
     }, 100);
+  }
+  public shopExportClick() {
+    const startTime = this.datePipe.transform(this.shopStartTime, 'yyyyMMdd');
+    const endTime = this.datePipe.transform(this.shopEndTime, 'yyyyMMdd');
+    if (this.shopStartTime && this.shopEndTime) {
+      window.location.assign(`http://120.78.137.182:8888/highway-interactive/report/serviceArea/store/1/startDate/${startTime}/endDate/${endTime}`);
+    } else {
+      window.alert('请把数据选择全在提交');
+    }
   }
 
   // 服务区公共视频监控
@@ -2188,25 +2156,11 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   }
 
   // 表格导出
-  public incomeDateChange(e) {
-    this.incomeExportType.incomeDate = e.srcElement.value;
-  }
-  public incomeTypeChange(e) {
-    this.incomeExportType.incomeNumType = e.srcElement.options[e.srcElement.selectedIndex].innerText;
-  }
-  public incomeAreaChange(e) {
-    this.incomeExportType.incomeArea = e.srcElement.options[e.srcElement.selectedIndex].innerText;
-  }
   public incomeExportClick() {
-    if (!(this.incomeExportType.incomeDate === '') || !(this.incomeExportType.incomeNumType === '') || !(this.incomeExportType.incomeArea === '')) {
-      this.incomeExcelShow = false;
-      console.log(this.incomeExportType);
-      // 导出表格数据初始化
-      this.incomeExportType = {
-        incomeNumType: '',
-        incomeArea: '',
-        incomeDate: ''
-      };
+    const startTime = this.datePipe.transform(this.incomeStartTime, 'yyyyMMdd');
+    const endTime = this.datePipe.transform(this.incomeEndTime, 'yyyyMMdd');
+    if (this.incomeStartTime && this.incomeEndTime) {
+      window.location.assign(`http://120.78.137.182:8888/highway-interactive/report/serviceArea/vihicle/1/startDate/${startTime}/endDate/${endTime}`);
     } else {
       window.alert('请把数据选择全在提交');
     }

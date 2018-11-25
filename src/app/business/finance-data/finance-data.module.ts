@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {CommonModule, DatePipe} from '@angular/common';
 import {SharedModule} from '../../common/shared.module';
 import {FinanceDataRoutingModule} from './finance-data.routing.module';
 
@@ -22,6 +22,6 @@ import {DataService} from '../../common/services/data.service';
   ],
   declarations: [FinanceDataComponent],
   entryComponents: [],
-  providers: [FinanceDataService, DataService]
+  providers: [FinanceDataService, DataService, DatePipe]
 })
 export class FinanceDataModule { }

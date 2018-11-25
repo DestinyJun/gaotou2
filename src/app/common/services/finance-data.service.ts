@@ -69,4 +69,9 @@ export class FinanceDataService {
   public searchEventsTypeList(params): Observable<any> {
     return this.http.get(`${this.globalService.urlc}/event/administrativeArea/2/eventCategory/${params.eventCategoryCode}/eventState/${params.processState}/queryByPaging/${params.page}/${params.nums}`);
   }
+  // 3D图表格导出
+  public export3dBar(params): Observable<any> {
+    return this.http.get(`http://120.78.137.182:8888/highway-interactive/report/province/3d/2/startDate/${params.startTime}/endDate/${params.endTime}`);
+    /*return this.http.get(`${this.globalService.urlc}/report/province/3d/3/startDate/${params.startTime}/endDate/${params.endTime}`);*/
+  }
 }
