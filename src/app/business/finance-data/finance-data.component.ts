@@ -1,25 +1,17 @@
-import {
-  Component,
-  ComponentFactoryResolver, OnDestroy,
-  OnInit
-} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {NgxEchartsService} from 'ngx-echarts';
-import {EventsService} from '../../common/services/events.service';
-import {Data3dService} from '../../common/services/data3d.service';
-import {CentermapService} from '../../common/services/centermap.service';
-import {DiagramService} from '../../common/services/diagram.service';
+import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {Router} from '@angular/router';
 import {DataService} from '../../common/services/data.service';
 import {ConfigModule, WenjunAlertService} from '../../common/wenjun';
 import {FinanceDataService} from '../../common/services/finance-data.service';
 import {LocalStorageService} from '../../common/services/local-storage.service';
 import {Bar3dExportType, CarExportType, IncomeExportType} from '../../common/model/shared.model';
+import {C} from '@angular/core/src/render3';
 declare let BMap;
 @Component({
   selector: 'app-finance-data',
   templateUrl: './finance-data.component.html',
-  styleUrls: ['./finance-data.component.css']
+  styleUrls: ['./finance-data.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class FinanceDataComponent implements OnInit, OnDestroy {
   /***********************基础信息************************/
@@ -47,10 +39,8 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
   public arryCarPie = [];
   public carTableData: any;
   public carAreaName = '贵州省';
-  public optionsCarPieInstance: any;
   public carExcelShow = false;
   public carExportType: CarExportType = new CarExportType();
-  public CarTypeisShow = false;
 
   /*****************************中部**************************/
     // 省市联动
@@ -62,21 +52,14 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
   public provinceShow = false;
   public cityShow = false;
   public flag: string;
-
-  // 全国高速服务区分布图
-  public optionsMap = {};
-
-  // 事件类数据
+  // 事件类型
   public eventTypes: any;
-  // 事件弹窗
   public eventConfig: ConfigModule;
-  // 办公类数据
+  // 办公类事件
   public officeTypes: any;
-  // 办公信息弹窗
   public alertOfficeShow = false;
-  // 个人信息数据
+  // 个人类事件
   public personOfficeTypes: any;
-  // 个人信息弹窗
   public alertPersonShow = false;
 
   /*****************************右边***************************/
@@ -92,30 +75,16 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
   public alertIncomeShow = false;
   public alertIncomeTitle = '';
   public optionsIncomeTypes = {};
-  public IncomeAreaName = '贵州省';
   public IncomeTableData: any;
   public arryIncomePie = [];
   public incomeExcelShow = false;
   public incomeExportType: IncomeExportType = new IncomeExportType();
-  public incomeTypeisShow = true;
 
   /**********************基础数据部分**********************/
-  public citys = ['贵阳市', '遵义市', '六盘水市', '安顺市', '毕节市', '铜仁市', '黔东南苗族侗族自治州', '黔南布依族苗族自治州', '黔西南布依族苗族自治州'];
-  // 时间初始化
-  public esDate: any;
+  public esDate: any;  // 时间初始化
   public value: Date; // 时间选择器
   public date6: Date;
-  // 车月度所有服务区车辆流量柱状图统计
-  public optionsCar = {};
-
   constructor(
-    private http: HttpClient,
-    private es: NgxEchartsService,
-    private eventsService: EventsService,
-    private resolver: ComponentFactoryResolver,
-    private data3dS: Data3dService,
-    private centerMapS: CentermapService,
-    private diagrams: DiagramService,
     private dataService: DataService,
     private router: Router,
     private wenJunAlertService: WenjunAlertService,
@@ -672,21 +641,8 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
 
     });
   }
-  // 事件处理函数
-  public tableEventClick(name): void {
-    // 弹窗配置
-    this.eventConfig = {
-      alertTitle: name,
-      width: 80,
-      height: 60,
-    };
-    if (name === '经营类') {
-      this.wenJunAlertService.openAlertShow();
-    } else {
-      this.alertOfficeShow = true;
-    }
-  }
-  // 为处理事件统计
+
+  // 事件类型统计
   public initialize(): void {
     this.financeDataService.searchEventCategory().subscribe(
       (value) => {
@@ -702,6 +658,20 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
       }
     );
   }
+  public tableEventClick(item): void {
+    // 弹窗配置
+    this.eventConfig = {
+      alertTitle: item.eventCategoryName,
+      width: 80,
+      height: 60,
+    };
+    if (item.eventCategoryName === '经营类') {
+      this.wenJunAlertService.openAlertShow();
+    } else {
+      this.alertOfficeShow = true;
+    }
+  }
+
   // 办公室信息处理函数
   public tableOfficeClick(): void {
     this.alertOfficeShow = true;
@@ -709,6 +679,7 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
   public closeOfficeShow() {
     this.alertOfficeShow = false;
   }
+
   // 个人信息处理
   public tablePersonClick() {
     this.alertPersonShow = true;

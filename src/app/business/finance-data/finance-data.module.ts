@@ -8,6 +8,7 @@ import {FormsModule} from '@angular/forms';
 import {WenjunAlertModule} from '../../common/wenjun';
 import { FinanceDataService } from '../../common/services/finance-data.service';
 import {CalendarModule, ScrollPanelModule} from 'primeng/primeng';
+import {DataService} from '../../common/services/data.service';
 
 @NgModule({
   imports: [
@@ -21,6 +22,6 @@ import {CalendarModule, ScrollPanelModule} from 'primeng/primeng';
   ],
   declarations: [FinanceDataComponent],
   entryComponents: [],
-  providers: [FinanceDataService]
+  providers: [FinanceDataService, DataService]
 })
 export class FinanceDataModule { }

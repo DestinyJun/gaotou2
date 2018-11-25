@@ -3,21 +3,17 @@ import { CommonModule } from '@angular/common';
 import {HttpClientModule} from '@angular/common/http';
 import {NgxEchartsModule} from 'ngx-echarts';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {EventsService} from './services/events.service';
-import {Data3dService} from './services/data3d.service';
-import {CentermapService} from './services/centermap.service';
-import {DiagramService} from './services/diagram.service';
-import {ToolsService} from './services/tools.service';
-import {DataService} from './services/data.service';
 import { TableMenuComponent } from './components/table-menu/table-menu.component';
 import { TimerShaftCrosswiseComponent } from './components/timer-shaft-crosswise/timer-shaft-crosswise.component';
 import { TimerShaftLengthwaysComponent } from './components/timer-shaft-lengthways/timer-shaft-lengthways.component';
 import { Echart3dComponent } from './components/echart3d/echart3d.component';
-import {CalendarModule} from 'primeng/primeng';
+import {CalendarModule, ScrollPanelModule} from 'primeng/primeng';
 import { EchartBasicbarComponent } from './components/echart-basicbar/echart-basicbar.component';
 import { EchartPieComponent } from './components/echart-pie/echart-pie.component';
 import { EchartCrossbarComponent } from './components/echart-crossbar/echart-crossbar.component';
 import { NumberShowComponent } from './components/number-show/number-show.component';
+import { EventStatisticComponent } from './components/event-statistic/event-statistic.component';
+import { TitleOneComponent } from './components/title-one/title-one.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +24,9 @@ import { NumberShowComponent } from './components/number-show/number-show.compon
     EchartBasicbarComponent,
     EchartPieComponent,
     EchartCrossbarComponent,
-    NumberShowComponent
+    NumberShowComponent,
+    EventStatisticComponent,
+    TitleOneComponent
   ],
   imports: [
     CommonModule,
@@ -37,12 +35,9 @@ import { NumberShowComponent } from './components/number-show/number-show.compon
     FormsModule,
     ReactiveFormsModule,
     CalendarModule,
+    ScrollPanelModule
   ],
   exports: [
-    HttpClientModule,
-    NgxEchartsModule,
-    FormsModule,
-    ReactiveFormsModule,
     TableMenuComponent,
     TimerShaftCrosswiseComponent,
     TimerShaftLengthwaysComponent,
@@ -50,15 +45,10 @@ import { NumberShowComponent } from './components/number-show/number-show.compon
     EchartBasicbarComponent,
     EchartPieComponent,
     EchartCrossbarComponent,
-    NumberShowComponent
+    NumberShowComponent,
+    EventStatisticComponent,
+    TitleOneComponent
   ],
-  providers: [
-    EventsService,
-    Data3dService,
-    CentermapService,
-    DiagramService,
-    ToolsService,
-    DataService
-  ]
+  providers: []
 })
 export class SharedModule { }

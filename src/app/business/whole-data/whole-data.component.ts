@@ -82,9 +82,6 @@ export class WholeDataComponent implements OnInit, OnChanges, AfterContentInit, 
 
   constructor(
     public http: HttpClient,
-    private es: NgxEchartsService,
-    private eventsService: EventsService,
-    private resolver: ComponentFactoryResolver,
     private data3dS: Data3dService,
     private centerMapS: CentermapService,
     private diagrams: DiagramService,

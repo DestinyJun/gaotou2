@@ -9,6 +9,8 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { MessageWindowComponent } from './message-window/message-window.component';
 import {DialogModule} from 'primeng/dialog';
 import {NgxEchartsModule} from 'ngx-echarts';
+import {EventsService} from '../common/services/events.service';
+import {ToolsService} from '../common/services/tools.service';
 
 
 @NgModule({
@@ -20,7 +22,17 @@ import {NgxEchartsModule} from 'ngx-echarts';
     DialogModule,
     NgxEchartsModule,
   ],
-  declarations: [HomeComponent, HeaderComponent, NavComponent, FooterComponent, MessageWindowComponent],
+  declarations: [
+    HomeComponent,
+    HeaderComponent,
+    NavComponent,
+    FooterComponent,
+    MessageWindowComponent
+  ],
+  providers: [
+    EventsService,
+    ToolsService
+  ],
   entryComponents: [NavComponent]
 })
 export class HomeModule { }
