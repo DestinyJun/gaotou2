@@ -5,7 +5,6 @@ import {ConfigModule, WenjunAlertService} from '../../common/wenjun';
 import {FinanceDataService} from '../../common/services/finance-data.service';
 import {LocalStorageService} from '../../common/services/local-storage.service';
 import {Bar3dExportType, CarExportType, IncomeExportType} from '../../common/model/shared.model';
-import {C} from '@angular/core/src/render3';
 declare let BMap;
 @Component({
   selector: 'app-finance-data',
@@ -34,18 +33,15 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
   public vehicleAmount: any;
   public optionsCarModel = {};
   public alertCarShow = false;
-  public alertCarTitle = '';
+  public alertCarTitle = '总数';
   public optionsCarType = {};
   public arryCarPie = [];
   public carTableData: any;
-  public carAreaName = '贵州省';
   public carExcelShow = false;
   public carExportType: CarExportType = new CarExportType();
-
   /*****************************中部**************************/
     // 省市联动
   public dataToggle = '贵州省';
-  public selectDate = '贵州省';
   public province: any;
   public city: any;
   public citeDate: string;
@@ -55,6 +51,10 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
   // 事件类型
   public eventTypes: any;
   public eventConfig: ConfigModule;
+  public eventAlertListShow = true;
+  public eventListNoProcess: any;
+  public eventListProcess: any;
+  public eventListInfo: any;
   // 办公类事件
   public officeTypes: any;
   public alertOfficeShow = false;
@@ -79,7 +79,6 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
   public arryIncomePie = [];
   public incomeExcelShow = false;
   public incomeExportType: IncomeExportType = new IncomeExportType();
-
   /**********************基础数据部分**********************/
   public esDate: any;  // 时间初始化
   public value: Date; // 时间选择器
@@ -113,16 +112,6 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
     this.localService.eventBus.next({title: '贵州省高速业态大数据',  flagState: 'finance', flagName: this.dataToggle});
     // 图表更行
     this.updataEcharts();
-    // 全屏点击事件
-    window.document.addEventListener('click', (e) => {
-      this.flag = e.srcElement.parentElement.className;
-      if ((this.provinceShow || this.cityShow) && !(this.flag === 'location')) {
-        this.provinceShow = false;
-        this.cityShow = false;
-      }
-    });
-    window.addEventListener('resize', function (e) {
-    });
   }
   ngOnDestroy(): void {
     clearInterval(this.vehicleAmountCountClean);
@@ -136,13 +125,17 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
     // 车流客流人流
     this.financeDataService.search3DBar({id: 2, parameter: ['revenue', 'passenger', 'vehicle']}).subscribe(
       (val) => {
-        this.options3d = val.data;
+        if (val.status === '200') {
+          this.options3d = val.data;
+        }
       }
     );
     // 用电量用水量
     this.financeDataService.search3DBar({id: 2, parameter: ['electric', 'water']}).subscribe(
       (val) => {
-        this.options3dCopy = val.data;
+        if (val.status === '200') {
+          this.options3dCopy = val.data;
+        }
       }
     );
   }
@@ -196,10 +189,10 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
   }
   public onOptions3dPie(e): void {
     if (e.name === '贵阳市') {
-     this.router.navigate(['/home/city', {name: e.name}]);
-   } else {
-     window.alert (`很抱歉，${e.name}暂无数据`);
-   }
+      this.router.navigate(['/home/city', {name: e.name}]);
+    } else {
+      window.alert (`很抱歉，${e.name}暂无数据`);
+    }
   }
   public closeBarShow() {
     document.body.className = '';
@@ -243,10 +236,12 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
   public vehicleAmountCount(): void {
     this.financeDataService.searchCarTotal({id: 2}).subscribe(
       (value) => {
-        this.vehicleAmount = {
-          number: value.data,
-          unitsL: '辆'
-        };
+        if (value.status === '200') {
+          this.vehicleAmount = {
+            number: value.data,
+            unitsL: '辆'
+          };
+        }
       }
     );
   }
@@ -468,20 +463,22 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
     const pointsMarket = [];
     this.financeDataService.getServiceNamePoint().subscribe(
       (val) => {
-        val.data.map((val1, index1) => {
-          const a = [];
-          val1.attributeValueList.map((val2, index2) => {
-            if (val2.attributeDesc === '经度') {
-              a.push(val2.attributeValue);
-            } else if (val2.attributeDesc === '纬度') {
-              a.push(val2.attributeValue);
+        if (val.status === '200') {
+          val.data.map((val1, index1) => {
+            const a = [];
+            val1.attributeValueList.map((val2, index2) => {
+              if (val2.attributeDesc === '经度') {
+                a.push(val2.attributeValue);
+              } else if (val2.attributeDesc === '纬度') {
+                a.push(val2.attributeValue);
+              }
+            });
+            if (a) {
+              a.push(val1.name);
             }
+            pointsMarket.push(a);
           });
-          if (a) {
-            a.push(val1.name);
-          }
-          pointsMarket.push(a);
-        });
+        }
         if (pointsMarket) {
           // console.log(pointsMarket);
           for (let i = 0; i < pointsMarket.length; i++) {
@@ -659,7 +656,6 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
     );
   }
   public tableEventClick(item): void {
-    // 弹窗配置
     this.eventConfig = {
       alertTitle: item.eventCategoryName,
       width: 80,
@@ -670,8 +666,37 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
     } else {
       this.alertOfficeShow = true;
     }
+    this.getEventsTypeList(item);
   }
-
+  public getEventsTypeList (item): void {
+    // 未处理
+      this.financeDataService.searchEventsTypeList(
+        {eventCategoryCode: item.categoryCode, processState: 2, page: 1, nums: 1000}).subscribe(
+        (val) => {
+          if (val.status === '200') {
+            this.eventListNoProcess = val.data.contents;
+          }
+        }
+      );
+    // 已处理
+    this.financeDataService.searchEventsTypeList(
+      {eventCategoryCode: item.categoryCode, processState: 1, page: 1, nums: 1000}).subscribe(
+      (value) => {
+        if (value.status === '200') {
+          this.eventListProcess = value.data.contents;
+        }
+      }
+    );
+  }
+  public eventAlertListCtrlw(): void {
+    this.eventAlertListShow = true;
+  }
+  public eventAlertListCtrly(): void {
+    this.eventAlertListShow = false;
+  }
+  public eventListInfoClick(item): void {
+    this.eventListInfo = item;
+  }
   // 办公室信息处理函数
   public tableOfficeClick(): void {
     this.alertOfficeShow = true;

@@ -16,7 +16,6 @@ import {CityDataService} from '../../common/services/city-data.service';
 import {LocalStorageService} from '../../common/services/local-storage.service';
 import {Bar3dExportType, CarExportType, IncomeExportType} from '../../common/model/shared.model';
 declare let BMap;
-declare let BMapLib;
 @Component({
   selector: 'app-city-data',
   templateUrl: './city-data.component.html',
@@ -29,78 +28,48 @@ export class CityDataComponent implements OnInit, OnDestroy {
   public vehicleAmountCountClean: any;
   public incomeAmountCountClean: any;
   public personAmountCountClean: any;
-  // 实时客流量
-  public personNum = 10000;
-  public persons = [];
   /****************************左边***************************/
     // 3D柱状图配置
-  public options3d = {};
-  public options3dCopy = {};
-  public options3dArray: any;
-  // 3D柱状图弹窗
-  public alertBarShow = false;
+  public options3d: any;
+  public options3dCopy: any;
+  public alertBarShow = false;  // 3D柱状图弹窗
   public alertBarTitle: string;
   public options3dBar = {};
-  public options3dBarInstance: any;
   public options3dPie = {};
-  public options3dPieInstance: any;
-  public colorList = [
-    '#356981', '#356981', '#356981', '#356981', '#356981', '#356981',
-    '#356981', '#356981', '#356981', '#356981', '#356981 ', '#356981'
-  ];
-  public arryPie = [];
-  public bar3dExcelShow = false;
-  public bar3dExportType: Bar3dExportType =new Bar3dExportType();
-
-  // 车流量实时数值
-  public vehicleAmount = [];
-  public incomeAmount = [];
-
-  // 车辆类型分布
+  public outOptions3d: any; // 3D图组件传出来的值
+  public bar3dExcelShow = false; // 3D图统计的表格导出
+  public bar3dExportType: Bar3dExportType = new Bar3dExportType();
+  // 车辆监控
+  public vehicleAmount: any;
   public optionsCarModel = {};
-  // 车辆类型弹窗
   public alertCarShow = false;
   public alertCarTitle = '总数';
   public optionsCarType = {};
   public arryCarPie = [];
   public carTableData: any;
-  public carAreaName = '贵阳市';
-  public optionsCarPieInstance: any;
   public carExcelShow = false;
   public carExportType: CarExportType = new CarExportType();
-  public CarTypeisShow = true;
-
   /*****************************中部**************************/
     // 省市联动
   public dataToggle = '贵阳市';
-  public selectDate = '贵州省贵阳市';
   public province: any;
   public city: any;
   public citeDate: string;
   public provinceShow = false;
   public cityShow = false;
   public flag: string;
-
-  // 弹出框的标题及显影控制
-  public alertMapBoxShow = true;
-  public alertMapTitle: string;
-  public alertDateBoxShow = true;
-  public alertDateTitle: string;
-
-  // 全国高速服务区分布图
-  public optionsMap = {};
-
   // 事件类数据
   public eventTypes: any;
-  // 事件弹窗
   public eventConfig: ConfigModule;
-  // 办公类数据
+  public eventAlertListShow = true;
+  public eventListNoProcess: any;
+  public eventListProcess: any;
+  public eventListInfo: any;
+  // 办公类事件
   public officeTypes: any;
-  // 办公信息弹窗
   public alertOfficeShow = false;
-  // 个人信息数据
+  // 个人类事件
   public personOfficeTypes: any;
-  // 个人信息弹窗
   public alertPersonShow = false;
 
   /*****************************右边***************************/
@@ -111,53 +80,21 @@ export class CityDataComponent implements OnInit, OnDestroy {
   public barStatus3 = false;
   public dataStatus = '业态收入/万元';
 
-  // 全国当日收入类型占比分析
+  // 收入监控
+  public incomeAmount: any;
   public optionsIncomeModel = {};
-  // 收入类型弹窗
   public alertIncomeShow = false;
-  public alertIncomeTitle = '收入总数';
+  public alertIncomeTitle = '';
   public optionsIncomeTypes = {};
-  public IncomeAreaName = '贵阳市';
   public IncomeTableData: any;
   public arryIncomePie = [];
   public incomeExcelShow = false;
   public incomeExportType: IncomeExportType = new IncomeExportType();
-  public incomeTypeisShow = true;
-
   /**********************基础数据部分**********************/
-  public citys = ['久长服务区', '石阡服务区', '虹桥服务区', '玉屏服务区', '荔波服务区', '六枝服务区', '盘县服务区', '红果服务区', '老马服务区', '乌江服务区'];
-  // 时间初始化
-  public rangeDates: Date[];
-  public minDate: Date;
-  public maxDate: Date;
-  public esDate: any;
-  public invalidDates: Array<Date>;
+  public esDate: any;  // 时间初始化
   public value: Date; // 时间选择器
   public date6: Date;
-  /**********************暂时不知道的分布**********************/
-    // 当日服务区停车量排名
-  public optionsRetention = {};
-  // 服务区当日收入排名
-  public optionsIncome = {};
-  // 服务区地图分布
-  public mapName = 'china';
-  public mapCenter = [101.74, 36.56];
-  public mapZoom = 0.8;
-  public mapLeft = '';
-  public mapRight = '';
-  // 图表加载状态状态:+
-  public echartsIntance: any;
-  // 车月度所有服务区车辆流量柱状图统计
-  public optionsCar = {};
-
   constructor(
-    private http: HttpClient,
-    private es: NgxEchartsService,
-    private eventsService: EventsService,
-    private resolver: ComponentFactoryResolver,
-    private data3dS: Data3dService,
-    private centerMapS: CentermapService,
-    private diagrams: DiagramService,
     private dataService: DataService,
     private router: Router,
     private wenJunAlertService: WenjunAlertService,
@@ -187,14 +124,6 @@ export class CityDataComponent implements OnInit, OnDestroy {
     this.localService.eventBus.next({title: '贵阳市高速业态大数据', flagState: 'city', flagName: this.dataToggle});
     // 图表更行
     this.updataEcharts();
-    // 全屏点击事件
-    window.document.addEventListener('click', (e) => {
-      this.flag = e.srcElement.parentElement.className;
-      if ((this.provinceShow || this.cityShow) && !(this.flag === 'location')) {
-        this.provinceShow = false;
-        this.cityShow = false;
-      }
-    });
   }
   ngOnDestroy(): void {
     clearInterval(this.vehicleAmountCountClean);
@@ -208,633 +137,79 @@ export class CityDataComponent implements OnInit, OnDestroy {
     // 车流客流人流
     this.cityDataService.search3DBar({id: 2, parameter: ['revenue', 'passenger', 'vehicle']}).subscribe(
       (val) => {
-        this.options3dArray = val.data;
-        const xdata = this.options3dArray.xdata;
-        const yData = this.options3dArray.yData;
-        const coordinate = this.options3dArray.coordinate;
-        this.options3d = {
-          tooltip: {
-            show: true,
-            trigger: 'item',
-            axisPointer: {
-              type: 'cross',
-              axis: 'auto',
-            },
-            formatter: function (params) {
-              let res = `<p>${xdata[params.value[0]]}:</p>`;
-              res += `<p style='margin-left:3px'>${yData[params.value[1]]}:${params.value[3]}</p>`;
-              return res;
-            }
-          },
-          xAxis3D: {
-            type: 'category',
-            name: '月份',
-            data: this.options3dArray.xdata,
-            splitLine: {show: false},
-            nameTextStyle: {
-              color: 'transparent'
-            },
-            axisLine: {
-              lineStyle: {
-                color: 'white'
-              }
-            },
-          },
-          yAxis3D: {
-            type: 'category',
-            data: yData,
-            name: '类型',
-            splitLine: {show: false},
-            nameTextStyle: {
-              color: 'transparent'
-            },
-            axisLine: {
-              lineStyle: {
-                color: 'white'
-              }
-            },
-          },
-          zAxis3D: {
-            type: 'value',
-            name: '%',
-            splitLine: {show: false},
-            nameTextStyle: {
-              top: '3%',
-              left: '5%',
-              show: false,
-              color: 'transparent'
-            },
-            axisLine: {
-              lineStyle: {
-                color: 'white'
-              }
-            },
-          },
-          grid3D: {
-            boxWidth: 200,
-            boxDepth: 80,
-            light: {
-              main: {
-                intensity: 1.2
-              },
-              ambient: {
-                intensity: 0.3
-              }
-            },
-            viewControl: {
-              distance: 270,
-            }
-          },
-          series: [
-            {
-              type: 'bar3D',
-              barWidth: 30, // 柱图宽度
-              // data: this.data3dS.data3dFac(), // 这种方式点击函数打不开
-              /*data的两种的请求方式*/
-              data: coordinate.map(function (item) {
-                return {value: [item[0], item[1], item[2], item[3]]};
-              }),
-              // 柱状图阴影
-              shading: 'lambert',
-              label: {
-                // 柱状图的数值是否显示
-                show: false,
-                textStyle: {
-                  fontSize: 16,
-                  borderWidth: 1
-                }
-              },
-              // 柱状图主子的样式
-              itemStyle: {
-                opacity: 0.9,
-                color: function (params) {
-                  return ['#9B90D5', '#46E7E2', '#78F991', '#0B38D8', '#027405'][params.value[1]];
-                },
-              },
-              emphasis: {
-                label: {
-                  textStyle: {
-                    fontSize: 20,
-                    color: '#002140'
-                  }
-                },
-                itemStyle: {
-                  color: '#FF2600'
-                }
-              }
-            }
-          ]
-        };
+        if (val.status === '200') {
+          this.options3d = val.data;
+        }
       }
     );
     // 用电量用水量
     this.cityDataService.search3DBar({id: 2, parameter: ['electric', 'water']}).subscribe(
       (val) => {
-        this.options3dArray = val.data;
-        const xdata = val.data.xdata;
-        const yData = val.data.yData;
-        const coordinate = val.data.coordinate;
-        this.options3dCopy = {
-          tooltip: {
-            show: true,
-            trigger: 'item',
-            axisPointer: {
-              type: 'cross',
-              axis: 'auto',
-            },
-            formatter: function (params) {
-              let res = `<p>${xdata[params.value[0]]}:</p>`;
-              res += `<p style='margin-left:3px'>${yData[params.value[1]]}:${params.value[3]}</p>`;
-              return res;
-            }
-          },
-          xAxis3D: {
-            type: 'category',
-            name: '月份',
-            data: xdata,
-            splitLine: {show: false},
-            nameTextStyle: {
-              color: 'transparent'
-            },
-            axisLine: {
-              lineStyle: {
-                color: 'white'
-              }
-            },
-          },
-          yAxis3D: {
-            type: 'category',
-            data: yData,
-            name: '类型',
-            splitLine: {show: false},
-            nameTextStyle: {
-              color: 'transparent'
-            },
-            axisLine: {
-              lineStyle: {
-                color: 'white'
-              }
-            },
-          },
-          zAxis3D: {
-            type: 'value',
-            name: '%',
-            splitLine: {show: false},
-            nameTextStyle: {
-              top: '3%',
-              left: '5%',
-              show: false,
-              color: 'transparent'
-            },
-            axisLine: {
-              lineStyle: {
-                color: 'white'
-              }
-            },
-          },
-          grid3D: {
-            boxWidth: 200,
-            boxDepth: 80,
-            light: {
-              main: {
-                intensity: 1.2
-              },
-              ambient: {
-                intensity: 0.3
-              }
-            },
-            viewControl: {
-              distance: 270,
-            }
-          },
-          series: [
-            {
-              type: 'bar3D',
-              barWidth: 30, // 柱图宽度
-              // data: this.data3dS.data3dFac(), // 这种方式点击函数打不开
-              /*data的两种的请求方式*/
-              data: coordinate.map(function (item) {
-                return {value: [item[0], item[1], item[2], item[3]]};
-              }),
-              // 柱状图阴影
-              shading: 'lambert',
-              label: {
-                // 柱状图的数值是否显示
-                show: false,
-                textStyle: {
-                  fontSize: 16,
-                  borderWidth: 1
-                }
-              },
-              // 柱状图主子的样式
-              itemStyle: {
-                opacity: 0.9,
-                color: function (params) {
-                  return ['#D06052', '#E29F39', '#9B90D5', '#46E7E2', '#78F991'][params.value[1]];
-                },
-              },
-              emphasis: {
-                label: {
-                  textStyle: {
-                    fontSize: 20,
-                    color: '#002140'
-                  }
-                },
-                itemStyle: {
-                  color: '#FF2600'
-                }
-              }
-            }
-          ]
-        };
+        if (val.status === '200') {
+          this.options3dCopy = val.data;
+        }
       }
     );
   }
-
-  // 3D柱状图的相关点击事件
-  public barClick(e): void {
-    this.alertBarShow = true;
+  public onOutOptions3d(e): void {
+    this.outOptions3d = e;
     document.body.className = 'ui-overflow-hidden';
-    const yType = ['经营收入', '客流量', '车流量'];
-    const itemType = ['revenue', 'passenger', 'vehicle'];
-    const colorList = [
-      '#356981', '#356981', '#356981', '#356981', '#356981', '#356981',
-      '#356981', '#356981', '#356981', '#356981', '#356981 ', '#356981'
-    ];
-    colorList[e.data.value[0]] = '#D43839';
-    const xAxis = e.data.value[0];
-    const yAxis = e.data.value[1];
-    const total = e.data.value[3];
-    this.alertBarTitle = yType[yAxis];
+    this.alertBarShow = true;
+    this.alertBarTitle = this.outOptions3d.alertBarTitle;
     // 柱状图
-    this.cityDataService.search3DAlertBar({id: 2, types: itemType[yAxis]}).subscribe(
+    this.cityDataService.search3DAlertBar({id: 2, types: this.outOptions3d.bar.types}).subscribe(
       (val) => {
-        console.log(val);
-        this.options3dBar = {
-          title: [
-            {
-              text: `贵州省所有服务区年度${types(yAxis)}统计`,
-              left: 'center',
-              textStyle: {
-                color: '#fff',
-                fontSize: 16
-              }
-            },
-          ],
-          dataZoom: [
-            {
-              type: 'inside'
-            }
-          ],
-          tooltip: {
-            trigger: 'axis',
-            axisPointer: {
-              type: 'shadow'
-            }
-          },
-          grid: {
-            left: '5%',
-            right: '3%',
-            bottom: '10%'
-          },
-          xAxis: {
-            type: 'category',
-            data: val.data.xData,
-            splitLine: {show: false},
-            nameTextStyle: {
-              color: 'white'
-            },
-            axisLine: {
-              lineStyle: {
-                color: 'white'
-              }
-            },
-          },
-          yAxis: {
-            type: 'value',
-            name: '数值',
-            splitLine: {show: false},
-            nameTextStyle: {
-              align: 'left',
-              color: 'white'
-            },
-            axisLine: {
-              lineStyle: {
-                color: 'white'
-              }
-            },
-          },
-          series: [
-            {
-              data: val.data.coordinate,
-              type: 'bar',
-              label: {
-                // 柱状图的数值是否显示
-                show: true,
-                textStyle: {
-                  fontSize: 16,
-                  borderWidth: 1
-                }
-              },
-              itemStyle: {
-                color: function (params) {
-                  return colorList[params.dataIndex];
-                },
-              }
-            }]
-        };
+        if (val.status === '200') {
+          this.options3dBar = {
+            data: val.data,
+            xType: this.outOptions3d.pie.xType,
+            title: `贵州省所有服务区年度${this.outOptions3d.alertBarTitle}统计`
+          };
+        }
       }
     );
     // 类型占比扇形图
-    this.cityDataService.search3DAlertPie({id: 2, xType: xAxis, types: itemType[yAxis]}).subscribe(
+    this.cityDataService.search3DAlertPie({id: 2, xType: this.outOptions3d.pie.xType, types: this.outOptions3d.pie.types}).subscribe(
       (val) => {
-        console.log(val);
-        this.options3dPie = {
-          title: {
-            text: `贵州省各市所有服务区年度${types(yAxis)}类型占比统计`,
-            x: 'center',
-            textStyle: {
-              color: '#fff',
-              fontSize: 16
-            }
-          },
-          tooltip: {
-            trigger: 'item',
-            formatter: '{a} <br/>{b} : {c} ({d}%)'
-          },
-          series: [
-            {
-              name: `${types(yAxis)}总计：${total}`,
-              type: 'pie',
-              radius: '60%',
-              center: ['50%', '50%'],
-              data: val.data,
-              itemStyle: {
-                color: function (params) {
-                  return ['#CE2D79', '#BDD139', '#78E77D', '#09D4D6', '#3C75B9',
-                    '#6769B1', '#FF8C9D', '#2796C4', '#E57D0D'][params.dataIndex];
-                },
-                emphasis: {
-                  shadowBlur: 10,
-                  shadowOffsetX: 0,
-                  shadowColor: 'rgba(0, 0, 0, 0.5)'
-                }
-              }
-            }
-          ]
-        };
+        if (val.status === '200') {
+          this.options3dPie = {
+            data: val.data,
+            title: `贵州省所有服务区年度${this.outOptions3d.alertBarTitle}类型占比统计`,
+            total: this.outOptions3d.total,
+            color: ['#CE2D79', '#BDD139', '#78E77D', '#09D4D6', '#3C75B9',
+              '#6769B1', '#FF8C9D', '#2796C4', '#E57D0D']
+          };
+        }
       }
     );
-
-    function types(value): string {
-      let typeValue = '';
-      switch (value) {
-        case 0:
-          typeValue = yType[0];
-          break;
-        case 1:
-          typeValue = yType[1];
-          break;
-        case 2:
-          typeValue = yType[2];
-          break;
-        case 3:
-          typeValue = yType[3];
-          break;
-        case 4:
-          typeValue = yType[4];
-          break;
-      }
-      return typeValue;
-    }
   }
-
-  public barCopyClick(e): void {
-    this.alertBarShow = true;
-    document.body.className = 'ui-overflow-hidden';
-    const yType = ['用电量', '用水量'];
-    const itemType = ['electric', 'water'];
-    const colorList = [
-      '#356981', '#356981', '#356981', '#356981', '#356981', '#356981',
-      '#356981', '#356981', '#356981', '#356981', '#356981 ', '#356981'
-    ];
-    colorList[e.data.value[0]] = '#D43839';
-    const xAxis = e.data.value[0];
-    const yAxis = e.data.value[1];
-    const total = e.data.value[3];
-    this.alertBarTitle = yType[yAxis];
-    // 柱状图
-    this.cityDataService.search3DAlertBar({id: 2, types: itemType[yAxis]}).subscribe(
-      (val) => {
-        console.log(val);
-        this.options3dBar = {
-          title: [
-            {
-              text: `贵州省所有服务区年度${types(yAxis)}统计`,
-              left: 'center',
-              textStyle: {
-                color: '#fff',
-                fontSize: 16
-              }
-            },
-          ],
-          dataZoom: [
-            {
-              type: 'inside'
-            }
-          ],
-          tooltip: {
-            trigger: 'axis',
-            axisPointer: {
-              type: 'shadow'
-            }
-          },
-          grid: {
-            left: '5%',
-            right: '3%',
-            bottom: '10%'
-          },
-          xAxis: {
-            type: 'category',
-            data: val.data.xData,
-            splitLine: {show: false},
-            nameTextStyle: {
-              color: 'white'
-            },
-            axisLine: {
-              lineStyle: {
-                color: 'white'
-              }
-            },
-          },
-          yAxis: {
-            type: 'value',
-            name: '数值',
-            splitLine: {show: false},
-            nameTextStyle: {
-              align: 'left',
-              color: 'white'
-            },
-            axisLine: {
-              lineStyle: {
-                color: 'white'
-              }
-            },
-          },
-          series: [
-            {
-              data: val.data.coordinate,
-              type: 'bar',
-              label: {
-                // 柱状图的数值是否显示
-                show: true,
-                textStyle: {
-                  fontSize: 16,
-                  borderWidth: 1
-                }
-              },
-              itemStyle: {
-                color: function (params) {
-                  return colorList[params.dataIndex];
-                },
-              }
-            }]
-        };
-      }
-    );
+  public onOutOptions3dBar(e): void {
     // 类型占比扇形图
-    this.cityDataService.search3DAlertPie({id: 2, xType: xAxis, types: itemType[yAxis]}).subscribe(
+    this.cityDataService.search3DAlertPie({id: 2, xType: e.xType, types: this.outOptions3d.pie.types}).subscribe(
       (val) => {
-        console.log(val);
-        this.options3dPie = {
-          title: {
-            text: `贵州省各市所有服务区年度${types(yAxis)}类型占比统计`,
-            x: 'center',
-            textStyle: {
-              color: '#fff',
-              fontSize: 16
-            }
-          },
-          tooltip: {
-            trigger: 'item',
-            formatter: '{a} <br/>{b} : {c} ({d}%)'
-          },
-          series: [
-            {
-              name: `${types(yAxis)}总计：${total}`,
-              type: 'pie',
-              radius: '60%',
-              center: ['50%', '50%'],
-              data: val.data,
-              itemStyle: {
-                color: function (params) {
-                  return ['#CE2D79', '#BDD139', '#78E77D', '#09D4D6', '#3C75B9',
-                    '#6769B1', '#FF8C9D', '#2796C4', '#E57D0D'][params.dataIndex];
-                },
-                emphasis: {
-                  shadowBlur: 10,
-                  shadowOffsetX: 0,
-                  shadowColor: 'rgba(0, 0, 0, 0.5)'
-                }
-              }
-            }
-          ]
-        };
+        if (val.status === '200') {
+          this.options3dPie = {
+            data: val.data,
+            title: `贵州省所有服务区年度${this.outOptions3d.alertBarTitle}类型占比统计`,
+            total: e.data,
+            color: ['#CE2D79', '#BDD139', '#78E77D', '#09D4D6', '#3C75B9',
+              '#6769B1', '#FF8C9D', '#2796C4', '#E57D0D']
+          };
+        }
       }
     );
-
-    function types(value): string {
-      let typeValue = '';
-      switch (value) {
-        case 0:
-          typeValue = yType[0];
-          break;
-        case 1:
-          typeValue = yType[1];
-          break;
-        case 2:
-          typeValue = yType[2];
-          break;
-        case 3:
-          typeValue = yType[3];
-          break;
-        case 4:
-          typeValue = yType[4];
-          break;
-      }
-      return typeValue;
+  }
+  public onOptions3dPie(e): void {
+    if (e.name === '贵阳市') {
+      this.router.navigate(['/home/city', {name: e.name}]);
+    } else {
+      window.alert (`很抱歉，${e.name}暂无数据`);
     }
   }
-
   public closeBarShow() {
     document.body.className = '';
     this.alertBarShow = false;
   }
-
-  // 3D柱状图弹窗操作
-  public options3dBarInit(ec) {
-    this.options3dBarInstance = ec;
-  }
-  public options3dPieInit(ec) {
-    this.options3dPieInstance = ec;
-  }
-  public options3dBarClick(e) {
-    this.colorList = [
-      '#356981', '#356981', '#356981', '#356981', '#356981', '#356981',
-      '#356981', '#356981', '#356981', '#356981', '#356981 ', '#356981'
-    ];
-    this.colorList[e.dataIndex] = '#D43839';
-    this.options3dBarInstance.setOption(this.options3dBar);
-    this.arryPie = [];
-    this.dataService.getrandomPie(9, 1000, 200).map((val, index) => {
-      this.arryPie.push({value: val, name: this.citys[index]});
-    });
-    this.options3dPie = {
-      title: {
-        text: `贵州省各市所有服务区年度${e.name}类型占比统计`,
-        x: 'center',
-        textStyle: {
-          color: '#fff',
-          fontSize: 16
-        }
-      },
-      tooltip: {
-        trigger: 'item',
-        formatter: '{b} : {d}%'
-      },
-      /*legend: {
-        orient: 'vertical',
-        left: 'left',
-        data: ['贵阳市', '遵义市', '六盘水市', '安顺市', '毕节市', '铜仁市', '黔东南苗族侗族自治州', '黔南布依族苗族自治州','黔西南布依族苗族自治州'],
-        textStyle: {
-          color: 'white'
-        }
-      },*/
-      series: [
-        {
-          name: `${e.name}总计：${e.value}`,
-          type: 'pie',
-          radius: '60%',
-          center: ['50%', '50%'],
-          data: this.arryPie,
-          itemStyle: {
-            color: function (params) {
-              return ['#CE2D79', '#BDD139', '#78E77D', '#09D4D6', '#3C75B9', '#6769B1', '#FF8C9D', '#2796C4', '#E57D0D'][params.dataIndex];
-            },
-            emphasis: {
-              shadowBlur: 10,
-              shadowOffsetX: 0,
-              shadowColor: 'rgba(0, 0, 0, 0.5)'
-            }
-          }
-        }
-      ]
-    };
-  }
-  public options3dPieClick(e): void {
-    this.router.navigate(['/home/serzone', {name: e.name}]);
-  }
-
   // 表格导出
   public bar3dDateChange(e) {
     this.bar3dExportType.Bar3dDate = e.srcElement.value;
@@ -869,365 +244,95 @@ export class CityDataComponent implements OnInit, OnDestroy {
     this.bar3dExcelShow = false;
   }
 
-  // 实时车流监控
+  // 车流监控
   public vehicleAmountCount(): void {
     this.cityDataService.searchCarTotal({id: 2}).subscribe(
       (value) => {
-        console.log(value);
-        this.vehicleAmount = value.data.toString().split('');
+        if (value.status === '200') {
+          this.vehicleAmount = {
+            number: value.data,
+            unitsL: '辆'
+          };
+        }
       }
     );
   }
-
-  // 车型日分布类型占比饼状图
   public CarTypes() {
     this.cityDataService.searchCarTotalPie({id: 2}).subscribe(
       (value) => {
-        // console.log(value);
         this.optionsCarModel = {
-          tooltip: {
-            trigger: 'item',
-            formatter: '{b} : {d}%'
-          },
-          series: [
-            {
-              type: 'pie',
-              radius: '55%',
-              center: ['50%', '50%'],
-              label: {
-                show: true,
-                position: 'outside',
-                formatter: '{b}: {d}%',
-                color: 'white',
-                align: 'center',
-                emphasis: {
-                  show: true,
-                  textStyle: {
-                    fontSize: 12
-                  }
-                }
-              },
-              color: ['#00CAE2', '#2307EF', '#4791D8'],
-              data: value.data,
-              itemStyle: {
-                emphasis: {
-                  shadowBlur: 10,
-                  shadowOffsetX: 0,
-                  shadowColor: 'rgba(0, 0, 0, 0.5)'
-                }
-              }
-            }
-          ]
+          data: value.data,
+          title: '',
+          total: '',
+          color: ['#00CAE2', '#2307EF', '#4791D8']
         };
       }
     );
   }
-
-  // 车型日分布类型占比饼状图相关点击事件
   public parkClick(e): void {
-    console.log(e);
     this.alertCarTitle = e.name + '车辆分布统计';
     this.alertCarShow = true;
     document.body.className = 'ui-overflow-hidden';
     this.arryCarPie = [];
-    // tables数据
-    // this.carTableData = this.dataService.getJsonObj(8, 1000, 100, this.alertCarTitle);
+    this.carDistribution(e);
+  }
+  public carDistribution(e): void {
+    // 表格
     this.cityDataService.searchCarAlertTable({id: 2, types: e.name}).subscribe(
       (val) => {
-        console.log(val);
         this.carTableData = val.data.contents;
       }
     );
     // 饼状图
     this.cityDataService.searchCarAlertPie({id: 2, types: e.name}).subscribe(
       (value) => {
-        console.log(value.data);
-        /* this.dataService.getrandomPie(9, 900, 50).map((val, index) => {
-           this.arryCarPie.push({value: val, name: this.citys[index]});
-         });*/
+        const arryCarPie = [];
         value.data.map((val, index) => {
-          this.arryCarPie.push({value: 1, name: val.name});
+          arryCarPie.push({value: 1, name: val.name});
         });
         this.optionsCarType = {
-          title: {
-            text: `贵州省各市所有服务区今日${e.name}占比统计`,
-            x: 'center',
-            textStyle: {
-              color: '#fff',
-              fontSize: 16
-            }
-          },
-          tooltip: {
-            trigger: 'item',
-            formatter: '{a} <br/>{b} : {d}%'
-          },
-          series: [
-            {
-              name: `${e.name}`,
-              type: 'pie',
-              radius: '55%',
-              center: ['50%', '60%'],
-              data: this.arryCarPie,
-              itemStyle: {
-                color: function (params) {
-                  return ['#CE2D79', '#BDD139', '#78E77D', '#09D4D6',
-                    '#3C75B9', '#6769B1', '#FF8C9D', '#2796C4', '#E57D0D'][params.dataIndex];
-                },
-                emphasis: {
-                  shadowBlur: 10,
-                  shadowOffsetX: 0,
-                  shadowColor: 'rgba(0, 0, 0, 0.5)'
-                }
-              }
-            }
-          ]
+          data: arryCarPie,
+          title: `贵州省各市所有服务区今日${e.name}占比统计`,
+          total: '',
+          color: ['#CE2D79', '#BDD139', '#78E77D', '#09D4D6', '#3C75B9',
+            '#6769B1', '#FF8C9D', '#2796C4', '#E57D0D']
         };
       }
     );
-
   }
   public closeCarShow(): void {
     document.body.className = '';
     this.alertCarShow = false;
   }
-
-  // 车型日分布类型占比饼状图弹窗
-  public optionsCarPieInit(ec): void {
-    this.optionsCarPieInstance = ec;
-  }
   public optionsCarPieClick(e) {
-    // this.carAreaName = e.name;
-    this.router.navigate(['/home/serzone', {name: e.name}]);
-    this.CarTypeisShow = false;
-    // this.carTableData = this.dataService.getJsonObj(8, 1000, 100, this.alertCarTitle);
+    if (e.name === '贵阳市') {
+      this.router.navigate(['/home/city', {name: e.name}]);
+    } else {
+      window.alert (`很抱歉，${e.name}暂无数据`);
+    }
   }
   public carBtnClick(e): void {
     if (e.srcElement.innerText === '小车') {
       this.alertCarTitle = '小车' + '车辆分布统计';
       this.arryCarPie = [];
       this.carTableData = [];
-      // tables数据
-      // this.carTableData = this.dataService.getJsonObj(8, 1000, 100, this.alertCarTitle);
-      this.cityDataService.searchCarAlertTable({id: 2, types: e.name}).subscribe(
-        (val) => {
-          console.log(val);
-          this.carTableData = val.data.contents;
-        }
-      );
-      // 饼状图
-      this.cityDataService.searchCarAlertPie({id: 2, types: e.name}).subscribe(
-        (value) => {
-          console.log(value.data);
-          /* this.dataService.getrandomPie(9, 900, 50).map((val, index) => {
-             this.arryCarPie.push({value: val, name: this.citys[index]});
-           });*/
-          value.data.map((val, index) => {
-            this.arryCarPie.push({value: val.value, name: val.name});
-          });
-          this.optionsCarType = {
-            title: {
-              text: `贵州省各市所有服务区今日小车占比统计`,
-              x: 'center',
-              textStyle: {
-                color: '#fff',
-                fontSize: 16
-              }
-            },
-            tooltip: {
-              trigger: 'item',
-              formatter: '{a} <br/>{b} : {d}%'
-            },
-            series: [
-              {
-                name: `${e.name}`,
-                type: 'pie',
-                radius: '55%',
-                center: ['50%', '60%'],
-                data: this.arryCarPie,
-                itemStyle: {
-                  color: function (params) {
-                    return ['#CE2D79', '#BDD139', '#78E77D', '#09D4D6',
-                      '#3C75B9', '#6769B1', '#FF8C9D', '#2796C4', '#E57D0D'][params.dataIndex];
-                  },
-                  emphasis: {
-                    shadowBlur: 10,
-                    shadowOffsetX: 0,
-                    shadowColor: 'rgba(0, 0, 0, 0.5)'
-                  }
-                }
-              }
-            ]
-          };
-        }
-      );
-    }
-    else if (e.srcElement.innerText === '客车') {
+      this.carDistribution({name: e.srcElement.innerText });
+    }  else if (e.srcElement.innerText === '客车') {
       this.alertCarTitle = '客车' + '车辆分布统计';
       this.arryCarPie = [];
       this.carTableData = [];
-      // tables数据
-      // this.carTableData = this.dataService.getJsonObj(8, 1000, 100, this.alertCarTitle);
-      this.cityDataService.searchCarAlertTable({id: 2, types: e.name}).subscribe(
-        (val) => {
-          console.log(val);
-          this.carTableData = val.data.contents;
-        }
-      );
-      // 饼状图
-      this.cityDataService.searchCarAlertPie({id: 2, types: e.name}).subscribe(
-        (value) => {
-          console.log(value.data);
-          /* this.dataService.getrandomPie(9, 900, 50).map((val, index) => {
-             this.arryCarPie.push({value: val, name: this.citys[index]});
-           });*/
-          value.data.map((val, index) => {
-            this.arryCarPie.push({value: val.value, name: val.name});
-          });
-          this.optionsCarType = {
-            title: {
-              text: `贵州省各市所有服务区今日客车占比统计`,
-              x: 'center',
-              textStyle: {
-                color: '#fff',
-                fontSize: 16
-              }
-            },
-            tooltip: {
-              trigger: 'item',
-              formatter: '{a} <br/>{b} : {d}%'
-            },
-            series: [
-              {
-                name: `${e.name}`,
-                type: 'pie',
-                radius: '55%',
-                center: ['50%', '60%'],
-                data: this.arryCarPie,
-                itemStyle: {
-                  color: function (params) {
-                    return ['#CE2D79', '#BDD139', '#78E77D', '#09D4D6',
-                      '#3C75B9', '#6769B1', '#FF8C9D', '#2796C4', '#E57D0D'][params.dataIndex];
-                  },
-                  emphasis: {
-                    shadowBlur: 10,
-                    shadowOffsetX: 0,
-                    shadowColor: 'rgba(0, 0, 0, 0.5)'
-                  }
-                }
-              }
-            ]
-          };
-        }
-      );
-    }
-    else if (e.srcElement.innerText === '货车') {
+      this.carDistribution({name: e.srcElement.innerText });
+    } else if (e.srcElement.innerText === '货车') {
       this.alertCarTitle = '货车' + '车辆分布统计';
       this.arryCarPie = [];
       this.carTableData = [];
-      // tables数据
-      // this.carTableData = this.dataService.getJsonObj(8, 1000, 100, this.alertCarTitle);
-      this.cityDataService.searchCarAlertTable({id: 2, types: e.name}).subscribe(
-        (val) => {
-          console.log(val);
-          this.carTableData = val.data.contents;
-        }
-      );
-      // 饼状图
-      this.cityDataService.searchCarAlertPie({id: 2, types: e.name}).subscribe(
-        (value) => {
-          console.log(value.data);
-          /* this.dataService.getrandomPie(9, 900, 50).map((val, index) => {
-             this.arryCarPie.push({value: val, name: this.citys[index]});
-           });*/
-          value.data.map((val, index) => {
-            this.arryCarPie.push({value: val.value, name: val.name});
-          });
-          this.optionsCarType = {
-            title: {
-              text: `贵州省各市所有服务区今日货车占比统计`,
-              x: 'center',
-              textStyle: {
-                color: '#fff',
-                fontSize: 16
-              }
-            },
-            tooltip: {
-              trigger: 'item',
-              formatter: '{a} <br/>{b} : {d}%'
-            },
-            series: [
-              {
-                name: `${e.name}`,
-                type: 'pie',
-                radius: '55%',
-                center: ['50%', '60%'],
-                data: this.arryCarPie,
-                itemStyle: {
-                  color: function (params) {
-                    return ['#CE2D79', '#BDD139', '#78E77D', '#09D4D6',
-                      '#3C75B9', '#6769B1', '#FF8C9D', '#2796C4', '#E57D0D'][params.dataIndex];
-                  },
-                  emphasis: {
-                    shadowBlur: 10,
-                    shadowOffsetX: 0,
-                    shadowColor: 'rgba(0, 0, 0, 0.5)'
-                  }
-                }
-              }
-            ]
-          };
-        }
-      );
+      this.carDistribution({name: e.srcElement.innerText });
     }
   }
   public carTableClick(e) {
     this.router.navigate(['/home/serzone', {name: e}]);
   }
-
-  public echartBtn(e): void {
-    this.CarTypeisShow = true;
-    this.carAreaName = e.srcElement.innerText;
-    this.arryCarPie = [];
-    this.dataService.getrandomPie(9, 900, 50).map((val, index) => {
-      this.arryCarPie.push({value: val, name: this.citys[index]});
-    });
-    this.optionsCarType = {
-      title: {
-        text: `贵州省各市所有服务区今日${e.name}占比统计`,
-        x: 'center',
-        textStyle: {
-          color: '#fff',
-          fontSize: 16
-        }
-      },
-      tooltip: {
-        trigger: 'item',
-        formatter: '{a} <br/>{b} : {d}%'
-      },
-      series: [
-        {
-          name: `${e.name}`,
-          type: 'pie',
-          radius: '55%',
-          center: ['50%', '60%'],
-          data: this.arryCarPie,
-          itemStyle: {
-            color: function (params) {
-              return ['#CE2D79', '#BDD139', '#78E77D', '#09D4D6', '#3C75B9', '#6769B1', '#FF8C9D', '#2796C4', '#E57D0D'][params.dataIndex];
-            },
-            emphasis: {
-              shadowBlur: 10,
-              shadowOffsetX: 0,
-              shadowColor: 'rgba(0, 0, 0, 0.5)'
-            }
-          }
-        }
-      ]
-    };
-    this.carTableData = this.dataService.getJsonObj(8, 1000, 100, this.alertCarTitle);
-  }
-
-  // 表格导出
+  // 车流监控：表格导出
   public carDateChange(e) {
     this.carExportType.carDate = e.srcElement.value;
   }
@@ -1259,372 +364,7 @@ export class CityDataComponent implements OnInit, OnDestroy {
   }
 
   /*********************************中部*****************************/
-  // 中部服务区分布图
-  public centerMap() {
-    this.centerMapS.getCenterMapData().subscribe(
-      (value) => {
-        const convertData = function (datas) {
-          const res = [];
-          for (let i = 0; i < datas.length; i++) {
-            const geoCoord = value.geoCoordMap[datas[i].name];
-            if (geoCoord) {
-              res.push({
-                name: datas[i].name,
-                value: geoCoord.concat(datas[i].value)
-              });
-            }
-          }
-          return res;
-        };
-        const convertedData = [
-          convertData(value.data),
-          convertData(value.data.sort(function (a, b) {
-            return b.value - a.value;
-          }).slice(0, 6))
-        ];
-        this.optionsMap = {
-          animation: true,
-          animationDuration: 1000,
-          animationEasing: 'cubicInOut',
-          animationDurationUpdate: 1000,
-          animationEasingUpdate: 'cubicInOut',
-          backgroundColor: '#04243E',
-          title: [
-            {
-              text: this.dataToggle + value.title,
-              left: 'center',
-              textStyle: {
-                color: '#fff',
-                fontSize: 14
-              }
-            },
-            {
-              id: 'statistic',
-              right: 120,
-              top: 40,
-              width: 100,
-              textStyle: {
-                color: '#fff',
-                fontSize: 14
-              }
-            }
-          ],
-          toolbox: {
-            iconStyle: {
-              normal: {
-                borderColor: '#fff'
-              },
-              emphasis: {
-                borderColor: '#b1e4ff'
-              }
-            }
-          },
-          geo: {
-            map: value.address,
-            left: 'center',
-            // right: 'center',
-            center: value.center,
-            zoom: 1.3,
-            label: {
-              emphasis: {
-                show: false
-              }
-            },
-            roam: true,
-            itemStyle: {
-              normal: {
-                areaColor: '#323c48',
-                borderColor: '#111'
-              },
-              emphasis: {
-                areaColor: '#2a333d'
-              }
-            }
-          },
-          tooltip: {
-            trigger: 'item'
-          },
-          /*grid: {
-            right: 40,
-            top: 100,
-            bottom: 40,
-            width: '30%'
-          },
-          xAxis: {
-            type: 'value',
-            scale: true,
-            position: 'top',
-            boundaryGap: false,
-            splitLine: {show: false},
-            axisLine: {show: false},
-            axisTick: {show: false},
-            axisLabel: {margin: 2, textStyle: {color: '#aaa'}},
-          },
-          yAxis: {
-            type: 'category',
-            name: 'TOP 20',
-            nameGap: 16,
-            axisLine: {show: false, lineStyle: {color: '#ddd'}},
-            axisTick: {show: false, lineStyle: {color: '#ddd'}},
-            axisLabel: {interval: 0, textStyle: {color: '#ddd'}},
-            data: []
-          },*/
-          series: [
-            {
-              name: '服务区驻车量',
-              type: 'effectScatter',
-              coordinateSystem: 'geo',
-              data: convertedData[0],
-              symbolSize: function (val) {
-                return Math.max(val[2] / 10, 8);
-              },
-              label: {
-                normal: {
-                  formatter: '{b}',
-                  position: 'right',
-                  show: false
-                },
-                emphasis: {
-                  show: true
-                }
-              },
-              itemStyle: {
-                normal: {
-                  color: '#ddb926'
-                }
-              }
-            },
-          ]
-        };
-      }
-    );
-  }
-
-  // 中部省级服务区切换
-  public centerMap1() {
-    const geoCoordMap = {
-      '贵阳': [106.645382, 26.655177],
-      '遵义': [106.924791, 27.73378],
-      '铜仁': [109.194557, 27.752195],
-      '毕节': [105.29893, 27.305249],
-      '六盘水': [104.834398, 26.612807],
-      '安顺': [105.956633, 26.269129],
-      '凯里': [107.994134, 26.579727],
-      '都匀': [107.529602, 26.256688],
-      '兴义': [105.206943, 25.457651],
-    };
-    const geoValue = [
-      {name: '贵阳', value: 150},
-      {name: '遵义', value: 130},
-      {name: '铜仁', value: 100},
-      {name: '毕节', value: 98},
-      {name: '六盘水', value: 155},
-      {name: '安顺', value: 103},
-      {name: '凯里', value: 60},
-      {name: '都匀', value: 55},
-      {name: '兴义', value: 156},
-    ];
-    const convertData = function (data) {
-      const res = [];
-      for (let i = 0; i < data.length; i++) {
-        const geoCoord = geoCoordMap[data[i].name];
-        if (geoCoord) {
-          res.push({
-            name: data[i].name,
-            value: geoCoord.concat(data[i].value)
-          });
-        }
-      }
-      return res;
-    };
-    let series = [
-      {
-        name: '服务区驻车量',
-        type: 'effectScatter',
-        effectType: 'ripple',
-        coordinateSystem: 'bmap',
-        data: convertData(geoValue),
-        symbolSize: function (val) {
-          return Math.max(val[2] / 5, 8);
-        },
-        label: {
-          normal: {
-            formatter: '{b}',
-            position: 'right',
-            show: false
-          },
-          emphasis: {
-            show: true
-          }
-        },
-        itemStyle: {
-          normal: {
-            color: '#ddb926'
-          }
-        }
-      },
-    ];
-    this.optionsMap = {
-      tooltip: {
-        trigger: 'item',
-        formatter: function (params) {
-          return `<div><p>${params.name}高速服务区</p><p>驻车量：${params.value[2]}</p></div>`;
-        }
-      },
-      legend: {
-        orient: 'vertical',
-        y: 'bottom',
-        x: 'right',
-        data: ['pm2.5'],
-        textStyle: {
-          color: '#fff'
-        }
-      },
-      visualMap: {
-        min: 0,
-        max: 200,
-        calculable: true,
-        show: false,
-        inRange: {
-          color: ['#FEC93F', '#2796C4', '#B171BF', '#F52C11']
-        },
-        textStyle: {
-          color: '#fff'
-        }
-      },
-      bmap: {
-        center: [106.648831, 26.652078],
-        zoom: 8,
-        roam: true,
-        mapStyle: {
-          'styleJson': [
-            {
-              'featureType': 'water',
-              'elementType': 'all',
-              'stylers': {
-                'color': '#031628'
-              }
-            },
-            {
-              'featureType': 'land',
-              'elementType': 'geometry',
-              'stylers': {
-                'color': '#2A333D'
-              }
-            },
-            {
-              'featureType': 'highway',
-              'elementType': 'all',
-              'stylers': {
-                'visibility': 'on'
-              }
-            },
-            {
-              'featureType': 'arterial',
-              'elementType': 'geometry.fill',
-              'stylers': {
-                'color': '#000000'
-              }
-            },
-            {
-              'featureType': 'arterial',
-              'elementType': 'geometry.stroke',
-              'stylers': {
-                'color': '#0b3d51'
-              }
-            },
-            {
-              'featureType': 'local',
-              'elementType': 'geometry',
-              'stylers': {
-                'color': '#000000'
-              }
-            },
-            {
-              'featureType': 'railway',
-              'elementType': 'geometry.fill',
-              'stylers': {
-                'color': '#000000'
-              }
-            },
-            {
-              'featureType': 'railway',
-              'elementType': 'geometry.stroke',
-              'stylers': {
-                'color': '#08304b'
-              }
-            },
-            {
-              'featureType': 'subway',
-              'elementType': 'geometry',
-              'stylers': {
-                'lightness': -70
-              }
-            },
-            {
-              'featureType': 'building',
-              'elementType': 'geometry.fill',
-              'stylers': {
-                'color': '#000000'
-              }
-            },
-            {
-              'featureType': 'all',
-              'elementType': 'labels.text.fill',
-              'stylers': {
-                'color': '#01D1DB'
-              }
-            },
-            {
-              'featureType': 'all',
-              'elementType': 'labels.text.stroke',
-              'stylers': {
-                'color': '#000000'
-              }
-            },
-            {
-              'featureType': 'building',
-              'elementType': 'geometry',
-              'stylers': {
-                'color': '#022338'
-              }
-            },
-            {
-              'featureType': 'green',
-              'elementType': 'geometry',
-              'stylers': {
-                'color': '#062032'
-              }
-            },
-            {
-              'featureType': 'boundary',
-              'elementType': 'all',
-              'stylers': {
-                'color': '#465b6c'
-              }
-            },
-            {
-              'featureType': 'manmade',
-              'elementType': 'all',
-              'stylers': {
-                'color': '#022338'
-              }
-            },
-            {
-              'featureType': 'label',
-              'elementType': 'all',
-              'stylers': {
-                'visibility': 'on'
-              }
-            }
-          ]
-        }
-      },
-      series: series
-    };
-  }
-
-  // 中部百度地图画省边界外
+  // 中部百度地图画市边界外
   public centerMap2() {
     const that = this;
     const map = new BMap.Map('center_map', {minZoom: 10, maxZoom: 13});
@@ -1728,14 +468,15 @@ export class CityDataComponent implements OnInit, OnDestroy {
     this.cityDataService.getServiceNamePoint().subscribe(
       (val) => {
         val.data.map((val1, index1) => {
-          let a = [];
+          const a = [];
           // console.log(val1.name);
           // pointsMarket.push([])
           val1.attributeValueList.map((val2, index2) => {
             if (val2.attributeDesc === '经度') {
               a.push(val2.attributeValue);
-            } else if (val2.attributeDesc === '纬度')
+            } else if (val2.attributeDesc === '纬度') {
               a.push(val2.attributeValue);
+            }
           });
           if (a) {
             a.push(val1.name);
@@ -1743,7 +484,6 @@ export class CityDataComponent implements OnInit, OnDestroy {
           pointsMarket.push(a);
         });
         if (pointsMarket) {
-          console.log(pointsMarket);
           for (let i = 0; i < pointsMarket.length; i++) {
             const points = [pointsMarket[i][0], pointsMarket[i][1]];
             // addMarker(points, pointsMarket[i][2], pointsMarket[i][3]);
@@ -1858,73 +598,63 @@ export class CityDataComponent implements OnInit, OnDestroy {
       });
     });
   }
-
-  // 中部地图省市联动
-  public provinceClick() {
-    this.provinceShow = true;
-    this.http.get('assets/data/province.json').subscribe(
-      (res) => {
-        this.province = res;
+  // 事件类型统计
+  public initialize(): void {
+    this.cityDataService.searchEventCategory().subscribe(
+      (value) => {
+        if (value.status === '200') {
+          this.cityDataService.searchEventCategoryCount({id: 2, list: value.data}).subscribe(
+            (item) => {
+              if (item.status === '200') {
+                this.eventTypes = item.data;
+              }
+            }
+          );
+        }
       }
     );
   }
-  public provinceMouseEnter(item) {
-    if (item === '全国') {
-      this.cityShow = false;
-      return;
-    } else if (item === '贵州省') {
-      this.cityShow = true;
-      this.http.get('assets/data/guizhoucity.json').subscribe(
-        (res) => {
-          this.city = res[0].children;
-          this.citeDate = res[0].province;
-        }
-      );
-    } else if (item === '云南省') {
-      this.cityShow = true;
-      this.http.get('assets/data/yunnancity.json').subscribe(
-        (res) => {
-          this.city = res[0].children;
-          this.citeDate = res[0].province;
-        }
-      );
-    } else {
-      this.cityShow = true;
-      this.city = [{city: '暂未开通'}];
-      this.citeDate = '暂未开通';
-    }
-  }
-  public provinceDataClick(item) {
-    this.selectDate = item.province;
-    if (item.name === '全国') {
-      this.dataToggle = '全国';
-      this.router.navigate(['/home/whole']);
-    } else if (item.name === '贵州') {
-      this.dataToggle = '贵州';
-      this.router.navigate(['/home/finance']);
-    } else {
-      window.confirm('此地区暂未开通');
-    }
-  }
-  public cityDataClick(item) {
-    if (!(item.city === '贵阳市')) {
-      window.confirm('此地区暂未开通');
-    }
-  }
-
-  // 事件处理函数
-  public tableEventClick(name): void {
-    // 弹窗配置
+  public tableEventClick(item): void {
     this.eventConfig = {
-      alertTitle: name,
+      alertTitle: item.eventCategoryName,
       width: 80,
       height: 60,
     };
-    if (name === '经营类') {
+    if (item.eventCategoryName === '经营类') {
       this.wenJunAlertService.openAlertShow();
     } else {
       this.alertOfficeShow = true;
     }
+    this.getEventsTypeList(item);
+  }
+  public getEventsTypeList (item): void {
+    // 未处理
+    this.cityDataService.searchEventsTypeList(
+      {eventCategoryCode: item.categoryCode, processState: 2, page: 1, nums: 1000}).subscribe(
+      (val) => {
+        if (val.status === '200') {
+          this.eventListNoProcess = val.data.contents;
+        }
+      }
+    );
+    // 已处理
+    this.cityDataService.searchEventsTypeList(
+      {eventCategoryCode: item.categoryCode, processState: 1, page: 1, nums: 1000}).subscribe(
+      (value) => {
+        if (value.status === '200') {
+          this.eventListProcess = value.data.contents;
+        }
+      }
+    );
+  }
+  public eventAlertListCtrlw(): void {
+    this.eventAlertListShow = true;
+  }
+  public eventAlertListCtrly(): void {
+    this.eventAlertListShow = false;
+  }
+  public eventListInfoClick(item): void {
+    this.eventListInfo = item;
   }
   // 办公室信息处理函数
   public tableOfficeClick(): void {
@@ -1943,94 +673,17 @@ export class CityDataComponent implements OnInit, OnDestroy {
   }
 
   /*********************************右边*****************************/
-  // 业态经营数据前十排名
-  public backCrosswiseBar(type) {
-    const types = ['revenue', 'passenger', 'vehicle'];
-    const type1 = ['收入', '人流', '车流'];
-    const colors = ['#2307EF', '#3B78B1', '#04A6BB'];
+  // 业态经营数据前十排名相关操作
+  public backCrosswiseBar(type): void {
     this.cityDataService.searchTop10Bar({id: 2, type: type}).subscribe(
       (value) => {
-        console.log(value);
-        const barData = [];
-        const barArea = [];
-        value.data.yAxis.map((val, index) => {
-          barArea.push(val.serviceName);
-        });
-        value.data.barDatas.map((val, index) => {
-          barData.push(
-            {
-              name: val.title,
-              type: 'bar',
-              stack: '总量',
-              color: colors[index],
-              label: {
-                normal: {
-                  show: true,
-                  position: 'insideRight'
-                }
-              },
-              data: val.datas,
-            }
-          );
-        });
-        this.crosswiseBar = {
-          tooltip: {
-            trigger: 'axis',
-            axisPointer: {            // 坐标轴指示器，坐标轴触发有效
-              type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
-            }
-          },
-          grid: {
-            top: '5%',
-            left: '1%',
-            right: '5%',
-            bottom: '5%',
-            containLabel: true
-          },
-          xAxis: {
-            type: 'value',
-            splitLine: {show: false},
-            axisLabel: {
-              formatter: '{value}'
-            },
-            nameTextStyle: {
-              color: 'white'
-            },
-            axisLine: {
-              lineStyle: {
-                color: 'white'
-              }
-            },
-          },
-          yAxis: {
-            type: 'category',
-            // name: '万元/辆/人次',
-            inverse: false,
-            splitLine: {show: false},
-            data: barArea,
-            axisLabel: {
-              margin: 20,
-            },
-            nameTextStyle: {
-              color: 'white'
-            },
-            axisLine: {
-              lineStyle: {
-                color: 'white'
-              }
-            },
-          },
-          series: barData
-        };
+        this.crosswiseBar = value.data;
       }
     );
   }
-
-  // 业态经营数据前十排名相关操作
   public clickBtn(e): void {
     const types = ['revenue', 'vehicle', 'passenger'];
     const type1 = ['收入', '车流', '客流'];
-    console.log(e.srcElement.innerText);
     if (e.srcElement.innerText === '业态收入/万元') {
       this.dataStatus = '业态收入/万元';
       this.barStatus1 = true;
@@ -2048,551 +701,100 @@ export class CityDataComponent implements OnInit, OnDestroy {
       this.barStatus1 = false;
       this.barStatus2 = false;
       this.barStatus3 = true;
-      this.backCrosswiseBar(types[3]);
+      this.backCrosswiseBar(types[2]);
     }
   }
-
-  /*等候数据调试*/
-  public rankingClick(e) {
-    this.router.navigate(['/home/serzone', {name: e.name}]);
-  }
-
-  // 实时收入监控
+  // 收入监控
   public incomeAmountCount(): void {
     this.cityDataService.searchIncomeTotal({id: 2}).subscribe(
       (value) => {
-        console.log(value);
-        this.incomeAmount = Math.ceil(value.data).toString().split('');
-      }
-    );
-  }
-
-  // 收入日分布类型占比饼状图
-  public IncomeTypes() {
-    this.cityDataService.searchIncomeTotalPie({id: 2}).subscribe(
-      (value) => {
-        console.log(value);
-        this.optionsIncomeModel = {
-          tooltip: {
-            trigger: 'item',
-            formatter: '{b} : {c} ({d}%)'
-          },
-          series: [
-            {
-              type: 'pie',
-              radius: '55%',
-              center: ['50%', '50%'],
-              label: {
-                show: true,
-                position: 'outside',
-                formatter: '{b}: {d}%',
-                color: 'white',
-                align: 'center',
-                emphasis: {
-                  show: true,
-                  textStyle: {
-                    fontSize: 12
-                  }
-                }
-              },
-              color: ['#01CBE3', '#2A58DF', '#1B94E3', '#3B4F74', '#D33939', '#2407EF'],
-              data: value.data,
-              itemStyle: {
-                emphasis: {
-                  shadowBlur: 10,
-                  shadowOffsetX: 0,
-                  shadowColor: 'rgba(0, 0, 0, 0.5)'
-                }
-              }
-            }
-          ]
+        this.incomeAmount = {
+          number: value.data,
+          unitsL: '元'
         };
       }
     );
   }
-
-  // 收入类型相关操作
-  public incomeClick(e): void {
-    this.alertIncomeShow = true;
-    this.alertIncomeTitle = e.name + '收入分布统计';
-    document.body.className = 'ui-overflow-hidden';
-    this.arryIncomePie = [];
-    // tables数据
-    // this.carTableData = this.dataService.getJsonObj(8, 1000, 100, this.alertCarTitle);
+  public IncomeTypes() {
+    this.cityDataService.searchIncomeTotalPie({id: 2}).subscribe(
+      (value) => {
+        this.optionsIncomeModel = {
+          data: value.data,
+          title: '',
+          total: '',
+          color: ['#00CAE2', '#2307EF', '#4791D8']
+        };
+      }
+    );
+  }
+  public incomeDistribution(e): void {
+    // 表格
     this.cityDataService.searchIncomeAlertTable({id: 2, types: e.name}).subscribe(
       (val) => {
-        console.log(val);
-        // this.IncomeTableData = this.dataService.getIncomeObj(8, 1000, 100, this.alertIncomeTitle);
         this.IncomeTableData = val.data.contents;
       }
     );
     // 饼状图
     this.cityDataService.searchIncomeAlertPie({id: 2, types: e.name}).subscribe(
       (value) => {
-        console.log(value.data);
-        /*this.dataService.getrandomPie(9, 1000, 100).map((val, index) => {
-          this.arryIncomePie.push({value: val, name: this.citys[index]});
-        });*/
-        value.data.map((val, index) => {
-          this.arryIncomePie.push({value: 1, name: val.name});
-        });
         this.optionsIncomeTypes = {
-          title: {
-            text: `贵州省各市所有服务区今日${e.name}占比统计`,
-            x: 'center',
-            textStyle: {
-              color: '#fff',
-              fontSize: 16
-            }
-          },
-          tooltip: {
-            trigger: 'item',
-            formatter: '{a} <br/>{b} : {d}%'
-          },
-          series: [
-            {
-              name: `${e.name}`,
-              type: 'pie',
-              radius: '55%',
-              center: ['50%', '60%'],
-              data: this.arryIncomePie,
-              itemStyle: {
-                color: function (params) {
-                  return ['#CE2D79', '#BDD139', '#78E77D', '#09D4D6',
-                    '#3C75B9', '#6769B1', '#FF8C9D', '#2796C4', '#E57D0D'][params.dataIndex];
-                },
-                emphasis: {
-                  shadowBlur: 10,
-                  shadowOffsetX: 0,
-                  shadowColor: 'rgba(0, 0, 0, 0.5)'
-                }
-              }
-            }
-          ]
+          data: value.data,
+          title: `贵州省各市所有服务区今日${e.name}占比统计`,
+          total: '',
+          color: ['#CE2D79', '#BDD139', '#78E77D', '#09D4D6', '#3C75B9',
+            '#6769B1', '#FF8C9D', '#2796C4', '#E57D0D']
         };
       }
     );
   }
-
+  // 收入类型相关操作
+  public incomeClick(e): void {
+    this.alertIncomeShow = true;
+    this.alertIncomeTitle = e.name + '收入分布统计';
+    document.body.className = 'ui-overflow-hidden';
+    this.incomeDistribution(e);
+  }
   public closeIncomeShow(): void {
     document.body.className = '';
     this.alertIncomeShow = false;
   }
-
   // 收入类型弹窗
-  public optionsIncomePieInit(ec): void {
-    this.optionsCarPieInstance = ec;
-  }
-
   public optionsIncomePieClick(e) {
-    // this.IncomeAreaName = e.name;
-    this.incomeTypeisShow = false;
-    this.router.navigate(['/home/serzone', {name: e.name}]);
-    // this.IncomeTableData = this.dataService.getIncomeObj(8, 1000, 100, this.alertIncomeTitle);
+    if (e.name === '贵阳市') {
+      this.router.navigate(['/home/city', {name: e.name}]);
+    } else {
+      window.alert (`很抱歉，${e.name}暂无数据`);
+    }
   }
-
   public IncomeBtnClick(e): void {
     if (e.srcElement.innerText === '小吃') {
       this.alertIncomeTitle = '小吃收入分布统计';
       this.arryIncomePie = [];
-      // tables数据
-      // this.carTableData = this.dataService.getJsonObj(8, 1000, 100, this.alertCarTitle);
-      this.cityDataService.searchIncomeAlertTable({id: 2, types: '小吃'}).subscribe(
-        (val) => {
-          console.log(val);
-          // this.IncomeTableData = this.dataService.getIncomeObj(8, 1000, 100, this.alertIncomeTitle);
-          this.IncomeTableData = val.data.contents;
-        }
-      );
-      // 饼状图
-      this.cityDataService.searchIncomeAlertPie({id: 2, types: '小吃'}).subscribe(
-        (value) => {
-          console.log(value.data);
-          /*this.dataService.getrandomPie(9, 1000, 100).map((val, index) => {
-            this.arryIncomePie.push({value: val, name: this.citys[index]});
-          });*/
-          value.data.map((val, index) => {
-            this.arryIncomePie.push({value: 1, name: val.name});
-          });
-          this.optionsIncomeTypes = {
-            title: {
-              text: `贵州省各市所有服务区今日小吃占比统计`,
-              x: 'center',
-              textStyle: {
-                color: '#fff',
-                fontSize: 16
-              }
-            },
-            tooltip: {
-              trigger: 'item',
-              formatter: '{a} <br/>{b} : {d}%'
-            },
-            series: [
-              {
-                name: `${e.name}`,
-                type: 'pie',
-                radius: '55%',
-                center: ['50%', '60%'],
-                data: this.arryIncomePie,
-                itemStyle: {
-                  color: function (params) {
-                    return ['#CE2D79', '#BDD139', '#78E77D', '#09D4D6',
-                      '#3C75B9', '#6769B1', '#FF8C9D', '#2796C4', '#E57D0D'][params.dataIndex];
-                  },
-                  emphasis: {
-                    shadowBlur: 10,
-                    shadowOffsetX: 0,
-                    shadowColor: 'rgba(0, 0, 0, 0.5)'
-                  }
-                }
-              }
-            ]
-          };
-        }
-      );
-    }
-    else if (e.srcElement.innerText === '中式快餐') {
+      this.incomeDistribution({name: e.srcElement.innerText });
+    } else if (e.srcElement.innerText === '中式快餐') {
       this.alertIncomeTitle = '中式快餐收入分布统计';
       this.arryIncomePie = [];
-      // tables数据
-      // this.carTableData = this.dataService.getJsonObj(8, 1000, 100, this.alertCarTitle);
-      this.cityDataService.searchIncomeAlertTable({id: 2, types: '中式快餐'}).subscribe(
-        (val) => {
-          console.log(val);
-          // this.IncomeTableData = this.dataService.getIncomeObj(8, 1000, 100, this.alertIncomeTitle);
-          this.IncomeTableData = val.data.contents;
-        }
-      );
-      // 饼状图
-      this.cityDataService.searchIncomeAlertPie({id: 2, types: '中式快餐'}).subscribe(
-        (value) => {
-          console.log(value.data);
-          /*this.dataService.getrandomPie(9, 1000, 100).map((val, index) => {
-            this.arryIncomePie.push({value: val, name: this.citys[index]});
-          });*/
-          value.data.map((val, index) => {
-            this.arryIncomePie.push({value: 1, name: val.name});
-          });
-          this.optionsIncomeTypes = {
-            title: {
-              text: `贵州省各市所有服务区今日小吃占比统计`,
-              x: 'center',
-              textStyle: {
-                color: '#fff',
-                fontSize: 16
-              }
-            },
-            tooltip: {
-              trigger: 'item',
-              formatter: '{a} <br/>{b} : {d}%'
-            },
-            series: [
-              {
-                name: `${e.name}`,
-                type: 'pie',
-                radius: '55%',
-                center: ['50%', '60%'],
-                data: this.arryIncomePie,
-                itemStyle: {
-                  color: function (params) {
-                    return ['#CE2D79', '#BDD139', '#78E77D', '#09D4D6',
-                      '#3C75B9', '#6769B1', '#FF8C9D', '#2796C4', '#E57D0D'][params.dataIndex];
-                  },
-                  emphasis: {
-                    shadowBlur: 10,
-                    shadowOffsetX: 0,
-                    shadowColor: 'rgba(0, 0, 0, 0.5)'
-                  }
-                }
-              }
-            ]
-          };
-        }
-      );
-    }
-    else if (e.srcElement.innerText === '西式快餐') {
+      this.incomeDistribution({name: e.srcElement.innerText });
+    } else if (e.srcElement.innerText === '西式快餐') {
       this.alertIncomeTitle = '西式快餐收入分布统计';
       this.arryIncomePie = [];
-      // tables数据
-      // this.carTableData = this.dataService.getJsonObj(8, 1000, 100, this.alertCarTitle);
-      this.cityDataService.searchIncomeAlertTable({id: 2, types: '西式快餐'}).subscribe(
-        (val) => {
-          console.log(val);
-          // this.IncomeTableData = this.dataService.getIncomeObj(8, 1000, 100, this.alertIncomeTitle);
-          this.IncomeTableData = val.data.contents;
-        }
-      );
-      // 饼状图
-      this.cityDataService.searchIncomeAlertPie({id: 2, types: '西式快餐'}).subscribe(
-        (value) => {
-          console.log(value.data);
-          /*this.dataService.getrandomPie(9, 1000, 100).map((val, index) => {
-            this.arryIncomePie.push({value: val, name: this.citys[index]});
-          });*/
-          value.data.map((val, index) => {
-            this.arryIncomePie.push({value: 1, name: val.name});
-          });
-          this.optionsIncomeTypes = {
-            title: {
-              text: `贵州省各市所有服务区今日小吃占比统计`,
-              x: 'center',
-              textStyle: {
-                color: '#fff',
-                fontSize: 16
-              }
-            },
-            tooltip: {
-              trigger: 'item',
-              formatter: '{a} <br/>{b} : {d}%'
-            },
-            series: [
-              {
-                name: `${e.name}`,
-                type: 'pie',
-                radius: '55%',
-                center: ['50%', '60%'],
-                data: this.arryIncomePie,
-                itemStyle: {
-                  color: function (params) {
-                    return ['#CE2D79', '#BDD139', '#78E77D', '#09D4D6',
-                      '#3C75B9', '#6769B1', '#FF8C9D', '#2796C4', '#E57D0D'][params.dataIndex];
-                  },
-                  emphasis: {
-                    shadowBlur: 10,
-                    shadowOffsetX: 0,
-                    shadowColor: 'rgba(0, 0, 0, 0.5)'
-                  }
-                }
-              }
-            ]
-          };
-        }
-      );
-    }
-    else if (e.srcElement.innerText === '商超') {
+      this.incomeDistribution({name: e.srcElement.innerText });
+    } else if (e.srcElement.innerText === '商超') {
       this.alertIncomeTitle = '商超收入分布统计';
       this.arryIncomePie = [];
-      // tables数据
-      // this.carTableData = this.dataService.getJsonObj(8, 1000, 100, this.alertCarTitle);
-      this.cityDataService.searchIncomeAlertTable({id: 2, types: '商超'}).subscribe(
-        (val) => {
-          console.log(val);
-          // this.IncomeTableData = this.dataService.getIncomeObj(8, 1000, 100, this.alertIncomeTitle);
-          this.IncomeTableData = val.data.contents;
-        }
-      );
-      // 饼状图
-      this.cityDataService.searchIncomeAlertPie({id: 2, types: '商超'}).subscribe(
-        (value) => {
-          console.log(value.data);
-          /*this.dataService.getrandomPie(9, 1000, 100).map((val, index) => {
-            this.arryIncomePie.push({value: val, name: this.citys[index]});
-          });*/
-          value.data.map((val, index) => {
-            this.arryIncomePie.push({value: 1, name: val.name});
-          });
-          this.optionsIncomeTypes = {
-            title: {
-              text: `贵州省各市所有服务区今日小吃占比统计`,
-              x: 'center',
-              textStyle: {
-                color: '#fff',
-                fontSize: 16
-              }
-            },
-            tooltip: {
-              trigger: 'item',
-              formatter: '{a} <br/>{b} : {d}%'
-            },
-            series: [
-              {
-                name: `${e.name}`,
-                type: 'pie',
-                radius: '55%',
-                center: ['50%', '60%'],
-                data: this.arryIncomePie,
-                itemStyle: {
-                  color: function (params) {
-                    return ['#CE2D79', '#BDD139', '#78E77D', '#09D4D6',
-                      '#3C75B9', '#6769B1', '#FF8C9D', '#2796C4', '#E57D0D'][params.dataIndex];
-                  },
-                  emphasis: {
-                    shadowBlur: 10,
-                    shadowOffsetX: 0,
-                    shadowColor: 'rgba(0, 0, 0, 0.5)'
-                  }
-                }
-              }
-            ]
-          };
-        }
-      );
-    }
-    else if (e.srcElement.innerText === '住宿') {
+      this.incomeDistribution({name: e.srcElement.innerText });
+    } else if (e.srcElement.innerText === '住宿') {
       this.alertIncomeTitle = '住宿收入分布统计';
       this.arryIncomePie = [];
-      // tables数据
-      // this.carTableData = this.dataService.getJsonObj(8, 1000, 100, this.alertCarTitle);
-      this.cityDataService.searchIncomeAlertTable({id: 2, types: '住宿'}).subscribe(
-        (val) => {
-          console.log(val);
-          // this.IncomeTableData = this.dataService.getIncomeObj(8, 1000, 100, this.alertIncomeTitle);
-          this.IncomeTableData = val.data.contents;
-        }
-      );
-      // 饼状图
-      this.cityDataService.searchIncomeAlertPie({id: 2, types: '住宿'}).subscribe(
-        (value) => {
-          console.log(value.data);
-          /*this.dataService.getrandomPie(9, 1000, 100).map((val, index) => {
-            this.arryIncomePie.push({value: val, name: this.citys[index]});
-          });*/
-          value.data.map((val, index) => {
-            this.arryIncomePie.push({value: 1, name: val.name});
-          });
-          this.optionsIncomeTypes = {
-            title: {
-              text: `贵州省各市所有服务区今日小吃占比统计`,
-              x: 'center',
-              textStyle: {
-                color: '#fff',
-                fontSize: 16
-              }
-            },
-            tooltip: {
-              trigger: 'item',
-              formatter: '{a} <br/>{b} : {d}%'
-            },
-            series: [
-              {
-                name: `${e.name}`,
-                type: 'pie',
-                radius: '55%',
-                center: ['50%', '60%'],
-                data: this.arryIncomePie,
-                itemStyle: {
-                  color: function (params) {
-                    return ['#CE2D79', '#BDD139', '#78E77D', '#09D4D6',
-                      '#3C75B9', '#6769B1', '#FF8C9D', '#2796C4', '#E57D0D'][params.dataIndex];
-                  },
-                  emphasis: {
-                    shadowBlur: 10,
-                    shadowOffsetX: 0,
-                    shadowColor: 'rgba(0, 0, 0, 0.5)'
-                  }
-                }
-              }
-            ]
-          };
-        }
-      );
-    }
-    else if (e.srcElement.innerText === '汽修') {
+      this.incomeDistribution({name: e.srcElement.innerText });
+    } else if (e.srcElement.innerText === '汽修') {
       this.alertIncomeTitle = '汽修收入分布统计';
       this.arryIncomePie = [];
-      // tables数据
-      // this.carTableData = this.dataService.getJsonObj(8, 1000, 100, this.alertCarTitle);
-      this.cityDataService.searchIncomeAlertTable({id: 2, types: '汽修'}).subscribe(
-        (val) => {
-          console.log(val);
-          // this.IncomeTableData = this.dataService.getIncomeObj(8, 1000, 100, this.alertIncomeTitle);
-          this.IncomeTableData = val.data.contents;
-        }
-      );
-      // 饼状图
-      this.cityDataService.searchIncomeAlertPie({id: 2, types: '汽修'}).subscribe(
-        (value) => {
-          console.log(value.data);
-          /*this.dataService.getrandomPie(9, 1000, 100).map((val, index) => {
-            this.arryIncomePie.push({value: val, name: this.citys[index]});
-          });*/
-          value.data.map((val, index) => {
-            this.arryIncomePie.push({value: 1, name: val.name});
-          });
-          this.optionsIncomeTypes = {
-            title: {
-              text: `贵州省各市所有服务区今日汽修占比统计`,
-              x: 'center',
-              textStyle: {
-                color: '#fff',
-                fontSize: 16
-              }
-            },
-            tooltip: {
-              trigger: 'item',
-              formatter: '{a} <br/>{b} : {d}%'
-            },
-            series: [
-              {
-                name: `${e.name}`,
-                type: 'pie',
-                radius: '55%',
-                center: ['50%', '60%'],
-                data: this.arryIncomePie,
-                itemStyle: {
-                  color: function (params) {
-                    return ['#CE2D79', '#BDD139', '#78E77D', '#09D4D6',
-                      '#3C75B9', '#6769B1', '#FF8C9D', '#2796C4', '#E57D0D'][params.dataIndex];
-                  },
-                  emphasis: {
-                    shadowBlur: 10,
-                    shadowOffsetX: 0,
-                    shadowColor: 'rgba(0, 0, 0, 0.5)'
-                  }
-                }
-              }
-            ]
-          };
-        }
-      );
+      this.incomeDistribution({name: e.srcElement.innerText });
     }
   }
-
   public IncomeTableClick(e): void {
     this.router.navigate(['/home/serzone', {name: e}]);
-  }
-
-  public echarIncomeBtn(e): void {
-    this.incomeTypeisShow = true;
-    this.IncomeAreaName = e.srcElement.innerText;
-    this.arryIncomePie = [];
-    this.dataService.getrandomPie(9, 1000, 100).map((val, index) => {
-      this.arryIncomePie.push({value: val, name: this.citys[index]});
-    });
-    this.optionsIncomeTypes = {
-      title: {
-        text: `贵州省各市所有服务区当日${e.name}类型占比统计`,
-        x: 'center',
-        textStyle: {
-          color: '#fff',
-          fontSize: 16
-        }
-      },
-      tooltip: {
-        trigger: 'item',
-        formatter: '{a} <br/>{b} : {c} ({d}%)'
-      },
-      series: [
-        {
-          name: `${e.name}`,
-          type: 'pie',
-          radius: '50%',
-          center: ['50%', '50%'],
-          data: this.arryIncomePie,
-          itemStyle: {
-            color: function (params) {
-              return ['#CE2D79', '#BDD139', '#78E77D', '#09D4D6', '#3C75B9', '#6769B1', '#FF8C9D', '#2796C4', '#E57D0D'][params.dataIndex];
-            },
-            emphasis: {
-              shadowBlur: 10,
-              shadowOffsetX: 0,
-              shadowColor: 'rgba(0, 0, 0, 0.5)'
-            }
-          }
-        }
-      ]
-    };
-    this.IncomeTableData = this.dataService.getIncomeObj(8, 1000, 100, this.alertIncomeTitle);
   }
 
   // 表格导出
@@ -2633,17 +835,12 @@ export class CityDataComponent implements OnInit, OnDestroy {
 
   // 图表更新
   public updataEcharts(): void {
-
     // 3D柱状图
     this.packOption3();
-    //  高速服务区分布散点统计
-    // this.centerMap();
-    // this.centerMap1();
-
     /**************************中部****************************/
     this.centerMap2();
     // 事件
-    this.eventTypes = this.dataService.eventTypes;
+    this.initialize();
     // 办公
     this.officeTypes = this.dataService.officeTypes;
     // 个人
@@ -2668,70 +865,10 @@ export class CityDataComponent implements OnInit, OnDestroy {
     this.personAmountCountClean = setInterval(() => {
       this.cityDataService.searchPersonTotal({id: 2}).subscribe(
         (val) => {
-          console.log(val.data.toString().split(''));
           this.localService.persons.next(val.data.toString().split(''));
         }
       );
     }, 5000);
-
-    // 月度所有服务区车辆流量柱状图统计
-    this.optionsCar = {
-      title: {
-        text: '月度车流量实时监控（辆）',
-        left: 'center',
-        textStyle: {
-          color: 'white',
-          fontWeight: 500,
-          fontSize: 14
-        }
-      },
-      tooltip: {
-        trigger: 'axis'
-      },
-      dataZoom: [
-        {
-          type: 'inside'
-        }
-      ],
-      grid: {
-        left: '5%',
-        top: '15%',
-        bottom: '3%',
-        right: '5%',
-        containLabel: true
-      },
-      xAxis: {
-        type: 'category',
-        axisLine: {
-          lineStyle: {
-            color: 'white'
-          }
-        },
-        data: ['1月', '2月', '3月', '4月', '5月', '6月']
-      },
-      yAxis: {
-        name: '车辆数量',
-        type: 'value',
-        splitLine: {show: false},
-        nameTextStyle: {
-          color: 'white'
-        },
-        axisLine: {
-          lineStyle: {
-            color: 'white'
-          }
-        },
-      },
-      series: [
-        {
-          type: 'bar',
-          name: '车辆数量',
-          color: ['#d82c26'],
-          smooth: true,
-          data: [120, 200, 150, 80, 70, 110],
-        }
-      ]
-    };
   }
 
 }

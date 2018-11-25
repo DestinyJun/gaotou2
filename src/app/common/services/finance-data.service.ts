@@ -59,11 +59,14 @@ export class FinanceDataService {
   public searchPersonTotal(params): Observable<any> {
     return this.http.get(`${this.globalService.urlc}/realTime/passenger/province/total/${params.id}`);
   }
-  // 事件分类
+  // 事件类型
   public searchEventCategory(): Observable<any> {
     return this.http.get(`${this.globalService.urls}/common/config/eventCategory/getAll`);
   }
   public searchEventCategoryCount(params): Observable<any> {
     return this.http.post(`${this.globalService.urlc}/event/administrativeArea/countNoProcess/${params.id}`, params.list);
+  }
+  public searchEventsTypeList(params): Observable<any> {
+    return this.http.get(`${this.globalService.urlc}/event/administrativeArea/2/eventCategory/${params.eventCategoryCode}/eventState/${params.processState}/queryByPaging/${params.page}/${params.nums}`);
   }
 }

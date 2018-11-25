@@ -49,3 +49,17 @@
   background: red;
   line-height: 20px;
 }
+/***********************************primeng虚拟滚动*****************************/
+.custom .ui-scrollpanel-wrapper {
+  border: none; /*控制滚动轴背景色*/
+}
+
+.custom .ui-scrollpanel-bar {
+  background-color: transparent;
+  opacity: 1;
+  transition: background-color .3s;
+}
+
+.custom .ui-scrollpanel-bar:hover {
+  background-color: #135ba1;
+}

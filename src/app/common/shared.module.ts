@@ -14,6 +14,10 @@ import { EchartCrossbarComponent } from './components/echart-crossbar/echart-cro
 import { NumberShowComponent } from './components/number-show/number-show.component';
 import { EventStatisticComponent } from './components/event-statistic/event-statistic.component';
 import { TitleOneComponent } from './components/title-one/title-one.component';
+import {EventListComponent} from './components/event-list/event-list.component';
+import { EventListInfoComponent } from './components/event-list-info/event-list-info.component';
+import { EventOfficeComponent } from './components/event-office/event-office.component';
+import { EventPersonComponent } from './components/event-person/event-person.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +30,11 @@ import { TitleOneComponent } from './components/title-one/title-one.component';
     EchartCrossbarComponent,
     NumberShowComponent,
     EventStatisticComponent,
-    TitleOneComponent
+    TitleOneComponent,
+    EventListComponent,
+    EventListInfoComponent,
+    EventOfficeComponent,
+    EventPersonComponent
   ],
   imports: [
     CommonModule,
@@ -47,7 +55,11 @@ import { TitleOneComponent } from './components/title-one/title-one.component';
     EchartCrossbarComponent,
     NumberShowComponent,
     EventStatisticComponent,
-    TitleOneComponent
+    TitleOneComponent,
+    EventListComponent,
+    EventListInfoComponent,
+    EventOfficeComponent,
+    EventPersonComponent
   ],
   providers: []
 })

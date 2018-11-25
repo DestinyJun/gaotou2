@@ -1,0 +1,30 @@
+<p-scrollPanel [style]="{width: width, height: height,background: 'rgba(32,36,45,0.9)'}" styleClass="custom" *ngIf="option">
+  <div style="background: rgba(32,36,45,0.9)">
+    <h4>事件详情信息</h4>
+    <p>
+      <span style="color:#4B8FD6">事件发生时间：</span><span>{{option?.occurTime | date:'yyyy-MM-dd HH:mm:ss'}}</span>
+    </p>
+    <p>
+      <span style="color:#4B8FD6">事件类型：</span><span>{{option?.eventCategoryName}}</span>
+    </p>
+    <p>
+      <span style="color:#4B8FD6">事件发生地点：</span><span>{{option?.eventSubject}}</span>
+    </p>
+    <p>
+      <span style="color:#4B8FD6">事件名称：</span><span>{{option?.eventName}}</span>
+    </p>
+    <p>
+      <span style="color:#4B8FD6">事件描述：</span><span>{{option?.eventDescripte}}</span>
+    </p>
+    <p>
+      <span style="color:#4B8FD6">事件负责人：</span><span>{{option?.principal}}</span>
+    </p>
+    <p>
+      <span style="color:#4B8FD6">处理状态：</span><span [ngStyle]="{'color':option?.processState===1?'#68E868': '#C05854'}">{{option?.processState===1?'已处理':'未处理'}}</span>
+    </p>
+  </div>
+</p-scrollPanel>
+<div *ngIf="!option">
+  <h4 class="text-center text-danger">请点击左侧列表查看详情</h4>
+</div>
+
