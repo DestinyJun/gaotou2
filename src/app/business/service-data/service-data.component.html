@@ -12,8 +12,61 @@
           <span></span>
           <p>{{serviceZoneTitle}}业态数据3D统计</p>
         </div>
-        <div class="accumulation-3Dbar" echarts [options]="options3d" (chartClick)="barClick($event)"></div>
-        <div class="accumulation-3Dbar" echarts [options]="options3dCopy" (chartClick)="barCopyClick($event)"></div>
+        <app-echart3d
+          [option]="options3d"
+          [color]="['#9B90D5', '#46E7E2', '#78F991']"
+          (outOptions3d)="onOutOptions3d($event)"
+        ></app-echart3d>
+        <app-echart3d
+          [option]="options3dCopy"
+          [color]="['#D06052', '#E29F39']"
+          (outOptions3d)="onOutOptions3d($event)"
+        ></app-echart3d>
+        <!--3D柱状图弹窗-->
+        <div class="bg-box" *ngIf="alertBarShow">
+          <div class="alert-3D-bar">
+            <div class="alert-3D-bar-header">
+              <span>{{alertBarTitle}}</span>
+              <div class="pull-right" (click)="closeBarShow()">
+                <i class="fa fa-window-close " aria-hidden="true"></i>
+              </div>
+            </div>
+            <div class="row bar3D-charts">
+              <div class="col-ld-6 col-md-6">
+                <div class="alert-3D-bar-bar" echarts [options]="options3dBar" (chartInit)="options3dBarInit($event)" (chartClick)="options3dBarClick($event)"></div>
+              </div>
+              <div class="col-ld-6 col-md-6">
+                <div class="alert-3D-bar-bar" echarts [options]="options3dLine"></div>
+              </div>
+              <p class="toggle-btn-area-table" (click)="open3dBarExcel()">表格导出</p>
+            </div>
+            <!--表格导出-->
+            <div class="bg-excel" *ngIf="bar3dExcelShow">
+              <div class="alert-window-excel">
+                <div class="alert-window-excel-header">
+                  <span>收入数据表格导出</span>
+                  <div class="pull-right" (click)="close3dBarExcel()">
+                    <i class="fa fa-window-close " aria-hidden="true"></i>
+                  </div>
+                </div>
+                <div class="alert-window-excel-content">
+                  <div class="alert-window-excel-content-list">
+                    <label>请选择开始时间：</label>
+                    <p-calendar placeholder="请点击选择时间......" [locale]="esDate" [(ngModel)]="startTime3d" [monthNavigator]="true" [yearNavigator]="true" dateFormat="yymmdd"  yearRange="2017:2030"></p-calendar>
+                  </div>
+                  <div class="alert-window-excel-content-list">
+                    <label>请选择结束时间：</label>
+                    <p-calendar placeholder="请点击选择时间......" [locale]="esDate" [(ngModel)]="endTime3d" [monthNavigator]="true" [yearNavigator]="true" dateFormat="yymmdd"  yearRange="2017:2030"></p-calendar>
+                  </div>
+                </div>
+                <div class="alert-window-excel-footer text-center">
+                  <span (click)="bar3dExportClick()">确认导出</span>
+                  <span (click)="close3dBarExcel()">取消导出</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <!--移动端车流量-->
       <div class="income mobile">
@@ -260,51 +313,6 @@
   </div>
 </div>
 <!--*************************弹窗部分**************************-->
-<!--3D柱状图弹窗-->
-<div class="bg-box" *ngIf="alertBarShow">
-  <div class="alert-3D-bar">
-    <div class="alert-3D-bar-header">
-      <span>{{alertBarTitle}}</span>
-      <div class="pull-right" (click)="closeBarShow()">
-        <i class="fa fa-window-close " aria-hidden="true"></i>
-      </div>
-    </div>
-    <div class="row bar3D-charts">
-      <div class="col-ld-6 col-md-6">
-        <div class="alert-3D-bar-bar" echarts [options]="options3dBar" (chartInit)="options3dBarInit($event)" (chartClick)="options3dBarClick($event)"></div>
-      </div>
-      <div class="col-ld-6 col-md-6">
-        <div class="alert-3D-bar-bar" echarts [options]="options3dLine"></div>
-      </div>
-      <p class="toggle-btn-area-table" (click)="open3dBarExcel()">表格导出</p>
-    </div>
-    <!--表格导出-->
-    <div class="bg-excel" *ngIf="bar3dExcelShow">
-      <div class="alert-window-excel">
-        <div class="alert-window-excel-header">
-          <span>收入数据表格导出</span>
-          <div class="pull-right" (click)="close3dBarExcel()">
-            <i class="fa fa-window-close " aria-hidden="true"></i>
-          </div>
-        </div>
-        <div class="alert-window-excel-content">
-          <div class="alert-window-excel-content-list">
-            <label>请选择开始时间：</label>
-            <p-calendar placeholder="请点击选择时间......" [locale]="esDate" [(ngModel)]="startTime3d" [monthNavigator]="true" [yearNavigator]="true" dateFormat="yymmdd"  yearRange="2017:2030"></p-calendar>
-          </div>
-          <div class="alert-window-excel-content-list">
-            <label>请选择结束时间：</label>
-            <p-calendar placeholder="请点击选择时间......" [locale]="esDate" [(ngModel)]="endTime3d" [monthNavigator]="true" [yearNavigator]="true" dateFormat="yymmdd"  yearRange="2017:2030"></p-calendar>
-          </div>
-        </div>
-        <div class="alert-window-excel-footer text-center">
-          <span (click)="bar3dExportClick()">确认导出</span>
-          <span (click)="close3dBarExcel()">取消导出</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
 <!--车辆类型弹窗-->
 <div class="bg-box" *ngIf="alertCarShow">
   <div class="alert-window">

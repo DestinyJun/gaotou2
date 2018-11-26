@@ -1,22 +1,15 @@
 import {
-  Component, ElementRef, OnDestroy,
+  Component, OnDestroy,
   OnInit, ViewEncapsulation,
 } from '@angular/core';
-import {Data3dService} from '../../common/services/data3d.service';
-import {DiagramService} from '../../common/services/diagram.service';
 import {ActivatedRoute} from '@angular/router';
 import {DataService} from '../../common/services/data.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {AttributeValue, EventListInfo, UploadEventInfoUp} from '../../common/model/service-data.model';
+import {EventListInfo, UploadEventInfoUp} from '../../common/model/service-data.model';
 import {ServiceDataService} from '../../common/services/service-data.service';
 import {LocalStorageService} from '../../common/services/local-storage.service';
-import {Bar3dExportType, CarExportType, IncomeExportType} from '../../common/model/shared.model';
+import {IncomeExportType} from '../../common/model/shared.model';
 import {DatePipe} from '@angular/common';
-
-declare let BMap;
-declare let BMapLib;
-declare let BMAP_SATELLITE_MAP;
-
 @Component({
   selector: 'app-service-data',
   templateUrl: './service-data.component.html',
@@ -33,19 +26,15 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   // 服务区名称
   public serviceZoneTitle: string;
   public citys = ['贵阳市', '遵义市', '六盘水市', '安顺市', '毕节市', '铜仁市', '黔东南苗族侗族自治州', '黔南布依族苗族自治州', '黔西南布依族苗族自治州'];
-  public business = ['住宿', '汽修', '商超', '小吃', '西式快餐', '中式快餐'];
   /***********************左边************************/
-    //  高速服液态数据3d统计
-  public options3d = {};
-  public options3dCopy = {};
-  public options3dArray: any;
-
-  // 3D柱状图弹窗
-  public alertBarShow = false;
+  //  3D柱状图配置
+  public options3d: any;
+  public options3dCopy: any;
+  public alertBarShow = false;   // 3D柱状图弹窗
   public alertBarTitle: string;
   public options3dBar = {};
-  public options3dBarInstance: any;
   public options3dLine = {};
+  public outOptions3d: any; // 3D图组件传出来的值
   public colorList = [
     '#356981', '#356981', '#356981', '#356981', '#356981', '#356981',
     '#356981', '#356981', '#356981', '#356981', '#356981 ', '#356981'
@@ -157,7 +146,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    console.log(this.localService.getObject('userDTO'));
     this.serareaService.searchSerAraItem(1).subscribe(
       (value) => {
         console.log(value.data);
@@ -223,249 +211,52 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     // 车流客流人流
     this.serareaService.search3DBar({id: 2, parameter: ['revenue', 'passenger', 'vehicle']}).subscribe(
       (val) => {
-        console.log(val);
-        const xdata = val.data.xdata;
-        const yData = val.data.yData;
-        const coordinate = val.data.coordinate;
-        this.options3d = {
-          tooltip: {
-            show: true,
-            trigger: 'item',
-            axisPointer: {
-              type: 'cross',
-              axis: 'auto',
-            },
-            formatter: function (params) {
-              let res = `<p>${xdata[params.value[0]]}:</p>`;
-              res += `<p style='margin-left:3px'>${yData[params.value[1]]}:${params.value[3]}</p>`;
-              return res;
-            }
-          },
-          xAxis3D: {
-            type: 'category',
-            name: '月份',
-            data: xdata,
-            splitLine: {show: false},
-            nameTextStyle: {
-              color: 'transparent'
-            },
-            axisLine: {
-              lineStyle: {
-                color: 'white'
-              }
-            },
-          },
-          yAxis3D: {
-            type: 'category',
-            data: yData,
-            name: '类型',
-            splitLine: {show: false},
-            nameTextStyle: {
-              color: 'transparent'
-            },
-            axisLine: {
-              lineStyle: {
-                color: 'white'
-              }
-            },
-          },
-          zAxis3D: {
-            type: 'value',
-            name: '%',
-            splitLine: {show: false},
-            nameTextStyle: {
-              top: '3%',
-              left: '5%',
-              show: false,
-              color: 'transparent'
-            },
-            axisLine: {
-              lineStyle: {
-                color: 'white'
-              }
-            },
-          },
-          grid3D: {
-            boxWidth: 200,
-            boxDepth: 80,
-            light: {
-              main: {
-                intensity: 1.2
-              },
-              ambient: {
-                intensity: 0.3
-              }
-            },
-            viewControl: {
-              distance: 270,
-            }
-          },
-          series: [
-            {
-              type: 'bar3D',
-              barWidth: 30, // 柱图宽度
-              // data: this.data3dS.data3dFac(), // 这种方式点击函数打不开
-              /*data的两种的请求方式*/
-              data: coordinate.map(function (item) {
-                return {value: [item[0], item[1], item[2], item[3]]};
-              }),
-              // 柱状图阴影
-              shading: 'lambert',
-              label: {
-                // 柱状图的数值是否显示
-                show: false,
-                textStyle: {
-                  fontSize: 16,
-                  borderWidth: 1
-                }
-              },
-              // 柱状图主子的样式
-              itemStyle: {
-                opacity: 0.9,
-                color: function (params) {
-                  return ['#9B90D5', '#46E7E2', '#78F991', '#0B38D8', '#027405'][params.value[1]];
-                },
-              },
-              emphasis: {
-                label: {
-                  textStyle: {
-                    fontSize: 20,
-                    color: '#002140'
-                  }
-                },
-                itemStyle: {
-                  color: '#FF2600'
-                }
-              }
-            }
-          ]
-        };
+        if (val.status === '200') {
+          this.options3d = val.data;
+        }
       }
     );
     // 用电量用水量
     this.serareaService.search3DBar({id: 2, parameter: ['electric', 'water']}).subscribe(
       (val) => {
-        console.log(val);
-        const xdata = val.data.xdata;
-        const yData = val.data.yData;
-        const coordinate = val.data.coordinate;
-        this.options3dCopy = {
-          tooltip: {
-            show: true,
-            trigger: 'item',
-            axisPointer: {
-              type: 'cross',
-              axis: 'auto',
-            },
-            formatter: function (params) {
-              let res = `<p>${xdata[params.value[0]]}:</p>`;
-              res += `<p style='margin-left:3px'>${yData[params.value[1]]}:${params.value[3]}</p>`;
-              return res;
-            }
-          },
-          xAxis3D: {
-            type: 'category',
-            name: '月份',
-            data: val.data.xdata,
-            splitLine: {show: false},
-            nameTextStyle: {
-              color: 'transparent'
-            },
-            axisLine: {
-              lineStyle: {
-                color: 'white'
-              }
-            },
-          },
-          yAxis3D: {
-            type: 'category',
-            data: val.data.yData,
-            name: '类型',
-            splitLine: {show: false},
-            nameTextStyle: {
-              color: 'transparent'
-            },
-            axisLine: {
-              lineStyle: {
-                color: 'white'
-              }
-            },
-          },
-          zAxis3D: {
-            type: 'value',
-            name: '%',
-            splitLine: {show: false},
-            nameTextStyle: {
-              top: '3%',
-              left: '5%',
-              show: false,
-              color: 'transparent'
-            },
-            axisLine: {
-              lineStyle: {
-                color: 'white'
-              }
-            },
-          },
-          grid3D: {
-            boxWidth: 200,
-            boxDepth: 80,
-            light: {
-              main: {
-                intensity: 1.2
-              },
-              ambient: {
-                intensity: 0.3
-              }
-            },
-            viewControl: {
-              distance: 270,
-            }
-          },
-          series: [
-            {
-              type: 'bar3D',
-              barWidth: 30, // 柱图宽度
-              // data: this.data3dS.data3dFac(), // 这种方式点击函数打不开
-              /*data的两种的请求方式*/
-              data: coordinate.map(function (item) {
-                return {value: [item[0], item[1], item[2], item[3]]};
-              }),
-              // 柱状图阴影
-              shading: 'lambert',
-              label: {
-                // 柱状图的数值是否显示
-                show: false,
-                textStyle: {
-                  fontSize: 16,
-                  borderWidth: 1
-                }
-              },
-              // 柱状图主子的样式
-              itemStyle: {
-                opacity: 0.9,
-                color: function (params) {
-                  return ['#D06052', '#E29F39', '#9B90D5', '#46E7E2', '#78F991'][params.value[1]];
-                },
-              },
-              emphasis: {
-                label: {
-                  textStyle: {
-                    fontSize: 20,
-                    color: '#002140'
-                  }
-                },
-                itemStyle: {
-                  color: '#FF2600'
-                }
-              }
-            }
-          ]
-        };
+        if (val.status === '200') {
+          this.options3dCopy = val.data;
+        }
       }
     );
   }
-
+  public onOutOptions3d(e): void {
+    this.outOptions3d = e;
+    document.body.className = 'ui-overflow-hidden';
+    this.alertBarShow = true;
+    this.alertBarTitle = this.outOptions3d.alertBarTitle;
+    // 柱状图
+    this.serareaService.search3DAlertBar({id: 1, types: this.outOptions3d.bar.types}).subscribe(
+      (val) => {
+        if (val.status === '200') {
+          this.options3dBar = {
+            data: val.data,
+            xType: this.outOptions3d.pie.xType,
+            title: `贵州省所有服务区年度${this.outOptions3d.alertBarTitle}统计`
+          };
+        }
+      }
+    );
+    // 类型占比扇形图
+   /* this.financeDataService.search3DAlertPie({id: 2, xType: this.outOptions3d.pie.xType, types: this.outOptions3d.pie.types}).subscribe(
+      (val) => {
+        if (val.status === '200') {
+          this.options3dPie = {
+            data: val.data,
+            title: `贵州省所有服务区年度${this.outOptions3d.alertBarTitle}类型占比统计`,
+            total: this.outOptions3d.total,
+            color: ['#CE2D79', '#BDD139', '#78E77D', '#09D4D6', '#3C75B9',
+              '#6769B1', '#FF8C9D', '#2796C4', '#E57D0D']
+          };
+        }
+      }
+    );*/
+  }
   //  3D柱状图的相关点击事件
   public barClick(e): void {
     const that = this;
@@ -567,7 +358,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     this.serareaService.search3DAlertLineMonth({id: 1, types: timeType[yAxis]}).subscribe(
       (val) => {
         console.log(val);
-        this.options3dBar = {
+        /*this.options3dBar = {
           title: [
             {
               text: `贵州省所有服务区年度${types(yAxis)}统计`,
@@ -639,7 +430,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
                 },
               }
             }]
-        };
+        };*/
       }
     );
     const xAxisData = ['00:00', '02:00', '04:00', '06:00', '08:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00'];
@@ -704,7 +495,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       ],
       series: serieData
     };
-
     function types(value): string {
       let typeValue = '';
       switch (value) {

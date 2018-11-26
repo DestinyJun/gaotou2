@@ -3,9 +3,6 @@ import { CommonModule } from '@angular/common';
 import {HttpClientModule} from '@angular/common/http';
 import {NgxEchartsModule} from 'ngx-echarts';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import { TableMenuComponent } from './components/table-menu/table-menu.component';
-import { TimerShaftCrosswiseComponent } from './components/timer-shaft-crosswise/timer-shaft-crosswise.component';
-import { TimerShaftLengthwaysComponent } from './components/timer-shaft-lengthways/timer-shaft-lengthways.component';
 import { Echart3dComponent } from './components/echart3d/echart3d.component';
 import {CalendarModule, ScrollPanelModule} from 'primeng/primeng';
 import { EchartBasicbarComponent } from './components/echart-basicbar/echart-basicbar.component';
@@ -22,9 +19,6 @@ import { EchartBmapComponent } from './components/echart-bmap/echart-bmap.compon
 
 @NgModule({
   declarations: [
-    TableMenuComponent,
-    TimerShaftCrosswiseComponent,
-    TimerShaftLengthwaysComponent,
     Echart3dComponent,
     EchartBasicbarComponent,
     EchartPieComponent,
@@ -49,9 +43,6 @@ import { EchartBmapComponent } from './components/echart-bmap/echart-bmap.compon
   ],
   exports: [
     NgxEchartsModule,
-    TableMenuComponent,
-    TimerShaftCrosswiseComponent,
-    TimerShaftLengthwaysComponent,
     Echart3dComponent,
     EchartBasicbarComponent,
     EchartPieComponent,

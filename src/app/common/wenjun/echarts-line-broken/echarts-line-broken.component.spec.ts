@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TableMenuComponent } from './table-menu.component';
+import { EchartsLineBrokenComponent } from './echarts-line-broken.component';
 
-describe('TableMenuComponent', () => {
-  let component: TableMenuComponent;
-  let fixture: ComponentFixture<TableMenuComponent>;
+describe('EchartsLineBrokenComponent', () => {
+  let component: EchartsLineBrokenComponent;
+  let fixture: ComponentFixture<EchartsLineBrokenComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TableMenuComponent ]
+      declarations: [ EchartsLineBrokenComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TableMenuComponent);
+    fixture = TestBed.createComponent(EchartsLineBrokenComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

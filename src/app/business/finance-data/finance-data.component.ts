@@ -22,7 +22,7 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
     // 3D柱状图配置
   public options3d: any;
   public options3dCopy: any;
-  public alertBarShow = false;  // 3D柱状图弹窗
+  public alertBarShow = false;
   public alertBarTitle: string;
   public options3dBar = {};
   public options3dPie = {};
