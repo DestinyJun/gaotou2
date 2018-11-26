@@ -204,7 +204,12 @@
     <div class="center col-lg-6 col-md-6">
       <!--百度地图-->
       <div class="map">
-        <div class="map-bmap" id="center_map"></div>
+        <app-echart-bmap
+          [height]="'50vh'"
+          [option]="{minZoom:7,maxZoom:9,center:[106.645779,26.654099],zoom: 8}"
+          [points]="mapPoints"
+          (cityClick)="mapCityClick($event)"
+        ></app-echart-bmap>
       </div>
       <!--事件监控-->
       <div class="event-table">

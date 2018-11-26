@@ -18,6 +18,7 @@ import {EventListComponent} from './components/event-list/event-list.component';
 import { EventListInfoComponent } from './components/event-list-info/event-list-info.component';
 import { EventOfficeComponent } from './components/event-office/event-office.component';
 import { EventPersonComponent } from './components/event-person/event-person.component';
+import { EchartBmapComponent } from './components/echart-bmap/echart-bmap.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { EventPersonComponent } from './components/event-person/event-person.com
     EventListComponent,
     EventListInfoComponent,
     EventOfficeComponent,
-    EventPersonComponent
+    EventPersonComponent,
+    EchartBmapComponent
   ],
   imports: [
     CommonModule,
@@ -60,7 +62,8 @@ import { EventPersonComponent } from './components/event-person/event-person.com
     EventListComponent,
     EventListInfoComponent,
     EventOfficeComponent,
-    EventPersonComponent
+    EventPersonComponent,
+    EchartBmapComponent
   ],
   providers: []
 })

@@ -4,9 +4,7 @@ import {DataService} from '../../common/services/data.service';
 import {ConfigModule, WenjunAlertService} from '../../common/wenjun';
 import {FinanceDataService} from '../../common/services/finance-data.service';
 import {LocalStorageService} from '../../common/services/local-storage.service';
-import {Bar3dExportType, CarExportType, IncomeExportType} from '../../common/model/shared.model';
 import {DatePipe} from '@angular/common';
-declare let BMap;
 @Component({
   selector: 'app-finance-data',
   templateUrl: './finance-data.component.html',
@@ -44,6 +42,8 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
   public carStartTime: Date; // 时间选择器
   public carEndTime: Date; // 时间选择器
   /*****************************中部**************************/
+  // 地图点
+  public mapPoints: any;
     // 省市联动
   public dataToggle = '贵州省';
   public province: any;
@@ -120,7 +120,40 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
     clearInterval(this.incomeAmountCountClean);
     clearInterval(this.personAmountCountClean);
   }
-
+  /*********************************数据初始化*****************************/
+  public updataEcharts(): void {
+    // 3D柱状图
+    this.packOption3();
+    /**************************中部****************************/
+    // 地图数据
+    this.centertMap();
+    // 事件
+    this.initialize();
+    // 办公
+    this.officeTypes = this.dataService.officeTypes;
+    // 个人
+    this.personOfficeTypes = this.dataService.personOfficeTypes;
+    // 业态经营数据前十排名
+    this.backCrosswiseBar('revenue');
+    // 车流监控
+     this.vehicleAmountCountClean = setInterval(() => {
+       this.vehicleAmountCount();
+       this.CarTypes();
+     }, 5000);
+    // 收入监控
+    this.incomeAmountCountClean = setInterval(() => {
+      this.incomeAmountCount();
+      this.IncomeTypes();
+    }, 5000);
+    // 实时客流
+    this.personAmountCountClean = setInterval(() => {
+      this.financeDataService.searchPersonTotal({id: 2}).subscribe(
+        (val) => {
+          this.localService.persons.next(val.data.toString().split(''));
+        }
+      );
+    }, 5000);
+  }
   /**********************************左边*****************************/
   // 3D柱状图
   public packOption3() {
@@ -318,293 +351,29 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
   }
 
   /*********************************中部*****************************/
-  // 中部百度地图画省边界外
-  public centerMap2() {
-    const that = this;
-    const map = new BMap.Map('center_map', {minZoom: 7, maxZoom: 9});
-    map.setMapStyle({
-      styleJson: [
-        // 城市名字的颜色
-        /*{
-            "featureType": "city",
-            "elementType": "labels.text.fill",
-            "stylers": {
-                "color": "#aedce2ff",
-                "visibility": "on"
-            }
-        },*/
-        // 地图背景颜色
-        {
-          'featureType': 'background',
-          'elementType': 'all',
-          'stylers': {
-            'color': '#002240'
-          }
-        },
-        // 高速配置
-        {
-          'featureType': 'highway',
-          'elementType': 'all',
-          'stylers': {
-            'color': '#0045C4',
-            'visibility': 'on'
-          }
-        },
-        {
-          'featureType': 'highway',
-          'elementType': 'geometry',
-          'stylers': {
-            'color': '#B3BDC6',
-            'weight': '0.6',
-            'visibility': 'on'
-          }
-        },
-        {
-          'featureType': 'local',
-          'elementType': 'all',
-          'stylers': {
-            'visibility': 'on'
-          }
-        },
-        {
-          'featureType': 'railway',
-          'elementType': 'all',
-          'stylers': {
-            'visibility': 'off'
-          }
-        },
-        // 配置区县不显示
-        {
-          'featureType': 'district',
-          'elementType': 'all',
-          'stylers': {
-            'visibility': 'off'
-          }
+  // 中部地图
+  public centertMap (): void {
+      this.financeDataService.getServiceNamePoint().subscribe(
+        (val) => {
+          this.mapPoints = val.data;
         }
-      ]
-    });
-    map.centerAndZoom(new BMap.Point(106.640265, 26.653005), 8);
-    map.enableScrollWheelZoom(true);
-    map.disableDoubleClickZoom(false);
-    // 创建一个右键菜单
-    const menu = new BMap.ContextMenu();
-    // 定义右键菜单的内容
-    const txtMenuItem = [
-      {
-        text: '放大',
-        callback: function () {
-          console.log('地图放大');
-        }
-      },
-      {
-        text: '缩小',
-        callback: function () {
-          console.log('地图缩小');
-        }
-      }
-    ];
-    // 给右键菜单里面添加东西
-    for (let i = 0; i < txtMenuItem.length; i++) {
-      // 右键菜单里面添加的内容格式是一个MenuItem类
-      menu.addItem(new BMap.MenuItem(txtMenuItem[i].text, txtMenuItem[i].callback, 100));
-    }
-
-    // 控制地图显示范围
-    /*  const b = new BMap.Bounds(new BMap.Point(105.75777, 24.618423), new BMap.Point(109.400435, 30.469081));
-      try {
-        BMapLib.AreaRestriction.setBounds(map, b);
-      } catch (e) {
-        alert(e);
-      }*/
-
-    // 编写自定义函数,创建标注
-   /* const pointsMarket = [
-      [106.626806, 26.683542, '贵阳服务区', 80],
-      [104.842269, 26.625681, '遵义服务区', 150],
-      [105.293002, 27.301609, '六盘水服务区', 300],
-      [106.93956, 27.760846, '毕节服务区', 781],
-      [106.994752, 26.0953, '安顺服务区', 198],
-      [106.706049, 26.901505, '贵州久长高速服务区', 230],
-    ];*/
-    const pointsMarket = [];
-    this.financeDataService.getServiceNamePoint().subscribe(
-      (val) => {
-        if (val.status === '200') {
-          val.data.map((val1, index1) => {
-            const a = [];
-            val1.attributeValueList.map((val2, index2) => {
-              if (val2.attributeDesc === '经度') {
-                a.push(val2.attributeValue);
-              } else if (val2.attributeDesc === '纬度') {
-                a.push(val2.attributeValue);
-              }
-            });
-            if (a) {
-              a.push(val1.name);
-            }
-            pointsMarket.push(a);
-          });
-        }
-        if (pointsMarket) {
-          // console.log(pointsMarket);
-          for (let i = 0; i < pointsMarket.length; i++) {
-            const points = [pointsMarket[i][0], pointsMarket[i][1]];
-            // addMarker(points, pointsMarket[i][2], pointsMarket[i][3]);
-            addMarker(points, pointsMarket[i][2]);
-          }
-        }
-      });
-   /* function addMarker(point, name, num) {
-      const myIcon = new BMap.Icon('http://lbsyun.baidu.com/jsdemo/img/fox.gif', new BMap.Size(200, 130));
-      const points = new BMap.Point(point[0], point[1]);
-      const marker = new BMap.Marker(points);
-      map.addOverlay(marker);
-
-      // 跳动的动画
-      // marker.setAnimation(BMAP_ANIMATION_BOUNCE);
-
-      // market事件
-      marker.addEventListener('mouseover', function () {
-        // 信息窗口
-        const sContent = `<div><h5>${name}</h5><p>驻车量：${num}辆</p></div>`;
-        const infoWindow = new BMap.InfoWindow(sContent, {enableCloseOnClick: true});
-        this.openInfoWindow(infoWindow);
-      });
-      marker.addEventListener('click', function (e) {
-          if (name === '贵州久长高速服务区') {
-            that.router.navigate(['/home/serzone', {name: name, point: point}]);
-          } else {
-            window.alert('此服务区暂无数据');
-          }
-        that.router.navigate(['/home/serzone', {name: name, point: point}]);
-      });
-    }*/
-    function addMarker(point, name) {
-      // const myIcon = new BMap.Icon('http://lbsyun.baidu.com/jsdemo/img/fox.gif', new BMap.Size(200, 130));
-      const myIcon = new BMap.Icon('assets/images/s1.png', new BMap.Size(10, 10), {
-        offset: new BMap.Size(0, 10),
-      });
-      const points = new BMap.Point(point[0], point[1]);
-      const marker = new BMap.Marker(points, {icon: myIcon});
-      map.addOverlay(marker);
-
-      // 跳动的动画
-      // marker.setAnimation(BMAP_ANIMATION_BOUNCE);
-
-      // market事件
-      marker.addEventListener('mouseover', function () {
-        // 信息窗口
-        // const sContent = `<div><h5>${name}</h5><p>驻车量：${num}辆</p></div>`;
-        const sContent = `<div><h5>${name}</h5></div>`;
-        const infoWindow = new BMap.InfoWindow(sContent, {enableCloseOnClick: true});
-        this.openInfoWindow(infoWindow);
-      });
-      marker.addEventListener('click', function (e) {
-        if (name === '久长服务区') {
-          that.router.navigate(['/home/serzone', {name: name, point: point}]);
-        } else {
-          window.alert('此服务区暂无数据');
-        }
-        // that.router.navigate(['/home/serzone', {name: name, point: point}]);
-      });
-    }
-
-    // 添加5标注
-    /*for (let i = 0; i < pointsMarket.length; i++) {
-      const points = [pointsMarket[i][0], pointsMarket[i][1]];
-      // addMarker(points, pointsMarket[i][2], pointsMarket[i][3]);
-      addMarker(points, pointsMarket[i][2]);
-    }*/
-
-    // 绘制边线轮廓rankingClick
-    const citys = [
-      '贵州省',
-      '贵阳市',
-      '遵义市',
-      '毕节市',
-      '铜仁市',
-      '安顺市',
-      '六盘水市',
-      '贵阳市',
-      '黔西南布依族苗族自治州',
-      '黔东南苗族侗族自治州',
-      '黔南布依族苗族自治州',
-    ];
-
-    function getBoundary(name) {
-      const bdary = new BMap.Boundary();
-
-      function randomRgbColor() { // 随机生成RGB颜色
-        const r = Math.floor(Math.random() * 256); // 随机生成256以内r值
-        const g = Math.floor(Math.random() * 256); // 随机生成256以内g值
-        const b = Math.floor(Math.random() * 256); // 随机生成256以内b值
-        return `rgb(${r},${g},${b})`; // 返回rgb(r,g,b)格式颜色
-      }
-
-      const colors = randomRgbColor();
-      if (name === '贵州省') {
-        bdary.get(name, function (rs) {       // 获取行政区域
-          for (let i = 0; i < rs.boundaries.length; i++) {
-            const ply = new BMap.Polygon(rs.boundaries[i], {
-              strokeWeight: 3,
-              strokeColor: 'white',
-              fillColor: '',
-              fillOpacity: 0
-            }); // 建立多边形覆盖物
-            map.addOverlay(ply);  // 添加覆盖物
-            // map.setViewport(ply.getPath());    // 调整视野
-          }
-        });
-      }
-      bdary.get(name, function (rs) {       // 获取行政区域
-        for (let i = 0; i < rs.boundaries.length; i++) {
-          const ply = new BMap.Polygon(rs.boundaries[i], {
-            strokeWeight: 1,
-            strokeColor: colors,
-            fillColor: colors,
-            fillOpacity: 0.1
-          }); // 建立多边形覆盖物
-          map.addOverlay(ply);  // 添加覆盖物
-          // map.setViewport(ply.getPath());    // 调整视野
-        }
-      });
-    }
-
-    for (let i = 0; i <= citys.length; i++) {
-      getBoundary(citys[i]);
-    }
-    // getBoundary('贵阳',"#F9EB08");
-    // getBoundary('遵义',"#00FF00");
-    // getBoundary('毕节',"#00FF00");
-    /* getBoundary('安顺市',"#01D867");
-     getBoundary('铜仁地区',"#00FF00");
-
-     getBoundary('六盘市',"#00FF00");
-
-     getBoundary('黔西南布依族苗族自治州',"#00FF00");
-     getBoundary('黔东南苗族侗族自治州',"#00FF00");
-     getBoundary('黔南布依族苗族自治州',"#00FF00");*/
-
-    // 地图事件，逆地址解析
-    const geoc = new BMap.Geocoder();
-    map.addEventListener('click', function (e) {
-      const pt = e.point;
-        if (!e.overlay.Bc) {
-          geoc.getLocation(pt, function (rs) {
-         const addComp = rs.addressComponents;
-         // alert(addComp.city);
-         if (addComp.city === '贵阳市') {
-           that.router.navigate(['/home/city']);
-         } else {
-           window.alert('很抱歉' + addComp.city + '暂无数据');
-         }
-       });
-        }
-
-
-    });
+      );
   }
-
+  public mapCityClick (param): void {
+    if (param.areaName === undefined) {
+      if (param.cityName === '贵阳市') {
+        this.router.navigate(['/home/city']);
+      } else {
+        window.alert(`很抱歉${param.cityName}暂无数据`);
+      }
+    } else {
+      if (param.areaName === '久长服务区') {
+        this.router.navigate(['/home/serzone', {name: param.areaName}]);
+      } else {
+        window.alert('此服务区暂无数据');
+      }
+    }
+  }
   // 事件类型统计
   public initialize(): void {
     this.financeDataService.searchEventCategory().subscribe(
@@ -690,7 +459,6 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
   }
   public clickBtn(e): void {
     const types = ['revenue', 'vehicle', 'passenger'];
-    const type1 = ['收入', '车流', '客流'];
     if (e.srcElement.innerText === '业态收入/万元') {
       this.dataStatus = '业态收入/万元';
       this.barStatus1 = true;
@@ -818,46 +586,5 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
   }
   public closeincomeExcel() {
     this.incomeExcelShow = false;
-  }
-
-  /*********************************图表更新*****************************/
-  public updataEcharts(): void {
-    // 3D柱状图
-    this.packOption3();
-    /**************************中部****************************/
-    // 地图
-    this.centerMap2();
-    // 事件
-    this.initialize();
-    // 办公
-    this.officeTypes = this.dataService.officeTypes;
-    // 个人
-    this.personOfficeTypes = this.dataService.personOfficeTypes;
-
-    // 业态经营数据前十排名
-    this.backCrosswiseBar('revenue');
-
-    // 车流监控
-   /* this.vehicleAmountCountClean = setInterval(() => {
-
-    }, 5000);*/
-    this.vehicleAmountCount();
-    this.CarTypes();
-
-    // 收入监控
-    this.incomeAmountCountClean = setInterval(() => {
-    }, 5000);
-    this.incomeAmountCount();
-    this.IncomeTypes();
-
-    // 实时客流
-    this.personAmountCountClean = setInterval(() => {
-    }, 5000);
-    this.financeDataService.searchPersonTotal({id: 2}).subscribe(
-      (val) => {
-        // console.log(val.data.toString().split(''));
-        this.localService.persons.next(val.data.toString().split(''));
-      }
-    );
   }
 }
