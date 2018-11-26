@@ -431,7 +431,7 @@
   left: 0;
   background: #091118;
   background: rgba(9,17,24,0.5);
-  z-index: 2;
+  z-index: 999;
 }
 .alert-window{
   position: absolute;
@@ -470,7 +470,7 @@
 }
 .alert-window-content-table{
   position: relative;
-  height: 55vh;
+  height: 85vh;
 }
 .alert-window-content-table .toggle-btn{
   height: 5vh;
