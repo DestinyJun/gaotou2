@@ -23,7 +23,7 @@ export class CityDataService {
   }
   public search3DAlertPie(params): Observable<any> {
     return this.http.get(`
-    ${this.globalService.urlc}/administrativeAreaStatistics/mothlyChildAdministrtiveArea/${params.id}/${params.xType}/${params.types}`);
+    ${this.globalService.urlc}/serviceAreaStatistics/monthlyChildServiceArea/${params.id}/${params.xType}/${params.types}`);
   }
   // top10柱状图
   public searchTop10Bar(params): Observable<any> {

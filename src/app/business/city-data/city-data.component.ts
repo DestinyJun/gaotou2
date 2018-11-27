@@ -199,6 +199,7 @@ export class CityDataComponent implements OnInit, OnDestroy {
     // 类型占比扇形图
     this.cityDataService.search3DAlertPie({id: 3, xType: this.outOptions3d.pie.xType, types: this.outOptions3d.pie.types}).subscribe(
       (val) => {
+        console.log(val);
         if (val.status === '200') {
           this.options3dPie = {
             data: val.data,

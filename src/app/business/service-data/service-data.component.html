@@ -214,10 +214,10 @@
         </div>
         <div class="servicesMap-center text-center">
           <!--上行-->
-          <span>{{serviceInfo?.downAttributeValues.source}}</span>
+          <span>{{serviceInfo?.upAttributeValues.source}}</span>
           <img src="assets/images/jiantou.png" alt="" style="height: 3vh;width: auto;">
           <!--下行-->
-          <span>{{serviceInfo?.upAttributeValues.source}}</span>
+          <span>{{serviceInfo?.downAttributeValues.source}}</span>
         </div>
         <div class="second servicesMap-video">
           <div class="btn-group" *ngFor="let item of publicBottomVideoGroup;let i = index" [ngClass]="{'open':videoBottomOpen[i]}" (mouseover)="publicTopBottomGroupOver(item.cameras,i)" (mouseout)="publicTopBottomGroupLeave(i)">

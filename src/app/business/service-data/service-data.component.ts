@@ -391,7 +391,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   }
   // 服务区商家
   public openServiceShop(item): void {
-    console.log(item);
     this.videoShopList = [];
     this.serviceShopInfo = item;
     this.serviceShopShow = true;
@@ -420,7 +419,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     // 折线图
     this.serareaService.searchServiceShopLine({id: item.id, yIndex: ['revenue', 'passenger', 'vehicle', 'electric', 'water']}).subscribe(
       (val) => {
-        console.log(val);
         if (val.status === '200') {
           this.shopEchartLine = {
             data: val.data,
@@ -502,7 +500,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       this.videoTopOpen.push(false);
     });
     this.videoTopOpen[i] = true;
-    console.log(this.videoTopOpen);
     if (videoList.length === 0) {
       this.publicVideoList = [];
       this.publicVideoList.push({cameraName: '该处暂无摄像头'});
@@ -518,7 +515,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       this.videoBottomOpen.push(false);
     });
     this.videoBottomOpen[i] = true;
-    console.log(this.videoBottomOpen);
     if (videoList.length === 0) {
       this.publicVideoList = [];
       this.publicVideoList.push({cameraName: '该处暂无摄像头'});
@@ -543,11 +539,9 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   public openEventAlert(item): void {
     document.body.className = 'ui-overflow-hidden';
     this.eventAlertShow = true;
-    console.log(item);
     // 未处理
     this.serareaService.searchEventsTypeList({eventCategoryCode: item.eventCategoryCode, processState: 2, page: 1, nums: 1000}).subscribe(
       (value) => {
-        console.log(value);
         if (value.status === '200') {
           this.eventListNoProcess = value.data.contents;
         }
@@ -556,7 +550,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     // 已处理
     this.serareaService.searchEventsTypeList({eventCategoryCode: item.eventCategoryCode, processState: 1, page: 1, nums: 1000}).subscribe(
       (value) => {
-        console.log(value);
         if (value.status === '200') {
           this.eventListProcess = value.data.contents;
         }
@@ -809,15 +802,12 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       },
     };
     const shopList = storeList.filter((prop, index) => {
-      console.log(prop.entryCode === shopType[item].entryCode);
       return prop.entryCode === shopType[item].entryCode;
     });
     if (shopList) {
-      console.log(shopList[0].storeList);
       this.serareaService.searchIncomeTypesItem({entryCode: shopType[item].entryCode, page: 1, nums: 1000, shopList: shopList[0].storeList}).subscribe(
         (value) => {
           if (value.status === '200') {
-            console.log(value.data.contents);
             this.IncomeTableData = value.data.contents;
           }
         }
@@ -882,7 +872,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     const startTime = this.datePipe.transform(this.incomeStartTime, 'yyyyMMdd');
     const endTime = this.datePipe.transform(this.incomeEndTime, 'yyyyMMdd');
     if (this.incomeStartTime && this.incomeEndTime) {
-      window.location.assign(`http://120.78.137.182:8888/highway-interactive/report/serviceArea/vihicle/1/startDate/${startTime}/endDate/${endTime}`);
+      window.location.assign(`http://120.78.137.182:8888/highway-interactive/report/serviceArea/revenue/1/startDate/${startTime}/endDate/${endTime}`);
     } else {
       window.alert('请把数据选择全在提交');
     }

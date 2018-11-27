@@ -16,7 +16,6 @@ export class EchartLineAreaComponent implements OnInit, OnChanges {
   }
   ngOnChanges(changes: SimpleChanges): void {
     if (this.option) {
-      console.log(this.option);
       this.initializeLine();
     }
   }
