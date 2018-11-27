@@ -3,7 +3,6 @@ import {
   OnInit
 } from '@angular/core';
 import {EventsService} from '../common/services/events.service';
-import {ToolsService} from '../common/services/tools.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 

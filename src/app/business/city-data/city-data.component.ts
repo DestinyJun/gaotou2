@@ -1,22 +1,10 @@
-import {
-  Component,
-  ComponentFactoryResolver, OnDestroy,
-  OnInit, ViewEncapsulation,
-} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {NgxEchartsService} from 'ngx-echarts';
-import {EventsService} from '../../common/services/events.service';
-import {Data3dService} from '../../common/services/data3d.service';
-import {CentermapService} from '../../common/services/centermap.service';
-import {DiagramService} from '../../common/services/diagram.service';
+import {Component, OnDestroy, OnInit, ViewEncapsulation,} from '@angular/core';
 import {Router} from '@angular/router';
 import {DataService} from '../../common/services/data.service';
 import {ConfigModule, WenjunAlertService} from '../../common/wenjun';
 import {CityDataService} from '../../common/services/city-data.service';
 import {LocalStorageService} from '../../common/services/local-storage.service';
-import {Bar3dExportType, CarExportType, IncomeExportType} from '../../common/model/shared.model';
 import {DatePipe} from '@angular/common';
-declare let BMap;
 @Component({
   selector: 'app-city-data',
   templateUrl: './city-data.component.html',
@@ -59,9 +47,6 @@ export class CityDataComponent implements OnInit, OnDestroy {
   public dataToggle = '贵阳市';
   public province: any;
   public city: any;
-  public citeDate: string;
-  public provinceShow = false;
-  public cityShow = false;
   public flag: string;
   // 事件类数据
   public eventTypes: any;
@@ -164,7 +149,7 @@ export class CityDataComponent implements OnInit, OnDestroy {
 
     // 实时客流
     this.personAmountCountClean = setInterval(() => {
-      this.cityDataService.searchPersonTotal({id: 2}).subscribe(
+      this.cityDataService.searchPersonTotal({id: 3}).subscribe(
         (val) => {
           this.localService.persons.next(val.data.toString().split(''));
         }
@@ -176,16 +161,18 @@ export class CityDataComponent implements OnInit, OnDestroy {
   // 3D柱状图图表配置
   public packOption3() {
     // 车流客流人流
-    this.cityDataService.search3DBar({id: 2, parameter: ['revenue', 'passenger', 'vehicle']}).subscribe(
+    this.cityDataService.search3DBar({id: 3, parameter: ['revenue', 'passenger', 'vehicle']}).subscribe(
       (val) => {
+        console.log(val);
         if (val.status === '200') {
           this.options3d = val.data;
         }
       }
     );
     // 用电量用水量
-    this.cityDataService.search3DBar({id: 2, parameter: ['electric', 'water']}).subscribe(
+    this.cityDataService.search3DBar({id: 3, parameter: ['electric', 'water']}).subscribe(
       (val) => {
+        console.log(val);
         if (val.status === '200') {
           this.options3dCopy = val.data;
         }
@@ -198,7 +185,7 @@ export class CityDataComponent implements OnInit, OnDestroy {
     this.alertBarShow = true;
     this.alertBarTitle = this.outOptions3d.alertBarTitle;
     // 柱状图
-    this.cityDataService.search3DAlertBar({id: 2, types: this.outOptions3d.bar.types}).subscribe(
+    this.cityDataService.search3DAlertBar({id: 3, types: this.outOptions3d.bar.types}).subscribe(
       (val) => {
         if (val.status === '200') {
           this.options3dBar = {
@@ -210,7 +197,7 @@ export class CityDataComponent implements OnInit, OnDestroy {
       }
     );
     // 类型占比扇形图
-    this.cityDataService.search3DAlertPie({id: 2, xType: this.outOptions3d.pie.xType, types: this.outOptions3d.pie.types}).subscribe(
+    this.cityDataService.search3DAlertPie({id: 3, xType: this.outOptions3d.pie.xType, types: this.outOptions3d.pie.types}).subscribe(
       (val) => {
         if (val.status === '200') {
           this.options3dPie = {
@@ -226,7 +213,7 @@ export class CityDataComponent implements OnInit, OnDestroy {
   }
   public onOutOptions3dBar(e): void {
     // 类型占比扇形图
-    this.cityDataService.search3DAlertPie({id: 2, xType: e.xType, types: this.outOptions3d.pie.types}).subscribe(
+    this.cityDataService.search3DAlertPie({id: 3, xType: e.xType, types: this.outOptions3d.pie.types}).subscribe(
       (val) => {
         if (val.status === '200') {
           this.options3dPie = {
@@ -261,16 +248,9 @@ export class CityDataComponent implements OnInit, OnDestroy {
       window.alert('请把数据选择全在提交');
     }
   }
-  public open3dBarExcel() {
-    this.bar3dExcelShow = true;
-  }
-  public close3dBarExcel() {
-    this.bar3dExcelShow = false;
-  }
-
   // 车流监控
   public vehicleAmountCount(): void {
-    this.cityDataService.searchCarTotal({id: 2}).subscribe(
+    this.cityDataService.searchCarTotal({id: 3}).subscribe(
       (value) => {
         if (value.status === '200') {
           this.vehicleAmount = {
@@ -282,7 +262,7 @@ export class CityDataComponent implements OnInit, OnDestroy {
     );
   }
   public CarTypes() {
-    this.cityDataService.searchCarTotalPie({id: 2}).subscribe(
+    this.cityDataService.searchCarTotalPie({id: 3}).subscribe(
       (value) => {
         this.optionsCarModel = {
           data: value.data,
@@ -302,13 +282,13 @@ export class CityDataComponent implements OnInit, OnDestroy {
   }
   public carDistribution(e): void {
     // 表格
-    this.cityDataService.searchCarAlertTable({id: 2, types: e.name}).subscribe(
+    this.cityDataService.searchCarAlertTable({id: 3, types: e.name}).subscribe(
       (val) => {
         this.carTableData = val.data.contents;
       }
     );
     // 饼状图
-    this.cityDataService.searchCarAlertPie({id: 2, types: e.name}).subscribe(
+    this.cityDataService.searchCarAlertPie({id: 3, types: e.name}).subscribe(
       (value) => {
         const arryCarPie = [];
         value.data.map((val, index) => {
@@ -366,13 +346,6 @@ export class CityDataComponent implements OnInit, OnDestroy {
       window.alert('请把数据选择全在提交');
     }
   }
-  public openCarExcel() {
-    this.carExcelShow = true;
-  }
-  public closeCarExcel() {
-    this.carExcelShow = false;
-  }
-
   /*********************************中部*****************************/
   // 中部地图
   public centerMap (): void {
@@ -396,7 +369,7 @@ export class CityDataComponent implements OnInit, OnDestroy {
     this.cityDataService.searchEventCategory().subscribe(
       (value) => {
         if (value.status === '200') {
-          this.cityDataService.searchEventCategoryCount({id: 2, list: value.data}).subscribe(
+          this.cityDataService.searchEventCategoryCount({id: 3, list: value.data}).subscribe(
             (item) => {
               if (item.status === '200') {
                 this.eventTypes = item.data;
@@ -468,7 +441,7 @@ export class CityDataComponent implements OnInit, OnDestroy {
   /*********************************右边*****************************/
   // 业态经营数据前十排名相关操作
   public backCrosswiseBar(type): void {
-    this.cityDataService.searchTop10Bar({id: 2, type: type}).subscribe(
+    this.cityDataService.searchTop10Bar({id: 3, type: type}).subscribe(
       (value) => {
         this.crosswiseBar = value.data;
       }
@@ -476,7 +449,6 @@ export class CityDataComponent implements OnInit, OnDestroy {
   }
   public clickBtn(e): void {
     const types = ['revenue', 'vehicle', 'passenger'];
-    const type1 = ['收入', '车流', '客流'];
     if (e.srcElement.innerText === '业态收入/万元') {
       this.dataStatus = '业态收入/万元';
       this.barStatus1 = true;
@@ -499,7 +471,7 @@ export class CityDataComponent implements OnInit, OnDestroy {
   }
   // 收入监控
   public incomeAmountCount(): void {
-    this.cityDataService.searchIncomeTotal({id: 2}).subscribe(
+    this.cityDataService.searchIncomeTotal({id: 3}).subscribe(
       (value) => {
         this.incomeAmount = {
           number: value.data,
@@ -509,7 +481,7 @@ export class CityDataComponent implements OnInit, OnDestroy {
     );
   }
   public IncomeTypes() {
-    this.cityDataService.searchIncomeTotalPie({id: 2}).subscribe(
+    this.cityDataService.searchIncomeTotalPie({id: 3}).subscribe(
       (value) => {
         this.optionsIncomeModel = {
           data: value.data,
@@ -522,13 +494,13 @@ export class CityDataComponent implements OnInit, OnDestroy {
   }
   public incomeDistribution(e): void {
     // 表格
-    this.cityDataService.searchIncomeAlertTable({id: 2, types: e.name}).subscribe(
+    this.cityDataService.searchIncomeAlertTable({id: 3, types: e.name}).subscribe(
       (val) => {
         this.IncomeTableData = val.data.contents;
       }
     );
     // 饼状图
-    this.cityDataService.searchIncomeAlertPie({id: 2, types: e.name}).subscribe(
+    this.cityDataService.searchIncomeAlertPie({id: 3, types: e.name}).subscribe(
       (value) => {
         this.optionsIncomeTypes = {
           data: value.data,
@@ -600,11 +572,4 @@ export class CityDataComponent implements OnInit, OnDestroy {
       window.alert('请把数据选择全在提交');
     }
   }
-  public openIncomeExcel() {
-    this.incomeExcelShow = true;
-  }
-  public closeincomeExcel() {
-    this.incomeExcelShow = false;
-  }
-
 }

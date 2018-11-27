@@ -6,6 +6,8 @@ import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges
 })
 export class EchartBasicbarComponent implements OnInit, OnChanges {
   @Input() public option: any;
+  @Input() public height: any;
+  @Input() public width = 'auto';
   @Output() public outOptions3dBar = new EventEmitter<any>();
   public options3dBar = {};
   public options3dBarInstance: any;
@@ -109,7 +111,7 @@ export class EchartBasicbarComponent implements OnInit, OnChanges {
     this.options3dBarInstance = ec;
   }
   public options3dBarClick(e): void {
-    console.log(e);
+    // console.log(e);
     this.colorList = [
       '#356981', '#356981', '#356981', '#356981', '#356981', '#356981',
       '#356981', '#356981', '#356981', '#356981', '#356981 ', '#356981'

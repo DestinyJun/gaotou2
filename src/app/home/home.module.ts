@@ -10,7 +10,6 @@ import { MessageWindowComponent } from './message-window/message-window.componen
 import {DialogModule} from 'primeng/dialog';
 import {NgxEchartsModule} from 'ngx-echarts';
 import {EventsService} from '../common/services/events.service';
-import {ToolsService} from '../common/services/tools.service';
 
 
 @NgModule({
@@ -31,7 +30,6 @@ import {ToolsService} from '../common/services/tools.service';
   ],
   providers: [
     EventsService,
-    ToolsService
   ],
   entryComponents: [NavComponent]
 })

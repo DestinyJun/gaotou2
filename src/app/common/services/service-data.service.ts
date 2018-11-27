@@ -13,10 +13,6 @@ export class ServiceDataService {
   public getServiceShopVDate(): Observable<any> {
     return this.http.get(`${this.globalService.urls}/common/config/getStoreAndCamera/1`);
   }
-  // 查询商家店铺信息
-  public getServiceShopMsg(params): Observable<any> {
-    return this.http.post(`${this.globalService.urlc}/storeStatistics/base/upToNow`, {});
-  }
   // 3D图数据、点击后的柱状图、折线图
   public search3DBar(params): Observable<any> {
     return this.http.post(`${this.globalService.urlc}/serviceAreaStatistics/monthly3D/${params.id}`, params.parameter);
@@ -25,8 +21,7 @@ export class ServiceDataService {
     return this.http.get(`${this.globalService.urlc}/serviceAreaStatistics/monthlyByType/${params.id}/${params.types}`);
   }
   public search3DAlertLineMonth(params): Observable<any> {
-    return this.http.get(`
-    ${this.globalService.urlc}/serviceAreaStatistics/brokenLineLastMonth/${params.id}/${params.xType}/${params.types}`);
+    return this.http.post(`${this.globalService.urlc}/serviceAreaStatistics/brokenLineLastMonth/${params.id}`, params.types);
   }
   public search3DAlertLineWeek(params): Observable<any> {
     return this.http.get(`
@@ -39,18 +34,12 @@ export class ServiceDataService {
   public searchCarTotalPie(params): Observable<any> {
     return this.http.get(`${this.globalService.urlc}/realTime/vechile/serviceArea/getVechileTypePie/${params.id}`);
   }
-  public searchCarAlertTable(params): Observable<any> {
-    return this.http.get(`${this.globalService.urlc}/realTime/vechile/province/${params.id}/${params.type}/getServiceAreaVechilePage/1/10`);
-  }
   // 实时收入
   public searchIncomeTotal(params): Observable<any> {
     return this.http.get(`${this.globalService.urlc}/realTime/revenue/serviceArea/total/${params.id}`);
   }
   public searchIncomeTotalPie(params): Observable<any> {
     return this.http.get(`${this.globalService.urlc}/realTime/revenue/serviceArea/getRevenueTypePie/${params.id}`);
-  }
-  public searchIncomeAlertTable(params): Observable<any> {
-    return this.http.post(`http://120.78.137.182:8888/highway-interactive/hourly/revenue/1/sortBy/total/1/15`, params);
   }
   // 实时客流
   public searchPersonTotal(params): Observable<any> {
@@ -63,10 +52,6 @@ export class ServiceDataService {
   // 查询服务区信息
   public searchSerAraItem(id): Observable<any> {
     return this.http.get(`${this.globalService.urls}/serviceArea/queryById/${id}`);
-  }
-  public searchEventCategoryCount(params): Observable<any> {
-    console.log(params.list);
-    return this.http.post(`${this.globalService.urlc}/event/serviceArea/countNoProcess/${params.id}`, params.list);
   }
   // 未处理事件列表
   public searchNotPoocessEventsList(params): Observable<any> {

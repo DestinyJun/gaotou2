@@ -1,14 +1,10 @@
-import {
-  Component, OnDestroy,
-  OnInit, ViewEncapsulation,
-} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {DataService} from '../../common/services/data.service';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder} from '@angular/forms';
 import {EventListInfo, UploadEventInfoUp} from '../../common/model/service-data.model';
 import {ServiceDataService} from '../../common/services/service-data.service';
 import {LocalStorageService} from '../../common/services/local-storage.service';
-import {IncomeExportType} from '../../common/model/shared.model';
 import {DatePipe} from '@angular/common';
 @Component({
   selector: 'app-service-data',
@@ -32,22 +28,15 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   public options3dCopy: any;
   public alertBarShow = false;   // 3D柱状图弹窗
   public alertBarTitle: string;
-  public options3dBar = {};
-  public options3dLine = {};
+  public options3dBar: any;
+  public options3dLine: any;
   public outOptions3d: any; // 3D图组件传出来的值
-  public colorList = [
-    '#356981', '#356981', '#356981', '#356981', '#356981', '#356981',
-    '#356981', '#356981', '#356981', '#356981', '#356981 ', '#356981'
-  ];
   public bar3dExcelShow = false;
   public startTime3d: Date; // 时间选择器
   public endTime3d: Date; // 时间选择器
-
-  // 车辆收入数值表现
-  public vehicleAmount = [];
-
-  // 服务区车型日分布分析
-  public optionsCarModel = {};
+  // 车辆监控
+  public vehicleAmount: any;
+  public optionsCarModel: any; // 车辆饼状图
   public alertCarShow = false;
   public carTableData: any;
   public carExcelShow = false;
@@ -55,15 +44,12 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   public alertCarTitle = '小车';
   public carStartTime: Date; // 时间选择器
   public carEndTime: Date; // 时间选择器
-
   /***********************中部************************/
-  public incomeBottomData: any;
+  // 商家、视频及方向
   public incomeTopData: any;
-
+  public incomeBottomData: any;
   // 服务区商家视频弹窗
-  public videoAlertShow = false;
   public videoShopList = [];
-  public videoAlertTitle: string;
   public videoBottomShopUrl: string;
   // 服务区商家信息弹窗
   public serviceShopShow = false;
@@ -71,14 +57,12 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   public serviceShopInfo: any;
   public shopStartTime: Date; // 时间选择器
   public shopEndTime: Date; // 时间选择器
-  // 服务区信息修改
-  public selectFormModule: FormGroup;
   // 公共视频弹窗
   public videoPublicShow = false;
   public publicVideoTitle: string;
   public publicVideoList = [];
-  public publicBottomVideoGroup = [];
   public publicTopVideoGroup = [];
+  public publicBottomVideoGroup = [];
   public videoTopOpen = [];
   public videoBottomOpen = [];
   // 事件弹窗
@@ -98,37 +82,23 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   public waitTitle: string;
 
   /***********************右边************************/
-    // 另外收入排名+表格导出
+    // 服务区基本信息
   public alertCrosswiseShow = false;
-  public crosswiseExcelShow = false;
-  public CrosswiseExportType: IncomeExportType = new IncomeExportType();
-
-  // 服务区基本信息数据
-  public serviceBasicAlert = true;
-  public serviceBasicAlertTitle: string;
   public serviceInfo: any;
   public alterCommonAttributeValues = [];
   public alterUpAttributeValues = [];
   public alterDownAttributeValues = [];
-
-  public shopEchartLine = {};
-  public shopEchartArea = {};
-
-  // 服务区基本信息之园区平面图
+  public shopEchartLine: any;
+  public shopEchartArea: any;
   public servicesPlan = false;
   public servicesMap = {};
-  // 实时收入
-  public incomeAmount = [];
-
-  // 当日收入类型占比分析
-  public optionsIncomeModel = {};
-  // 收入类型弹窗
+  // 收入监控
+  public incomeAmount: any;
+  public optionsIncomeModel: any;
   public alertIncomeShow = false;
   public alertIncomeTypeShow = false;
   public alertIncomeTypeTitle: string;
   public alertIncomeTitle = '收入总数';
-  public optionsIncomeTypes = {};
-  public IncomeAreaName = '贵州省';
   public IncomeTableData: any;
   public storeList: any;
   public arryIncomePie = [];
@@ -144,11 +114,9 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     private datePipe: DatePipe
   ) {
   }
-
   ngOnInit() {
     this.serareaService.searchSerAraItem(1).subscribe(
       (value) => {
-        console.log(value.data);
         this.serviceInfo = value.data;
         value.data.commonAttributeValues.map((val, index) => {
           this.alterCommonAttributeValues.push(this.cloneValue(val));
@@ -159,7 +127,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
         value.data.downAttributeValues.attributeValues.map((val, index) => {
           this.alterDownAttributeValues.push(this.cloneValue(val));
         });
-        console.log(this.alterCommonAttributeValues);
       }
     );
     // 实时数据
@@ -178,38 +145,63 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       today: '今天',
       clear: '清除'
     };
-    // 视频弹窗时间选择表单
-    this.selectFormModule = this.fb.group({
-      videoDate: ['', [Validators.required]],
-      videoTimeStart: ['', [Validators.required]],
-      videoTimeFinish: ['', [Validators.required]],
-      // weixin: ['', {disabled: true}, [Validators.required]],
-    });
     // 路由接受参数
     this.routerInfo.params.subscribe(
       (params) => {
         this.serviceZoneTitle = params.name;
         this.localService.eventBus.next({title: this.serviceZoneTitle + '业态大数据', flagState: 'serzone', flagName: this.serviceZoneTitle});
-        // this.serviceZonePoint = params.point.split(',');
-        // console.log(this.serviceZonePoint);
       }
     );
-
-    /*****************************数据更行**********************/
+    // 数据初始化
     this.upData();
   }
-
   ngOnDestroy(): void {
     clearInterval(this.vehicleAmountCountClean);
     clearInterval(this.incomeAmountCountClean);
     clearInterval(this.personAmountCountClean);
   }
+  /*************数据初始化****************/
+  public upData() {
+    //  3d图统计
+    this.packOption3();
+    // 车流监控
+     this.vehicleAmountCountClean = setInterval(() => {
+       this.vehicleAmountCount();
+       this.CarTypes();
+     }, 5000);
+    // 收入监控
+    this.incomeAmountCountClean = setInterval(() => {
+      this.incomeAmountCount();
+      this.IncomeTypes();
+    }, 5000);
+    // 实时客流
+    this.personAmountCountClean = setInterval(() => {
+      this.serareaService.searchPersonTotal({id: 1}).subscribe(
+        (val) => {
+          if (val.data.total) {
+            // this.localService.persons.next(val.data.total.toString().split(''));
+          }
+        }
+      );
+    }, 5000);
+    // 事件列表
+    this.backCenterDate();
+    this.eventNotPoocess();
+    // 事件上报类型
+    this.serareaService.searchEventCategory().subscribe(
+      (value) => {
+        if (value.status === '200') {
+          this.eventInfoUpTypes = value.data;
+        }
+      }
+    );
+  }
 
   /************************左边***************************/
-  // 3D柱状图图表配置
+  // 3D柱状图图表配置及表格导出
   public packOption3() {
     // 车流客流人流
-    this.serareaService.search3DBar({id: 2, parameter: ['revenue', 'passenger', 'vehicle']}).subscribe(
+    this.serareaService.search3DBar({id: 1, parameter: ['revenue', 'passenger', 'vehicle']}).subscribe(
       (val) => {
         if (val.status === '200') {
           this.options3d = val.data;
@@ -217,7 +209,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       }
     );
     // 用电量用水量
-    this.serareaService.search3DBar({id: 2, parameter: ['electric', 'water']}).subscribe(
+    this.serareaService.search3DBar({id: 1, parameter: ['electric', 'water']}).subscribe(
       (val) => {
         if (val.status === '200') {
           this.options3dCopy = val.data;
@@ -237,611 +229,29 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
           this.options3dBar = {
             data: val.data,
             xType: this.outOptions3d.pie.xType,
-            title: `贵州省所有服务区年度${this.outOptions3d.alertBarTitle}统计`
+            title: `贵州省久长服务区年度${this.outOptions3d.alertBarTitle}统计`
           };
         }
       }
     );
-    // 类型占比扇形图
-   /* this.financeDataService.search3DAlertPie({id: 2, xType: this.outOptions3d.pie.xType, types: this.outOptions3d.pie.types}).subscribe(
+    // 折线图
+    this.serareaService.search3DAlertLineMonth({id: 1, types: [0, 1, 2, 3, 4]}).subscribe(
       (val) => {
         if (val.status === '200') {
-          this.options3dPie = {
+          this.options3dLine = {
+            title: '贵州省久长服务区月度业态走势图',
             data: val.data,
-            title: `贵州省所有服务区年度${this.outOptions3d.alertBarTitle}类型占比统计`,
-            total: this.outOptions3d.total,
-            color: ['#CE2D79', '#BDD139', '#78E77D', '#09D4D6', '#3C75B9',
-              '#6769B1', '#FF8C9D', '#2796C4', '#E57D0D']
+            color: ['#7C7CD4', '#36B9AB', '#6ACD72', '#0A30BF', '#027204']
           };
         }
       }
-    );*/
+    );
   }
-  //  3D柱状图的相关点击事件
-  public barClick(e): void {
-    const that = this;
-    this.alertBarShow = true;
-    document.body.className = 'ui-overflow-hidden';
-    const yType = ['经营收入', '客流量', '车流量'];
-    const itemType = ['revenue', 'passenger', 'vehicle'];
-    const timeType = ['', ''];
-    const colorList = [
-      '#356981', '#356981', '#356981', '#356981', '#356981', '#356981',
-      '#356981', '#356981', '#356981', '#356981', '#356981 ', '#356981'
-    ];
-    colorList[e.data.value[0]] = '#D43839';
-    const xAxis = e.data.value[0];
-    const yAxis = e.data.value[1];
-    const total = e.data.value[3];
-    this.alertBarTitle = yType[yAxis];
-    // 柱状图
-    this.serareaService.search3DAlertBar({id: 1, types: itemType[yAxis]}).subscribe(
-      (val) => {
-        console.log(val);
-        this.options3dBar = {
-          title: [
-            {
-              text: `贵州省所有服务区年度${types(yAxis)}统计`,
-              left: 'center',
-              textStyle: {
-                color: '#fff',
-                fontSize: 16
-              }
-            },
-          ],
-          dataZoom: [
-            {
-              type: 'inside'
-            }
-          ],
-          tooltip: {
-            trigger: 'axis',
-            axisPointer: {
-              type: 'shadow'
-            }
-          },
-          grid: {
-            left: '5%',
-            right: '3%',
-            bottom: '10%'
-          },
-          xAxis: {
-            type: 'category',
-            data: val.data.xData,
-            splitLine: {show: false},
-            nameTextStyle: {
-              color: 'white'
-            },
-            axisLine: {
-              lineStyle: {
-                color: 'white'
-              }
-            },
-          },
-          yAxis: {
-            type: 'value',
-            name: '数值',
-            splitLine: {show: false},
-            nameTextStyle: {
-              align: 'left',
-              color: 'white'
-            },
-            axisLine: {
-              lineStyle: {
-                color: 'white'
-              }
-            },
-          },
-          series: [
-            {
-              data: val.data.coordinate,
-              type: 'bar',
-              label: {
-                // 柱状图的数值是否显示
-                show: true,
-                textStyle: {
-                  fontSize: 16,
-                  borderWidth: 1
-                }
-              },
-              itemStyle: {
-                color: function (params) {
-                  return colorList[params.dataIndex];
-                },
-              }
-            }]
-        };
-      }
-    );
-
-    // 折线图
-    this.serareaService.search3DAlertLineMonth({id: 1, types: timeType[yAxis]}).subscribe(
-      (val) => {
-        console.log(val);
-        /*this.options3dBar = {
-          title: [
-            {
-              text: `贵州省所有服务区年度${types(yAxis)}统计`,
-              left: 'center',
-              textStyle: {
-                color: '#fff',
-                fontSize: 16
-              }
-            },
-          ],
-          dataZoom: [
-            {
-              type: 'inside'
-            }
-          ],
-          tooltip: {
-            trigger: 'axis',
-            axisPointer: {
-              type: 'shadow'
-            }
-          },
-          grid: {
-            left: '5%',
-            right: '3%',
-            bottom: '10%'
-          },
-          xAxis: {
-            type: 'category',
-            data: val.data.xData,
-            splitLine: {show: false},
-            nameTextStyle: {
-              color: 'white'
-            },
-            axisLine: {
-              lineStyle: {
-                color: 'white'
-              }
-            },
-          },
-          yAxis: {
-            type: 'value',
-            name: '数值',
-            splitLine: {show: false},
-            nameTextStyle: {
-              align: 'left',
-              color: 'white'
-            },
-            axisLine: {
-              lineStyle: {
-                color: 'white'
-              }
-            },
-          },
-          series: [
-            {
-              data: val.data.coordinate,
-              type: 'bar',
-              label: {
-                // 柱状图的数值是否显示
-                show: true,
-                textStyle: {
-                  fontSize: 16,
-                  borderWidth: 1
-                }
-              },
-              itemStyle: {
-                color: function (params) {
-                  return colorList[params.dataIndex];
-                },
-              }
-            }]
-        };*/
-      }
-    );
-    const xAxisData = ['00:00', '02:00', '04:00', '06:00', '08:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00'];
-    const legendData = ['经营收入', '客流量', '车流量', '用水量', '用电量'];
-    const title = '服务区业态数据变化';
-    const serieData = [];
-    const metaDate = [
-      [120, 140, 100, 120, 300, 230, 130, 170, 140, 120, 300, 230],
-      [200, 120, 300, 200, 170, 300, 200, 180, 200, 190, 300, 200],
-      [100, 200, 140, 300, 200, 180, 100, 300, 230, 130, 100, 300],
-      [152, 418, 89, 156, 200, 180, 100, 300, 230, 130, 145, 300],
-      [56, 223, 140, 300, 200, 180, 283, 300, 230, 148, 100, 300]
-    ];
-    for (let v = 0; v < legendData.length; v++) {
-      const serie = {
-        name: legendData[v],
-        type: 'line',
-        symbol: 'circle',
-        symbolSize: 10,
-        data: metaDate[v]
-      };
-      serieData.push(serie);
-    }
-    const colors = ['#7C7CD4', '#36B9AB', '#6ACD72', '#0A30BF', '#027204'];
-    this.options3dLine = {
-      title: {
-        text: title,
-        x: 'center',
-        textStyle: {
-          color: '#fff',
-          fontSize: 14
-        }
-      },
-      legend: {
-        show: true,
-        left: '10%',
-        data: legendData,
-        y: '5%',
-        itemWidth: 18,
-        itemHeight: 12,
-        textStyle: {color: '#fff', fontSize: 12},
-      },
-      color: colors,
-      grid: {left: '2%', top: '12%', bottom: '5%', right: '5%', containLabel: true},
-      tooltip: {trigger: 'axis', axisPointer: {type: 'shadow'}},
-      xAxis: [
-        {
-          type: 'category',
-          axisLine: {show: true, lineStyle: {color: '#6173A3'}},
-          axisLabel: {interval: 'auto', textStyle: {color: '#fff', fontSize: 14}},
-          axisTick: {show: false},
-          data: xAxisData,
-        },
-      ],
-      yAxis: [
-        {
-          axisTick: {show: false},
-          splitLine: {show: false},
-          axisLabel: {textStyle: {color: '#9ea7c4', fontSize: 14}},
-          axisLine: {show: true, lineStyle: {color: '#6173A3'}},
-        },
-      ],
-      series: serieData
-    };
-    function types(value): string {
-      let typeValue = '';
-      switch (value) {
-        case 0:
-          typeValue = yType[0];
-          break;
-        case 1:
-          typeValue = yType[1];
-          break;
-        case 2:
-          typeValue = yType[2];
-          break;
-        case 3:
-          typeValue = yType[3];
-          break;
-        case 4:
-          typeValue = yType[4];
-          break;
-      }
-      return typeValue;
-    }
-  }
-
-  public barCopyClick(e): void {
-    this.alertBarShow = true;
-    document.body.className = 'ui-overflow-hidden';
-    const yType = ['用电量', '用水量'];
-    const itemType = ['electric', 'water'];
-    const timeType = ['', ''];
-    const colorList = [
-      '#356981', '#356981', '#356981', '#356981', '#356981', '#356981',
-      '#356981', '#356981', '#356981', '#356981', '#356981 ', '#356981'
-    ];
-    colorList[e.data.value[0]] = '#D43839';
-    const xAxis = e.data.value[0];
-    const yAxis = e.data.value[1];
-    const total = e.data.value[3];
-    this.alertBarTitle = yType[yAxis];
-    // 柱状图
-    this.serareaService.search3DAlertBar({id: 2, types: itemType[yAxis]}).subscribe(
-      (val) => {
-        console.log(val);
-        this.options3dBar = {
-          title: [
-            {
-              text: `贵州省所有服务区年度${types(yAxis)}统计`,
-              left: 'center',
-              textStyle: {
-                color: '#fff',
-                fontSize: 16
-              }
-            },
-          ],
-          dataZoom: [
-            {
-              type: 'inside'
-            }
-          ],
-          tooltip: {
-            trigger: 'axis',
-            axisPointer: {
-              type: 'shadow'
-            }
-          },
-          grid: {
-            left: '5%',
-            right: '3%',
-            bottom: '10%'
-          },
-          xAxis: {
-            type: 'category',
-            data: val.data.xData,
-            splitLine: {show: false},
-            nameTextStyle: {
-              color: 'white'
-            },
-            axisLine: {
-              lineStyle: {
-                color: 'white'
-              }
-            },
-          },
-          yAxis: {
-            type: 'value',
-            name: '数值',
-            splitLine: {show: false},
-            nameTextStyle: {
-              align: 'left',
-              color: 'white'
-            },
-            axisLine: {
-              lineStyle: {
-                color: 'white'
-              }
-            },
-          },
-          series: [
-            {
-              data: val.data.coordinate,
-              type: 'bar',
-              label: {
-                // 柱状图的数值是否显示
-                show: true,
-                textStyle: {
-                  fontSize: 16,
-                  borderWidth: 1
-                }
-              },
-              itemStyle: {
-                color: function (params) {
-                  return colorList[params.dataIndex];
-                },
-              }
-            }]
-        };
-      }
-    );
-    // 折线图
-    this.serareaService.search3DAlertLineMonth({id: 1, types: timeType[yAxis]}).subscribe(
-      (val) => {
-        console.log(val);
-        this.options3dBar = {
-          title: [
-            {
-              text: `贵州省所有服务区年度${types(yAxis)}统计`,
-              left: 'center',
-              textStyle: {
-                color: '#fff',
-                fontSize: 16
-              }
-            },
-          ],
-          dataZoom: [
-            {
-              type: 'inside'
-            }
-          ],
-          tooltip: {
-            trigger: 'axis',
-            axisPointer: {
-              type: 'shadow'
-            }
-          },
-          grid: {
-            left: '5%',
-            right: '3%',
-            bottom: '10%'
-          },
-          xAxis: {
-            type: 'category',
-            data: val.data.xData,
-            splitLine: {show: false},
-            nameTextStyle: {
-              color: 'white'
-            },
-            axisLine: {
-              lineStyle: {
-                color: 'white'
-              }
-            },
-          },
-          yAxis: {
-            type: 'value',
-            name: '数值',
-            splitLine: {show: false},
-            nameTextStyle: {
-              align: 'left',
-              color: 'white'
-            },
-            axisLine: {
-              lineStyle: {
-                color: 'white'
-              }
-            },
-          },
-          series: [
-            {
-              data: val.data.coordinate,
-              type: 'bar',
-              label: {
-                // 柱状图的数值是否显示
-                show: true,
-                textStyle: {
-                  fontSize: 16,
-                  borderWidth: 1
-                }
-              },
-              itemStyle: {
-                color: function (params) {
-                  return colorList[params.dataIndex];
-                },
-              }
-            }]
-        };
-      }
-    );
-    const xAxisData = ['00:00', '02:00', '04:00', '06:00', '08:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00'];
-    const legendData = ['经营收入', '客流量', '车流量', '用水量', '用电量'];
-    const title = '服务区业态数据变化';
-    const serieData = [];
-    const metaDate = [
-      [120, 140, 100, 120, 300, 230, 130, 170, 140, 120, 300, 230],
-      [200, 120, 300, 200, 170, 300, 200, 180, 200, 190, 300, 200],
-      [100, 200, 140, 300, 200, 180, 100, 300, 230, 130, 100, 300],
-      [152, 418, 89, 156, 200, 180, 100, 300, 230, 130, 145, 300],
-      [56, 223, 140, 300, 200, 180, 283, 300, 230, 148, 100, 300]
-    ];
-    for (let v = 0; v < legendData.length; v++) {
-      const serie = {
-        name: legendData[v],
-        type: 'line',
-        symbol: 'circle',
-        symbolSize: 10,
-        data: metaDate[v]
-      };
-      serieData.push(serie);
-    }
-    const colors = ['#7C7CD4', '#36B9AB', '#6ACD72', '#0A30BF', '#027204'];
-    this.options3dLine = {
-      title: {
-        text: title,
-        x: 'center',
-        textStyle: {
-          color: '#fff',
-          fontSize: 14
-        }
-      },
-      legend: {
-        show: true,
-        left: '10%',
-        data: legendData,
-        y: '5%',
-        itemWidth: 18,
-        itemHeight: 12,
-        textStyle: {color: '#fff', fontSize: 12},
-      },
-      color: colors,
-      grid: {left: '2%', top: '12%', bottom: '5%', right: '5%', containLabel: true},
-      tooltip: {trigger: 'axis', axisPointer: {type: 'shadow'}},
-      xAxis: [
-        {
-          type: 'category',
-          axisLine: {show: true, lineStyle: {color: '#6173A3'}},
-          axisLabel: {interval: 'auto', textStyle: {color: '#fff', fontSize: 14}},
-          axisTick: {show: false},
-          data: xAxisData,
-        },
-      ],
-      yAxis: [
-        {
-          axisTick: {show: false},
-          splitLine: {show: false},
-          axisLabel: {textStyle: {color: '#9ea7c4', fontSize: 14}},
-          axisLine: {show: true, lineStyle: {color: '#6173A3'}},
-        },
-      ],
-      series: serieData
-    };
-
-    function types(value): string {
-      let typeValue = '';
-      switch (value) {
-        case 0:
-          typeValue = yType[0];
-          break;
-        case 1:
-          typeValue = yType[1];
-          break;
-        case 2:
-          typeValue = yType[2];
-          break;
-        case 3:
-          typeValue = yType[3];
-          break;
-        case 4:
-          typeValue = yType[4];
-          break;
-      }
-      return typeValue;
-    }
-  }
-
+  public onOutOptions3dBar(e): void {}
   public closeBarShow() {
     this.alertBarShow = false;
     document.body.className = '';
   }
-
-  // 3D柱状图弹窗操作
-  public options3dBarInit(ec) {
-    this.options3dBarInstance = ec;
-  }
-
-  public options3dBarClick(e) {
-    this.colorList = [
-      '#356981', '#356981', '#356981', '#356981', '#356981', '#356981',
-      '#356981', '#356981', '#356981', '#356981', '#356981 ', '#356981'
-    ];
-    this.colorList[e.dataIndex] = '#D43839';
-    this.options3dBarInstance.setOption(this.options3dBar);
-    /* this.arryPie = [];
-     this.dataService.getrandomPie(9, 900, 50).map((val, index) => {
-       this.arryPie.push({value: val, name: this.business[index]});
-     });
-     this.options3dPie = {
-       title: {
-         text: `${this.serviceZoneTitle}年度${e.name}类型占比统计`,
-         x: 'center',
-         textStyle: {
-           color: '#fff',
-           fontSize: 16
-         }
-       },
-       tooltip: {
-         trigger: 'item',
-         formatter: '{b} : {d}%'
-       },
-       /!*legend: {
-         orient: 'vertical',
-         left: 'left',
-         data: ['贵阳市', '遵义市', '六盘水市', '安顺市', '毕节市', '铜仁市', '黔东南苗族侗族自治州', '黔南布依族苗族自治州','黔西南布依族苗族自治州'],
-         textStyle: {
-           color: 'white'
-         }
-       },*!/
-       series: [
-         {
-           name: `${e.name}总计：${e.value}`,
-           type: 'pie',
-           radius: '60%',
-           center: ['50%', '50%'],
-           data: this.arryPie,
-           itemStyle: {
-             color: function (params) {
-               return ['#CE2D79', '#BDD139', '#78E77D', '#09D4D6', '#3C75B9', '#6769B1', '#FF8C9D', '#2796C4', '#E57D0D'][params.dataIndex];
-             },
-             emphasis: {
-               shadowBlur: 10,
-               shadowOffsetX: 0,
-               shadowColor: 'rgba(0, 0, 0, 0.5)'
-             }
-           }
-         }
-       ]
-     };*/
-  }
-
-  // 表格导出
   public bar3dExportClick() {
     const startTime = this.datePipe.transform(this.startTime3d, 'yyyyMMdd');
     const endTime = this.datePipe.transform(this.endTime3d, 'yyyyMMdd');
@@ -851,92 +261,42 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       window.alert('请把数据选择全在提交');
     }
   }
-
-  public open3dBarExcel() {
-    this.bar3dExcelShow = true;
-  }
-
-  // 选择时间
-  public selsectDateClick(param): void {
-    console.log(param.onFocus);
-  }
-
-  public close3dBarExcel() {
-    this.bar3dExcelShow = false;
-  }
-
-  // 实时车流监控
+  // 车辆监控及表格导出
   public vehicleAmountCount(): void {
     this.serareaService.searchCarTotal({id: 1}).subscribe(
       (value) => {
-        console.log(value);
-        if (value.data) {
-          this.vehicleAmount = value.data.toString().split('');
+        if (value.status === '200') {
+          this.vehicleAmount = {
+            number: value.data,
+            units: '辆'
+          };
         }
       }
     );
   }
-
-  // 车辆类型占比图表配置
   public CarTypes() {
     this.serareaService.searchCarTotalPie({id: 1}).subscribe(
       (value) => {
-        console.log(value);
-        this.optionsCarModel = {
-          tooltip: {
-            trigger: 'item',
-            formatter: '{b} : {d}%'
-          },
-          series: [
-            {
-              type: 'pie',
-              radius: '55%',
-              center: ['50%', '50%'],
-              label: {
-                show: true,
-                position: 'outside',
-                formatter: '{b}: {d}%',
-                color: 'white',
-                align: 'center',
-                emphasis: {
-                  show: true,
-                  textStyle: {
-                    fontSize: 12
-                  }
-                }
-              },
-              color: ['#00CAE2', '#2307EF', '#4791D8'],
-              data: value.data,
-              itemStyle: {
-                emphasis: {
-                  shadowBlur: 10,
-                  shadowOffsetX: 0,
-                  shadowColor: 'rgba(0, 0, 0, 0.5)'
-                }
-              }
-            }
-          ]
-        };
+        if (value.status === '200') {
+          this.optionsCarModel = {
+            data: value.data,
+            title: '',
+            total: '',
+            color: ['#00CAE2', '#2307EF', '#4791D8']
+          };
+        }
       }
     );
   }
-
-  // 车型日分布类型占比饼状图相关点击事件
   public parkClick(e): void {
     this.alertCarShow = true;
     document.body.className = 'ui-overflow-hidden';
-    this.arryCarPie = [];
-    this.dataService.getrandomPie(9, 900, 50).map((val, index) => {
-      this.arryCarPie.push({value: val, name: this.citys[index]});
-    });
-    this.carTableData = this.dataService.getJsonObj(8, 1000, 100, this.alertCarTitle);
+    // this.carTableData = this.dataService.getJsonObj(8, 1000, 100, this.alertCarTitle);
   }
-
   public closeCarShow(): void {
     document.body.className = '';
     this.alertCarShow = false;
   }
-
   public carBtnClick(e): void {
     if (e.srcElement.innerText === '小车') {
       this.alertCarTitle = '小车';
@@ -972,8 +332,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       this.carTableData = this.dataService.getJsonObj(8, 1000, 100, this.alertCarTitle);
     }
   }
-
-  // 表格导出
   public carExportClick() {
     const startTime = this.datePipe.transform(this.carStartTime, 'yyyyMMdd');
     const endTime = this.datePipe.transform(this.carEndTime, 'yyyyMMdd');
@@ -983,25 +341,13 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       window.alert('请把数据选择全在提交');
     }
   }
-
-  public openCarExcel() {
-    this.carExcelShow = true;
-  }
-
-  public closeCarExcel() {
-    this.carExcelShow = false;
-  }
-
-
   /************************中部***************************/
-  // 中部服务区数据展示
+  // 店铺、视频及方向
   public backCenterDate() {
-    // 店铺数据
     this.serareaService.getServiceShopVDate().subscribe(
       (value) => {
         this.serareaService.searchServiceShopIncome().subscribe(
           (val) => {
-            console.log(val);
             let s = [];
             let x = [];
             value.data.map((item, index) => {
@@ -1025,7 +371,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
                 if (s[index].id = this.incomeTopData[index].id) {
                   this.incomeTopData[index].revenue = s[index].revenue;
                 }
-                console.log(item);
               });
             }
             if (x) {
@@ -1033,7 +378,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
                 if (x[index].id = this.incomeBottomData[index].id) {
                   this.incomeBottomData[index].revenue = x[index].revenue;
                 }
-                console.log(item);
               });
             }
           }
@@ -1041,40 +385,11 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       }
     );
   }
-
-  // 中部服务商家操作
-  public closeMerchantVideo(): void {
-    document.body.className = '';
-    this.videoAlertShow = false;
-  }
-
-  public videoShopListClick(e): void {
-    this.videoBottomShopUrl = '';
-    if (e === null || e === '' || e === undefined) {
-      document.getElementById('shopWindowShop').innerHTML = `<h1 class="text-center">暂时没安装摄像头</h1>`;
-    } else {
-      this.videoBottomShopUrl = this.videoBottomShopUrl + `
-        <div class="video-play" style="height: 66vh">
-           <object type='application/x-vlc-plugin' pluginspage="http://www.videolan.org/" id='vlc' events='false' width="100%" height="96%">
-              <param name='mrl' value='${e}' />
-              <param name='volume' value='50' />
-              <param name='autoplay' value='true' />
-              <param name='loop' value='false' />
-              <param name='fullscreen' value='true' />
-              <param name='controls' value='true' />
-            </object>
-</div>
-      `;
-      document.getElementById('shopWindowShop').innerHTML = this.videoBottomShopUrl;
-    }
-  }
-
   public closeServiceShop(): void {
     document.body.className = '';
     this.serviceShopShow = false;
   }
-
-  // 商家信息/视频弹窗
+  // 服务区商家
   public openServiceShop(item): void {
     console.log(item);
     this.videoShopList = [];
@@ -1102,149 +417,26 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
         document.getElementById('shopVideo').innerHTML = this.videoBottomShopUrl;
       }, 100);
     }
-    const title = '服务区业态数据变化';
-    this.serareaService.searchServiceShopLine({id: item.id, yIndex: ['revenue', 'passenger', 'vehicle']}).subscribe(
+    // 折线图
+    this.serareaService.searchServiceShopLine({id: item.id, yIndex: ['revenue', 'passenger', 'vehicle', 'electric', 'water']}).subscribe(
       (val) => {
         console.log(val);
         if (val.status === '200') {
-          // 折线图
-          // const xAxisData = ['00:00', '02:00', '04:00', '06:00', '08:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00'];
-          const legendData = [];
-          const serieData = [];
-          const metaDate = [];
-          val.data.yData.map((param, index) => {
-            legendData.push(param.name);
-            metaDate.push(param.data);
-          });
-          console.log(metaDate);
-          for (let v = 0; v < legendData.length; v++) {
-            const serie = {
-              name: legendData[v],
-              type: 'line',
-              symbol: 'circle',
-              symbolSize: 10,
-              data: metaDate[v]
-            };
-            serieData.push(serie);
-          }
-          const colors = ['#7C7CD4', '#36B9AB', '#6ACD72', '#0A30BF', '#027204'];
           this.shopEchartLine = {
-            title: {
-              text: title,
-              x: 'center',
-              textStyle: {
-                color: '#fff',
-                fontSize: 14
-              }
-            },
-            legend: {
-              show: true,
-              left: '10%',
-              data: legendData,
-              y: '10%',
-              itemWidth: 18,
-              itemHeight: 12,
-              textStyle: {color: '#fff', fontSize: 12},
-            },
-            color: colors,
-            grid: {left: '2%', top: '12%', bottom: '5%', right: '5%', containLabel: true},
-            tooltip: {trigger: 'axis', axisPointer: {type: 'shadow'}},
-            xAxis: [
-              {
-                type: 'category',
-                axisLine: {show: true, lineStyle: {color: '#6173A3'}},
-                axisLabel: {interval: 'auto', textStyle: {color: '#fff', fontSize: 14}},
-                axisTick: {show: false},
-                data: val.data.xData,
-              },
-            ],
-            yAxis: [
-              {
-                axisTick: {show: false},
-                splitLine: {show: false},
-                axisLabel: {textStyle: {color: '#9ea7c4', fontSize: 14}},
-                axisLine: {show: true, lineStyle: {color: '#6173A3'}},
-              },
-            ],
-            series: serieData
+            data: val.data,
+            title: `${item.storeName}业态数据走势分析`,
+            color: ['#7C7CD4', '#36B9AB', '#6ACD72', '#0A30BF', '#027204']
           };
         }
       }
     );
-
+    // 面积图
     this.serareaService.searchServiceShopArea(item.id).subscribe(
       (val) => {
-        console.log(val);
         if (val.status === '200') {
-          // 面积图
-          const areaMouth = val.data.xData;
-          const areaData = val.data.coordinate;
-          console.log(areaData);
-          // const areaData = function () {
-          //   const a = [];
-          //   areaMouth.map(() => {
-          //     a.push((Math.random() * 10 + 1) * 2000);
-          //   });
-          //   return a;
-          // };
           this.shopEchartArea = {
-            title: {
-              text: title,
-              x: 'center',
-              textStyle: {
-                color: '#fff',
-                fontSize: 14
-              }
-            },
-            grid: {left: 0, top: '12%', bottom: '5%', right: '5%', containLabel: true},
-            tooltip: {trigger: 'axis', axisPointer: {type: 'shadow'}},
-            xAxis: {
-              type: 'category',
-              boundaryGap: false,
-              axisLine: {show: true, lineStyle: {color: '#6173A3'}},
-              axisLabel: {interval: 'auto', textStyle: {color: '#fff', fontSize: 14}},
-              axisTick: {show: false},
-              data: areaMouth
-            },
-            yAxis: {
-              type: 'value',
-              axisTick: {show: false},
-              splitLine: {show: false},
-              axisLabel: {textStyle: {color: '#9ea7c4', fontSize: 14}},
-              axisLine: {show: true, lineStyle: {color: '#6173A3'}},
-            },
-            series: [{
-              data: areaData,
-              type: 'line',
-              // smooth: 0.3, // 线条的平滑程度
-              symbol: 'none', // 折线上的标记点
-              itemStyle: {// 折线拐点标志的样式。
-                color: 'transparent'
-              },
-              areaStyle: { // 区域填充样式
-                color: {
-                  type: 'linear',
-                  x: 0,
-                  y: 0,
-                  x2: 0,
-                  y2: 1,
-                  colorStops: [
-                    {
-                      offset: 0, color: '#1876be' // 0% 处的颜色
-                    },
-                    {
-                      offset: 0.3, color: '#1876be' // 0% 处的颜色
-                    },
-                    {
-                      offset: 0.6, color: '#1876be' // 0% 处的颜色
-                    },
-                    {
-                      offset: 1, color: 'transparent' // 100% 处的颜色
-                    }],
-                  globalCoord: false // 缺省为 false
-                }
-              },
-            }]
+            data: val.data,
+            title: `${item.storeName}业态数据面积图分析`,
           };
         }
       }
@@ -1275,7 +467,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     }
   }
 
-  // 服务区公共视频监控
+  // 公共视频监控
   public openPublicVideo(e) {
     this.videoShopList = e;
     let videoUrlHtml = '';
@@ -1301,12 +493,10 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       document.getElementById('publicVideo').innerHTML = videoUrlHtml;
     }, 100);
   }
-
   public closePublicVideo() {
     document.body.className = '';
     this.videoPublicShow = false;
   }
-
   public publicTopVideoGroupOver(videoList, i): void {
     videoList.map(() => {
       this.videoTopOpen.push(false);
@@ -1320,11 +510,9 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       this.publicVideoList = videoList;
     }
   }
-
   public publicTopVideoGroupLeave(i): void {
     this.videoTopOpen[i] = false;
   }
-
   public publicTopBottomGroupOver(videoList, i): void {
     videoList.map(() => {
       this.videoBottomOpen.push(false);
@@ -1338,7 +526,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       this.publicVideoList = videoList;
     }
   }
-
   public publicTopBottomGroupLeave(i): void {
     this.videoBottomOpen[i] = false;
   }
@@ -1347,15 +534,12 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   public eventNotPoocess(): void {
     this.serareaService.searchNotPoocessEventsList({page: 1, nums: 1000}).subscribe(
       (value) => {
-        console.log(value);
         if (value.status === '200') {
           this.eventList = value.data.contents;
         }
       }
     );
   }
-
-  // 未处理事件弹窗
   public openEventAlert(item): void {
     document.body.className = 'ui-overflow-hidden';
     this.eventAlertShow = true;
@@ -1384,7 +568,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     document.body.className = '';
     this.eventAlertShow = false;
   }
-  // 未处理事件弹窗的tab切换
   public eventAlertListCtrlw(): void {
     this.eventAlertListShow = true;
   }
@@ -1397,7 +580,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   }
   // 事件上报
   public eventInfoUpClick(e): void {
-    console.log(e);
     if (e.eventCategoryName !== '经营类') {
       this.waitTitle = e.eventCategoryName;
       this.serversToiletAlertShow = true;
@@ -1440,13 +622,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   }
 
   /************************右边***************************/
-  // 服务区基本信息之信息详情
-  public openServiceBasicAlert(name) {
-    document.body.className = 'ui-overflow-hidden';
-    this.serviceBasicAlert = true;
-    this.serviceBasicAlertTitle = name;
-  }
-
   // 遍历修改后的数据，并把它赋值给car1
   public cloneValue(c: any): any {
     const car = {};
@@ -1457,8 +632,15 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     }
     return car;
   }
-
   // 服务区信息修改
+  public crosswiseClick(): void {
+    this.alertCrosswiseShow = true;
+    document.body.className = 'ui-overflow-hidden';
+  }
+  public closeCrosswiseShow(): void {
+    document.body.className = '';
+    this.alertCrosswiseShow = false;
+  }
   public modifySerAraItemClick(): void {
     this.serareaService.modifySerAraItem(
       {
@@ -1493,7 +675,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       }
     ).subscribe(
       (data) => {
-        console.log(data);
         if (data.status === '200') {
           window.alert(data.message);
           this.alterCommonAttributeValues = [];
@@ -1501,7 +682,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
           this.alterDownAttributeValues = [];
           this.serareaService.searchSerAraItem(1).subscribe(
             (value) => {
-              console.log(value.data);
               this.serviceInfo = value.data;
               value.data.commonAttributeValues.map((val, index) => {
                 this.alterCommonAttributeValues.push(this.cloneValue(val));
@@ -1512,15 +692,13 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
               value.data.downAttributeValues.attributeValues.map((val, index) => {
                 this.alterDownAttributeValues.push(this.cloneValue(val));
               });
-              console.log(this.alterCommonAttributeValues);
             }
           );
         }
       }
     );
   }
-
-  // 服务区基本信息之园区平面图
+  // 平面图
   public openServicesPlan() {
     document.body.className = 'ui-overflow-hidden';
     this.servicesPlan = true;
@@ -1557,113 +735,36 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     document.body.className = '';
     this.servicesPlan = false;
   }
-
-  // 服务期信息修改
-  public crosswiseClick(): void {
-    this.alertCrosswiseShow = true;
-    document.body.className = 'ui-overflow-hidden';
-  }
-  public closeCrosswiseShow(): void {
-    document.body.className = '';
-    this.alertCrosswiseShow = false;
-  }
-
-  // 实时收入监控
+  // 收入监控
   public incomeAmountCount(): void {
     this.serareaService.searchIncomeTotal({id: 1}).subscribe(
       (value) => {
-        // console.log(value);
-        if (value.data) {
-          this.incomeAmount = Math.ceil(value.data).toString().split('');
+        if (value.status === '200') {
+          this.incomeAmount = {
+            number: value.data,
+            units: '元'
+          };
         }
       }
     );
   }
-  // 收入类型占比图表配置
   public IncomeTypes() {
     this.serareaService.searchIncomeTotalPie({id: 1}).subscribe(
       (value) => {
-        console.log(value);
-        this.optionsIncomeModel = {
-          tooltip: {
-            trigger: 'item',
-            formatter: '{b} : {c} ({d}%)'
-          },
-          series: [
-            {
-              type: 'pie',
-              radius: '55%',
-              center: ['50%', '50%'],
-              label: {
-                show: true,
-                position: 'outside',
-                formatter: '{b}: {d}%',
-                color: 'white',
-                align: 'center',
-                emphasis: {
-                  show: true,
-                  textStyle: {
-                    fontSize: 12
-                  }
-                }
-              },
-              color: ['#01CBE3', '#2A58DF', '#1B94E3', '#3B4F74', '#D33939', '#2407EF'],
-              data: value.data,
-              itemStyle: {
-                emphasis: {
-                  shadowBlur: 10,
-                  shadowOffsetX: 0,
-                  shadowColor: 'rgba(0, 0, 0, 0.5)'
-                }
-              }
-            }
-          ]
-        };
+        if (value.status === '200') {
+          this.optionsIncomeModel = {
+            data: value.data,
+            title: '',
+            total: '',
+            color: ['#00CAE2', '#2307EF', '#4791D8']
+          };
+        }
       }
     );
   }
-
-  // 收入类型相关操作
   public incomeClick(e): void {
     this.alertIncomeShow = true;
     document.body.className = 'ui-overflow-hidden';
-    this.arryIncomePie = [];
-    this.dataService.getrandomPie(9, 1000, 100).map((val, index) => {
-      this.arryIncomePie.push({value: val, name: this.citys[index]});
-    });
-    this.optionsIncomeTypes = {
-      title: {
-        text: `贵州省各市所有服务区当日${e.name}类型占比统计`,
-        x: 'center',
-        textStyle: {
-          color: '#fff',
-          fontSize: 16
-        }
-      },
-      tooltip: {
-        trigger: 'item',
-        formatter: '{a} <br/>{b} : {c} ({d}%)'
-      },
-      series: [
-        {
-          name: `${e.name}`,
-          type: 'pie',
-          radius: '50%',
-          center: ['50%', '50%'],
-          data: this.arryIncomePie,
-          itemStyle: {
-            color: function (params) {
-              return ['#CE2D79', '#BDD139', '#78E77D', '#09D4D6', '#3C75B9', '#6769B1', '#FF8C9D', '#2796C4', '#E57D0D'][params.dataIndex];
-            },
-            emphasis: {
-              shadowBlur: 10,
-              shadowOffsetX: 0,
-              shadowColor: 'rgba(0, 0, 0, 0.5)'
-            }
-          }
-        }
-      ]
-    };
     this.getIncomeTotal();
   }
   public getIncomeTotal(): void {
@@ -1727,15 +828,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     document.body.className = '';
     this.alertIncomeShow = false;
   }
-
-  // 收入类型弹窗
-  public optionsIncomePieInit(ec): void {
-    // this.optionsCarPieInstance = ec;
-  }
-  public optionsIncomePieClick(e) {
-    this.IncomeAreaName = e.name;
-    this.IncomeTableData = this.dataService.getIncomeObj(8, 1000, 100, this.alertIncomeTitle);
-  }
   public IncomeBtnClick(e): void {
     if (e.srcElement.innerText === '收入总数') {
       this.alertIncomeTitle = '收入总数';
@@ -1786,8 +878,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       this.getIncomeTypesSingle(e.srcElement.innerText, this.storeList);
     }
   }
-
-  // 表格导出
   public incomeExportClick() {
     const startTime = this.datePipe.transform(this.incomeStartTime, 'yyyyMMdd');
     const endTime = this.datePipe.transform(this.incomeEndTime, 'yyyyMMdd');
@@ -1796,61 +886,5 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     } else {
       window.alert('请把数据选择全在提交');
     }
-  }
-  public openIncomeExcel() {
-    this.incomeExcelShow = true;
-  }
-  public closeincomeExcel() {
-    this.incomeExcelShow = false;
-  }
-
-
-  /*********************************其他*****************************/
-  // 返回上级路由
-  public goBack(): void {
-    history.back();
-  }
-  // 数据更新加载
-  public upData() {
-    //  高速服液态数据3d统计
-    this.packOption3();
-
-    // 车流监控
-    /* this.vehicleAmountCountClean = setInterval(() => {
-       this.vehicleAmountCount();
-       this.CarTypes();
-     }, 5000);*/
-
-    // 收入监控
-    /*this.incomeAmountCountClean = setInterval(() => {
-      this.incomeAmountCount();
-      this.IncomeTypes();
-    }, 5000);*/
-
-    // 实时客流
-    /*this.personAmountCountClean = setInterval(() => {
-      this.serareaService.searchPersonTotal({id: 1}).subscribe(
-        (val) => {
-          console.log(val);
-          if (val.val.data.total) {
-            // this.localService.persons.next(val.data.total.toString().split(''));
-          }
-        }
-      );
-    }, 5000);*/
-
-
-    // 事件列表
-    this.backCenterDate();
-    this.eventNotPoocess();
-    // 事件上报类型
-    this.serareaService.searchEventCategory().subscribe(
-      (value) => {
-        console.log(value);
-        if (value.status === '200') {
-          this.eventInfoUpTypes = value.data;
-        }
-      }
-    );
   }
 }

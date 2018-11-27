@@ -32,7 +32,7 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
   public endTime3d: Date; // 时间选择器
   // 车辆监控
   public vehicleAmount: any;
-  public optionsCarModel = {};
+  public optionsCarModel: any; // 车辆饼状图
   public alertCarShow = false;
   public alertCarTitle = '总数';
   public optionsCarType = {};
@@ -48,10 +48,6 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
   public dataToggle = '贵州省';
   public province: any;
   public city: any;
-  public citeDate: string;
-  public provinceShow = false;
-  public cityShow = false;
-  public flag: string;
   // 事件类型
   public eventTypes: any;
   public eventConfig: ConfigModule;
@@ -75,7 +71,7 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
   public dataStatus = '业态收入/万元';
   // 收入监控
   public incomeAmount: any;
-  public optionsIncomeModel = {};
+  public optionsIncomeModel: any;
   public alertIncomeShow = false;
   public alertIncomeTitle = '';
   public optionsIncomeTypes = {};
@@ -242,9 +238,6 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
       window.alert('请把数据选择全在提交');
     }
   }
-  public open3dBarExcel() {
-    this.bar3dExcelShow = true;
-  }
   // 车流监控
   public vehicleAmountCount(): void {
     this.financeDataService.searchCarTotal({id: 2}).subscribe(
@@ -252,7 +245,7 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
         if (value.status === '200') {
           this.vehicleAmount = {
             number: value.data,
-            unitsL: '辆'
+            units: '辆'
           };
         }
       }
@@ -261,12 +254,14 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
   public CarTypes() {
     this.financeDataService.searchCarTotalPie({id: 2}).subscribe(
       (value) => {
-        this.optionsCarModel = {
-          data: value.data,
-          title: '',
-          total: '',
-          color: ['#00CAE2', '#2307EF', '#4791D8']
-        };
+        if (value.status === '200') {
+          this.optionsCarModel = {
+            data: value.data,
+            title: '',
+            total: '',
+            color: ['#00CAE2', '#2307EF', '#4791D8']
+          };
+        }
       }
     );
   }
@@ -343,13 +338,6 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
       window.alert('请把数据选择全在提交');
     }
   }
-  public openCarExcel() {
-    this.carExcelShow = true;
-  }
-  public closeCarExcel() {
-    this.carExcelShow = false;
-  }
-
   /*********************************中部*****************************/
   // 中部地图
   public centertMap (): void {
@@ -483,22 +471,26 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
   public incomeAmountCount(): void {
     this.financeDataService.searchIncomeTotal({id: 2}).subscribe(
       (value) => {
-        this.incomeAmount = {
-          number: value.data,
-          unitsL: '元'
-        };
+        if (value.status === '200') {
+          this.incomeAmount = {
+            number: value.data,
+            units: '元'
+          };
+        }
       }
     );
   }
   public IncomeTypes() {
     this.financeDataService.searchIncomeTotalPie({id: 2}).subscribe(
       (value) => {
-        this.optionsIncomeModel = {
-          data: value.data,
-          title: '',
-          total: '',
-          color: ['#00CAE2', '#2307EF', '#4791D8']
-        };
+        if (value.status === '200') {
+          this.optionsIncomeModel = {
+            data: value.data,
+            title: '',
+            total: '',
+            color: ['#00CAE2', '#2307EF', '#4791D8']
+          };
+        }
       }
     );
   }
@@ -580,11 +572,5 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
     } else {
       window.alert('请把数据选择全在提交');
     }
-  }
-  public openIncomeExcel() {
-    this.incomeExcelShow = true;
-  }
-  public closeincomeExcel() {
-    this.incomeExcelShow = false;
   }
 }

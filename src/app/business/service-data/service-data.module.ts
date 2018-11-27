@@ -8,6 +8,7 @@ import {CalendarModule, ScrollPanelModule} from 'primeng/primeng';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {DataService} from '../../common/services/data.service';
 import {ButtonModule} from 'primeng/button';
+import {EchartLineAreaModule, EchartsLineBrokenModule} from '../../common/wenjun';
 
 @NgModule({
   imports: [
@@ -18,7 +19,9 @@ import {ButtonModule} from 'primeng/button';
     ReactiveFormsModule,
     CalendarModule,
     ScrollPanelModule,
-    ButtonModule
+    ButtonModule,
+    EchartsLineBrokenModule,
+    EchartLineAreaModule
   ],
   declarations: [ServiceDataComponent],
   providers: [ServiceDataService, DataService, DatePipe]

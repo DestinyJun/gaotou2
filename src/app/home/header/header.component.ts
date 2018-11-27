@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import {ToolsService} from '../../common/services/tools.service';
 import {ActivatedRoute} from '@angular/router';
 import {LocalStorageService} from '../../common/services/local-storage.service';
 import {NgxEchartsService} from 'ngx-echarts';
@@ -25,7 +24,6 @@ export class HeaderComponent implements OnInit {
   public cityOptions = {};
   public cityParentOptions = {};
   constructor(
-    private tools: ToolsService,
     private routerInfo: ActivatedRoute,
     private localService: LocalStorageService,
     private es: NgxEchartsService,
@@ -45,8 +43,7 @@ export class HeaderComponent implements OnInit {
     this.localService.persons.subscribe((value) => {
       this.persons = value;
       this.persons.map((val, index) => {
-        this.personNum.push({number: val,
-          colors: `linear-gradient(${this.tools.randomRgbColor(0)[0]},${this.tools.randomRgbColor(0)[0]})`});
+        this.personNum.push({number: val});
       });
     });
     // echart图表建立
@@ -229,8 +226,6 @@ export class HeaderComponent implements OnInit {
                 }
               }
             }
-            console.log(toolTiphtml);
-            // console.log(convertData(data))
             return toolTiphtml;
           } else {
             let toolTiphtml = '';
@@ -242,8 +237,6 @@ export class HeaderComponent implements OnInit {
                 }
               }
             }
-            console.log(toolTiphtml);
-            // console.log(convertData(data))
             return toolTiphtml;
           }
         }

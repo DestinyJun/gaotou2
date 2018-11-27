@@ -33,25 +33,25 @@
             </div>
             <div class="row bar3D-charts">
               <div class="col-ld-6 col-md-6">
-                <app-echart-basicbar [option]="options3dBar" (outOptions3dBar)="onOutOptions3dBar($event)"></app-echart-basicbar>
+                <app-echart-basicbar [option]="options3dBar" [height]="'55vh'" (outOptions3dBar)="onOutOptions3dBar($event)"></app-echart-basicbar>
               </div>
               <div class="col-ld-6 col-md-6">
                 <app-echart-pie [option]="options3dPie" [height]="'55vh'" (pieClick)="onOptions3dPie($event)"></app-echart-pie>
               </div>
-              <span class="toggle-btn-area-table" (click)="open3dBarExcel()">表格导出</span>
+              <span class="toggle-btn-area-table" (click)="bar3dExcelShow = true">表格导出</span>
             </div>
             <!--表格导出-->
             <div class="bg-excel" *ngIf="bar3dExcelShow">
               <div class="alert-window-excel">
                 <div class="alert-window-excel-header">
                   <span>收入数据表格导出</span>
-                  <div class="pull-right" (click)="close3dBarExcel()">
+                  <div class="pull-right" (click)="bar3dExcelShow = false">
                     <i class="fa fa-window-close " aria-hidden="true"></i>
                   </div>
                 </div>
                 <div class="alert-window-excel-content">
                   <div class="alert-window-excel-content-list">
-                    <label for="incomeDates">请选择开始时间：</label>
+                    <label>请选择开始时间：</label>
                     <p-calendar placeholder="请点击选择时间......" [locale]="esDate" [(ngModel)]="startTime3d" [monthNavigator]="true" [yearNavigator]="true" dateFormat="yymmdd"  yearRange="2017:2030"></p-calendar>
                   </div>
                   <div class="alert-window-excel-content-list">
@@ -60,8 +60,8 @@
                   </div>
                 </div>
                 <div class="alert-window-excel-footer text-center">
-                  <span (click)="bar3dExportClick()">确认导出</span>
-                  <span (click)="close3dBarExcel()">取消导出</span>
+                  <span (click)="bar3dExportClick();bar3dExcelShow = false">确认导出</span>
+                  <span (click)="bar3dExcelShow = false">取消导出</span>
                 </div>
               </div>
             </div>
@@ -132,8 +132,7 @@
                       <button class="btn btn-primary" [ngStyle]="{'background':alertCarTitle === '客车'?'black': ''}">客车</button>
                       <button class="btn btn-danger" [ngStyle]="{'background':alertCarTitle === '货车'?'black': ''}">货车</button>
                       <div class="toggle-btn-area pull-right" style="">
-                        <!--<button class="btn btn-warning">{{carAreaName}}</button>-->
-                        <span (click)="openCarExcel()">表格导出</span>
+                        <span (click)="carExcelShow = true">表格导出</span>
                       </div>
                     </div>
                     <div class="content-table">
@@ -176,7 +175,7 @@
               <div class="alert-window-excel">
                 <div class="alert-window-excel-header">
                   <span>车辆数据表格导出</span>
-                  <div class="pull-right" (click)="closeCarExcel()">
+                  <div class="pull-right" (click)="carExcelShow = false">
                     <i class="fa fa-window-close " aria-hidden="true"></i>
                   </div>
                 </div>
@@ -191,8 +190,8 @@
                   </div>
                 </div>
                 <div class="alert-window-excel-footer text-center">
-                  <span (click)="carExportClick()">确认导出</span>
-                  <span (click)="closeCarExcel()">取消导出</span>
+                  <span (click)="carExportClick();carExcelShow = false">确认导出</span>
+                  <span (click)="ccarExcelShow = false">取消导出</span>
                 </div>
               </div>
             </div>
@@ -325,7 +324,7 @@
           <span [ngStyle]="{'background': barStatus2?'#1F0BC4': '#3B78B1'}">车流量/辆</span>
           <span [ngStyle]="{'background': barStatus3?'#1F0BC4': '#04A6BB'}">客流量/人次</span>
         </div>
-        <app-echart-crossbar [crosswiseBarData]="crosswiseBar"></app-echart-crossbar>
+        <app-echart-crossbar [crosswiseBarData]="crosswiseBar" [height]="'40vh'"></app-echart-crossbar>
       </div>
       <!--收入统计-->
       <div class="income">
@@ -377,7 +376,7 @@
                     <button class="btn btn-warning" [ngStyle]="{'background':alertIncomeTitle === '住宿'?'black': ''}">住宿</button>
                     <button class="btn btn-primary" [ngStyle]="{'background':alertIncomeTitle === '汽修'?'black': ''}">汽修</button>
                     <div class="toggle-btn-area pull-right" style="">
-                      <span (click)="openIncomeExcel()">表格导出</span>
+                      <span (click)="incomeExcelShow = true">表格导出</span>
                     </div>
                   </div>
                   <div class="content-table">
@@ -416,7 +415,7 @@
             <div class="alert-window-excel">
               <div class="alert-window-excel-header">
                 <span>收入数据表格导出</span>
-                <div class="pull-right" (click)="closeincomeExcel()">
+                <div class="pull-right" (click)="incomeExcelShow = false">
                   <i class="fa fa-window-close " aria-hidden="true"></i>
                 </div>
               </div>
@@ -431,8 +430,8 @@
                 </div>
               </div>
               <div class="alert-window-excel-footer text-center">
-                <span (click)="incomeExportClick()">确认导出</span>
-                <span (click)="closeincomeExcel()">取消导出</span>
+                <span (click)="incomeExportClick();incomeExcelShow = false">确认导出</span>
+                <span (click)="incomeExcelShow = false">取消导出</span>
               </div>
             </div>
           </div>

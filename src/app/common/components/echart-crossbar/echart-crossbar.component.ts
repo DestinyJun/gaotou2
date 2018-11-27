@@ -8,6 +8,8 @@ import {Router} from '@angular/router';
 })
 export class EchartCrossbarComponent implements OnInit, OnChanges {
   @Input() public crosswiseBarData: any;
+  @Input() public height: any;
+  @Input() public width = 'auto';
   public crosswiseBar = {};
   constructor(
     private router: Router
