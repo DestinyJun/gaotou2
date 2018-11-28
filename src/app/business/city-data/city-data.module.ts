@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import {CommonModule, DatePipe} from '@angular/common';
 import {SharedModule} from '../../common/shared.module';
-
 import { CityDataComponent } from './city-data.component';
 import {CityDataRoutingModule} from './city-data.routing.module';
 import {WenjunAlertModule} from '../../common/wenjun';

@@ -42,17 +42,17 @@
 .custom .ui-scrollpanel-wrapper {
   border: none; /*控制滚动轴背景色*/
 }
-
 .custom .ui-scrollpanel-bar {
   background-color: transparent;
   opacity: 1;
   transition: background-color .3s;
 }
-
 .custom .ui-scrollpanel-bar:hover {
   background-color: #135ba1;
 }
-
+.custom:hover .ui-scrollpanel-bar {
+  background-color: rgba(56,68,96,0.3);
+}
 /***********************************bootstrap改造*****************************/
 .list-group>a{
   color: #87FFFF;

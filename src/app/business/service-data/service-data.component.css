@@ -122,19 +122,23 @@
 .center .servicesMap-top{
   height: 18vh;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
+  flex-wrap: wrap ;
 }
 .center .servicesMap-top .shop-info{
-  width: 30vw;
+  /*width: 30vw;*/
   height: 6vh;
   background: rgba(56,109,166,0.1);
   line-height: 2vh;
   border-right: 1px solid #1E2F39 ;
   border-bottom: 1px solid #1E2F39 ;
   font-size: 0.875rem;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  /*overflow: hidden;*/
+  /*text-overflow: ellipsis;*/
+  /*white-space: nowrap;*/
+  padding-left: 1vw;
+  padding-right: 1vw;
+  padding-top: 1vh;
 }
 .center .servicesMap-top .shop-info:last-child{
   border-right: none;
@@ -195,20 +199,24 @@
 .center .servicesMap-bottom{
   height: 18vh;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
+  flex-wrap: wrap-reverse;
   align-items: flex-end;
 }
 .center .servicesMap-bottom .shop-info{
-  width: 30vw;
+  /*width: 30vw;*/
   height: 6vh;
   background: rgba(56,109,166,0.1);
   line-height: 2vh;
   border-right: 1px solid #1E2F39 ;
   border-bottom: 1px solid #1E2F39 ;
   font-size: 0.875rem;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  /*overflow: hidden;*/
+  /*text-overflow: ellipsis;*/
+  /*white-space: nowrap;*/
+  padding-left: 1vw;
+  padding-right: 1vw;
+  padding-top: 1vh;
 }
 .center .servicesMap-bottom .shop-info:last-child{
   border-right: none;

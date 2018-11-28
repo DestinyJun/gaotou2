@@ -54,7 +54,7 @@
       <label for="birthday" class="col-sm-1 control-label" >生日</label>
       <div class="col-sm-5">
         <input type="text" *ngIf="btnProfileTxt" class="form-control" id="birthday" name="birthday" [value]="userInfo.birthday" [ngStyle]="{'background': !btnProfileTxt?'#C9302C': ''}" [disabled]="btnProfileTxt">
-        <p-calendar *ngIf="!btnProfileTxt" placeholder="请选择生日......" (onSelect)="onSelectTime($event)" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2030" dateFormat="yy-mm-dd"></p-calendar>
+        <p-calendar *ngIf="!btnProfileTxt" [locale]="esDate" placeholder="请选择生日......" (onSelect)="onSelectTime($event)" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2030" dateFormat="yy-mm-dd"></p-calendar>
       </div>
     </div>
     <div class="form-group">

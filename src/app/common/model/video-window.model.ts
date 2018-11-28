@@ -19,8 +19,8 @@ export class TreeNode {
   draggable?: boolean;
   droppable?: boolean;
   cameraName?: string;
-  outUrl: string;
-  showLocation: number;
+  outUrl?: string;
+  showLocation?: number;
 }
 export class ServiceAreaNode {
   id?: number;

@@ -1,15 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 
 @Component({
   selector: 'app-title-one',
   templateUrl: './title-one.component.html',
   styleUrls: ['./title-one.component.css']
 })
-export class TitleOneComponent implements OnInit {
-
+export class TitleOneComponent implements OnInit, OnChanges {
+  @Input() public option = {
+    title: '这是默认标题',
+  };
+  @Input() public width = 'auto';
+  @Input() public height: any;
   constructor() { }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
+  ngOnChanges(changes: SimpleChanges): void {}
 
 }

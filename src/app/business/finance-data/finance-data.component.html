@@ -5,13 +5,7 @@
     <div class="left col-lg-3 col-md-3">
       <!--3d柱状图-->
       <div class="accumulation">
-        <div class="accumulation-title title text-center">
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <P>{{this.dataToggle}}高速服务区业态数据3D统计图</P>
-        </div>
+        <app-title-one [height]="'3vh'" [option]="{title: this.dataToggle + '高速服务区业态数据3D统计图'}"></app-title-one>
         <app-echart3d
           [option]="options3d"
           [color]="['#9B90D5', '#46E7E2', '#78F991']"
@@ -90,14 +84,8 @@
       <div class="vehicle">
         <!--日车流量实时统计-->
         <div class="vehicle-amount">
-          <div class="vehicle-amount-title title text-center">
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            <p>{{this.dataToggle}}今日车辆流动数量</p>
-          </div>
-         <app-number-show [option]="vehicleAmount"></app-number-show>
+          <app-title-one [height]="'3vh'" [option]="{title: this.dataToggle + '今日车辆流动数量'}"></app-title-one>
+          <app-number-show [option]="vehicleAmount"></app-number-show>
         </div>
         <!--车型日分布占比-->
         <div class="vehicle-pie">
@@ -312,13 +300,7 @@
     <div class="right col-lg-3 col-md-3">
       <!--业态前十排名柱状图-->
       <div class="crosswise">
-        <div class="crosswise-title title text-center">
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <p>{{this.dataToggle}}业态数据前十排名</p>
-        </div>
+        <app-title-one [height]="'3vh'" [option]="{title: this.dataToggle + '业态数据前十排名'}"></app-title-one>
         <div class="crosswise-btn text-center" (click)="clickBtn($event)">
           <span [ngStyle]="{'background': barStatus1?'#1F0BC4': '#27375B'}">业态收入/万元</span>
           <span [ngStyle]="{'background': barStatus2?'#1F0BC4': '#3B78B1'}">车流量/辆</span>
@@ -330,13 +312,7 @@
       <div class="income">
         <!--实时收入-->
         <div class="income-amount">
-          <div class="income-amount-title title text-center">
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            <p>{{this.dataToggle}}高速服务区实时收入</p>
-          </div>
+          <app-title-one [height]="'3vh'" [option]="{title: this.dataToggle + '高速服务区实时收入'}"></app-title-one>
           <app-number-show [option]="incomeAmount"></app-number-show>
         </div>
         <!--收入占比-->

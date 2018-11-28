@@ -1,9 +1,7 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {VideoWindowService} from '../../common/services/video-window.service';
 import {LocalStorageService} from '../../common/services/local-storage.service';
-import {ServiceAreaNode, TreeNode} from '../../common/model/video-window.model';
-
-
+import {TreeNode} from '../../common/model/video-window.model';
 @Component({
   selector: 'app-video-window',
   templateUrl: './video-window.component.html',
@@ -23,9 +21,9 @@ export class VideoWindowComponent implements OnInit {
   public videoLocation4: any;
   /************** 区域树************/
   public areas = [];
+  public trees: TreeNode[];
   public areaTrees: TreeNode[];
   public areaTree: TreeNode;
-  public serAreas: any;
   public loading: boolean;
 
   constructor(
@@ -40,10 +38,6 @@ export class VideoWindowComponent implements OnInit {
     // 发射业太数据名称
     this.localService.eventBus.next('全国高速视频监控大数据');
     this.localService.eventBus.next({title: '全国高速视频监控大数据', flagState: 'window', flagName: '全国'});
-    this.videoLocation1 = '';
-    this.videoLocation2 = '';
-    this.videoLocation3 = '';
-    this.videoLocation4 = '';
     this.getUploadDate();
   }
   public getUploadDate() {
@@ -53,19 +47,27 @@ export class VideoWindowComponent implements OnInit {
         if (val.status === '200') {
           this.areas = val.data;
           this.areaTrees = this.initializeTree(val.data);
+          this.trees = [{
+            label: '全国高速视频监控',
+            children: [
+              {label: '一号监视窗口', children: this.areaTrees},
+              {label: '二号监视窗口', children: this.areaTrees},
+              {label: '三号监视窗口', children: this.areaTrees},
+              {label: '四号监视窗口', children: this.areaTrees},
+            ]
+          }];
           this.loading = false;
         }
       }
     );
   }
-  // 选选择树结构
+  // 选择树结构
   public nodeSelect(event): void {
     if (event.node.level === 2) {
       this.videoWindowService.searchServiceAreaList(event.node.id).subscribe(
       (value) => {
         if (value.status === '200') {
           event.node.children = this.initializeServiceAreaTree(value.data);
-
         }
       }
     );
@@ -87,7 +89,7 @@ export class VideoWindowComponent implements OnInit {
     console.log('2');
   }
   // 视频播放
-   public videoLocation(url: string, name: string, location: number): void {
+  public videoLocation(url: string, name: string, location: number): void {
    if (location === 1) {
      this.videoLocation1 = name;
      this.videoUrl1 = url;
