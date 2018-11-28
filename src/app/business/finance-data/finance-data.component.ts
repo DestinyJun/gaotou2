@@ -95,6 +95,7 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
     this.CarTypes();
     this.incomeAmountCount();
     this.IncomeTypes();
+    this.getPerson();
     // 时间初始化
     this.esDate = {
       firstDayOfWeek: 0,
@@ -106,7 +107,7 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
       today: '今天',
       clear: '清除'
     };
-    // 发射也太数据名称
+    // 发射业态数据名称
     this.localService.eventBus.next({title: '贵州省高速业态大数据',  flagState: 'finance', flagName: this.dataToggle});
     // 图表更行
     this.updataEcharts();
@@ -143,12 +144,21 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
     }, 5000);
     // 实时客流
     this.personAmountCountClean = setInterval(() => {
-      this.financeDataService.searchPersonTotal({id: 2}).subscribe(
-        (val) => {
-          this.localService.persons.next(val.data.toString().split(''));
-        }
-      );
+      this.getPerson();
     }, 5000);
+  }
+  // 客流
+  public getPerson(): void {
+    this.financeDataService.searchPersonTotal({id: 2}).subscribe(
+      (val) => {
+        if (val.status === '200') {
+          const a = 100000;
+          // console.log(val)
+          // this.localService.persons.next(val.data.toString().split(''));
+          this.localService.persons.next(a.toString().split(''));
+        }
+      }
+    );
   }
   /**********************************左边*****************************/
   // 3D柱状图

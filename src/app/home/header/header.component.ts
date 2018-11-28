@@ -49,17 +49,6 @@ export class HeaderComponent implements OnInit {
     // echart图表建立
     this.buildEchart();
   }
-  // 客流量实时监控
- /* public amount(): void {
-    setInterval(() => {
-      const b = [];
-      this.personNum += Math.round(Math.random() * 10);
-      this.personNum.toString().split('').map((value, index) => {
-        b.push({number: value, colors: `linear-gradient(${this.tools.randomRgbColor(0)[0]},${this.tools.randomRgbColor(0)[0]})`});
-        this.persons = b;
-      });
-    }, 3000);
-  }*/
   // 客流量弹窗
   public personClick() {
     if (this.flagState === 'serzone') {
@@ -532,18 +521,5 @@ export class HeaderComponent implements OnInit {
         },
       ]
     };
-  }
-  // 获取URL，风格URL
-  public getUrl(): void {
-    const url = window.location.href;
-    console.log(url);
-   /* const urlString = url.split('#')[1].split('/')[2];
-    if (urlString === 'finance') {
-      this.headerTitle = '贵州省高速业态大数据';
-    } else if (urlString === 'city') {
-      this.headerTitle = '贵阳市高速大数据';
-    } else if (urlString === 'whole') {
-      this.headerTitle = '全国高速业态大数据';
-    }*/
   }
 }

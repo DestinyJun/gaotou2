@@ -8,12 +8,15 @@
       <span>{{headerTitle}}</span>
     </div>
     <div class="header-admin">
-      <img src="assets/images/timg.jpg" alt="" [routerLink]="['/home/personal']" aria-haspopup="true" aria-expanded="false" data-toggle="dropdown" class="header-admin-img img-circle">
+      <!--头像-->
+      <img class="header-admin-img img-circle" src="assets/images/timg.jpg" alt="" [routerLink]="['/home/personal']"   >
+      <!--时钟-->
       <div class="header-admin-time text-center">
         <span>北京时间 <span style="margin-left: 0.2vw">{{dataTime | date:'yyyy-MM-dd HH:mm:ss'}}</span></span>
       </div>
+      <!--客流-->
       <div class="header-admin-flow text-center" (click)="personClick()">
-        <span>今日客流量：</span>
+        <span>{{this.flagName}}今日客流量：</span>
         <div class="text-center">
           <span style="font-size: 0.875rem">{{persons.length === 0? '全国客流当前暂无数据': ''}}</span>
           <span *ngFor="let item of persons">{{item}}</span>
@@ -21,21 +24,8 @@
         <span>人/次</span>
       </div>
     </div>
-    <div class="btn-group" style="z-index: 999">
-      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        Action <span class="caret"></span>
-      </button>
-      <ul class="dropdown-menu">
-        <li><a href="#">Action</a></li>
-        <li><a href="#">Another action</a></li>
-        <li><a href="#">Something else here</a></li>
-        <li role="separator" class="divider"></li>
-        <li><a href="#">Separated link</a></li>
-      </ul>
-    </div>
   </div>
 </div>
-<!--弹窗-->
 <!--服务区级人流分布弹窗-->
 <div class="bg-box" *ngIf="serviceZonePersonAlert" >
   <div class="alert-window" style="height:50vh; margin-top: -25vh;width: 50vw;margin-left: -25vw">
@@ -69,11 +59,10 @@
               <p>
                 <i class="fa fa-paw" aria-hidden="true"></i>
               </p>
-              <p>1000人次</p>
+              <p>{{i}}人次</p>
               <p><b>停车场</b></p>
             </div>
           </div>
-          <!--<div class="services-plan" echarts [options]="servicesMap"></div>-->
         </div>
       </div>
     </div>
@@ -108,10 +97,10 @@
       <!--人数分布-->
       <div class="row">
         <div class="col-ld-6 col-md-6 text-center">
-          <div *ngIf="!(persons.length === 0)" class="services-plan" echarts [options]="cityOptions"></div>
+          <div *ngIf="!(persons.length === 0)" class="person-flow" echarts [options]="cityOptions"></div>
         </div>
         <div class="col-ld-6 col-md-6 text-center">
-          <div *ngIf="!(persons.length === 0)" class="services-plan" echarts [options]="cityParentOptions"></div>
+          <div *ngIf="!(persons.length === 0)" class="person-flow" echarts [options]="cityParentOptions"></div>
         </div>
       </div>
     </div>

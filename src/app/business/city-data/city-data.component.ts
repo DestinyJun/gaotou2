@@ -97,6 +97,7 @@ export class CityDataComponent implements OnInit, OnDestroy {
     this.CarTypes();
     this.incomeAmountCount();
     this.IncomeTypes();
+    this.getPerson();
     // 时间初始化
     this.esDate = {
       firstDayOfWeek: 0,
@@ -149,14 +150,17 @@ export class CityDataComponent implements OnInit, OnDestroy {
 
     // 实时客流
     this.personAmountCountClean = setInterval(() => {
-      this.cityDataService.searchPersonTotal({id: 3}).subscribe(
-        (val) => {
-          this.localService.persons.next(val.data.toString().split(''));
-        }
-      );
+      this.getPerson();
     }, 5000);
   }
-
+// 客流
+  public getPerson(): void {
+    this.cityDataService.searchPersonTotal({id: 3}).subscribe(
+      (val) => {
+        this.localService.persons.next(val.data.toString().split(''));
+      }
+    );
+  }
   /**********************************左边*****************************/
   // 3D柱状图图表配置
   public packOption3() {

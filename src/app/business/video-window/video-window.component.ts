@@ -34,11 +34,14 @@ export class VideoWindowComponent implements OnInit {
 
   ngOnInit() {
     // 发射实时客流
-    this.localService.persons.next(this.persons);
+    this.getPerson();
     // 发射业太数据名称
-    this.localService.eventBus.next('全国高速视频监控大数据');
     this.localService.eventBus.next({title: '全国高速视频监控大数据', flagState: 'window', flagName: '全国'});
     this.getUploadDate();
+  }
+  // 客流
+  public getPerson(): void {
+    this.localService.persons.next(this.persons);
   }
   public getUploadDate() {
     this.loading = true;
@@ -86,7 +89,7 @@ export class VideoWindowComponent implements OnInit {
     }
   }
   public nodeUnselect(event) {
-    console.log('2');
+    // console.log('2');
   }
   // 视频播放
   public videoLocation(url: string, name: string, location: number): void {

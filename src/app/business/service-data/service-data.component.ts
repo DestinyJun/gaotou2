@@ -21,7 +21,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   public personAmountCountClean: any;
   // 服务区名称
   public serviceZoneTitle: string;
-  public citys = ['贵阳市', '遵义市', '六盘水市', '安顺市', '毕节市', '铜仁市', '黔东南苗族侗族自治州', '黔南布依族苗族自治州', '黔西南布依族苗族自治州'];
   /***********************左边************************/
   //  3D柱状图配置
   public options3d: any;
@@ -134,6 +133,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     this.CarTypes();
     this.incomeAmountCount();
     this.IncomeTypes();
+    this.getPerson();
     // 时间初始化
     this.esDate = {
       firstDayOfWeek: 0,
@@ -176,13 +176,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     }, 5000);
     // 实时客流
     this.personAmountCountClean = setInterval(() => {
-      this.serareaService.searchPersonTotal({id: 1}).subscribe(
-        (val) => {
-          if (val.data.total) {
-            // this.localService.persons.next(val.data.total.toString().split(''));
-          }
-        }
-      );
+      this.getPerson();
     }, 5000);
     // 事件列表
     this.backCenterDate();
@@ -192,6 +186,16 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       (value) => {
         if (value.status === '200') {
           this.eventInfoUpTypes = value.data;
+        }
+      }
+    );
+  }
+  // 客流
+  public getPerson(): void {
+    this.serareaService.searchPersonTotal({id: 1}).subscribe(
+      (val) => {
+        if (val.data.total) {
+          this.localService.persons.next(val.data.total.toString().split(''));
         }
       }
     );
@@ -302,33 +306,21 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       this.alertCarTitle = '小车';
       this.arryCarPie = [];
       this.carTableData = [];
-      this.dataService.getrandomPie(9, 900, 50).map((val, index) => {
-        this.arryCarPie.push({value: val, name: this.citys[index]});
-      });
       this.carTableData = this.dataService.getJsonObj(8, 1000, 100, this.alertCarTitle);
     } else if (e.srcElement.innerText === '总数') {
       this.alertCarTitle = '总数';
       this.arryCarPie = [];
       this.carTableData = [];
-      this.dataService.getrandomPie(9, 900, 50).map((val, index) => {
-        this.arryCarPie.push({value: val, name: this.citys[index]});
-      });
       this.carTableData = this.dataService.getJsonObj(8, 1000, 100, this.alertCarTitle);
     } else if (e.srcElement.innerText === '客车') {
       this.alertCarTitle = '客车';
       this.arryCarPie = [];
       this.carTableData = [];
-      this.dataService.getrandomPie(9, 900, 50).map((val, index) => {
-        this.arryCarPie.push({value: val, name: this.citys[index]});
-      });
       this.carTableData = this.dataService.getJsonObj(8, 1000, 100, this.alertCarTitle);
     } else if (e.srcElement.innerText === '货车') {
       this.alertCarTitle = '货车';
       this.arryCarPie = [];
       this.carTableData = [];
-      this.dataService.getrandomPie(9, 900, 50).map((val, index) => {
-        this.arryCarPie.push({value: val, name: this.citys[index]});
-      });
       this.carTableData = this.dataService.getJsonObj(8, 1000, 100, this.alertCarTitle);
     }
   }
@@ -555,7 +547,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
         }
       }
     );
-    // this.eventListInfoChildern = item;
   }
   public closeEventAlert() {
     document.body.className = '';

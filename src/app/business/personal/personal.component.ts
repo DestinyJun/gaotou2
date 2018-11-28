@@ -13,7 +13,6 @@ export class PersonalComponent implements OnInit {
   public value: Date; // 时间选择器
   public  esDate: any; // 时间名称初始化
   // 实时客流量
-  public personNum = 2000;
   public persons = [];
   // btn状态值判断
   public btnProfileTxt = true;
@@ -32,8 +31,9 @@ export class PersonalComponent implements OnInit {
     this.userInfo = JSON.parse(this.localService.userSessionStorage.userDTO);
     console.log(this.userInfo);
     // 发射实时客流
-    this.localService.persons.next(this.persons);
-    // 时间初始化
+    this.getPerson();
+    // 发射业太数据名称
+    this.localService.eventBus.next({title: '全国高速视频监控大数据', flagState: 'personal', flagName: '全国'});
     // 时间初始化
     this.esDate = {
       firstDayOfWeek: 0,
@@ -45,6 +45,10 @@ export class PersonalComponent implements OnInit {
       today: '今天',
       clear: '清除'
     };
+  }
+  // 客流
+  public getPerson(): void {
+    this.localService.persons.next(this.persons);
   }
   // 选择日期
   public onSelectTime(event): void {
@@ -70,12 +74,10 @@ export class PersonalComponent implements OnInit {
     );
   }
   public updatePasswordClick() {
-    console.log('1111');
     if (this.confirmPassword === this.updatePassword.newPassword) {
       this.updatePassword.userName = this.localService.userSessionStorage.userName;
       this.personalService.updatePassword(this.updatePassword).subscribe(
         (value) => {
-          console.log(value);
           if (value.status === '500') {
             window.confirm(value.message);
           } else if (value.status === '200') {

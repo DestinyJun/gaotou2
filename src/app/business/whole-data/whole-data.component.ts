@@ -38,7 +38,7 @@ export class WholeDataComponent implements OnInit, OnChanges {
   }
   ngOnInit() {
     // 发射实时客流
-    this.localService.persons.next(this.persons);
+    this.getPerson();
     // 发射业太数据名称
     this.localService.eventBus.next({title: this.dataToggle + '高速业态大数据',  flagState: 'whole', flagName: this.dataToggle});
     this.updataEcharts();
@@ -52,6 +52,10 @@ export class WholeDataComponent implements OnInit, OnChanges {
     });
   }
   ngOnChanges(changes: SimpleChanges): void {}
+  // 客流
+  public getPerson(): void {
+    this.localService.persons.next(this.persons);
+  }
   /**********************************图表配置*****************************/
   // 百度地图画省边界外
   public centerMap2() {
