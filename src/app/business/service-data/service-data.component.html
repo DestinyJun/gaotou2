@@ -877,9 +877,9 @@
     </div>
     <div class="alert-window-content">
       <div class="row">
-        <div class="col-ld-12 col-md-12 text-center">
-          <!-- <div class="services-plan" [ngStyle]="">
-             <div class="services-plan-left pull-left">
+        <div class="col-lg-6 col-md-6 text-center">
+           <div class="services-plan">
+            <!-- <div class="services-plan-left pull-left">
                <div class="service-date-info-top">
                  <h5 class="text-center">服务区收入</h5>
                </div>
@@ -892,10 +892,11 @@
                </div>
                <div class="service-date-info-bottom"></div>
                <div class="service-date-info-bottom"></div>
-             </div>
-           </div>-->
-          <div class="services-plan" echarts [options]="servicesMap"></div>
-         <!-- <div class="services-plan" id="servicesMap"></div>-->
+             </div>-->
+           </div>
+        </div>
+        <div class="col-lg-6 col-md-6 text-center">
+          <div style="height:74.5vh" echarts [options]="servicesMap"></div>
         </div>
       </div>
     </div>
