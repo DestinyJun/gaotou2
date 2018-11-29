@@ -10,6 +10,7 @@ import { MessageWindowComponent } from './message-window/message-window.componen
 import {DialogModule} from 'primeng/dialog';
 import {NgxEchartsModule} from 'ngx-echarts';
 import {EventsService} from '../common/services/events.service';
+import {EchartNationaPersonModule, EchartProvincePersonModule} from '../common/wenjun';
 
 
 @NgModule({
@@ -20,6 +21,8 @@ import {EventsService} from '../common/services/events.service';
     ReactiveFormsModule,
     DialogModule,
     NgxEchartsModule,
+    EchartNationaPersonModule,
+    EchartProvincePersonModule
   ],
   declarations: [
     HomeComponent,

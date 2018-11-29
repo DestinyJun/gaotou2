@@ -187,7 +187,7 @@
   margin-right: 0.3vw;
   background: #5095E0;
 }
-.vehicle-amount-number>p>small{
+.vehicle-amount>p>small{
   font-size: 1rem;
   color: white;
 }
@@ -220,14 +220,8 @@
 
 /*省市级客流弹窗*/
 .person-flow{
-  position: relative;
-  display: inline-block;
   width: 100%;
   height: 68vh;
-  -webkit-background-size: 100%;
-  background-repeat: no-repeat;
-  background-size: 100%;
-  background-position: center center;
 }
 .citys{
   padding-left: 3vw;
