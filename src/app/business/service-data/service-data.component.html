@@ -119,33 +119,53 @@
                 <div class="col-ld-12 col-md-12">
                   <div class="alert-window-content-table">
                     <div class="toggle-btn" (click)="carBtnClick($event)">
-                      <button class="btn btn-info" [ngStyle]="{'background':alertCarTitle === '小车'?'black': '','margin-left': '10px'}">小车</button>
+                    <!--  <button class="btn btn-info" [ngStyle]="{'background':alertCarTitle === '小车'?'black': '','margin-left': '10px'}">小车</button>
                       <button class="btn btn-primary" [ngStyle]="{'background':alertCarTitle === '客车'?'black': ''}">客车</button>
-                      <button class="btn btn-danger" [ngStyle]="{'background':alertCarTitle === '货车'?'black': ''}">货车</button>
-                      <div class="toggle-btn-area pull-right" style="">
+                      <button class="btn btn-danger" [ngStyle]="{'background':alertCarTitle === '货车'?'black': ''}">货车</button>-->
+                      <div class="toggle-btn-area text-center" style="">
                         <span (click)="carExcelShow = true">表格导出</span>
                       </div>
                     </div>
-                    <div class="content-table">
-                      <table class="table table-bordered">
-                        <thead>
-                        <tr>
-                          <th>时间段</th>
-                          <th [ngStyle]="{'background':alertCarTitle === '小车'?'black': ''}">小车总数</th>
-                          <th [ngStyle]="{'background':alertCarTitle === '客车'?'black': ''}">客车总数</th>
-                          <th [ngStyle]="{'background':alertCarTitle === '货车'?'black': ''}">货车总数</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr *ngFor="let item of carTableData">
-                          <td >2018-07-29 18:31:20</td>
-                          <td [ngStyle]="{'background':alertCarTitle === '小车'?'black': ''}">{{item.cart}}</td>
-                          <td [ngStyle]="{'background':alertCarTitle === '客车'?'black': ''}">{{item.trucks}}</td>
-                          <td [ngStyle]="{'background':alertCarTitle === '货车'?'black': ''}">{{item.bus}}</td>
-                        </tr>
-                        </tbody>
-                      </table>
-                    </div>
+                    <p-scrollPanel [style]="{width: '100%', height: '50vh'}" styleClass="custom">
+                      <div class="content-table">
+                        <table class="table table-bordered">
+                          <thead>
+                          <tr>
+                            <th>时间段</th>
+                            <th>车辆总数</th>
+                          <!--  <th [ngStyle]="{'background':alertCarTitle === '小车'?'black': ''}">小车总数</th>
+                            <th [ngStyle]="{'background':alertCarTitle === '客车'?'black': ''}">客车总数</th>
+                            <th [ngStyle]="{'background':alertCarTitle === '货车'?'black': ''}">货车总数</th>-->
+                            <th>小车车辆</th>
+                            <th>客车车辆</th>
+                            <th>货车车辆</th>
+                          </tr>
+                          </thead>
+                          <tbody>
+                          <tr *ngFor="let item of carTableData">
+                            <td>{{item?.hour}}</td>
+                            <td>{{item?.totalVechile}}</td>
+                            <td>{{item?.sedanVechile}}</td>
+                            <td>{{item?.coachVechile}}</td>
+                            <td>{{item?.truckVechile}}</td>
+                            <!--<td [ngStyle]="{'background':alertCarTitle === '小车'?'black': ''}">{{item.cart}}</td>
+                            <td [ngStyle]="{'background':alertCarTitle === '客车'?'black': ''}">{{item.trucks}}</td>
+                            <td [ngStyle]="{'background':alertCarTitle === '货车'?'black': ''}">{{item.bus}}</td>-->
+                          </tr>
+                          <tr *ngFor="let item of carTableData">
+                            <td>{{item?.hour}}</td>
+                            <td>{{item?.totalVechile}}</td>
+                            <td>{{item?.sedanVechile}}</td>
+                            <td>{{item?.coachVechile}}</td>
+                            <td>{{item?.truckVechile}}</td>
+                            <!--<td [ngStyle]="{'background':alertCarTitle === '小车'?'black': ''}">{{item.cart}}</td>
+                            <td [ngStyle]="{'background':alertCarTitle === '客车'?'black': ''}">{{item.trucks}}</td>
+                            <td [ngStyle]="{'background':alertCarTitle === '货车'?'black': ''}">{{item.bus}}</td>-->
+                          </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </p-scrollPanel>
                     <div class="bottom-pagination text-center">
                       <ul class="pagination">
                         <li><a class="btn btn-info">上一页</a></li>
@@ -796,22 +816,7 @@
     <div class="alert-window-content">
       <div class="row">
         <div class="col-lg-6 col-md-6 text-center">
-           <div class="services-plan">
-            <!-- <div class="services-plan-left pull-left">
-               <div class="service-date-info-top">
-                 <h5 class="text-center">服务区收入</h5>
-               </div>
-               <div class="service-date-info-top"></div>
-               <div class="service-date-info-top"></div>
-             </div>
-             <div class="services-plan-right pull-right">
-               <div class="service-date-info-bottom">
-                 <h5 class="text-center">服务区车流</h5>
-               </div>
-               <div class="service-date-info-bottom"></div>
-               <div class="service-date-info-bottom"></div>
-             </div>-->
-           </div>
+           <div class="services-plan"></div>
         </div>
         <div class="col-lg-6 col-md-6 text-center">
           <div style="height:74.5vh" echarts [options]="servicesMap"></div>

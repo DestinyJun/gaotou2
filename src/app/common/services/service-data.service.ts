@@ -34,6 +34,9 @@ export class ServiceDataService {
   public searchCarTotalPie(params): Observable<any> {
     return this.http.get(`${this.globalService.urlc}/realTime/vechile/serviceArea/getVechileTypePie/${params.id}`);
   }
+  public searchCarAlertTable(params): Observable<any> {
+    return this.http.get(`${this.globalService.urlc}/hourly/vechile/${params.id}/sortBy/${params.type}/${params.page}/${params.nums}`);
+  }
   // 实时收入
   public searchIncomeTotal(params): Observable<any> {
     return this.http.get(`${this.globalService.urlc}/realTime/revenue/serviceArea/total/${params.id}`);

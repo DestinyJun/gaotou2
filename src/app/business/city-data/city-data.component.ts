@@ -157,7 +157,14 @@ export class CityDataComponent implements OnInit, OnDestroy {
   public getPerson(): void {
     this.cityDataService.searchPersonTotal({id: 3}).subscribe(
       (val) => {
-        this.localService.persons.next(val.data.toString().split(''));
+        console.log(val);
+        if (val === '200') {
+          if (val.data === 0) {
+            this.localService.persons.next([]);
+          } else {
+            this.localService.persons.next(val.data.toString().split(''));
+          }
+        }
       }
     );
   }
@@ -167,7 +174,6 @@ export class CityDataComponent implements OnInit, OnDestroy {
     // 车流客流人流
     this.cityDataService.search3DBar({id: 3, parameter: ['revenue', 'passenger', 'vehicle']}).subscribe(
       (val) => {
-        console.log(val);
         if (val.status === '200') {
           this.options3d = val.data;
         }
@@ -176,7 +182,6 @@ export class CityDataComponent implements OnInit, OnDestroy {
     // 用电量用水量
     this.cityDataService.search3DBar({id: 3, parameter: ['electric', 'water']}).subscribe(
       (val) => {
-        console.log(val);
         if (val.status === '200') {
           this.options3dCopy = val.data;
         }
@@ -195,7 +200,7 @@ export class CityDataComponent implements OnInit, OnDestroy {
           this.options3dBar = {
             data: val.data,
             xType: this.outOptions3d.pie.xType,
-            title: `贵州省所有服务区年度${this.outOptions3d.alertBarTitle}统计`
+            title: `贵阳市所有服务区年度${this.outOptions3d.alertBarTitle}统计`
           };
         }
       }
@@ -207,7 +212,7 @@ export class CityDataComponent implements OnInit, OnDestroy {
         if (val.status === '200') {
           this.options3dPie = {
             data: val.data,
-            title: `贵州省所有服务区年度${this.outOptions3d.alertBarTitle}类型占比统计`,
+            title: `贵阳市所有服务区年度${this.outOptions3d.alertBarTitle}类型占比统计`,
             total: this.outOptions3d.total,
             color: ['#CE2D79', '#BDD139', '#78E77D', '#09D4D6', '#3C75B9',
               '#6769B1', '#FF8C9D', '#2796C4', '#E57D0D']
@@ -307,7 +312,7 @@ export class CityDataComponent implements OnInit, OnDestroy {
         });
         this.optionsCarType = {
           data: arryCarPie,
-          title: `贵州省各市所有服务区今日${e.name}占比统计`,
+          title: `贵阳市各市所有服务区今日${e.name}占比统计`,
           total: '',
           color: ['#CE2D79', '#BDD139', '#78E77D', '#09D4D6', '#3C75B9',
             '#6769B1', '#FF8C9D', '#2796C4', '#E57D0D']
@@ -532,7 +537,7 @@ export class CityDataComponent implements OnInit, OnDestroy {
         if (value.status === '200') {
           this.optionsIncomeTypes = {
             data: value.data,
-            title: `贵州省各市所有服务区今日${e.name}占比统计`,
+            title: `贵阳市各市所有服务区今日${e.name}占比统计`,
             total: '',
             color: ['#CE2D79', '#BDD139', '#78E77D', '#09D4D6', '#3C75B9',
               '#6769B1', '#FF8C9D', '#2796C4', '#E57D0D']

@@ -296,13 +296,29 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   public parkClick(e): void {
     this.alertCarShow = true;
     document.body.className = 'ui-overflow-hidden';
-    // this.carTableData = this.dataService.getJsonObj(8, 1000, 100, this.alertCarTitle);
+    this.carDistribution(e);
+  }
+  public carDistribution(e): void {
+    const carTypes = {
+      '总数': 'total',
+      '小车': 1,
+      '客车': 2,
+      '货车': 3,
+    };
+    // 表格
+    this.serareaService.searchCarAlertTable({id: 1, type: carTypes[e.name], page: 1, nums: 1000}).subscribe(
+      (val) => {
+        if (val.status === '200') {
+          this.carTableData = val.data.contents;
+        }
+      }
+    );
   }
   public closeCarShow(): void {
     document.body.className = '';
     this.alertCarShow = false;
   }
-  public carBtnClick(e): void {
+  /*public carBtnClick(e): void {
     if (e.srcElement.innerText === '小车') {
       this.alertCarTitle = '小车';
       this.arryCarPie = [];
@@ -324,7 +340,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       this.carTableData = [];
       this.carTableData = this.dataService.getJsonObj(8, 1000, 100, this.alertCarTitle);
     }
-  }
+  }*/
   public carExportClick() {
     const startTime = this.datePipe.transform(this.carStartTime, 'yyyyMMdd');
     const endTime = this.datePipe.transform(this.carEndTime, 'yyyyMMdd');
