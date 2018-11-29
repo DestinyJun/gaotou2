@@ -1,1 +1,18 @@
-
+.event-office>.table>thead{
+  background: rgba(39,55,91,0.9);
+  color: white;
+}
+.event-office>.table>tbody>tr{
+  position: relative;
+  color: #457FBB;
+  border-collapse:separate;
+  border-spacing:10px;
+  font-size: 0.65rem;
+}
+.event-office>.table>tbody>tr:hover{
+  cursor: pointer;
+  background:rgba(255,255,255,0.3);
+}
+.event-office>.table>tbody>tr>td{
+  border: none;
+}

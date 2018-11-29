@@ -343,26 +343,7 @@
             <span></span><span></span><span></span><span></span>
             <p>未处理事件</p>
           </div>
-          <p-scrollPanel [style]="{width: '100%', height: '30vh'}" styleClass="custom">
-            <table class="table" cellspacing="5px">
-              <thead class="table-header">
-              <tr>
-                <td>时间</td>
-                <td>事件类型</td>
-                <td>事件描述</td>
-                <td>状态</td>
-              </tr>
-              </thead>
-              <tbody class="table-body">
-              <tr *ngFor="let item of eventList" (click)="openEventAlert(item)">
-                <td>{{item?.occurTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
-                <td>{{item?.eventCategoryName}}</td>
-                <td>{{item?.eventDescripte}}</td>
-                <td style="color:#CF5B56">{{item?.processState===2?'未处理':'已处理'}}</td>
-              </tr>
-              </tbody>
-            </table>
-          </p-scrollPanel>
+          <app-event-list [option]="eventList" [width]="'100%'" [height]="'30vh'" (eventListClick)="openEventAlert($event)"></app-event-list>
         </div>
         <!--事件上报/卫生间/停车位-->
         <div class="col-lg-6 col-md-6 event-table-processed">
@@ -421,7 +402,7 @@
             <div class="col-lg-6 col-md-6" *ngFor="let prop of serviceInfo?.commonAttributeValues">
               <div>
                 <p class="clearfix">
-                  <span class="pull-left text-c1">{{prop.attributeDesc}}：</span>
+                  <span class="pull-left text-c1" style="color: #4887CA">{{prop.attributeDesc}}：</span>
                   <span class="pull-right">{{prop.value}}</span>
                 </p>
               </div>
@@ -430,7 +411,7 @@
             <div class="col-lg-6 col-md-6" *ngFor="let prop of serviceInfo?.upAttributeValues.attributeValues">
               <div>
                 <p class="clearfix">
-                  <span class="pull-left text-c1">{{prop.attributeDesc}}：</span>
+                  <span class="pull-left text-c1" style="color: #4887CA">{{prop.attributeDesc}}：</span>
                   <span class="pull-right">{{prop.value}}</span>
                 </p>
               </div>
@@ -439,7 +420,7 @@
             <div class="col-lg-6 col-md-6" *ngFor="let prop of serviceInfo?.downAttributeValues.attributeValues">
               <div>
                 <p class="clearfix">
-                  <span class="pull-left text-c1">{{prop.attributeDesc}}：</span>
+                  <span class="pull-left text-c1" style="color: #4887CA">{{prop.attributeDesc}}：</span>
                   <span class="pull-right">{{prop.value}}</span>
                 </p>
               </div>
@@ -650,76 +631,13 @@
           </div>
         </div>
         <div class="col-lg-8 col-md-8" *ngIf="eventAlertListShow">
-          <p-scrollPanel [style]="{width: '100%', height: '65vh'}" styleClass="custom">
-            <div class="table-responsive">
-              <table class="table">
-                <thead class="table-header">
-                <tr>
-                  <td>时间</td>
-                  <td>事件类型</td>
-                  <td>事件描述</td>
-                  <td>状态</td>
-                </tr>
-                </thead>
-                <tbody class="table-body">
-                  <tr *ngFor="let item of eventListNoProcess" style="color: #00ECF1" (click)="eventListInfosClick(item)">
-                    <td>{{item?.occurTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
-                    <td>{{item?.eventCategoryName}}</td>
-                    <td>{{item?.eventDescripte}}</td>
-                    <td style="color:#CF5B56">{{item?.processState===2?'未处理':'已处理'}}</td>
-                </tr>
-                </tbody>
-              </table>
-            </div>
-          </p-scrollPanel>
+          <app-event-list [option]="eventListNoProcess" [width]="'100%'" [height]="'65vh'" (eventListClick)="eventListInfosClick($event)"></app-event-list>
         </div>
         <div class="col-lg-8 col-md-8" *ngIf="!eventAlertListShow">
-          <p-scrollPanel [style]="{width: '100%', height: '65vh'}" styleClass="custom">
-            <div class="table-responsive">
-              <table class="table event-table-untreated" cellspacing="5px">
-                <thead class="table-header">
-                  <tr>
-                    <td>时间</td>
-                    <td>事件类型</td>
-                    <td>事件描述</td>
-                    <td>状态</td>
-                  </tr>
-                </thead>
-                <tbody class="table-body">
-                  <tr *ngFor="let item of eventListProcess" style="color: #00ECF1" (click)="eventListInfosClick(item)">
-                    <td>{{item?.occurTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
-                    <td>{{item?.eventCategoryName}}</td>
-                    <td>{{item?.eventDescripte}}</td>
-                    <td style="color: #68E868">{{item?.processState===2?'未处理':'已处理'}}</td>
-                </tr>
-                </tbody>
-              </table>
-            </div>
-          </p-scrollPanel>
+          <app-event-list [option]="eventListProcess" [width]="'100%'" [height]="'65vh'" (eventListClick)="eventListInfosClick($event)"></app-event-list>
         </div>
         <div class="col-lg-4 col-md-4">
-          <h4>事件详情信息</h4>
-          <p>
-            <span style="color:#4B8FD6">事件发生时间：</span><span>{{eventListInfo?.occurTime | date:'yyyy-MM-dd HH:mm:ss'}}</span>
-          </p>
-          <p>
-            <span style="color:#4B8FD6">事件类型：</span><span>{{eventListInfo?.eventCategoryName}}</span>
-          </p>
-          <p>
-            <span style="color:#4B8FD6">事件发生地点：</span><span>{{eventListInfo?.eventSubject}}</span>
-          </p>
-          <p>
-            <span style="color:#4B8FD6">事件名称：</span><span>{{eventListInfo?.eventName}}</span>
-          </p>
-          <p>
-            <span style="color:#4B8FD6">事件描述：</span><span>{{eventListInfo?.eventDescripte}}</span>
-          </p>
-          <p>
-            <span style="color:#4B8FD6">事件负责人：</span><span>{{eventListInfo?.principal}}</span>
-          </p>
-          <p>
-            <span>处理状态：</span><span [ngStyle]="{'color':eventListInfo?.processState===1?'#68E868': '#C05854'}">{{eventListInfo?.processState===1?'已处理':'未处理'}}</span>
-          </p>
+          <app-event-list-info [option]="eventListInfo" [width]="'100%'" [height]="'45vh'"></app-event-list-info>
         </div>
       </div>
     </div>

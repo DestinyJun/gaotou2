@@ -1,5 +1,5 @@
-<p-scrollPanel [style]="{width: width, height: height,background: 'rgba(32,36,45,0.9)'}" styleClass="custom" *ngIf="option">
-  <div style="background: rgba(32,36,45,0.9)">
+<p-scrollPanel [style]="{width: width, height: height}" *ngIf="option" style="background: 'rgba(32,36,45,0.5)">
+  <div class="event-info">
     <h4>事件详情信息</h4>
     <p>
       <span style="color:#4B8FD6">事件发生时间：</span><span>{{option?.occurTime | date:'yyyy-MM-dd HH:mm:ss'}}</span>

@@ -176,7 +176,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     }, 5000);
     // 实时客流
     this.personAmountCountClean = setInterval(() => {
-      this.getPerson();
+      // this.getPerson();
     }, 5000);
     // 事件列表
     this.backCenterDate();

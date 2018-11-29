@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {LocalStorageService} from '../../common/services/local-storage.service';
-import {NgxEchartsService} from 'ngx-echarts';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',

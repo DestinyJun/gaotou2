@@ -1,14 +1,18 @@
-/***********************************primeng虚拟滚动*****************************/
-.custom .ui-scrollpanel-wrapper {
-  border: none; /*控制滚动轴背景色*/
+.event-list>.table>thead{
+  background: rgba(39,55,91,0.9);
+  color: white;
 }
-
-.custom .ui-scrollpanel-bar {
-  background-color: transparent;
-  opacity: 1;
-  transition: background-color .3s;
+.event-list>.table>tbody>tr{
+  position: relative;
+  color: #457FBB;
+  border-collapse:separate;
+  border-spacing:10px;
+  font-size: 0.65rem;
 }
-
-.custom .ui-scrollpanel-bar:hover {
-  background-color: #135ba1;
+.event-list>.table>tbody>tr:hover{
+  cursor: pointer;
+  background:rgba(255,255,255,0.3);
+}
+.event-list>.table>tbody>tr>td{
+  border: none;
 }

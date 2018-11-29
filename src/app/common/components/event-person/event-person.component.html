@@ -1,20 +1,20 @@
-<div [ngStyle]="{width: width, height: height}" style="background: rgba(32,36,45,0.9)">
+<div [ngStyle]="{width: width, height: height}" style="background: rgba(32,36,45,0.5)">
   <p-scrollPanel [style]="{width:width, height:height}" styleClass="custom">
-  <div class="table-responsive" style="background: rgba(32,36,45,0.9)">
-    <table class="table" cellspacing="5px">
-      <thead class="table-header">
-      <tr>
-        <td class="hot">动态</td>
-        <td>状态</td>
-      </tr>
-      </thead>
-      <tbody class="table-body">
-      <tr class="table-tr" *ngFor="let item  of option" (click)="eventClick()">
-        <td class="hot">{{item?.dynamic}}</td>
-        <td>{{item?.dispose}}</td>
-      </tr>
-      </tbody>
-    </table>
+    <div class="event-person">
+      <table class="table">
+          <thead>
+            <tr>
+              <td class="hot">动态</td>
+              <td>状态</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item  of option" (click)="eventClick()">
+              <td>{{item?.dynamic}}</td>
+              <td [ngStyle]="{'color': item?.dispose==='已处理'?'#29BC16':'red'}">{{item?.dispose}}</td>
+            </tr>
+          </tbody>
+      </table>
   </div>
-</p-scrollPanel>
+  </p-scrollPanel>
 </div>
