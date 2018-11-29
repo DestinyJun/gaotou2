@@ -134,6 +134,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     this.incomeAmountCount();
     this.IncomeTypes();
     this.getPerson();
+    this.getIncomeTotalTypes();
     // 时间初始化
     this.esDate = {
       firstDayOfWeek: 0,
@@ -747,20 +748,26 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     );
   }
   public incomeClick(e): void {
+    this.alertIncomeTypeShow = true;
     this.alertIncomeShow = true;
     document.body.className = 'ui-overflow-hidden';
-    this.getIncomeTotal();
+    this.alertIncomeTitle = e.name;
+    this.getIncomeTypesSingle(e.name, this.storeList);
   }
-  public getIncomeTotal(): void {
+  public getIncomeTotalTypes (): void {
     this.serareaService.searchIncomeTypes().subscribe(
       (value) => {
         if (value.status === '200') {
           this.storeList = value.data;
-          this.serareaService.searchIncomeTypesList({page: 1, nums: 1000, types: value.data}).subscribe(
-            (incomeVal) => {
-              this.IncomeTableData = incomeVal.data.contents;
-            }
-          );
+        }
+      }
+    );
+  }
+  public getIncomeTotal(): void {
+    this.serareaService.searchIncomeTypesList({page: 1, nums: 1000, types: this.storeList}).subscribe(
+      (incomeVal) => {
+        if (incomeVal.status === '200') {
+          this.IncomeTableData = incomeVal.data.contents;
         }
       }
     );
@@ -769,27 +776,27 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     const shopType = {
       '小吃': {
         'sequence': 1,
-        'entryCode': '2'
+        'entryCode': '1'
       },
       '中式快餐': {
         'sequence': 2,
-        'entryCode': '3',
+        'entryCode': '2',
       },
       '西式快餐': {
         'sequence': 3,
-        'entryCode': '6',
+        'entryCode': '3',
       },
       '商超': {
         'sequence': 4,
-        'entryCode': '1',
+        'entryCode': '4',
       },
       '住宿': {
         'sequence': 5,
-        'entryCode': '4',
+        'entryCode': '5',
       },
       '汽修': {
         'sequence': 6,
-        'entryCode': '5',
+        'entryCode': '6',
       },
     };
     const shopList = storeList.filter((prop, index) => {

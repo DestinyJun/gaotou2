@@ -279,25 +279,31 @@ export class CityDataComponent implements OnInit, OnDestroy {
     );
   }
   public parkClick(e): void {
-    this.alertCarTitle = e.name + '车辆分布统计';
+    this.alertCarTitle = e.name;
     this.alertCarShow = true;
     document.body.className = 'ui-overflow-hidden';
     this.arryCarPie = [];
     this.carDistribution(e);
   }
   public carDistribution(e): void {
+    const carTypes = {
+      '总数': 'total',
+      '小车': 1,
+      '客车': 2,
+      '货车': 3,
+    };
     // 表格
-    this.cityDataService.searchCarAlertTable({id: 3, types: e.name}).subscribe(
+    this.cityDataService.searchCarAlertTable({id: 3, type: carTypes[e.name]}).subscribe(
       (val) => {
         this.carTableData = val.data.contents;
       }
     );
     // 饼状图
-    this.cityDataService.searchCarAlertPie({id: 3, types: e.name}).subscribe(
+    this.cityDataService.searchCarAlertPie({id: 3, type: carTypes[e.name]}).subscribe(
       (value) => {
         const arryCarPie = [];
         value.data.map((val, index) => {
-          arryCarPie.push({value: 1, name: val.name});
+          arryCarPie.push({value: val.value, name: val.name});
         });
         this.optionsCarType = {
           data: arryCarPie,
@@ -322,17 +328,22 @@ export class CityDataComponent implements OnInit, OnDestroy {
   }
   public carBtnClick(e): void {
     if (e.srcElement.innerText === '小车') {
-      this.alertCarTitle = '小车' + '车辆分布统计';
+      this.alertCarTitle = '小车';
       this.arryCarPie = [];
       this.carTableData = [];
       this.carDistribution({name: e.srcElement.innerText });
     }  else if (e.srcElement.innerText === '客车') {
-      this.alertCarTitle = '客车' + '车辆分布统计';
+      this.alertCarTitle = '客车';
       this.arryCarPie = [];
       this.carTableData = [];
       this.carDistribution({name: e.srcElement.innerText });
     } else if (e.srcElement.innerText === '货车') {
-      this.alertCarTitle = '货车' + '车辆分布统计';
+      this.alertCarTitle = '货车';
+      this.arryCarPie = [];
+      this.carTableData = [];
+      this.carDistribution({name: e.srcElement.innerText });
+    } else if (e.srcElement.innerText === '总数') {
+      this.alertCarTitle = '总数';
       this.arryCarPie = [];
       this.carTableData = [];
       this.carDistribution({name: e.srcElement.innerText });
@@ -498,29 +509,42 @@ export class CityDataComponent implements OnInit, OnDestroy {
     );
   }
   public incomeDistribution(e): void {
+    const incomeType = {
+      '总收入': 'total',
+      '小吃': 1,
+      '中式快餐': 2,
+      '西式快餐': 3,
+      '商超': 4,
+      '住宿': 5,
+      '汽修': 6,
+    };
     // 表格
-    this.cityDataService.searchIncomeAlertTable({id: 3, types: e.name}).subscribe(
+    this.cityDataService.searchIncomeAlertTable({id: 3, type: incomeType[e.name]}).subscribe(
       (val) => {
-        this.IncomeTableData = val.data.contents;
+        if (val.status === '200') {
+          this.IncomeTableData = val.data.contents;
+        }
       }
     );
     // 饼状图
-    this.cityDataService.searchIncomeAlertPie({id: 3, types: e.name}).subscribe(
+    this.cityDataService.searchIncomeAlertPie({id: 3, type: incomeType[e.name]}).subscribe(
       (value) => {
-        this.optionsIncomeTypes = {
-          data: value.data,
-          title: `贵州省各市所有服务区今日${e.name}占比统计`,
-          total: '',
-          color: ['#CE2D79', '#BDD139', '#78E77D', '#09D4D6', '#3C75B9',
-            '#6769B1', '#FF8C9D', '#2796C4', '#E57D0D']
-        };
+        if (value.status === '200') {
+          this.optionsIncomeTypes = {
+            data: value.data,
+            title: `贵州省各市所有服务区今日${e.name}占比统计`,
+            total: '',
+            color: ['#CE2D79', '#BDD139', '#78E77D', '#09D4D6', '#3C75B9',
+              '#6769B1', '#FF8C9D', '#2796C4', '#E57D0D']
+          };
+        }
       }
     );
   }
   // 收入类型相关操作
   public incomeClick(e): void {
     this.alertIncomeShow = true;
-    this.alertIncomeTitle = e.name + '收入分布统计';
+    this.alertIncomeTitle = e.name;
     document.body.className = 'ui-overflow-hidden';
     this.incomeDistribution(e);
   }
@@ -538,27 +562,31 @@ export class CityDataComponent implements OnInit, OnDestroy {
   }
   public IncomeBtnClick(e): void {
     if (e.srcElement.innerText === '小吃') {
-      this.alertIncomeTitle = '小吃收入分布统计';
+      this.alertIncomeTitle = '小吃';
       this.arryIncomePie = [];
       this.incomeDistribution({name: e.srcElement.innerText });
     } else if (e.srcElement.innerText === '中式快餐') {
-      this.alertIncomeTitle = '中式快餐收入分布统计';
+      this.alertIncomeTitle = '中式快餐';
       this.arryIncomePie = [];
       this.incomeDistribution({name: e.srcElement.innerText });
     } else if (e.srcElement.innerText === '西式快餐') {
-      this.alertIncomeTitle = '西式快餐收入分布统计';
+      this.alertIncomeTitle = '西式快餐';
       this.arryIncomePie = [];
       this.incomeDistribution({name: e.srcElement.innerText });
     } else if (e.srcElement.innerText === '商超') {
-      this.alertIncomeTitle = '商超收入分布统计';
+      this.alertIncomeTitle = '商超';
       this.arryIncomePie = [];
       this.incomeDistribution({name: e.srcElement.innerText });
     } else if (e.srcElement.innerText === '住宿') {
-      this.alertIncomeTitle = '住宿收入分布统计';
+      this.alertIncomeTitle = '住宿';
       this.arryIncomePie = [];
       this.incomeDistribution({name: e.srcElement.innerText });
     } else if (e.srcElement.innerText === '汽修') {
-      this.alertIncomeTitle = '汽修收入分布统计';
+      this.alertIncomeTitle = '汽修';
+      this.arryIncomePie = [];
+      this.incomeDistribution({name: e.srcElement.innerText });
+    } else if (e.srcElement.innerText === '总收入') {
+      this.alertIncomeTitle = '总收入';
       this.arryIncomePie = [];
       this.incomeDistribution({name: e.srcElement.innerText });
     }

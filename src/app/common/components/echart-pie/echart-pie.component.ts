@@ -31,6 +31,7 @@ export class EchartPieComponent implements OnInit, OnChanges {
             type: 'pie',
             radius: '55%',
             center: ['50%', '50%'],
+            color: this.option.color,
             label: {
               show: true,
               position: 'outside',
@@ -44,7 +45,6 @@ export class EchartPieComponent implements OnInit, OnChanges {
                 }
               }
             },
-            color: ['#01CBE3', '#2A58DF', '#1B94E3', '#3B4F74', '#D33939', '#2407EF'],
             data: this.option.data,
             itemStyle: {
               emphasis: {
@@ -68,14 +68,26 @@ export class EchartPieComponent implements OnInit, OnChanges {
         },
         tooltip: {
           trigger: 'item',
-          formatter: '{a} <br/>{b} : {c} ({d}%)'
+          formatter: '{b} : {c} ({d}%)'
         },
         series: [
           {
-            name: `总计：${this.option.total}`,
             type: 'pie',
-            radius: '60%',
+            radius: '55%',
             center: ['50%', '50%'],
+            color: this.option.color,
+            label: {
+              show: true,
+              position: 'outside',
+              formatter: '{b}: {d}%',
+              align: 'center',
+              emphasis: {
+                show: true,
+                textStyle: {
+                  fontSize: 12
+                }
+              }
+            },
             data: this.option.data,
             itemStyle: {
               color: function (params) {
