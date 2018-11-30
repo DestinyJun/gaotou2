@@ -7,7 +7,7 @@ import {Router} from '@angular/router';
   styleUrls: ['./echart-crossbar.component.css']
 })
 export class EchartCrossbarComponent implements OnInit, OnChanges {
-  @Input() public crosswiseBarData: any;
+  @Input() public option: any;
   @Input() public height: any;
   @Input() public width = 'auto';
   public crosswiseBar = {};
@@ -17,7 +17,7 @@ export class EchartCrossbarComponent implements OnInit, OnChanges {
 
   ngOnInit() {}
   ngOnChanges(changes: SimpleChanges): void {
-    if (JSON.stringify(this.crosswiseBarData) !== '{}') {
+    if (JSON.stringify(this.option) !== '{}') {
       this.backCrosswiseBar('revenue');
     }
   }
@@ -26,19 +26,18 @@ export class EchartCrossbarComponent implements OnInit, OnChanges {
     this.router.navigate(['/home/serzone', {name: e.name}]);
   }
   public backCrosswiseBar(type) {
-    const colors = ['#2307EF', '#3B78B1', '#04A6BB'];
     const barData = [];
     const barArea = [];
-    this.crosswiseBarData.yAxis.map((val, index) => {
+    this.option.data.yAxis.map((val, index) => {
       barArea.push(val.serviceName);
     });
-    this.crosswiseBarData.barDatas.map((val, index) => {
+    this.option.data.barDatas.map((val, index) => {
       barData.push(
         {
           name: val.title,
           type: 'bar',
           stack: '总量',
-          color: colors[index],
+          color: this.option.color[index],
           label: {
             normal: {
               show: true,

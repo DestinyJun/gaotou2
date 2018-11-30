@@ -39,8 +39,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   public alertCarShow = false;
   public carTableData: any;
   public carExcelShow = false;
-  public arryCarPie = [];
-  public alertCarTitle = '小车';
   public carStartTime: Date; // 时间选择器
   public carEndTime: Date; // 时间选择器
   /***********************中部************************/

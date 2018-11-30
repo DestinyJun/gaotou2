@@ -462,7 +462,18 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
   public backCrosswiseBar(type): void {
     this.financeDataService.searchTop10Bar({id: 2, type: type}).subscribe(
       (value) => {
-        this.crosswiseBar = value.data;
+        if (value.status === '200') {
+          value.data.barDatas.map((val, index, obj) => {
+            if (val.titleCode === type) {
+              obj.unshift(val);
+              obj.splice(index + 1, 1);
+            }
+          });
+          this.crosswiseBar = {
+            data: value.data,
+            color: ['#2307EF', '#3B78B1', '#04A6BB']
+          };
+        }
       }
     );
   }
