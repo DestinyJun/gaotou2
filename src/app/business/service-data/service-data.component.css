@@ -320,7 +320,7 @@
   left: 0;
   background: #091118;
   background: rgba(9,17,24,0.5);
-  z-index: 999;
+  z-index: 9999;
 }
 .alert-window{
   position: absolute;
@@ -359,7 +359,6 @@
 }
 .alert-window-content-table{
   position: relative;
-  height: 85vh;
 }
 .alert-window-content-table .toggle-btn{
   height: 5vh;
@@ -698,7 +697,7 @@
 .bottom-pagination {
   position: absolute;
   width: 100%;
-  bottom: 5px;
+  bottom: 1vh;
   left: 0;
 }
 .pagination > li > a {
