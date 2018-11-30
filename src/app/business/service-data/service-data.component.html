@@ -222,9 +222,9 @@
         <div class="first servicesMap-video">
           <div class="btn-group" *ngFor="let item of publicTopVideoGroup;let i = index" [ngClass]="{'open':videoTopOpen[i]}" (mouseover)="publicTopVideoGroupOver(item.cameras,i)" (mouseout)="publicTopVideoGroupLeave(i)">
             <span data-toggle="dropdown">{{item.groupName}}</span>
-            <ul class="dropdown-menu">
+            <ul class="dropdown-menu" style="background-color: rgba(27,29,41,0.8)">
               <li  *ngFor="let item of publicVideoList" (click)="openPublicVideo(item)">
-                <a href="javascript:">
+                <a href="javascript:" style="color: white">
                   <i class="fa fa-video-camera" aria-hidden="true"></i>
                   {{item.cameraName}}
                 </a>
@@ -242,9 +242,9 @@
         <div class="second servicesMap-video">
           <div class="btn-group" *ngFor="let item of publicBottomVideoGroup;let i = index" [ngClass]="{'open':videoBottomOpen[i]}" (mouseover)="publicTopBottomGroupOver(item.cameras,i)" (mouseout)="publicTopBottomGroupLeave(i)">
             <span data-toggle="dropdown">{{item.groupName}}</span>
-            <ul class="dropdown-menu">
+            <ul class="dropdown-menu" style="background-color: rgba(27,29,41,0.5)">
               <li  *ngFor="let item of publicVideoList" (click)="openPublicVideo(item)">
-                <a href="javascript:">
+                <a href="javascript:" style="color: white">
                   <i class="fa fa-video-camera" aria-hidden="true"></i>
                   {{item.cameraName}}
                 </a>
