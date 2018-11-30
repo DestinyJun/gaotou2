@@ -11,12 +11,15 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {GlobalService} from './common/services/global.service';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
+import {ProgressSpinnerModule} from 'primeng/primeng';
+import { LoginRemindComponent } from './login-remind/login-remind.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent
+    LoginComponent,
+    LoginRemindComponent
   ],
   imports: [
     BrowserModule,
@@ -24,7 +27,8 @@ import {HttpClientModule} from '@angular/common/http';
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    ProgressSpinnerModule
   ],
   providers: [
     LoginService,

@@ -3,9 +3,9 @@ import {Subject} from 'rxjs/Subject';
 
 @Injectable()
 export class LocalStorageService {
-  // 顶一个可订阅的项目
   public eventBus: Subject<any> = new Subject<any>();
   public persons: Subject<any> = new Subject<any>();
+  public loading: Subject<any> = new Subject<any>(); // 加载动画控制
   public userSessionStorage: any;
   constructor() {
     if (!sessionStorage) {

@@ -9,9 +9,7 @@ export class PersonalService {
   constructor(
     private http: HttpClient,
     private globalService: GlobalService
-  ) {
-    console.log(this.globalService.headers);
-  }
+  ) {}
   // 修改用户信息
   public updateProfile(params): Observable<any> {
     return this.http.post(`${this.globalService.urls}/common/auth/editUser`, params);

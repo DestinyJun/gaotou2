@@ -1,9 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {environment} from '../environments/environment';
-import {BsModalRef, BsModalService} from 'ngx-bootstrap';
-import {ConfigModule} from './common/wenjun';
-import {WenjunAlertService} from './common/wenjun';
 import {GlobalService} from './common/services/global.service';
+import {LocalStorageService} from './common/services/local-storage.service';
 
 @Component({
   selector: 'app-root',
@@ -12,15 +10,16 @@ import {GlobalService} from './common/services/global.service';
 })
 export class AppComponent implements OnInit {
   title = 'app';
+  public display: boolean;
   constructor(
-    private globalService: GlobalService
+    private localSessionStorage: LocalStorageService
   ) {
     console.log('当前产品状态是：' + environment.weixin);
   }
   ngOnInit(): void {
-    this.globalService.searchList({page: 1, nums: 1000}).subscribe(
-      (val) => {
-        // console.log(val);
+    this.localSessionStorage.loading.subscribe(
+      (value) => {
+        this.display = value.display;
       }
     );
   }

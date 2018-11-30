@@ -33,19 +33,17 @@ export class LoginComponent implements OnInit {
 //  登陆
   public onSubmit() {
     if (this.myFromModule.valid) {
-      // this.route.navigate(['/home/whole']);
       this.loginService.getLogin(this.myFromModule.value).subscribe(
         (value) => {
+          this.localSessionStorage.loading.next({display: true});
           if (value.status === '200') {
-            console.log(value);
-            // window.alert(value.message);
+            this.localSessionStorage.loading.next({display: false});
             // 本地存储信息
             for ( const prop in value.data) {
               if (value.data.hasOwnProperty(prop)) {
                 this.localSessionStorage.setObject(prop, value.data[prop]);
               }
             }
-            console.log(this.localSessionStorage.userSessionStorage);
             this.route.navigate([value.data.homePageRoute]);
           } else {
             window.alert(value.message);

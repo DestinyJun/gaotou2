@@ -2,7 +2,6 @@ import {
   Component,
   OnInit
 } from '@angular/core';
-import {EventsService} from '../common/services/events.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 
@@ -17,7 +16,6 @@ export class HomeComponent implements OnInit {
   public selectForm: FormGroup;
 
   constructor(
-    private eventsService: EventsService,
     private fb: FormBuilder,
     private route: Router
   ) {

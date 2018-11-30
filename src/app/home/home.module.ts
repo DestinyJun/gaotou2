@@ -9,7 +9,6 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { MessageWindowComponent } from './message-window/message-window.component';
 import {DialogModule} from 'primeng/dialog';
 import {NgxEchartsModule} from 'ngx-echarts';
-import {EventsService} from '../common/services/events.service';
 import {EchartNationaPersonModule, EchartProvincePersonModule} from '../common/wenjun';
 
 
@@ -31,9 +30,7 @@ import {EchartNationaPersonModule, EchartProvincePersonModule} from '../common/w
     FooterComponent,
     MessageWindowComponent
   ],
-  providers: [
-    EventsService,
-  ],
+  providers: [],
   entryComponents: [NavComponent]
 })
 export class HomeModule { }
