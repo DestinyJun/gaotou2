@@ -156,7 +156,9 @@
 .center .servicesMap-video>.btn-group:nth-child(even)>span{
   background: #868686;
 }
-
+.center .servicesMap-video>.btn-group>.dropdown-menu>li>a:hover{
+  background: rgba(255,255,255,0.3);
+}
 /*下部分*/
 .center .servicesMap-bottom{
   height: 18vh;
@@ -629,7 +631,7 @@
   display: inline-block;
   width: 100%;
   height: 74.5vh;
-  background-image: url(/assets/images/liti.png);
+  background-image: url(/assets/images/liti.jpg);
   -webkit-background-size: 100%;
   background-repeat: no-repeat;
   background-size: 100% 100%;

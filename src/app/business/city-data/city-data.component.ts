@@ -238,8 +238,8 @@ export class CityDataComponent implements OnInit, OnDestroy {
     );
   }
   public onOptions3dPie(e): void {
-    if (e.name === '贵阳市') {
-      this.router.navigate(['/home/city', {name: e.name}]);
+    if (e.name === '久长服务区') {
+      this.router.navigate(['/home/serzone', {name: e.name}]);
     } else {
       window.alert (`很抱歉，${e.name}暂无数据`);
     }
@@ -325,8 +325,8 @@ export class CityDataComponent implements OnInit, OnDestroy {
     this.alertCarShow = false;
   }
   public optionsCarPieClick(e) {
-    if (e.name === '贵阳市') {
-      this.router.navigate(['/home/city', {name: e.name}]);
+    if (e.name === '久长服务区') {
+      this.router.navigate(['/home/serzone', {name: e.name}]);
     } else {
       window.alert (`很抱歉，${e.name}暂无数据`);
     }
@@ -570,8 +570,8 @@ export class CityDataComponent implements OnInit, OnDestroy {
   }
   // 收入类型弹窗
   public optionsIncomePieClick(e) {
-    if (e.name === '贵阳市') {
-      this.router.navigate(['/home/city', {name: e.name}]);
+    if (e.name === '久长服务区') {
+      this.router.navigate(['/home/serzone', {name: e.name}]);
     } else {
       window.alert (`很抱歉，${e.name}暂无数据`);
     }

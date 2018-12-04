@@ -46,6 +46,7 @@ export class LoginComponent implements OnInit {
             }
             this.route.navigate([value.data.homePageRoute]);
           } else {
+            this.localSessionStorage.loading.next({display: false});
             window.alert(value.message);
           }
       });

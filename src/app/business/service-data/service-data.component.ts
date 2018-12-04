@@ -703,17 +703,8 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     this.servicesPlan = true;
     // 百度地图
     this.servicesMap = {
-      legend: {
-        orient: 'vertical',
-        y: 'bottom',
-        x: 'right',
-        data: ['pm2.5'],
-        textStyle: {
-          color: '#fff'
-        }
-      },
       bmap: {
-        center: [106.70604, 26.901521],
+        center: [106.70458, 26.90214],
         zoom: 20,
         roam: true,
         mapStyle: {
