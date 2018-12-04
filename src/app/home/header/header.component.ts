@@ -1,33 +1,39 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {LocalStorageService} from '../../common/services/local-storage.service';
+import {HttpClient} from '@angular/common/http';
+import {GlobalService} from '../../common/services/global.service';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-  // 路由状态及名称
-  public flagState: string;
+  public flagState: string;  // 路由状态及名称
   public flagName: string;
-  // 时间
-  public dataTime = new Date();
-  // 顶部标题
-  public headerTitle: string;
-  // 客流量
-  public persons = [];
+  public dataTime = new Date();  // 时间
+  public headerTitle: string;  // 顶部标题
+  public persons = [];  // 客流量
   public personNum = [];
+  public serviceNameArray: any;
+  public serviceName: string;
   // 弹窗
   public serviceZonePersonAlert = false;
   public cityPersonAlert = false;
-  public cityOptions = {};
-  public cityParentOptions = {};
   constructor(
     private routerInfo: ActivatedRoute,
     private localService: LocalStorageService,
+    private http: HttpClient,
+    private globalService: GlobalService,
+    private router: Router
   ) { }
 
   ngOnInit() {
+    this.http.get(`${this.globalService.urls}/common/config/getServiceAreaCoordinate/2`).subscribe(
+      (val) => {
+        this.serviceNameArray = val;
+      }
+    );
     // 时间
     setInterval(() => {
       this.dataTime = new Date();
@@ -44,6 +50,22 @@ export class HeaderComponent implements OnInit {
         this.personNum.push({number: val});
       });
     });
+  }
+  public serviceSearchChange(e): void {
+    console.log('111');
+    
+    const a = this.serviceNameArray.data.filter((item, index) => {
+      return e.target.value === item.name;
+    });
+    if (a.length !== 0) {
+      if (a[0].name === '久长服务区') {
+        this.router.navigate(['/home/serzone', {name: a[0].name}]);
+      } else {
+        window.alert('此服务区暂无数据');
+      }
+    } else {
+      window.alert('暂无此服务区');
+    }
   }
   // 客流量弹窗
   public personClick() {

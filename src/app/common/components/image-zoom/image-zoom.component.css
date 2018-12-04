@@ -22,3 +22,6 @@
   font-size: 2rem;
   line-height: 3vw;
 }
+.image{
+  cursor: pointer;
+}

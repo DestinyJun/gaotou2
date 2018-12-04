@@ -4,8 +4,14 @@
     <div class="header-logo">
       <span>贵州高投服务管理有限公司</span><span>交通大数据</span>
     </div>
-    <div class="header-title text-center">
+    <div class="header-title">
       <span>{{headerTitle}}</span>
+      <div class="pull-right">
+        <input id="search" type="text" placeholder="请输入服务区名称" [(ngModel)]="serviceName" (change)="serviceSearchChange($event)">
+        <label for="search">
+          <i><i class="fa fa-search" aria-hidden="true"></i></i>
+        </label>
+      </div>
     </div>
     <div class="header-admin">
       <!--头像-->

@@ -32,11 +32,29 @@
   line-height: 8vh;
   display: inline-block;
   vertical-align:text-top;
+  padding-right: 1vw;
+  padding-left: 1vw;
 }
 .header-title span{
   font-weight: 500;
   font-size: 1.625rem;
   letter-spacing: 0.15vw;
+}
+.header-title>div>input{
+  background:rgba(242,242,242,0.1);
+  height: 3.5vh;
+  width: 18vw;
+  vertical-align: middle;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+.header-title>div>input::placeholder{
+  color: white;
+  padding-left: 0.5vw;
+}
+.header-title>div>label{
+ font-size: 1.2rem;
 }
 
 .header-admin{
