@@ -320,7 +320,6 @@
   position: fixed;
   top: 0;
   left: 0;
-  background: #091118;
   background: rgba(9,17,24,0.5);
   z-index: 9999;
 }

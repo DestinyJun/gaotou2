@@ -49,6 +49,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   public videoShopList = [];
   public videoBottomShopUrl: string;
   // 服务区商家信息弹窗
+  public images = [];
   public serviceShopShow = false;
   public serviceShopShowExport = false;
   public serviceShopInfo: any;
@@ -400,6 +401,12 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   public openServiceShop(item): void {
     this.videoShopList = [];
     this.serviceShopInfo = item;
+    console.log(this.serviceShopInfo.graphPrefix + this.serviceShopInfo.cameraDistributionGraph);
+    this.images.push({
+      source: this.serviceShopInfo.graphPrefix + this.serviceShopInfo.cameraDistributionGraph,
+      thumbnail: this.serviceShopInfo.graphPrefix + this.serviceShopInfo.cameraDistributionGraph,
+      title: 'Sopranos 1'
+    });
     this.serviceShopShow = true;
     document.body.className = 'ui-overflow-hidden';
     // 视频监控

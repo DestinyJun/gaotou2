@@ -9,7 +9,8 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {DataService} from '../../common/services/data.service';
 import {ButtonModule} from 'primeng/button';
 import {EchartLineAreaModule, EchartsLineBrokenModule} from '../../common/wenjun';
-
+import {LightboxModule} from 'primeng/lightbox';
+import {ImageZoomModule} from '../../common/components/image-zoom/image-zoom.module';
 @NgModule({
   imports: [
     CommonModule,
@@ -21,7 +22,9 @@ import {EchartLineAreaModule, EchartsLineBrokenModule} from '../../common/wenjun
     ScrollPanelModule,
     ButtonModule,
     EchartsLineBrokenModule,
-    EchartLineAreaModule
+    EchartLineAreaModule,
+    LightboxModule,
+    ImageZoomModule
   ],
   declarations: [ServiceDataComponent],
   providers: [ServiceDataService, DataService, DatePipe]
