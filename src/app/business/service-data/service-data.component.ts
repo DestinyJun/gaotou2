@@ -613,9 +613,8 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     this.uploadEventInfoUp.reportUserName = this.localService.getObject('userDTO').realName;
     this.serareaService.searchEventsReported(this.uploadEventInfoUp).subscribe(
       (value) => {
-        console.log(value);
         if (value === '200') {
-          window.alert(value.message)
+          window.alert(value.message);
         }
       }
     );
@@ -736,6 +735,10 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     document.body.className = '';
     this.servicesPlan = false;
   }
+  // 服务区合同下载
+public servicesPactDown (): void {
+  window.open(`${this.serviceInfo.contractUrlPrefix}${this.serviceInfo.contractUrl}`);
+}
   // 收入监控
   public incomeAmountCount(): void {
     this.serareaService.searchIncomeTotal({id: 1}).subscribe(

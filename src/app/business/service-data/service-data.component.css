@@ -287,14 +287,15 @@
 }
 .right .information-btn span{
   display: inline-block;
-  width: 9vw;
+  width: 5vw;
   padding: 0.5vh 0;
   background: #30A7AD;
   border-radius: 3px;
   cursor: pointer;
 }
-.right .information-btn span:nth-child(1){
+.right .information-btn span:nth-child(2){
   margin-right: 1vw;
+  margin-left: 1vw;
 }
 /*收入监控*/
 .right .income{
