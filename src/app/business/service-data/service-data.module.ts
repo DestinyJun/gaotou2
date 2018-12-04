@@ -23,7 +23,6 @@ import {ImageZoomModule} from '../../common/components/image-zoom/image-zoom.mod
     ButtonModule,
     EchartsLineBrokenModule,
     EchartLineAreaModule,
-    LightboxModule,
     ImageZoomModule
   ],
   declarations: [ServiceDataComponent],

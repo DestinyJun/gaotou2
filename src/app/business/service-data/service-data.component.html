@@ -553,7 +553,12 @@
             <p>实用面积：{{serviceShopInfo?.usableArea}}</p>
             <p>水费账户：{{serviceShopInfo?.waterAccount}}</p>
             <p>电费账户：{{serviceShopInfo?.electricityAccount}}</p>
-            <app-image-zoom [height]="'5vh'"></app-image-zoom>
+            <p>店铺摄像头布局图：{{!serviceShopInfo.cameraDistributionGraph?'该商家暂无摄像头布局图':''}}</p>
+            <app-image-zoom
+              *ngIf="serviceShopInfo.cameraDistributionGraph"
+              [option]="{url: serviceShopInfo.graphPrefix + serviceShopInfo.cameraDistributionGraph}"
+              (eventClick)="shopImageZoom($event)"
+              [height]="'8vh'"></app-image-zoom>
           </div>
         </div>
         <div class="col-ld-6 col-md-6">

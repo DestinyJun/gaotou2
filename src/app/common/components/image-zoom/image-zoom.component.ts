@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 
 @Component({
   selector: 'app-image-zoom',
@@ -6,24 +6,31 @@ import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core'
   styleUrls: ['./image-zoom.component.css']
 })
 export class ImageZoomComponent implements OnInit, OnChanges {
+  @Input() public option: any;
   @Input() public height: any;
   @Input() public width = 'auto';
+  @Output() public eventClick = new EventEmitter<any>();
   public acceptHeight: any;
+  public closeFlag = false;
   constructor() { }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
   ngOnChanges(changes: SimpleChanges): void {
     if (this.height) {
       this.acceptHeight = this.height;
     }
   }
-  public onClick (e): void {
+  public openClick (e): void {
+    this.closeFlag = true;
     e.target.parentElement.className = 'max';
     this.height = '80vh';
+    this.eventClick.emit(true);
   }
   public onClose (e): void {
-    
-      
+    e.stopPropagation();
+    e.target.parentElement.parentElement.className = '';
+    this.height = this.acceptHeight;
+    this.closeFlag = false;
+    this.eventClick.emit(false);
   }
 }

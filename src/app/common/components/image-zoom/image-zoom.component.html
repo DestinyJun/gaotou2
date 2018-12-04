@@ -1,6 +1,8 @@
-<div (click)="onClick($event)">
-  <i class="fa fa-window-close " aria-hidden="true" (click)="onClose($event)"></i>
-  <img [ngStyle]="{'height': height, 'width': width}" src="http://120.78.137.182:8888/highway/images/storeCamera/20181202235040_1543769072233.png" alt="">
+<div (click)="openClick($event)">
+  <div *ngIf="closeFlag" class="pull-right text-center" (click)="onClose($event)">
+    <i class="fa fa-window-close" aria-hidden="true" ></i>
+  </div>
+  <img [ngStyle]="{'height': height, 'width': width}" [src]="option.url" alt="">
 </div>
 
 

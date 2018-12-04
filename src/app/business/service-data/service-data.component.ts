@@ -401,35 +401,9 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   public openServiceShop(item): void {
     this.videoShopList = [];
     this.serviceShopInfo = item;
-    console.log(this.serviceShopInfo.graphPrefix + this.serviceShopInfo.cameraDistributionGraph);
-    this.images.push({
-      source: this.serviceShopInfo.graphPrefix + this.serviceShopInfo.cameraDistributionGraph,
-      thumbnail: this.serviceShopInfo.graphPrefix + this.serviceShopInfo.cameraDistributionGraph,
-      title: 'Sopranos 1'
-    });
     this.serviceShopShow = true;
     document.body.className = 'ui-overflow-hidden';
-    // 视频监控
-    if (!item.cameraList.length) {
-      setTimeout(() => {
-        document.getElementById('shopVideo').innerHTML = `<p class="text-center" style="font-size: 1rem">此处暂无摄像头</p>`;
-      }, 100);
-    } else {
-      this.videoShopList = item.cameraList;
-      this.videoBottomShopUrl = `
-       <object type='application/x-vlc-plugin' pluginspage="http://www.videolan.org/" id='vlc' events='false' width="100%" height="100%">
-              <param name='mrl' value='${this.videoShopList[0].outUrl}' />
-              <param name='volume' value='50' />
-              <param name='autoplay' value='true' />
-              <param name='loop' value='false' />
-              <param name='fullscreen' value='true' />
-              <param name='controls' value='true' />
-            </object>
-      `;
-      setTimeout(() => {
-        document.getElementById('shopVideo').innerHTML = this.videoBottomShopUrl;
-      }, 100);
-    }
+    this.addShopVideo(item);
     // 折线图
     this.serareaService.searchServiceShopLine({id: item.id, yIndex: ['revenue', 'passenger', 'vehicle', 'electric', 'water']}).subscribe(
       (val) => {
@@ -476,6 +450,36 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       window.location.assign(`http://120.78.137.182:8888/highway-interactive/report/serviceArea/store/1/startDate/${startTime}/endDate/${endTime}`);
     } else {
       window.alert('请把数据选择全在提交');
+    }
+  }
+  public shopImageZoom (e): void {
+      if (e) {
+        document.getElementById('shopVideo').innerHTML = ``;
+      } else {
+        this.addShopVideo(this.serviceShopInfo);
+      }
+  }
+  public addShopVideo(item) {
+    // 视频监控
+    if (!item.cameraList.length) {
+      setTimeout(() => {
+        document.getElementById('shopVideo').innerHTML = `<p class="text-center" style="font-size: 1rem">此处暂无摄像头</p>`;
+      }, 100);
+    } else {
+      this.videoShopList = item.cameraList;
+      this.videoBottomShopUrl = `
+       <object type='application/x-vlc-plugin' pluginspage="http://www.videolan.org/" id='vlc' events='false' width="100%" height="100%">
+              <param name='mrl' value='${this.videoShopList[0].outUrl}' />
+              <param name='volume' value='50' />
+              <param name='autoplay' value='true' />
+              <param name='loop' value='false' />
+              <param name='fullscreen' value='true' />
+              <param name='controls' value='true' />
+            </object>
+      `;
+      setTimeout(() => {
+        document.getElementById('shopVideo').innerHTML = this.videoBottomShopUrl;
+      }, 100);
     }
   }
 
