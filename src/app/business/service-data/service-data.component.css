@@ -2,6 +2,7 @@
  * Created by wangwenjun on 2018/2/22.
  * project name ...
  */
+/*服务区样式*/
 .main{
   position: relative;
 }
@@ -312,6 +313,19 @@
 }
 .right .income-pie-title.title{
   border: none;
+}
+
+/*虚拟滚动*/
+.custom1 .ui-scrollpanel-wrapper {
+  border: none; /*控制滚动轴背景色*/
+}
+.custom1 .ui-scrollpanel-bar {
+  background-color: transparent;
+  opacity: 1;
+  transition: background-color .3s;
+}
+.custom1:hover .ui-scrollpanel-bar {
+  /*background-color: red;*/
 }
 /****************************弹窗部分****************************/
 /*弹窗基本样式控制*/

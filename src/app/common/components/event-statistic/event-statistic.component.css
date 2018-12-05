@@ -46,6 +46,7 @@
 .custom:hover .ui-scrollpanel-bar {
   /*background-color: red;*/
 }
-.ui-scrollpanel-content {
+.custom .ui-scrollpanel-content {
   padding: 0 0 18px 0;
+  /*width: calc(100% + 36px);*/
 }

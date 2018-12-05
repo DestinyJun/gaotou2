@@ -118,7 +118,7 @@
   left: 0;
   background: #091118;
   background: rgba(9,17,24,0.5);
-  z-index: 2;
+  z-index: 9999;
 }
 .alert-window{
   position: absolute;
