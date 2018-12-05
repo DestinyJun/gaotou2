@@ -93,7 +93,10 @@ export class ServiceDataService {
     return this.http.post(`${this.globalService.urlc}/hourly/revenue/1/sortBy/total/${params.page}/${params.nums}`, params.types);
   }
   // 指定经营类型获取店铺收入
-  public searchIncomeTypesItem(params): Observable<any> {
+  /*public searchIncomeTypesItem(params): Observable<any> {
     return this.http.post(`${this.globalService.urlc}/hourly/revenue/1/${params.entryCode}/${params.page}/${params.nums}`, params.shopList);
+  }*/
+  public searchIncomeTypesItem(params): Observable<any> {
+    return this.http.get(`${this.globalService.urlc}/hourly/revenue/1/${params.entryCode}/${params.page}/${params.nums}`);
   }
 }

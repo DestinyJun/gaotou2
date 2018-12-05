@@ -445,27 +445,29 @@
                         <tr>
                           <th>时间段</th>
                           <th>{{alertIncomeTypeTitle}}（元）</th>
-                          <th>店铺</th>
+                          <th>店铺名称</th>
+                          <th>店铺收入</th>
+                          <th>服务区方向</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr *ngFor="let item of IncomeTableData;let i = index">
                           <td>{{item?.hour}}</td>
                           <td>{{item?.totalRevenue}}</td>
-                          <td>
+                          <td colspan="3">
                             <table class="table table-bordered" style="background-color: transparent;">
-                              <thead>
-                              <tr>
-                                <th>店铺名称</th>
-                                <th>店铺收入</th>
-                                <th>服务区方向</th>
-                              </tr>
-                              </thead>
+                            <!--  <thead>
+                                <tr>
+                                  <th>店铺名称</th>
+                                  <th>店铺收入</th>
+                                  <th>服务区方向</th>
+                                </tr>
+                              </thead>-->
                               <tbody>
                               <tr *ngFor="let prop of item?.hStoreRevenueList;">
                                 <td>{{prop?.storeName}}</td>
                                 <td>{{prop?.revenue}}</td>
-                                <td>{{prop?.orientationFlagName}}</td>
+                                <td>{{prop?.orientationSource}}—>{{prop?.orientationDestination}}</td>
                               </tr>
                               </tbody>
                             </table>

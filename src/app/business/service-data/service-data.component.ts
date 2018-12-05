@@ -736,7 +736,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     this.servicesPlan = false;
   }
   // 服务区合同下载
-public servicesPactDown (): void {
+  public servicesPactDown (): void {
   window.open(`${this.serviceInfo.contractUrlPrefix}${this.serviceInfo.contractUrl}`);
 }
   // 收入监控
@@ -824,6 +824,7 @@ public servicesPactDown (): void {
     if (shopList) {
       this.serareaService.searchIncomeTypesItem({entryCode: shopType[item].entryCode, page: 1, nums: 1000, shopList: shopList[0].storeList}).subscribe(
         (value) => {
+          console.log(value);
           if (value.status === '200') {
             this.IncomeTableData = value.data.contents;
           }
