@@ -54,7 +54,10 @@ export class WholeDataComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {}
   // 客流
   public getPerson(): void {
-    this.localService.persons.next(this.persons);
+    this.localService.persons.next({
+      total: [],
+      totalDistribute: []
+    });
   }
   /**********************************图表配置*****************************/
   // 百度地图画省边界外

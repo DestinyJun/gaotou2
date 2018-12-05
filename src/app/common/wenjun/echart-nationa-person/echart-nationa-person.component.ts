@@ -59,13 +59,6 @@ export class EchartNationaPersonComponent implements OnInit, OnChanges {
     ];
     const geoCoordMap = {};
     const toolTipData = [
-      {name: '贵阳', value: [{name: '文科', value: 95}, {name: '理科', value: 82}]},
-      {name: '六盘水', value: [{name: '文科', value: 22}, {name: '理科', value: 20}]},
-      {name: '遵义', value: [{name: '文科', value: 60}, {name: '理科', value: 42}]},
-      {name: '铜人', value: [{name: '文科', value: 40}, {name: '理科', value: 41}]},
-      {name: '毕节', value: [{name: '文科', value: 23}, {name: '理科', value: 24}]},
-      {name: '黔西南', value: [{name: '文科', value: 39}, {name: '理科', value: 28}]},
-      {name: '黔东南', value: [{name: '文科', value: 41}, {name: '理科', value: 41}]},
       {name: '黑龙江', value: [{name: '文科', value: 35}, {name: '理科', value: 31}]},
       {name: '兴义', value: [{name: '文科', value: 12}, {name: '理科', value: 12}]},
       {name: '江苏', value: [{name: '文科', value: 47}, {name: '理科', value: 45}]},
@@ -242,7 +235,7 @@ export class EchartNationaPersonComponent implements OnInit, OnChanges {
           animation: false,
           data: data
         },
-        {
+       /* {
           name: '点',
           type: 'scatter',
           coordinateSystem: 'geo',
@@ -269,7 +262,7 @@ export class EchartNationaPersonComponent implements OnInit, OnChanges {
           },
           zlevel: 6,
           data: convertData(data),
-        },
+        },*/
       ]
     };
   }

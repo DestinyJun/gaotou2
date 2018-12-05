@@ -152,10 +152,14 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
     this.financeDataService.searchPersonTotal({id: 2}).subscribe(
       (val) => {
         if (val.status === '200') {
-          const a = '';
-          // console.log(val)
-          // this.localService.persons.next(val.data.toString().split(''));
-          this.localService.persons.next(a.toString().split(''));
+          if (val.data === 0) {
+            this.localService.persons.next({total: []});
+          } else {
+            this.localService.persons.next({
+              total: val.data.toString().split(''),
+              totalDistribute: []
+            });
+          }
         }
       }
     );

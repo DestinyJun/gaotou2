@@ -414,67 +414,67 @@
                     </div>
                     <div class="content-table" style="margin-bottom: 1vh;height: 75vh">
                       <p-scrollPanel [style]="{width: '100%', height: '70vh'}" styleClass="custom">
-                      <table class="table table-bordered" *ngIf="!alertIncomeTypeShow">
-                        <thead>
-                        <tr>
-                          <th>时间段</th>
-                          <th [ngStyle]="{'background':alertIncomeTitle === '收入总数'?'black': ''}">收入总数</th>
-                          <th [ngStyle]="{'background':alertIncomeTitle === '小吃'?'black': ''}">小吃(元）</th>
-                          <th [ngStyle]="{'background':alertIncomeTitle === '中式快餐'?'black': ''}">中式快餐(元）</th>
-                          <th [ngStyle]="{'background':alertIncomeTitle === '西式快餐'?'black': ''}">西式快餐(元）</th>
-                          <th [ngStyle]="{'background':alertIncomeTitle === '商超'?'black': ''}">商超(元）</th>
-                          <th [ngStyle]="{'background':alertIncomeTitle === '住宿'?'black': ''}">住宿(元）</th>
-                          <th [ngStyle]="{'background':alertIncomeTitle === '汽修'?'black': ''}">汽修(元）</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr *ngFor="let item of IncomeTableData">
-                          <td>{{item?.hour}}</td>
-                          <td [ngStyle]="{'background':alertIncomeTitle === '收入总数'?'black': ''}">{{item?.total}}</td>
-                          <td [ngStyle]="{'background':alertIncomeTitle === '小吃'?'black': ''}">{{item[1]}}</td>
-                          <td [ngStyle]="{'background':alertIncomeTitle === '中式快餐'?'black': ''}">{{item[2]}}</td>
-                          <td [ngStyle]="{'background':alertIncomeTitle === '西式快餐'?'black': ''}">{{item[3]}}</td>
-                          <td [ngStyle]="{'background':alertIncomeTitle === '商超'?'black': ''}">{{item[4]}}</td>
-                          <td [ngStyle]="{'background':alertIncomeTitle === '住宿'?'black': ''}">{{item[5]}}</td>
-                          <td [ngStyle]="{'background':alertIncomeTitle === '汽修'?'black': ''}">{{item[6]}}</td>
-                        </tr>
-                        </tbody>
-                      </table>
-                      <table class="table table-bordered" *ngIf="alertIncomeTypeShow">
-                        <thead>
-                        <tr>
-                          <th>时间段</th>
-                          <th>{{alertIncomeTypeTitle}}（元）</th>
-                          <th>店铺名称</th>
-                          <th>店铺收入</th>
-                          <th>服务区方向</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr *ngFor="let item of IncomeTableData;let i = index">
-                          <td>{{item?.hour}}</td>
-                          <td>{{item?.totalRevenue}}</td>
-                          <td colspan="3">
-                            <table class="table table-bordered" style="background-color: transparent;">
-                            <!--  <thead>
-                                <tr>
-                                  <th>店铺名称</th>
-                                  <th>店铺收入</th>
-                                  <th>服务区方向</th>
+                        <table class="table table-bordered" *ngIf="!alertIncomeTypeShow">
+                          <thead>
+                          <tr>
+                            <th>时间段</th>
+                            <th [ngStyle]="{'background':alertIncomeTitle === '收入总数'?'black': ''}">收入总数</th>
+                            <th [ngStyle]="{'background':alertIncomeTitle === '小吃'?'black': ''}">小吃(元）</th>
+                            <th [ngStyle]="{'background':alertIncomeTitle === '中式快餐'?'black': ''}">中式快餐(元）</th>
+                            <th [ngStyle]="{'background':alertIncomeTitle === '西式快餐'?'black': ''}">西式快餐(元）</th>
+                            <th [ngStyle]="{'background':alertIncomeTitle === '商超'?'black': ''}">商超(元）</th>
+                            <th [ngStyle]="{'background':alertIncomeTitle === '住宿'?'black': ''}">住宿(元）</th>
+                            <th [ngStyle]="{'background':alertIncomeTitle === '汽修'?'black': ''}">汽修(元）</th>
+                          </tr>
+                          </thead>
+                          <tbody>
+                          <tr *ngFor="let item of IncomeTableData">
+                            <td>{{item?.hour}}</td>
+                            <td [ngStyle]="{'background':alertIncomeTitle === '收入总数'?'black': ''}">{{item?.total}}</td>
+                            <td [ngStyle]="{'background':alertIncomeTitle === '小吃'?'black': ''}">{{item[1]}}</td>
+                            <td [ngStyle]="{'background':alertIncomeTitle === '中式快餐'?'black': ''}">{{item[2]}}</td>
+                            <td [ngStyle]="{'background':alertIncomeTitle === '西式快餐'?'black': ''}">{{item[3]}}</td>
+                            <td [ngStyle]="{'background':alertIncomeTitle === '商超'?'black': ''}">{{item[4]}}</td>
+                            <td [ngStyle]="{'background':alertIncomeTitle === '住宿'?'black': ''}">{{item[5]}}</td>
+                            <td [ngStyle]="{'background':alertIncomeTitle === '汽修'?'black': ''}">{{item[6]}}</td>
+                          </tr>
+                          </tbody>
+                        </table>
+                        <table class="table table-bordered" *ngIf="alertIncomeTypeShow">
+                          <thead>
+                          <tr>
+                            <th>时间段</th>
+                            <th>{{alertIncomeTypeTitle}}（元）</th>
+                            <th>店铺名称</th>
+                            <th>店铺收入</th>
+                            <th>服务区方向</th>
+                          </tr>
+                          </thead>
+                          <tbody>
+                          <tr *ngFor="let item of IncomeTableData;let i = index">
+                            <td>{{item?.hour}}</td>
+                            <td>{{item?.totalRevenue}}</td>
+                            <td colspan="3">
+                              <table class="table table-bordered" style="background-color: transparent;">
+                              <!--  <thead>
+                                  <tr>
+                                    <th>店铺名称</th>
+                                    <th>店铺收入</th>
+                                    <th>服务区方向</th>
+                                  </tr>
+                                </thead>-->
+                                <tbody>
+                                <tr *ngFor="let prop of item?.hStoreRevenueList;">
+                                  <td>{{prop?.storeName}}</td>
+                                  <td>{{prop?.revenue}}</td>
+                                  <td>{{prop?.orientationSource}}—>{{prop?.orientationDestination}}</td>
                                 </tr>
-                              </thead>-->
-                              <tbody>
-                              <tr *ngFor="let prop of item?.hStoreRevenueList;">
-                                <td>{{prop?.storeName}}</td>
-                                <td>{{prop?.revenue}}</td>
-                                <td>{{prop?.orientationSource}}—>{{prop?.orientationDestination}}</td>
-                              </tr>
-                              </tbody>
-                            </table>
-                          </td>
-                        </tr>
-                        </tbody>
-                      </table>
+                                </tbody>
+                              </table>
+                            </td>
+                          </tr>
+                          </tbody>
+                        </table>
                       </p-scrollPanel>
                     </div>
                     <div class="bottom-pagination text-center">

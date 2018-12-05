@@ -194,8 +194,12 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   public getPerson(): void {
     this.serareaService.searchPersonTotal({id: 1}).subscribe(
       (val) => {
-        if (val.data.total) {
-          this.localService.persons.next(val.data.total.toString().split(''));
+        console.log(val);
+        if (val.status === '200') {
+          this.localService.persons.next({
+            total: val.data.total.toString().split(''),
+            totalDistribute: val.data.passengerDistribute
+          });
         }
       }
     );

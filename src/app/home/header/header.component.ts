@@ -14,6 +14,8 @@ export class HeaderComponent implements OnInit {
   public dataTime = new Date();  // 时间
   public headerTitle: string;  // 顶部标题
   public persons = [];  // 客流量
+  public personsTop: any;  // 客流量
+  public personsBottom: any;  // 客流量
   public personNum = [];
   public serviceNameArray: any;
   public serviceName: string;
@@ -34,6 +36,11 @@ export class HeaderComponent implements OnInit {
         this.serviceNameArray = val;
       }
     );
+    this.http.get(`${this.globalService.urlc}/realTime/passenger/province/getPassengerDistributeMap/2`).subscribe(
+      (val) => {
+        console.log(val);
+      }
+    );
     // 时间
     setInterval(() => {
       this.dataTime = new Date();
@@ -44,11 +51,22 @@ export class HeaderComponent implements OnInit {
       this.flagState = value.flagState;
       this.flagName = value.flagName;
     });
+    // 客流
     this.localService.persons.subscribe((value) => {
-      this.persons = value;
+      console.log(value);
+      this.persons = value.total;
       this.persons.map((val, index) => {
         this.personNum.push({number: val});
       });
+      if (value.totalDistribute) {
+        value.totalDistribute.map((item, i) => {
+          if (item.flag === '2') {
+            this.personsTop = item;
+          } else {
+            this.personsBottom = item;
+          }
+        });
+      }
     });
   }
   public serviceSearchChange(e): void {

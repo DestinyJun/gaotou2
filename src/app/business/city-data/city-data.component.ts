@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, ViewEncapsulation,} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {Router} from '@angular/router';
 import {DataService} from '../../common/services/data.service';
 import {ConfigModule, WenjunAlertService} from '../../common/wenjun';
@@ -157,12 +157,14 @@ export class CityDataComponent implements OnInit, OnDestroy {
   public getPerson(): void {
     this.cityDataService.searchPersonTotal({id: 3}).subscribe(
       (val) => {
-        console.log(val);
-        if (val === '200') {
+        if (val.status === '200') {
           if (val.data === 0) {
-            this.localService.persons.next([]);
+            this.localService.persons.next({total: []});
           } else {
-            this.localService.persons.next(val.data.toString().split(''));
+            this.localService.persons.next({
+              total: val.data.toString().split(''),
+              totalDistribute: []
+            });
           }
         }
       }

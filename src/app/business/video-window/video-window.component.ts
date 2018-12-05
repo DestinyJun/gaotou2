@@ -42,7 +42,10 @@ export class VideoWindowComponent implements OnInit {
   }
   // 客流
   public getPerson(): void {
-    this.localService.persons.next(this.persons);
+    this.localService.persons.next({
+      total: [],
+      totalDistribute: []
+    });
   }
   public getUploadDate() {
     this.loading = true;

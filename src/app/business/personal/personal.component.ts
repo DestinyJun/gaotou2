@@ -33,7 +33,7 @@ export class PersonalComponent implements OnInit {
     // 发射实时客流
     this.getPerson();
     // 发射业太数据名称
-    this.localService.eventBus.next({title: '全国高速视频监控大数据', flagState: 'personal', flagName: '全国'});
+    this.localService.eventBus.next({title: '个人信息', flagState: 'personal', flagName: '全国'});
     // 时间初始化
     this.esDate = {
       firstDayOfWeek: 0,
@@ -48,7 +48,10 @@ export class PersonalComponent implements OnInit {
   }
   // 客流
   public getPerson(): void {
-    this.localService.persons.next(this.persons);
+    this.localService.persons.next({
+      total: [],
+      totalDistribute: []
+    });
   }
   // 选择日期
   public onSelectTime(event): void {

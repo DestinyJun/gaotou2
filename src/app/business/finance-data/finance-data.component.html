@@ -124,28 +124,30 @@
                       </div>
                     </div>
                     <div class="content-table">
-                      <table class="table table-bordered">
-                        <thead>
-                        <tr>
-                          <th>{{alertCarTitle}}排名</th>
-                          <th [ngStyle]="{'background':alertCarTitle === '总数'?'black': ''}">车辆总数</th>
-                          <th [ngStyle]="{'background':alertCarTitle === '小车'?'black': ''}">小车总数</th>
-                          <th [ngStyle]="{'background':alertCarTitle === '客车'?'black': ''}">客车总数</th>
-                          <th [ngStyle]="{'background':alertCarTitle === '货车'?'black': ''}">货车总数</th>
-                          <th>服务区</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr *ngFor="let item of carTableData;let i=index">
-                          <td >{{i+1}}</td>
-                          <td [ngStyle]="{'background':alertCarTitle === '总数'?'black': ''}">{{item.map['总数']}}</td>
-                          <td [ngStyle]="{'background':alertCarTitle === '小车'?'black': ''}">{{item.map['小车']}}</td>
-                          <td [ngStyle]="{'background':alertCarTitle === '客车'?'black': ''}">{{item.map['客车']}}</td>
-                          <td [ngStyle]="{'background':alertCarTitle === '货车'?'black': ''}">{{item.map['货车']}}</td>
-                          <td class="content-table-car" (click)="carTableClick(item.zone)">{{item.serviceArea.serviceName}}</td>
-                        </tr>
-                        </tbody>
-                      </table>
+                      <p-scrollPanel [style]="{width: '100%', height: '40vh'}" styleClass="custom">
+                        <table class="table table-bordered">
+                          <thead>
+                          <tr>
+                            <th>{{alertCarTitle}}排名</th>
+                            <th [ngStyle]="{'background':alertCarTitle === '总数'?'black': ''}">车辆总数</th>
+                            <th [ngStyle]="{'background':alertCarTitle === '小车'?'black': ''}">小车总数</th>
+                            <th [ngStyle]="{'background':alertCarTitle === '客车'?'black': ''}">客车总数</th>
+                            <th [ngStyle]="{'background':alertCarTitle === '货车'?'black': ''}">货车总数</th>
+                            <th>服务区</th>
+                          </tr>
+                          </thead>
+                          <tbody>
+                          <tr *ngFor="let item of carTableData;let i=index">
+                            <td >{{i+1}}</td>
+                            <td [ngStyle]="{'background':alertCarTitle === '总数'?'black': ''}">{{item.map['总数']}}</td>
+                            <td [ngStyle]="{'background':alertCarTitle === '小车'?'black': ''}">{{item.map['小车']}}</td>
+                            <td [ngStyle]="{'background':alertCarTitle === '客车'?'black': ''}">{{item.map['客车']}}</td>
+                            <td [ngStyle]="{'background':alertCarTitle === '货车'?'black': ''}">{{item.map['货车']}}</td>
+                            <td class="content-table-car" (click)="carTableClick(item.zone)">{{item.serviceArea.serviceName}}</td>
+                          </tr>
+                          </tbody>
+                        </table>
+                      </p-scrollPanel>
                     </div>
                     <div class="bottom-pagination text-center">
                       <ul class="pagination">
@@ -356,24 +358,26 @@
                     </div>
                   </div>
                   <div class="content-table">
-                    <table class="table table-bordered">
-                      <thead>
-                      <tr>
-                        <th>排名</th>
-                        <th [ngStyle]="{'background':alertIncomeTitle === '总收入'?'black': ''}">总收入</th>
-                        <th *ngIf="!(alertIncomeTitle === '总收入')" [ngStyle]="{'background':!(alertIncomeTitle === '总收入')?'black': ''}">{{alertIncomeTitle}}收入(元）</th>
-                        <th>服务区</th>
-                      </tr>
-                      </thead>
-                      <tbody>
-                      <tr *ngFor="let item of IncomeTableData;let i=index">
-                        <td>{{i+1}}</td>
-                        <td [ngStyle]="{'background':alertIncomeTitle === '总收入'?'black': ''}">{{item?.totalRevenue}}</td>
-                        <td *ngIf="!(alertIncomeTitle === '总收入')" [ngStyle]="{'background':!(alertIncomeTitle === '总收入')?'black': ''}">{{item?.revenue}}</td>
-                        <td class="content-table-income" (click)="IncomeTableClick(item.zone)">{{item?.serviceArea.serviceName}}</td>
-                      </tr>
-                      </tbody>
-                    </table>
+                    <p-scrollPanel [style]="{width: '100%', height: '40vh'}" styleClass="custom">
+                      <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                          <th>排名</th>
+                          <th [ngStyle]="{'background':alertIncomeTitle === '总收入'?'black': ''}">总收入</th>
+                          <th *ngIf="!(alertIncomeTitle === '总收入')" [ngStyle]="{'background':!(alertIncomeTitle === '总收入')?'black': ''}">{{alertIncomeTitle}}收入(元）</th>
+                          <th>服务区</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let item of IncomeTableData;let i=index">
+                          <td>{{i+1}}</td>
+                          <td [ngStyle]="{'background':alertIncomeTitle === '总收入'?'black': ''}">{{item?.totalRevenue}}</td>
+                          <td *ngIf="!(alertIncomeTitle === '总收入')" [ngStyle]="{'background':!(alertIncomeTitle === '总收入')?'black': ''}">{{item?.revenue}}</td>
+                          <td class="content-table-income" (click)="IncomeTableClick(item.zone)">{{item?.serviceArea.serviceName}}</td>
+                        </tr>
+                        </tbody>
+                      </table>
+                    </p-scrollPanel>
                   </div>
                   <div class="bottom-pagination text-center">
                     <ul class="pagination">
