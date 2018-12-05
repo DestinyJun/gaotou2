@@ -176,7 +176,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     }, 5000);
     // 实时客流
     this.personAmountCountClean = setInterval(() => {
-      // this.getPerson();
+      this.getPerson();
     }, 5000);
     // 事件列表
     this.backCenterDate();
@@ -194,7 +194,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   public getPerson(): void {
     this.serareaService.searchPersonTotal({id: 1}).subscribe(
       (val) => {
-        console.log(val);
         if (val.status === '200') {
           this.localService.persons.next({
             total: val.data.total.toString().split(''),

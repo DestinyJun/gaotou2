@@ -69,7 +69,7 @@ export class VideoWindowComponent implements OnInit {
     );
   }
   // 选择树结构
-  public nodeSelect(event, shouNumber): void {
+  public nodeSelect(event): void {
     if (event.node.level === 2) {
       this.videoWindowService.searchServiceAreaList(event.node.id).subscribe(
       (value) => {
