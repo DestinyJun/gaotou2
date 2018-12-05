@@ -825,6 +825,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       this.serareaService.searchIncomeTypesItem({entryCode: shopType[item].entryCode, page: 1, nums: 1000, shopList: shopList[0].storeList}).subscribe(
         (value) => {
           console.log(value);
+          console.log(value);
           if (value.status === '200') {
             this.IncomeTableData = value.data.contents;
           }

@@ -11,6 +11,7 @@ import {TreeNode} from '../../common/model/video-window.model';
 export class VideoWindowComponent implements OnInit {
   // 实时客流量
   public persons = [];
+  public showNumber: number; // 监视窗的位置
   public videoUrl1: string;
   public videoUrl2: string;
   public videoUrl3: string;
@@ -53,10 +54,10 @@ export class VideoWindowComponent implements OnInit {
           this.trees = [{
             label: '全国高速视频监控',
             children: [
-              {label: '一号监视窗口', children: this.areaTrees},
-              {label: '二号监视窗口', children: this.areaTrees},
-              {label: '三号监视窗口', children: this.areaTrees},
-              {label: '四号监视窗口', children: this.areaTrees},
+              {label: '一号监视窗口', children: this.areaTrees, showNumber: 1},
+              {label: '二号监视窗口', children: this.areaTrees, showNumber: 2},
+              {label: '三号监视窗口', children: this.areaTrees, showNumber: 3},
+              {label: '四号监视窗口', children: this.areaTrees, showNumber: 4},
             ]
           }];
           this.loading = false;
@@ -65,10 +66,11 @@ export class VideoWindowComponent implements OnInit {
     );
   }
   // 选择树结构
-  public nodeSelect(event): void {
+  public nodeSelect(event, shouNumber): void {
     if (event.node.level === 2) {
       this.videoWindowService.searchServiceAreaList(event.node.id).subscribe(
       (value) => {
+        console.log(value);
         if (value.status === '200') {
           event.node.children = this.initializeServiceAreaTree(value.data);
         }
@@ -77,6 +79,7 @@ export class VideoWindowComponent implements OnInit {
     } else if (event.node.level === 4) {
       this.videoWindowService.searchVideosList(event.node.id).subscribe(
         (value) => {
+          console.log(value);
           console.log(event.node);
           if (value.status === '200') {
             event.node.children = this.initializeSourceDesTree(value.data);
@@ -84,7 +87,7 @@ export class VideoWindowComponent implements OnInit {
         }
       );
     } else if (event.node.level === 6) {
-      console.log(event.node.outUrl);
+      console.log(event.node);
       this.videoLocation(event.node.outUrl, event.node.label, event.node.showLocation);
     }
   }
@@ -162,10 +165,17 @@ export class VideoWindowComponent implements OnInit {
   }
   // 上下行树数据格式化
   public initializeSourceDesTree(data): any {
+   /* console.log(data);
+    data.map((item, i) => {
+      console.log(item.cameraList);
+      item.cameraList = item.cameraList.filter((prop, j) => {
+        return prop.showLocation === 1;
+      });
+    });*/
     const oneChild = [];
     for (let i = 0; i < data.length; i++) {
       const childnode =  new TreeNode();
-      childnode.label = data[i].flagName;
+      childnode.label = data[i].source + '—>' + data[i].destination;
       childnode.id = data[i].id;
       childnode.children = this.initializeVideoTree(data[i].cameraList);
       childnode.level = 5;

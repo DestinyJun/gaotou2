@@ -8,6 +8,7 @@ export class TreeNode {
   parentId?: number;
   children?: TreeNode[];
   cityType?: string;
+  showNumber?: number;
   pids?: string;
   administrativeAreaId?: number;
   status?: boolean;
