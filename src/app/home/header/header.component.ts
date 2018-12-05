@@ -52,8 +52,6 @@ export class HeaderComponent implements OnInit {
     });
   }
   public serviceSearchChange(e): void {
-    console.log('111');
-    
     const a = this.serviceNameArray.data.filter((item, index) => {
       return e.target.value === item.name;
     });
