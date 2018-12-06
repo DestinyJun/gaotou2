@@ -89,10 +89,12 @@ export class HeaderComponent implements OnInit {
       this.serviceZonePersonAlert = true;
     } else {
       this.cityPersonAlert = true;
+      this.localService.videoShow.next(this.cityPersonAlert);
     }
   }
   public closePersonAlert() {
       this.serviceZonePersonAlert = false;
       this.cityPersonAlert = false;
+      this.localService.videoShow.next(this.cityPersonAlert);
   }
 }

@@ -6,6 +6,7 @@ export class LocalStorageService {
   public eventBus: Subject<any> = new Subject<any>();
   public persons: Subject<any> = new Subject<any>();
   public loading: Subject<any> = new Subject<any>(); // 加载动画控制
+  public videoShow: Subject<any> = new Subject<any>(); // 视频加载控制
   public userSessionStorage: any;
   constructor() {
     if (!sessionStorage) {

@@ -12,6 +12,7 @@ export class VideoWindowComponent implements OnInit {
   // 实时客流量
   public persons = [];
   public showNumber: number; // 监视窗的位置
+  public videoInfo: any;
   public videoUrl1: string;
   public videoUrl2: string;
   public videoUrl3: string;
@@ -39,6 +40,19 @@ export class VideoWindowComponent implements OnInit {
     // 发射业太数据名称
     this.localService.eventBus.next({title: '全国高速视频监控大数据', flagState: 'window', flagName: '全国'});
     this.getUploadDate();
+    this.localService.videoShow.subscribe(
+      (value) => {
+        if (value) {
+          document.querySelector('#window1').innerHTML = '';
+          document.querySelector('#window2').innerHTML = '';
+          document.querySelector('#window3').innerHTML = '';
+          document.querySelector('#window4').innerHTML = '';
+        } else {
+          if (this.videoInfo) {
+            this.videoLocation(this.videoInfo.outUrl, this.videoInfo.label, this.videoInfo.showLocation);
+          }
+        }
+      });
   }
   // 客流
   public getPerson(): void {
@@ -73,7 +87,6 @@ export class VideoWindowComponent implements OnInit {
     if (event.node.level === 2) {
       this.videoWindowService.searchServiceAreaList(event.node.id).subscribe(
       (value) => {
-        console.log(value);
         if (value.status === '200') {
           event.node.children = this.initializeServiceAreaTree(value.data);
         }
@@ -91,6 +104,7 @@ export class VideoWindowComponent implements OnInit {
       );
     } else if (event.node.level === 6) {
       console.log(event.node);
+      this.videoInfo = event.node;
       this.videoLocation(event.node.outUrl, event.node.label, event.node.showLocation);
     }
   }
