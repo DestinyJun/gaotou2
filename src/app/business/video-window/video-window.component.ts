@@ -84,6 +84,16 @@ export class VideoWindowComponent implements OnInit {
   }
   // 选择树结构
   public nodeSelect(event): void {
+    console.log(event);
+    if (event.node.label === '一号监视窗口') {
+      this.showNumber = 1;
+    } else if (event.node.label === '二号监视窗口') {
+      this.showNumber = 2;
+    } else if (event.node.label === '三号监视窗口') {
+      this.showNumber = 3;
+    } else if (event.node.label === '四号监视窗口') {
+      this.showNumber = 4;
+    }
     if (event.node.level === 2) {
       this.videoWindowService.searchServiceAreaList(event.node.id).subscribe(
       (value) => {
@@ -98,7 +108,7 @@ export class VideoWindowComponent implements OnInit {
           console.log(value);
           console.log(event.node);
           if (value.status === '200') {
-            event.node.children = this.initializeSourceDesTree(value.data);
+            event.node.children = this.initializeSourceDesTree(value.data, this.showNumber);
           }
         }
       );
@@ -181,14 +191,14 @@ export class VideoWindowComponent implements OnInit {
     return oneChild;
   }
   // 上下行树数据格式化
-  public initializeSourceDesTree(data): any {
-   /* console.log(data);
+  public initializeSourceDesTree(data, locationNumber): any {
+    console.log(data);
+    console.log(locationNumber);
     data.map((item, i) => {
-      console.log(item.cameraList);
       item.cameraList = item.cameraList.filter((prop, j) => {
-        return prop.showLocation === 1;
+        return prop.showLocation === locationNumber;
       });
-    });*/
+    });
     const oneChild = [];
     for (let i = 0; i < data.length; i++) {
       const childnode =  new TreeNode();

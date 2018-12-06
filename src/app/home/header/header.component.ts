@@ -38,7 +38,7 @@ export class HeaderComponent implements OnInit {
     );
     this.http.get(`${this.globalService.urlc}/realTime/passenger/province/getPassengerDistributeMap/2`).subscribe(
       (val) => {
-        console.log(val);
+        // console.log(val);
       }
     );
     // 时间
@@ -53,7 +53,7 @@ export class HeaderComponent implements OnInit {
     });
     // 客流
     this.localService.persons.subscribe((value) => {
-      console.log(value);
+      // console.log(value);
       this.persons = value.total;
       this.persons.map((val, index) => {
         this.personNum.push({number: val});
