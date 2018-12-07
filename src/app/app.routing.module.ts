@@ -4,7 +4,7 @@ import {LoginComponent} from './login/login.component';
 import {LoginGuard} from './common/guard/login.guard';
 import {LoginRemindComponent} from './login-remind/login-remind.component';
 const routes: Routes = [
-  {path: '', redirectTo: 'remind', pathMatch: 'full'},
+  {path: '', redirectTo: 'login', pathMatch: 'full'},
   {path: 'login', component: LoginComponent},
   {path: 'remind', component: LoginRemindComponent},
   {
