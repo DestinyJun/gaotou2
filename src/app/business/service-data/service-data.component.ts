@@ -432,7 +432,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     );
   }
   public openMerchantVideo(item): void {
-    this.videoBottomShopUrl = `
+    /*this.videoBottomShopUrl = `
         <object type='application/x-vlc-plugin' pluginspage="http://www.videolan.org/" id='vlc' events='false' width="100%" height="96%">
               <param name='mrl' value='${item.outUrl}' />
               <param name='volume' value='50' />
@@ -441,6 +441,21 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
               <param name='fullscreen' value='true' />
               <param name='controls' value='true' />
             </object>
+      `; */
+    this.videoBottomShopUrl = `
+        <object type='application/x-vlc-plugin'
+            id='vlc' width="100%" height="100%" events='True' pluginspage="http://www.videolan.org"
+            codebase="http://downloads.videolan.org/pub/videolan/vlc-webplugins/2.2.1/npapi-vlc-2.2.1.tar.xz">
+                  <param name='mrl' value='${item.outUrl}'/>
+                  <param name='volume' value='30'/>
+                  <param name='autoplay' value='true'/>
+                  <param name='loop' value='false'/>
+                  <param value="transparent" name="wmode">
+                  <embed id='vlc1' wmode="transparent" type="application/x-vlc-plugin"
+                         width="100%" height="100%" pluginspage="http://www.videolan.org"
+                         allownetworking="internal" allowscriptaccess="always" quality="high"
+                         src='${item.outUrl}'>
+                </object>
       `;
     setTimeout(() => {
       document.getElementById('shopVideo').innerHTML = this.videoBottomShopUrl;
@@ -470,7 +485,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       }, 100);
     } else {
       this.videoShopList = item.cameraList;
-      this.videoBottomShopUrl = `
+      /*this.videoBottomShopUrl = `
        <object type='application/x-vlc-plugin' pluginspage="http://www.videolan.org/" id='vlc' events='false' width="100%" height="100%">
               <param name='mrl' value='${this.videoShopList[0].outUrl}' />
               <param name='volume' value='50' />
@@ -479,6 +494,20 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
               <param name='fullscreen' value='true' />
               <param name='controls' value='true' />
             </object>
+      `;*/
+      this.videoBottomShopUrl = `<object type='application/x-vlc-plugin'
+            id='vlc' width="100%" height="100%" events='True' pluginspage="http://www.videolan.org"
+            codebase="http://downloads.videolan.org/pub/videolan/vlc-webplugins/2.2.1/npapi-vlc-2.2.1.tar.xz">
+                  <param name='mrl' value='${this.videoShopList[0].outUrl}'/>
+                  <param name='volume' value='30'/>
+                  <param name='autoplay' value='true'/>
+                  <param name='loop' value='false'/>
+                  <param value="transparent" name="wmode">
+                  <embed id='vlc1' wmode="transparent" type="application/x-vlc-plugin"
+                         width="100%" height="100%" pluginspage="http://www.videolan.org"
+                         allownetworking="internal" allowscriptaccess="always" quality="high"
+                         src='${this.videoShopList[0].outUrl}'>
+                </object>
       `;
       setTimeout(() => {
         document.getElementById('shopVideo').innerHTML = this.videoBottomShopUrl;
@@ -493,7 +522,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     document.body.className = 'ui-overflow-hidden';
     this.videoPublicShow = true;
     this.publicVideoTitle = e.cameraName;
-    videoUrlHtml = videoUrlHtml + `
+   /* videoUrlHtml = videoUrlHtml + `
 
 <object type='application/x-vlc-plugin' pluginspage="http://www.videolan.org/" id='vlc' events='false' width="100%" height="99%">
               <param name='mrl' value='${e.outUrl}' />
@@ -503,6 +532,20 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
               <param name='fullscreen' value='true' />
               <param name='controls' value='true' />
             </object>
+    `; */
+    videoUrlHtml = videoUrlHtml + `
+         <object type='application/x-vlc-plugin'
+            id='vlc' width="100%" height="100%" events='True' pluginspage="http://www.videolan.org"
+            codebase="http://downloads.videolan.org/pub/videolan/vlc-webplugins/2.2.1/npapi-vlc-2.2.1.tar.xz">
+                  <param name='mrl' value='${e.outUrl}'/>
+                  <param name='volume' value='30'/>
+                  <param name='autoplay' value='true'/>
+                  <param name='loop' value='false'/>
+                  <param value="transparent" name="wmode">
+                  <embed id='vlc1' wmode="transparent" type="application/x-vlc-plugin"
+                     width="100%" height="100%" pluginspage="http://www.videolan.org"
+                     allownetworking="internal" allowscriptaccess="always" quality="high" src='${e.outUrl}'>
+         </object>
     `;
     setTimeout(() => {
       if (e.outUrl === '' || e.outUrl === null || e.outUrl === undefined) {

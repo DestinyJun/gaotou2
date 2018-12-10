@@ -3,3 +3,4 @@ export {EchartsLineBrokenModule} from './echarts-line-broken/echarts-line-broken
 export {EchartLineAreaModule} from './echart-line-area/echart-line-area.module';
 export {EchartNationaPersonModule} from './echart-nationa-person/echart-nationa-person.module';
 export {EchartProvincePersonModule} from './echart-province-person/echart-province-person.module';
+export {PagingModule} from './paging/paging.module';
