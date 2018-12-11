@@ -53,12 +53,11 @@ export class HeaderComponent implements OnInit {
     });
     // 客流
     this.localService.persons.subscribe((value) => {
-      // console.log(value);
       this.persons = value.total;
       this.persons.map((val, index) => {
         this.personNum.push({number: val});
       });
-      if (value.totalDistribute) {
+     /* if (value.totalDistribute.length !== 0) {
         value.totalDistribute.map((item, i) => {
           if (item.flag === '2') {
             this.personsTop = item;
@@ -66,7 +65,7 @@ export class HeaderComponent implements OnInit {
             this.personsBottom = item;
           }
         });
-      }
+      }*/
     });
   }
   public serviceSearchChange(e): void {
@@ -85,12 +84,14 @@ export class HeaderComponent implements OnInit {
   }
   // 客流量弹窗
   public personClick() {
-    if (this.flagState === 'serzone') {
+    /*if (this.flagState === 'serzone') {
       this.serviceZonePersonAlert = true;
     } else {
       this.cityPersonAlert = true;
       this.localService.videoShow.next(this.cityPersonAlert);
-    }
+    }*/
+    this.cityPersonAlert = true;
+    this.localService.videoShow.next(this.cityPersonAlert);
   }
   public closePersonAlert() {
       this.serviceZonePersonAlert = false;

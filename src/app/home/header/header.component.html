@@ -33,7 +33,7 @@
   </div>
 </div>
 <!--服务区级人流分布弹窗-->
-<div class="bg-box" *ngIf="serviceZonePersonAlert" >
+<!--<div class="bg-box" *ngIf="serviceZonePersonAlert" >
   <div class="alert-window" style="height:50vh; margin-top: -25vh;width: 50vw;margin-left: -25vw">
     <div class="alert-window-header">
       <div class="row">
@@ -46,7 +46,7 @@
       </div>
     </div>
     <div class="alert-window-content">
-      <!--总人数-->
+      &lt;!&ndash;总人数&ndash;&gt;
       <div class="row">
         <div class="col-ld-12 col-md-12">
           <div class="vehicle-amount">
@@ -59,12 +59,12 @@
           </div>
         </div>
       </div>
-     <!--人数分布-->
+     &lt;!&ndash;人数分布&ndash;&gt;
       <div class="row">
         <div class="col-ld-12 col-md-12 text-center">
-          <p>{{personsTop.source+ '—>'+personsTop.destination}}</p>
+          <p>{{personsTop?.source+ '—>'+personsTop?.destination}}</p>
           <div class="vehicle-distribute">
-            <div class="person-list text-center" *ngFor="let i of personsTop.nameValuePairs">
+            <div class="person-list text-center" *ngFor="let i of personsTop?.nameValuePairs">
               <p>
                 <i class="fa fa-paw" aria-hidden="true"></i>
               </p>
@@ -72,9 +72,9 @@
               <p><b>{{i.name}}</b></p>
             </div>
           </div>
-          <p>{{personsBottom.source+ '—>'+personsBottom.destination}}</p>
+          <p>{{personsBottom?.source+ '—>'+personsBottom?.destination}}</p>
           <div class="vehicle-distribute">
-            <div class="person-list text-center" *ngFor="let i of personsBottom.nameValuePairs">
+            <div class="person-list text-center" *ngFor="let i of personsBottom?.nameValuePairs">
               <p>
                 <i class="fa fa-paw" aria-hidden="true"></i>
               </p>
@@ -86,7 +86,7 @@
       </div>
     </div>
   </div>
-</div>
+</div>-->
 <!--省市级人流分布弹窗-->
 <div class="bg-box" *ngIf="cityPersonAlert" >
   <div class="alert-window" style="height:80vh; margin-top: -40vh;">
