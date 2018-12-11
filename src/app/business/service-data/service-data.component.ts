@@ -49,8 +49,15 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   public videoShopList = [];
   public videoBottomShopUrl: string;
   // 服务区商家信息弹窗
-  public images = [];
+  public iconImages = [
+    'icon-Chinese-food',
+    'icon-Chinese-restaurant-',
+    'icon-fast-food',
+    'icon-shop-one',
+    'fa fa-bed',
+    'fa fa-car'];
   public serviceShopShow = false;
+  public iconImagesIndex: number;
   public serviceShopShowExport = false;
   public serviceShopInfo: any;
   public shopStartTime: Date; // 时间选择器
@@ -357,15 +364,23 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   public backCenterDate() {
     this.serareaService.getServiceShopVDate().subscribe(
       (value) => {
+        console.log(value);
         this.serareaService.searchServiceShopIncome().subscribe(
           (val) => {
+            console.log(val);
             let s = [];
             let x = [];
             value.data.map((item, index) => {
               if (item.flag === '2') {
+                item.storeInfoList.map((prop) => {
+                  prop.categoryCode = parseInt(prop.categoryCode, 10);
+                });
                 this.incomeTopData = item.storeInfoList;
                 this.publicTopVideoGroup = item.cameraGroupList;
               } else if (item.flag === '3') {
+                item.storeInfoList.map((prop) => {
+                  prop.categoryCode = parseInt(prop.categoryCode, 10);
+                });
                 this.incomeBottomData = item.storeInfoList;
                 this.publicBottomVideoGroup = item.cameraGroupList;
               }

@@ -213,7 +213,7 @@
         <div class="servicesMap-top">
           <div class="shop-info text-center" *ngFor="let item of incomeTopData" (click)="openServiceShop(item)" [title]="item.storeName">
             <p>
-              <i class="fa fa-paw" aria-hidden="true"></i>
+              <i [class]="iconImages[item?.categoryCode - 1]" aria-hidden="true"></i>
               <span>{{item.storeName}}</span>
             </p>
             <p>{{item?.revenue}}元</p>
@@ -258,7 +258,7 @@
         <div class="servicesMap-bottom">
           <div class="shop-info text-center" *ngFor="let item of incomeBottomData" (click)="openServiceShop(item)">
             <p [title]="item.name">
-              <i class="fa fa-paw" aria-hidden="true"></i>
+              <i [class]="iconImages[item?.categoryCode - 1]" aria-hidden="true"></i>
               <span>{{item.storeName}}</span>
             </p>
             <p [title]="item.num">{{item?.revenue}}元</p>
