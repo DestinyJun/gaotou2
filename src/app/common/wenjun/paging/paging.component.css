@@ -1,11 +1,14 @@
 /*分页按钮样式*/
-.bottom-pagination {
+.paging {
   position: absolute;
   width: 100%;
   bottom: 5px;
   left: 0;
 }
-.pagination > li > a {
+.paging>.pagination{
+  margin: 0;
+}
+.paging>.pagination > li > a {
   background-color: #1A2128;
   margin-right: 1vw;
   font-size: 0.875rem;
@@ -13,10 +16,14 @@
   cursor: pointer;
   border: 1px solid #1A2128;
 }
-.pagination > li > a:hover{
+.paging>.pagination > li > a:hover{
   background-color: #1A2128;
   border: 1px solid #1A2128;
 }
-.pagination > li > a > input{
+.paging>.pagination > li > a > input{
   width: 5vw;
+  color: white;
+  background: transparent;
+  border: 1px solid rgba(125,233,235,0.1);
+  border-radius: 3px;
 }

@@ -9,6 +9,7 @@ export class ImageZoomComponent implements OnInit, OnChanges {
   @Input() public option: any;
   @Input() public height: any;
   @Input() public width = 'auto';
+  @Input() public zoom = false;
   @Output() public eventClick = new EventEmitter<any>();
   public acceptHeight: any;
   public closeFlag = false;
@@ -21,10 +22,12 @@ export class ImageZoomComponent implements OnInit, OnChanges {
     }
   }
   public openClick (e): void {
-    this.closeFlag = true;
-    e.target.parentElement.className = 'max';
-    this.height = '80vh';
-    this.eventClick.emit(true);
+    if (this.zoom) {
+      this.closeFlag = true;
+      e.target.parentElement.className = 'max';
+      this.height = '80vh';
+      this.eventClick.emit(true);
+    }
   }
   public onClose (e): void {
     e.stopPropagation();

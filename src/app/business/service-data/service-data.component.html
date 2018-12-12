@@ -560,8 +560,9 @@
             <app-image-zoom
               *ngIf="serviceShopInfo.cameraDistributionGraph"
               [option]="{url: serviceShopInfo.graphPrefix + serviceShopInfo.cameraDistributionGraph}"
-              (eventClick)="shopImageZoom($event)"
-              [height]="'8vh'"></app-image-zoom>
+              [height]="'22vh'"
+              [zoom]="false"
+            ></app-image-zoom>
           </div>
         </div>
         <div class="col-ld-6 col-md-6">

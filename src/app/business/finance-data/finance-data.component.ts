@@ -369,7 +369,6 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
       this.financeDataService.getServiceNamePoint().subscribe(
         (val) => {
           this.mapPoints = val.data;
-          console.log(val.data);
         }
       );
   }
