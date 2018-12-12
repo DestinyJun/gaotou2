@@ -296,6 +296,7 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
     // 表格
     this.financeDataService.searchCarAlertTable({id: 2, type: carTypes[e.name]}).subscribe(
       (val) => {
+        console.log(val);
         this.carTableData = val.data.contents;
       }
     );

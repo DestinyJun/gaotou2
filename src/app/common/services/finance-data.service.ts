@@ -37,7 +37,7 @@ export class FinanceDataService {
     return this.http.get(`${this.globalService.urlc}/realTime/vechile/province/getVechileTypePie/${params.id}`);
   }
   public searchCarAlertTable(params): Observable<any> {
-    return this.http.get(`${this.globalService.urlc}/realTime/vechile/province/${params.id}/${params.type}/getServiceAreaVechilePage/1/10`);
+    return this.http.get(`${this.globalService.urlc}/realTime/vechile/province/${params.id}/${params.type}/getServiceAreaVechilePage/${params.page}/${params.nums}`);
   }
   public searchCarAlertPie(params): Observable<any> {
     return this.http.get(`${this.globalService.urlc}/realTime/vechile/province/${params.id}/${params.type}/getChildAreaVechilePie`);
