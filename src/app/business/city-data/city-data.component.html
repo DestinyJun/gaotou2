@@ -149,7 +149,7 @@
                           </tr>
                           </thead>
                           <tbody>
-                          <tr *ngFor="let item of carTableData;let i=index">
+                          <tr *ngFor="let item of carTableData?.contents;let i=index">
                             <td >{{i+1}}</td>
                             <td [ngStyle]="{'background':alertCarTitle === '总数'?'black': ''}">{{item.map['总数']}}</td>
                             <td [ngStyle]="{'background':alertCarTitle === '小车'?'black': ''}">{{item.map['小车']}}</td>
@@ -161,14 +161,7 @@
                         </table>
                       </p-scrollPanel>
                     </div>
-                    <div class="bottom-pagination text-center">
-                      <ul class="pagination">
-                        <li><a class="btn btn-info">上一页</a></li>
-                        <li><a>共5页/第3页</a></li>
-                        <li><a style="padding: 3px 12px;">跳转到: <input type="number"><span style="margin-left: 10px">页</span></a></li>
-                        <li><a class="btn btn-warning">下一页</a></li>
-                      </ul>
-                    </div>
+                    <app-paging [option]="{total: carTableData?.totalRecord,row: 10}" (pageClick)="carDistributionPaging($event)"></app-paging>
                   </div>
                 </div>
               </div>
@@ -393,7 +386,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr *ngFor="let item of IncomeTableData;let i=index">
+                        <tr *ngFor="let item of IncomeTableData?.contents;let i=index">
                           <td>{{i+1}}</td>
                           <td [ngStyle]="{'background':alertIncomeTitle === '总收入'?'black': ''}">{{item?.totalRevenue}}</td>
                           <td *ngIf="!(alertIncomeTitle === '总收入')" [ngStyle]="{'background':!(alertIncomeTitle === '总收入')?'black': ''}">{{item?.revenue}}</td>
@@ -403,14 +396,7 @@
                       </table>
                     </p-scrollPanel>
                   </div>
-                  <div class="bottom-pagination text-center">
-                    <ul class="pagination">
-                      <li><a class="btn btn-info">上一页</a></li>
-                      <li><a>共5页/第3页</a></li>
-                      <li><a style="padding: 3px 12px;">跳转到: <input type="number"><span style="margin-left: 10px">页</span></a></li>
-                      <li><a class="btn btn-warning">下一页</a></li>
-                    </ul>
-                  </div>
+                  <app-paging [option]="{total: IncomeTableData?.totalRecord,row: 10}" (pageClick)="incomeDistributionPaging($event)"></app-paging>
                 </div>
               </div>
             </div>

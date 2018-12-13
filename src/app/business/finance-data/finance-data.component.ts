@@ -37,6 +37,7 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
   public alertCarTitle = '总数';
   public optionsCarType = {};
   public arryCarPie = [];
+  public carOptionType: any;
   public carTableData: any;
   public carExcelShow = false;
   public carStartTime: Date; // 时间选择器
@@ -77,6 +78,7 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
   public optionsIncomeTypes = {};
   public IncomeTableData: any;
   public arryIncomePie = [];
+  public IncomeOptionType: any;
   public incomeExcelShow = false;
   public incomeStartTime: Date; // 时间选择器
   public incomeEndTime: Date; // 时间选择器
@@ -247,7 +249,7 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
     const startTime = this.datePipe.transform(this.startTime3d, 'yyyyMMdd');
     const endTime = this.datePipe.transform(this.endTime3d, 'yyyyMMdd');
     if (this.startTime3d && this.endTime3d) {
-      window.location.assign(`http://120.78.137.182:8888/highway-interactive/report/province/3d/2/startDate/${startTime}/endDate/${endTime}`);
+      window.open(`http://120.78.137.182:8888/highway-interactive/report/province/3d/2/startDate/${startTime}/endDate/${endTime}`);
     } else {
       window.alert('请把数据选择全在提交');
     }
@@ -293,15 +295,15 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
       '客车': 2,
       '货车': 3,
     };
+    this.carOptionType = e.name;
     // 表格
-    this.financeDataService.searchCarAlertTable({id: 2, type: carTypes[e.name]}).subscribe(
+    this.financeDataService.searchCarAlertTable({id: 2, type: carTypes[this.carOptionType], page: 1, nums: 10}).subscribe(
       (val) => {
-        console.log(val);
-        this.carTableData = val.data.contents;
+        this.carTableData = val.data;
       }
     );
     // 饼状图
-    this.financeDataService.searchCarAlertPie({id: 2, type: carTypes[e.name]}).subscribe(
+    this.financeDataService.searchCarAlertPie({id: 2, type: carTypes[this.carOptionType]}).subscribe(
       (value) => {
         const arryCarPie = [];
         value.data.map((val, index) => {
@@ -314,6 +316,19 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
           color: ['#CE2D79', '#BDD139', '#78E77D', '#09D4D6', '#3C75B9',
             '#6769B1', '#FF8C9D', '#2796C4', '#E57D0D']
         };
+      }
+    );
+  }
+  public carDistributionPaging(e): void {
+    const carTypes = {
+      '总数': 'total',
+      '小车': 1,
+      '客车': 2,
+      '货车': 3,
+    };
+    this.financeDataService.searchCarAlertTable({id: 2, type: carTypes[this.carOptionType], page: e, nums: 10}).subscribe(
+      (val) => {
+        this.carTableData = val.data;
       }
     );
   }
@@ -541,12 +556,12 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
       '住宿': 5,
       '汽修': 6,
     };
+    this.IncomeOptionType = e.name;
     // 表格
-    this.financeDataService.searchIncomeAlertTable({id: 2, type: incomeType[e.name]}).subscribe(
+    this.financeDataService.searchIncomeAlertTable({id: 2, type: incomeType[e.name], page: 1, nums: 10}).subscribe(
       (val) => {
         if (val.status === '200') {
-          this.IncomeTableData = val.data.contents;
-          console.log(this.IncomeTableData);
+          this.IncomeTableData = val.data;
         }
       }
     );
@@ -562,6 +577,22 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
               '#6769B1', '#FF8C9D', '#2796C4', '#E57D0D']
           };
         }
+      }
+    );
+  }
+  public incomeDistributionPaging(e): void {
+    const incomeType = {
+      '总收入': 'total',
+      '小吃': 1,
+      '中式快餐': 2,
+      '西式快餐': 3,
+      '商超': 4,
+      '住宿': 5,
+      '汽修': 6,
+    };
+    this.financeDataService.searchIncomeAlertTable({id: 2, type: incomeType[this.IncomeOptionType], page: e, nums: 10}).subscribe(
+      (val) => {
+        this.IncomeTableData = val.data;
       }
     );
   }
@@ -623,7 +654,7 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
     const startTime = this.datePipe.transform(this.incomeStartTime, 'yyyyMMdd');
     const endTime = this.datePipe.transform(this.incomeEndTime, 'yyyyMMdd');
     if (this.incomeStartTime && this.incomeEndTime) {
-      window.location.assign(`http://120.78.137.182:8888/highway-interactive/report/province/revenue/2/startDate/${startTime}/endDate/${endTime}`);
+      window.open(`http://120.78.137.182:8888/highway-interactive/report/province/revenue/2/startDate/${startTime}/endDate/${endTime}`);
     } else {
       window.alert('请把数据选择全在提交');
     }

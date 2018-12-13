@@ -8,8 +8,7 @@ import {CalendarModule, ScrollPanelModule} from 'primeng/primeng';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {DataService} from '../../common/services/data.service';
 import {ButtonModule} from 'primeng/button';
-import {EchartLineAreaModule, EchartsLineBrokenModule} from '../../common/wenjun';
-import {LightboxModule} from 'primeng/lightbox';
+import {EchartLineAreaModule, EchartsLineBrokenModule, PagingModule} from '../../common/wenjun';
 import {ImageZoomModule} from '../../common/components/image-zoom/image-zoom.module';
 @NgModule({
   imports: [
@@ -23,7 +22,8 @@ import {ImageZoomModule} from '../../common/components/image-zoom/image-zoom.mod
     ButtonModule,
     EchartsLineBrokenModule,
     EchartLineAreaModule,
-    ImageZoomModule
+    ImageZoomModule,
+    PagingModule
   ],
   declarations: [ServiceDataComponent],
   providers: [ServiceDataService, DataService, DatePipe]

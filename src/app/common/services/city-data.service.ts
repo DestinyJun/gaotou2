@@ -50,7 +50,7 @@ export class CityDataService {
     return this.http.get(`${this.globalService.urlc}/realTime/revenue/city/getRevenueTypePie/${params.id}`);
   }
   public searchIncomeAlertTable(params): Observable<any> {
-    return this.http.get(`${this.globalService.urlc}/realTime/revenue/city/${params.id}/${params.type}/getServiceAreaRevenuePage/1/10`);
+    return this.http.get(`${this.globalService.urlc}/realTime/revenue/city/${params.id}/${params.type}/getServiceAreaRevenuePage/${params.page}/${params.nums}`);
   }
   public searchIncomeAlertPie(params): Observable<any> {
     return this.http.get(`${this.globalService.urlc}/realTime/revenue/city/${params.id}/${params.type}/getChildAreaRevenuePie`);

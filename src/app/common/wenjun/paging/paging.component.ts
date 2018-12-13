@@ -16,7 +16,11 @@ export class PagingComponent implements OnInit, OnChanges {
   constructor() { }
   ngOnInit() {}
   ngOnChanges(changes: SimpleChanges): void {
-    // console.log(JSON.stringify(this.option) === '{}');
+    this.nowPage = 1;
+    if (this.option.total === null || this.option.total === 0) {
+      this.showPaging = false;
+      return;
+    }
     this.totalPage = Math.ceil(this.option.total / this.option.row);
     if ((this.option.total / this.option.row) > 1) {
       this.showPaging = true;

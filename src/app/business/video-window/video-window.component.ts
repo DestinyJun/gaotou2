@@ -126,32 +126,74 @@ export class VideoWindowComponent implements OnInit {
    if (location === 1) {
      this.videoLocation1 = name;
      this.videoUrl1 = url;
-     document.querySelector('#window1').innerHTML = this.addHtmlVideo1(url);
+     document.querySelector('#window1').innerHTML = this.addHtmlVideo1('window1');
+     setTimeout(() => {
+       const vlc = window.document[`vlcwindow1`];
+       const mrl = url;
+       console.log(mrl);
+       const options = ['rtsp-tcp=true', ' network-caching=500'];
+       const itemId = vlc['playlist'].add(mrl, 'asd', options);
+       vlc['playlist'].playItem(itemId);
+     }, 30);
    } else if (location === 2) {
      this.videoLocation2 = name;
-     document.querySelector('#window2').innerHTML = this.addHtmlVideo1(url);
+     document.querySelector('#window2').innerHTML = this.addHtmlVideo1('window2');
+     setTimeout(() => {
+       const vlc = window.document[`vlcwindow2`];
+       const mrl = url;
+       console.log(mrl);
+       const options = ['rtsp-tcp=true', ' network-caching=500'];
+       const itemId = vlc['playlist'].add(mrl, 'asd', options);
+       vlc['playlist'].playItem(itemId);
+     }, 30);
      this.videoUrl2 = url;
    } else if (location === 3) {
      this.videoLocation3 = name;
      this.videoUrl3 = url;
-     document.querySelector('#window3').innerHTML = this.addHtmlVideo1(url);
+     document.querySelector('#window3').innerHTML = this.addHtmlVideo1('window3');
+     setTimeout(() => {
+       const vlc = window.document[`vlcwindow3`];
+       const mrl = url;
+       console.log(mrl);
+       const options = ['rtsp-tcp=true', ' network-caching=500'];
+       const itemId = vlc['playlist'].add(mrl, 'asd', options);
+       vlc['playlist'].playItem(itemId);
+     }, 30);
    } else if (location === 4) {
      this.videoLocation4 = name;
      this.videoUrl4 = url;
-     document.querySelector('#window4').innerHTML = this.addHtmlVideo1(url);
+     document.querySelector('#window4').innerHTML = this.addHtmlVideo1('window4');
+     setTimeout(() => {
+       const vlc = window.document[`vlcwindow4`];
+       const mrl = url;
+       console.log(mrl);
+       const options = ['rtsp-tcp=true', ' network-caching=500'];
+       const itemId = vlc['playlist'].add(mrl, 'asd', options);
+       vlc['playlist'].playItem(itemId);
+     }, 30);
    }
  }
-  public addHtmlVideo1(url: string): string {
+  public addHtmlVideo1(flag: string): string {
     const html = `
-            <object type='application/x-vlc-plugin'
-            pluginspage="http://www.videolan.org/" id='vlc' events='false' width="100%" height="98%">
-              <param name='mrl' value='${url}' />
-              <param name='volume' value='50' />
-              <param name='autoplay' value='true' />
-              <param name='loop' value='false' />
-              <param name='fullscreen' value='true' />
-              <param name='controls' value='true' />
-            </object>
+            <object classid="clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921"
+            id="vlc${flag}" codebase="" width="100%" height="100%" events="True">
+        <param name="mrl" value=""/>
+        <param name="src" value=""/>
+        <param name="ShowDisplay" value="true"/>
+        <param name="AutoLoop" value="false"/>
+        <param name="autoplay" value="true"/>
+        <param name="Time" value="True"/>
+        <param name='volume' value='30'/>
+        <param value="transparent" name="wmode">
+        <embed pluginspage="http://www.videolan.org"
+               type="application/x-vlc-plugin"
+               version="VideoLAN.VLCPlugin.2"
+               width="100%"
+               height="100%"
+               text="Waiting for video"
+               name="vlc${flag}"
+        />
+    </object>
 `;
     return html;
   }
@@ -194,11 +236,11 @@ export class VideoWindowComponent implements OnInit {
   public initializeSourceDesTree(data, locationNumber): any {
     console.log(data);
     console.log(locationNumber);
-    data.map((item, i) => {
+  /*  data.map((item, i) => {
       item.cameraList = item.cameraList.filter((prop, j) => {
         return prop.showLocation === locationNumber;
       });
-    });
+    });*/
     const oneChild = [];
     for (let i = 0; i < data.length; i++) {
       const childnode =  new TreeNode();

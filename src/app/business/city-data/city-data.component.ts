@@ -37,6 +37,7 @@ export class CityDataComponent implements OnInit, OnDestroy {
   public alertCarTitle = '总数';
   public optionsCarType = {};
   public arryCarPie = [];
+  public carOptionType: any;
   public carTableData: any;
   public carExcelShow = false;
   public carStartTime: Date; // 时间选择器
@@ -78,6 +79,7 @@ export class CityDataComponent implements OnInit, OnDestroy {
   public optionsIncomeTypes = {};
   public IncomeTableData: any;
   public arryIncomePie = [];
+  public IncomeOptionType: any;
   public incomeExcelShow = false;
   public incomeStartTime: Date; // 时间选择器
   public incomeEndTime: Date; // 时间选择器
@@ -299,10 +301,11 @@ export class CityDataComponent implements OnInit, OnDestroy {
       '客车': 2,
       '货车': 3,
     };
+    this.carOptionType = e.name;
     // 表格
-    this.cityDataService.searchCarAlertTable({id: 3, type: carTypes[e.name]}).subscribe(
+    this.cityDataService.searchCarAlertTable({id: 3, type: carTypes[e.name], page: 1, nums: 10}).subscribe(
       (val) => {
-        this.carTableData = val.data.contents;
+        this.carTableData = val.data;
       }
     );
     // 饼状图
@@ -319,6 +322,19 @@ export class CityDataComponent implements OnInit, OnDestroy {
           color: ['#CE2D79', '#BDD139', '#78E77D', '#09D4D6', '#3C75B9',
             '#6769B1', '#FF8C9D', '#2796C4', '#E57D0D']
         };
+      }
+    );
+  }
+  public carDistributionPaging(e): void {
+    const carTypes = {
+      '总数': 'total',
+      '小车': 1,
+      '客车': 2,
+      '货车': 3,
+    };
+    this.cityDataService.searchCarAlertTable({id: 2, type: carTypes[this.carOptionType], page: e, nums: 10}).subscribe(
+      (val) => {
+        this.carTableData = val.data;
       }
     );
   }
@@ -536,11 +552,12 @@ export class CityDataComponent implements OnInit, OnDestroy {
       '住宿': 5,
       '汽修': 6,
     };
+    this.IncomeOptionType = e.name;
     // 表格
-    this.cityDataService.searchIncomeAlertTable({id: 3, type: incomeType[e.name]}).subscribe(
+    this.cityDataService.searchIncomeAlertTable({id: 3, type: incomeType[e.name], page: 1, nums: 10}).subscribe(
       (val) => {
         if (val.status === '200') {
-          this.IncomeTableData = val.data.contents;
+          this.IncomeTableData = val.data;
         }
       }
     );
@@ -556,6 +573,22 @@ export class CityDataComponent implements OnInit, OnDestroy {
               '#6769B1', '#FF8C9D', '#2796C4', '#E57D0D']
           };
         }
+      }
+    );
+  }
+  public incomeDistributionPaging(e): void {
+    const incomeType = {
+      '总收入': 'total',
+      '小吃': 1,
+      '中式快餐': 2,
+      '西式快餐': 3,
+      '商超': 4,
+      '住宿': 5,
+      '汽修': 6,
+    };
+    this.cityDataService.searchIncomeAlertTable({id: 2, type: incomeType[this.IncomeOptionType], page: e, nums: 10}).subscribe(
+      (val) => {
+        this.IncomeTableData = val.data;
       }
     );
   }

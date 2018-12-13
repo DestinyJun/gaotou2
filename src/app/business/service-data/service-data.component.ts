@@ -107,6 +107,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   public IncomeTableData: any;
   public storeList: any;
   public arryIncomePie = [];
+  public IncomeOptionType: any;
   public incomeExcelShow = false;
   public incomeStartTime: Date; // 时间选择器
   public incomeEndTime: Date; // 时间选择器
@@ -270,7 +271,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     const startTime = this.datePipe.transform(this.startTime3d, 'yyyyMMdd');
     const endTime = this.datePipe.transform(this.endTime3d, 'yyyyMMdd');
     if (this.startTime3d && this.endTime3d) {
-      window.location.assign(`http://120.78.137.182:8888/highway-interactive/report/serviceArea/3d/1/startDate/${startTime}/endDate/${endTime}`);
+      window.open(`http://120.78.137.182:8888/highway-interactive/report/serviceArea/3d/1/startDate/${startTime}/endDate/${endTime}`);
     } else {
       window.alert('请把数据选择全在提交');
     }
@@ -305,7 +306,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   public parkClick(e): void {
     this.alertCarShow = true;
     document.body.className = 'ui-overflow-hidden';
-    this.carDistribution(e);
+    this.carDistribution(1);
   }
   public carDistribution(e): void {
     const carTypes = {
@@ -315,10 +316,10 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       '货车': 3,
     };
     // 表格
-    this.serareaService.searchCarAlertTable({id: 1, type: carTypes[e.name], page: 1, nums: 1000}).subscribe(
+    this.serareaService.searchCarAlertTable({id: 1, type: carTypes['总数'], page: e, nums: 10}).subscribe(
       (val) => {
         if (val.status === '200') {
-          this.carTableData = val.data.contents;
+          this.carTableData = val.data;
         }
       }
     );
@@ -354,7 +355,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     const startTime = this.datePipe.transform(this.carStartTime, 'yyyyMMdd');
     const endTime = this.datePipe.transform(this.carEndTime, 'yyyyMMdd');
     if (this.carStartTime && this.carEndTime) {
-      window.location.assign(`http://120.78.137.182:8888/highway-interactive/report/serviceArea/vihicle/1/startDate/${startTime}/endDate/${endTime}`);
+      window.open(`http://120.78.137.182:8888/highway-interactive/report/serviceArea/vihicle/1/startDate/${startTime}/endDate/${endTime}`);
     } else {
       window.alert('请把数据选择全在提交');
     }
@@ -364,50 +365,52 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   public backCenterDate() {
     this.serareaService.getServiceShopVDate().subscribe(
       (value) => {
-        console.log(value);
-        this.serareaService.searchServiceShopIncome().subscribe(
-          (val) => {
-            console.log(val);
-            let s = [];
-            let x = [];
-            value.data.map((item, index) => {
-              if (item.flag === '2') {
-                item.storeInfoList.map((prop) => {
-                  prop.categoryCode = parseInt(prop.categoryCode, 10);
+        if (value.status === '200') {
+          this.serareaService.searchServiceShopIncome().subscribe(
+            (val) => {
+              if (val.status === '200') {
+                let s = [];
+                let x = [];
+                value.data.map((item, index) => {
+                  if (item.flag === '2') {
+                    item.storeInfoList.map((prop) => {
+                      prop.categoryCode = parseInt(prop.categoryCode, 10);
+                    });
+                    this.incomeTopData = item.storeInfoList;
+                    this.publicTopVideoGroup = item.cameraGroupList;
+                  } else if (item.flag === '3') {
+                    item.storeInfoList.map((prop) => {
+                      prop.categoryCode = parseInt(prop.categoryCode, 10);
+                    });
+                    this.incomeBottomData = item.storeInfoList;
+                    this.publicBottomVideoGroup = item.cameraGroupList;
+                  }
                 });
-                this.incomeTopData = item.storeInfoList;
-                this.publicTopVideoGroup = item.cameraGroupList;
-              } else if (item.flag === '3') {
-                item.storeInfoList.map((prop) => {
-                  prop.categoryCode = parseInt(prop.categoryCode, 10);
+                val.data.map((item, index) => {
+                  if (item.flag === '2') {
+                    s = item.storeInfoList;
+                  } else if (item.flag === '3') {
+                    x = item.storeInfoList;
+                  }
                 });
-                this.incomeBottomData = item.storeInfoList;
-                this.publicBottomVideoGroup = item.cameraGroupList;
-              }
-            });
-            val.data.map((item, index) => {
-              if (item.flag === '2') {
-                s = item.storeInfoList;
-              } else if (item.flag === '3') {
-                x = item.storeInfoList;
-              }
-            });
-            if (s) {
-              s.map((item, index) => {
-                if (s[index].id = this.incomeTopData[index].id) {
-                  this.incomeTopData[index].revenue = s[index].revenue;
+                if (s) {
+                  s.map((item, index) => {
+                    if (s[index].id = this.incomeTopData[index].id) {
+                      this.incomeTopData[index].revenue = s[index].revenue;
+                    }
+                  });
                 }
-              });
-            }
-            if (x) {
-              x.map((item, index) => {
-                if (x[index].id = this.incomeBottomData[index].id) {
-                  this.incomeBottomData[index].revenue = x[index].revenue;
+                if (x) {
+                  x.map((item, index) => {
+                    if (x[index].id = this.incomeBottomData[index].id) {
+                      this.incomeBottomData[index].revenue = x[index].revenue;
+                    }
+                  });
                 }
-              });
+              }
             }
-          }
-        );
+          );
+        }
       }
     );
   }
@@ -421,7 +424,9 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     this.serviceShopInfo = item;
     this.serviceShopShow = true;
     document.body.className = 'ui-overflow-hidden';
-    this.addShopVideo(item);
+    if (item.cameraList.length > 0) {
+      this.addShopVideo(item);
+    }
     // 折线图
     this.serareaService.searchServiceShopLine({id: item.id, yIndex: ['revenue', 'passenger', 'vehicle', 'electric', 'water']}).subscribe(
       (val) => {
@@ -458,29 +463,42 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
             </object>
       `; */
     this.videoBottomShopUrl = `
-        <object type='application/x-vlc-plugin'
-            id='vlc' width="100%" height="100%" events='True' pluginspage="http://www.videolan.org"
-            codebase="http://downloads.videolan.org/pub/videolan/vlc-webplugins/2.2.1/npapi-vlc-2.2.1.tar.xz">
-                  <param name='mrl' value='${item.outUrl}'/>
-                  <param name='volume' value='30'/>
-                  <param name='autoplay' value='true'/>
-                  <param name='loop' value='false'/>
-                  <param value="transparent" name="wmode">
-                  <embed id='vlc1' wmode="transparent" type="application/x-vlc-plugin"
-                         width="100%" height="100%" pluginspage="http://www.videolan.org"
-                         allownetworking="internal" allowscriptaccess="always" quality="high"
-                         src='${item.outUrl}'>
-                </object>
+        <object classid="clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921"
+            id="vlc${item.id}" codebase="" width="100%" height="100%" events="True">
+        <param name="mrl" value=""/>
+        <param name="src" value=""/>
+        <param name="ShowDisplay" value="true"/>
+        <param name="AutoLoop" value="false"/>
+        <param name="autoplay" value="true"/>
+        <param name="Time" value="True"/>
+        <param name='volume' value='30'/>
+        <param value="transparent" name="wmode">
+        <embed pluginspage="http://www.videolan.org"
+               type="application/x-vlc-plugin"
+               version="VideoLAN.VLCPlugin.2"
+               width="100%"
+               height="100%"
+               text="Waiting for video"
+               name="vlc${item.id}"
+        />
+    </object>
       `;
     setTimeout(() => {
       document.getElementById('shopVideo').innerHTML = this.videoBottomShopUrl;
-    }, 100);
+      setTimeout(() => {
+        const vlc = window.document[`vlc${item.id}`];
+        const mrl = item.outUrl;
+        const options = ['rtsp-tcp=true', ' network-caching=500'];
+        const itemId = vlc['playlist'].add(mrl, 'asd', options);
+        vlc['playlist'].playItem(itemId);
+      }, 30);
+    }, 50);
   }
   public shopExportClick() {
     const startTime = this.datePipe.transform(this.shopStartTime, 'yyyyMMdd');
     const endTime = this.datePipe.transform(this.shopEndTime, 'yyyyMMdd');
     if (this.shopStartTime && this.shopEndTime) {
-      window.location.assign(`http://120.78.137.182:8888/highway-interactive/report/serviceArea/store/1/startDate/${startTime}/endDate/${endTime}`);
+      window.open(`http://120.78.137.182:8888/highway-interactive/report/serviceArea/store/1/startDate/${startTime}/endDate/${endTime}`);
     } else {
       window.alert('请把数据选择全在提交');
     }
@@ -500,33 +518,38 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       }, 100);
     } else {
       this.videoShopList = item.cameraList;
-      /*this.videoBottomShopUrl = `
-       <object type='application/x-vlc-plugin' pluginspage="http://www.videolan.org/" id='vlc' events='false' width="100%" height="100%">
-              <param name='mrl' value='${this.videoShopList[0].outUrl}' />
-              <param name='volume' value='50' />
-              <param name='autoplay' value='true' />
-              <param name='loop' value='false' />
-              <param name='fullscreen' value='true' />
-              <param name='controls' value='true' />
-            </object>
-      `;*/
-      this.videoBottomShopUrl = `<object type='application/x-vlc-plugin'
-            id='vlc' width="100%" height="100%" events='True' pluginspage="http://www.videolan.org"
-            codebase="http://downloads.videolan.org/pub/videolan/vlc-webplugins/2.2.1/npapi-vlc-2.2.1.tar.xz">
-                  <param name='mrl' value='${this.videoShopList[0].outUrl}'/>
-                  <param name='volume' value='30'/>
-                  <param name='autoplay' value='true'/>
-                  <param name='loop' value='false'/>
-                  <param value="transparent" name="wmode">
-                  <embed id='vlc1' wmode="transparent" type="application/x-vlc-plugin"
-                         width="100%" height="100%" pluginspage="http://www.videolan.org"
-                         allownetworking="internal" allowscriptaccess="always" quality="high"
-                         src='${this.videoShopList[0].outUrl}'>
-                </object>
+      this.videoBottomShopUrl = `
+        <object classid="clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921"
+            id="vlc${this.videoShopList[0].id}" codebase="" width="100%" height="100%" events="True">
+        <param name="mrl" value=""/>
+        <param name="src" value=""/>
+        <param name="ShowDisplay" value="true"/>
+        <param name="AutoLoop" value="false"/>
+        <param name="autoplay" value="true"/>
+        <param name="Time" value="True"/>
+        <param name='volume' value='30'/>
+        <param value="transparent" name="wmode">
+        <embed pluginspage="http://www.videolan.org"
+               type="application/x-vlc-plugin"
+               version="VideoLAN.VLCPlugin.2"
+               width="100%"
+               height="100%"
+               text="Waiting for video"
+               name="vlc${this.videoShopList[0].id}"
+        />
+    </object>
       `;
       setTimeout(() => {
         document.getElementById('shopVideo').innerHTML = this.videoBottomShopUrl;
-      }, 100);
+        setTimeout(() => {
+          const vlc = window.document[`vlc${this.videoShopList[0].id}`];
+          const mrl = this.videoShopList[0].outUrl;
+          console.log(mrl);
+          const options = ['rtsp-tcp=true', ' network-caching=500'];
+          const itemId = vlc['playlist'].add(mrl, 'asd', options);
+          vlc['playlist'].playItem(itemId);
+        }, 30);
+      }, 50);
     }
   }
 
@@ -548,7 +571,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
               <param name='controls' value='true' />
             </object>
     `; */
-    videoUrlHtml = videoUrlHtml + `
+  /*  videoUrlHtml = videoUrlHtml + `
          <object type='application/x-vlc-plugin'
             id='vlc' width="100%" height="100%" events='True' pluginspage="http://www.videolan.org"
             codebase="http://downloads.videolan.org/pub/videolan/vlc-webplugins/2.2.1/npapi-vlc-2.2.1.tar.xz">
@@ -561,6 +584,27 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
                      width="100%" height="100%" pluginspage="http://www.videolan.org"
                      allownetworking="internal" allowscriptaccess="always" quality="high" src='${e.outUrl}'>
          </object>
+    `;*/
+    videoUrlHtml = videoUrlHtml + `
+         <object classid="clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921"
+            id="vlc${e.id}" codebase="" width="100%" height="100%" events="True">
+        <param name="mrl" value=""/>
+        <param name="src" value=""/>
+        <param name="ShowDisplay" value="true"/>
+        <param name="AutoLoop" value="false"/>
+        <param name="autoplay" value="true"/>
+        <param name="Time" value="True"/>
+        <param name='volume' value='30'/>
+        <param value="transparent" name="wmode">
+        <embed pluginspage="http://www.videolan.org"
+               type="application/x-vlc-plugin"
+               version="VideoLAN.VLCPlugin.2"
+               width="100%"
+               height="100%"
+               text="Waiting for video"
+               name="vlc${e.id}"
+        />
+    </object>
     `;
     setTimeout(() => {
       if (e.outUrl === '' || e.outUrl === null || e.outUrl === undefined) {
@@ -568,7 +612,14 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
         return;
       }
       document.getElementById('publicVideo').innerHTML = videoUrlHtml;
-    }, 100);
+      setTimeout(() => {
+        const vlc = window.document[`vlc${e.id}`];
+        const mrl = e.outUrl;
+        const options = ['rtsp-tcp=true', ' network-caching=500'];
+        const itemId = vlc['playlist'].add(mrl, 'asd', options);
+        vlc['playlist'].playItem(itemId);
+      }, 30);
+    }, 50);
   }
   public closePublicVideo() {
     document.body.className = '';
@@ -844,10 +895,11 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     );
   }
   public getIncomeTotal(): void {
-    this.serareaService.searchIncomeTypesList({page: 1, nums: 1000, types: this.storeList}).subscribe(
+    this.serareaService.searchIncomeTypesList({page: 1, nums: 10, types: this.storeList}).subscribe(
       (incomeVal) => {
+        console.log(incomeVal.data);
         if (incomeVal.status === '200') {
-          this.IncomeTableData = incomeVal.data.contents;
+          this.IncomeTableData = incomeVal.data;
         }
       }
     );
@@ -879,16 +931,16 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
         'entryCode': '6',
       },
     };
+    this.IncomeOptionType = item;
     const shopList = storeList.filter((prop, index) => {
       return prop.entryCode === shopType[item].entryCode;
     });
     if (shopList) {
-      this.serareaService.searchIncomeTypesItem({entryCode: shopType[item].entryCode, page: 1, nums: 1000, shopList: shopList[0].storeList}).subscribe(
+      this.serareaService.searchIncomeTypesItem({entryCode: shopType[this.IncomeOptionType].entryCode, page: 1, nums: 10, shopList: shopList[0].storeList}).subscribe(
         (value) => {
-          console.log(value);
-          console.log(value);
           if (value.status === '200') {
-            this.IncomeTableData = value.data.contents;
+            console.log(value.data);
+            this.IncomeTableData = value.data;
           }
         }
       );
@@ -952,7 +1004,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     const startTime = this.datePipe.transform(this.incomeStartTime, 'yyyyMMdd');
     const endTime = this.datePipe.transform(this.incomeEndTime, 'yyyyMMdd');
     if (this.incomeStartTime && this.incomeEndTime) {
-      window.location.assign(`http://120.78.137.182:8888/highway-interactive/report/serviceArea/revenue/1/startDate/${startTime}/endDate/${endTime}`);
+      window.open(`http://120.78.137.182:8888/highway-interactive/report/serviceArea/revenue/1/startDate/${startTime}/endDate/${endTime}`);
     } else {
       window.alert('请把数据选择全在提交');
     }
