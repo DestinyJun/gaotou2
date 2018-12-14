@@ -127,7 +127,7 @@
                       </div>
                     </div>
                     <div class="content-table">
-                      <p-scrollPanel [style]="{width: '100%', height: '40vh'}" styleClass="custom">
+                      <p-scrollPanel [style]="{width: '100%', height: '40vh'}" styleClass="service-statistics">
                         <table class="table table-bordered">
                           <thead>
                           <tr>
@@ -264,7 +264,7 @@
             <span></span><span></span><span></span><span></span>
             <p>事件上报</p>
           </div>
-          <p-scrollPanel [style]="{width: '100%', height: '30vh'}" styleClass="custom">
+          <p-scrollPanel [style]="{width: '100%', height: '40vh'}" styleClass="city-scroll">
             <div class="event-table-processed-type">
               <span *ngFor="let item of eventInfoUpTypes" [ngStyle]=" {'float': item.eventCategoryName === '党建类'?'right': 'none', 'margin-right': item.eventCategoryName === '党建类'?'5vw':'none'}" (click)="eventInfoUpClick(item)">{{item.eventCategoryName}}</span>
             </div>
@@ -310,7 +310,7 @@
           <p>{{serviceZoneTitle}}基本信息</p>
         </div>
         <div class="information-info" >
-          <p-scrollPanel [style]="{width: '100%', height: '40vh'}" styleClass="custom1">
+          <p-scrollPanel [style]="{width: '100%', height: '40vh'}" styleClass="service-statistics">
             <!--公共属性-->
             <div class="col-lg-6 col-md-6" *ngFor="let prop of serviceInfo?.commonAttributeValues">
               <div>
@@ -396,7 +396,7 @@
                       </div>
                     </div>
                     <div class="content-table" style="margin-bottom: 1vh;height: 75vh">
-                      <p-scrollPanel [style]="{width: '100%', height: '70vh'}" styleClass="custom">
+                      <p-scrollPanel [style]="{width: '100%', height: '70vh'}" styleClass="service-statistics">
                         <table class="table table-bordered" *ngIf="!alertIncomeTypeShow">
                           <thead>
                           <tr>
@@ -460,7 +460,7 @@
                         </table>
                       </p-scrollPanel>
                     </div>
-                    <app-paging [option]="{total: IncomeTableData?.totalRecord,row: 10}"></app-paging>
+                    <app-paging [option]="{total: IncomeTableData?.totalRecord,row: 10}" (pageClick)="getIncomeTypesSinglePaging($event,IncomeOptionType,storeList)"></app-paging>
                   </div>
                 </div>
               </div>
@@ -738,7 +738,7 @@
       </div>
     </div>
     <div class="alert-window-content">
-      <p-scrollPanel [style]="{width: '100%', height: '55vh'}" styleClass="custom">
+      <p-scrollPanel [style]="{width: '100%', height: '55vh'}" styleClass="service-statistics">
         <div class="row">
           <!--公共信息-->
           <div class="col-lg-6 col-md-6" *ngFor="let item of alterCommonAttributeValues">

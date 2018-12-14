@@ -419,6 +419,20 @@
 .anchorBL{
   display:none;
 }
+.finance-statistics .ui-scrollpanel-wrapper {
+  background: transparent;
+  border: none; /*控制滚动轴背景色*/
+}
+.finance-statistics .ui-scrollpanel-bar {
+  background-color: transparent;
+  /*background: none;*/
+  opacity: 1;
+  transition: background-color .3s;
+}
+.finance-statistics .ui-scrollpanel-bar:hover {
+  background-color: #135ba1;
+}
+
 /*****************************bootstrap样式覆盖****************************/
 p {
   margin: 0;

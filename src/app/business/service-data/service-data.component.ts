@@ -472,6 +472,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
         <param name="autoplay" value="true"/>
         <param name="Time" value="True"/>
         <param name='volume' value='30'/>
+        <param name='controls' value='false' />
         <param value="transparent" name="wmode">
         <embed pluginspage="http://www.videolan.org"
                type="application/x-vlc-plugin"
@@ -529,6 +530,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
         <param name="Time" value="True"/>
         <param name='volume' value='30'/>
         <param value="transparent" name="wmode">
+        <param name='controls' value='false' />
         <embed pluginspage="http://www.videolan.org"
                type="application/x-vlc-plugin"
                version="VideoLAN.VLCPlugin.2"
@@ -544,7 +546,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
         setTimeout(() => {
           const vlc = window.document[`vlc${this.videoShopList[0].id}`];
           const mrl = this.videoShopList[0].outUrl;
-          console.log(mrl);
           const options = ['rtsp-tcp=true', ' network-caching=500'];
           const itemId = vlc['playlist'].add(mrl, 'asd', options);
           vlc['playlist'].playItem(itemId);
@@ -596,6 +597,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
         <param name="Time" value="True"/>
         <param name='volume' value='30'/>
         <param value="transparent" name="wmode">
+        <param name='controls' value='false' />
         <embed pluginspage="http://www.videolan.org"
                type="application/x-vlc-plugin"
                version="VideoLAN.VLCPlugin.2"
@@ -615,6 +617,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       setTimeout(() => {
         const vlc = window.document[`vlc${e.id}`];
         const mrl = e.outUrl;
+        console.log(mrl);
         const options = ['rtsp-tcp=true', ' network-caching=500'];
         const itemId = vlc['playlist'].add(mrl, 'asd', options);
         vlc['playlist'].playItem(itemId);
@@ -897,7 +900,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   public getIncomeTotal(): void {
     this.serareaService.searchIncomeTypesList({page: 1, nums: 10, types: this.storeList}).subscribe(
       (incomeVal) => {
-        console.log(incomeVal.data);
         if (incomeVal.status === '200') {
           this.IncomeTableData = incomeVal.data;
         }
@@ -933,13 +935,54 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     };
     this.IncomeOptionType = item;
     const shopList = storeList.filter((prop, index) => {
+      return prop.entryCode === shopType[this.IncomeOptionType].entryCode;
+    });
+    if (shopList) {
+      this.serareaService.searchIncomeTypesItem(
+        {entryCode: shopType[this.IncomeOptionType].entryCode, page: 1, nums: 10, shopList: shopList[0].storeList}).subscribe(
+        (value) => {
+          if (value.status === '200') {
+            this.IncomeTableData = value.data;
+          }
+        }
+      );
+    }
+  }
+  public getIncomeTypesSinglePaging(e, item, storeList): void {
+    const shopType = {
+      '小吃': {
+        'sequence': 1,
+        'entryCode': '1'
+      },
+      '中式快餐': {
+        'sequence': 2,
+        'entryCode': '2',
+      },
+      '西式快餐': {
+        'sequence': 3,
+        'entryCode': '3',
+      },
+      '商超': {
+        'sequence': 4,
+        'entryCode': '4',
+      },
+      '住宿': {
+        'sequence': 5,
+        'entryCode': '5',
+      },
+      '汽修': {
+        'sequence': 6,
+        'entryCode': '6',
+      },
+    };
+    const shopList = storeList.filter((prop, index) => {
       return prop.entryCode === shopType[item].entryCode;
     });
     if (shopList) {
-      this.serareaService.searchIncomeTypesItem({entryCode: shopType[this.IncomeOptionType].entryCode, page: 1, nums: 10, shopList: shopList[0].storeList}).subscribe(
+      this.serareaService.searchIncomeTypesItem(
+        {entryCode: shopType[item].entryCode, page: e, nums: 10, shopList: shopList[0].storeList}).subscribe(
         (value) => {
           if (value.status === '200') {
-            console.log(value.data);
             this.IncomeTableData = value.data;
           }
         }

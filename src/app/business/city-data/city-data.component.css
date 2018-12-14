@@ -179,6 +179,21 @@
 .right .income-pie-title.title{
   border: none;
 }
+/**************************公共样式***********************/
+/*百度地图*/
+.city-statistics .ui-scrollpanel-wrapper {
+  background: transparent;
+  border: none; /*控制滚动轴背景色*/
+}
+.city-statistics .ui-scrollpanel-bar {
+  background-color: transparent;
+  /*background: none;*/
+  opacity: 1;
+  transition: background-color .3s;
+}
+.city-statistics .ui-scrollpanel-bar:hover {
+  background-color: #135ba1;
+}
 /****************************弹窗部分****************************/
 /*弹窗基本样式控制*/
 .bg-box{
