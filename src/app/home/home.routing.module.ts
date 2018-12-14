@@ -10,7 +10,6 @@ const routes: Routes = [
       {path: 'finance', loadChildren: 'app/business/finance-data/finance-data.module#FinanceDataModule'},
       {path: 'city', loadChildren: 'app/business/city-data/city-data.module#CityDataModule'},
       {path: 'serzone', loadChildren: 'app/business/service-data/service-data.module#ServiceDataModule'},
-      {path: 'videom', loadChildren: 'app/business/video-manage/video-manage.module#VideoManageModule'},
       {path: 'videow', loadChildren: 'app/business/video-window/video-window.module#VideoWindowModule'},
       {path: 'personal', loadChildren: 'app/business/personal/personal.module#PersonalModule'},
     ]

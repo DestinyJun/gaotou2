@@ -1,16 +1,17 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {VideoWindowService} from '../../common/services/video-window.service';
 import {LocalStorageService} from '../../common/services/local-storage.service';
 import {TreeNode} from '../../common/model/video-window.model';
+import {HttpClient} from '@angular/common/http';
 @Component({
   selector: 'app-video-window',
   templateUrl: './video-window.component.html',
   styleUrls: ['./video-window.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class VideoWindowComponent implements OnInit {
+export class VideoWindowComponent implements OnInit, OnDestroy {
   // 实时客流量
-  public persons = [];
+  public videoRecord = ['', '', '', ''];
   public showNumber: number; // 监视窗的位置
   public videoInfo: any;
   public videoUrl1: string;
@@ -30,7 +31,8 @@ export class VideoWindowComponent implements OnInit {
 
   constructor(
     private videoWindowService: VideoWindowService,
-    private localService: LocalStorageService
+    private localService: LocalStorageService,
+    private http: HttpClient
   ) {
   }
 
@@ -53,6 +55,9 @@ export class VideoWindowComponent implements OnInit {
           }
         }
       });
+  }
+  ngOnDestroy(): void {
+    // console.log(this.videoRecord);
   }
   // 客流
   public getPerson(): void {
@@ -84,7 +89,6 @@ export class VideoWindowComponent implements OnInit {
   }
   // 选择树结构
   public nodeSelect(event): void {
-    console.log(event);
     if (event.node.label === '一号监视窗口') {
       this.showNumber = 1;
     } else if (event.node.label === '二号监视窗口') {
@@ -105,22 +109,17 @@ export class VideoWindowComponent implements OnInit {
     } else if (event.node.level === 4) {
       this.videoWindowService.searchVideosList(event.node.id).subscribe(
         (value) => {
-          console.log(value);
-          console.log(event.node);
           if (value.status === '200') {
             event.node.children = this.initializeSourceDesTree(value.data, this.showNumber);
           }
         }
       );
     } else if (event.node.level === 6) {
-      console.log(event.node);
       this.videoInfo = event.node;
       this.videoLocation(event.node.outUrl, event.node.label, event.node.showLocation);
     }
   }
-  public nodeUnselect(event) {
-    // console.log('2');
-  }
+  public nodeUnselect(event) {}
   // 视频播放
   public videoLocation(url: string, name: string, location: number): void {
    if (location === 1) {
@@ -128,49 +127,52 @@ export class VideoWindowComponent implements OnInit {
      this.videoUrl1 = url;
      document.querySelector('#window1').innerHTML = this.addHtmlVideo1('window1');
      setTimeout(() => {
+       this.videoRecord[0] = url;
        const vlc = window.document[`vlcwindow1`];
        const mrl = url;
-       console.log(mrl);
+       console.log(vlc);
        const options = ['rtsp-tcp=true', ' network-caching=500'];
        const itemId = vlc['playlist'].add(mrl, 'asd', options);
        vlc['playlist'].playItem(itemId);
-     }, 30);
+     }, 500);
    } else if (location === 2) {
+     this.videoRecord[1] = url;
      this.videoLocation2 = name;
      document.querySelector('#window2').innerHTML = this.addHtmlVideo1('window2');
      setTimeout(() => {
        const vlc = window.document[`vlcwindow2`];
        const mrl = url;
-       console.log(mrl);
        const options = ['rtsp-tcp=true', ' network-caching=500'];
        const itemId = vlc['playlist'].add(mrl, 'asd', options);
        vlc['playlist'].playItem(itemId);
-     }, 30);
+     }, 500);
      this.videoUrl2 = url;
    } else if (location === 3) {
+     this.videoRecord[2] = url;
      this.videoLocation3 = name;
      this.videoUrl3 = url;
      document.querySelector('#window3').innerHTML = this.addHtmlVideo1('window3');
+     // 开始播放
      setTimeout(() => {
        const vlc = window.document[`vlcwindow3`];
        const mrl = url;
-       console.log(mrl);
        const options = ['rtsp-tcp=true', ' network-caching=500'];
        const itemId = vlc['playlist'].add(mrl, 'asd', options);
        vlc['playlist'].playItem(itemId);
-     }, 30);
+     }, 500);
    } else if (location === 4) {
+     this.videoRecord[3] = url;
      this.videoLocation4 = name;
      this.videoUrl4 = url;
      document.querySelector('#window4').innerHTML = this.addHtmlVideo1('window4');
+     // 开始播放
      setTimeout(() => {
        const vlc = window.document[`vlcwindow4`];
        const mrl = url;
-       console.log(mrl);
        const options = ['rtsp-tcp=true', ' network-caching=500'];
        const itemId = vlc['playlist'].add(mrl, 'asd', options);
        vlc['playlist'].playItem(itemId);
-     }, 30);
+     }, 500);
    }
  }
   public addHtmlVideo1(flag: string): string {

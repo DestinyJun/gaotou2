@@ -492,8 +492,8 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
         const options = ['rtsp-tcp=true', ' network-caching=500'];
         const itemId = vlc['playlist'].add(mrl, 'asd', options);
         vlc['playlist'].playItem(itemId);
-      }, 30);
-    }, 50);
+      }, 100);
+    }, 100);
   }
   public shopExportClick() {
     const startTime = this.datePipe.transform(this.shopStartTime, 'yyyyMMdd');
@@ -549,8 +549,8 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
           const options = ['rtsp-tcp=true', ' network-caching=500'];
           const itemId = vlc['playlist'].add(mrl, 'asd', options);
           vlc['playlist'].playItem(itemId);
-        }, 30);
-      }, 50);
+        }, 100);
+      }, 100);
     }
   }
 
@@ -621,8 +621,8 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
         const options = ['rtsp-tcp=true', ' network-caching=500'];
         const itemId = vlc['playlist'].add(mrl, 'asd', options);
         vlc['playlist'].playItem(itemId);
-      }, 30);
-    }, 50);
+      }, 100);
+    }, 100);
   }
   public closePublicVideo() {
     document.body.className = '';
