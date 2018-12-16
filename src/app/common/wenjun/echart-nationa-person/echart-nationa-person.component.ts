@@ -25,65 +25,39 @@ export class EchartNationaPersonComponent implements OnInit, OnChanges {
     const maxSize4Pin = 100, minSize4Pin = 20;
     const mapName = 'china';
     const data = [
-      {name: '北京', value: 177},
-      {name: '天津', value: 42},
-      {name: '河北', value: 102},
-      {name: '山西', value: 81},
-      {name: '内蒙古', value: 47},
-      {name: '辽宁', value: 67},
-      {name: '吉林', value: 82},
-      {name: '黑龙江', value: 66},
-      {name: '上海', value: 24},
-      {name: '江苏', value: 92},
-      {name: '浙江', value: 114},
-      {name: '安徽', value: 109},
-      {name: '福建', value: 116},
-      {name: '江西', value: 91},
-      {name: '山东', value: 119},
-      {name: '河南', value: 137},
-      {name: '湖北', value: 116},
-      {name: '湖南', value: 114},
-      {name: '重庆', value: 91},
-      {name: '四川', value: 125},
-      {name: '贵州', value: 62},
-      {name: '云南', value: 83},
-      {name: '西藏', value: 9},
-      {name: '陕西', value: 80},
-      {name: '甘肃', value: 56},
-      {name: '青海', value: 10},
-      {name: '宁夏', value: 18},
-      {name: '新疆', value: 67},
-      {name: '广东', value: 123},
-      {name: '广西', value: 59},
-      {name: '海南', value: 14},
+      {name: '北京', value: 12},
+      {name: '天津', value: 12},
+      {name: '河北', value: 12},
+      {name: '山西', value: 12},
+      {name: '内蒙古', value: 12},
+      {name: '辽宁', value: 12},
+      {name: '吉林', value: 12},
+      {name: '黑龙江', value: 12},
+      {name: '上海', value: 12},
+      {name: '江苏', value: 12},
+      {name: '浙江', value: 12},
+      {name: '安徽', value: 12},
+      {name: '福建', value: 12},
+      {name: '江西', value: 12},
+      {name: '山东', value: 12},
+      {name: '河南', value: 12},
+      {name: '湖北', value: 12},
+      {name: '湖南', value: 12},
+      {name: '重庆', value: 12},
+      {name: '四川', value: 12},
+      {name: '贵州', value: 12},
+      {name: '云南', value: 12},
+      {name: '西藏', value: 12},
+      {name: '陕西', value: 12},
+      {name: '甘肃', value: 12},
+      {name: '青海', value: 12},
+      {name: '宁夏', value: 12},
+      {name: '新疆', value: 12},
+      {name: '广东', value: 12},
+      {name: '广西', value: 12},
+      {name: '海南', value: 12},
     ];
     const geoCoordMap = {};
-    const toolTipData = [
-      {name: '黑龙江', value: [{name: '文科', value: 35}, {name: '理科', value: 31}]},
-      {name: '兴义', value: [{name: '文科', value: 12}, {name: '理科', value: 12}]},
-      {name: '江苏', value: [{name: '文科', value: 47}, {name: '理科', value: 45}]},
-      {name: '浙江', value: [{name: '文科', value: 57}, {name: '理科', value: 57}]},
-      {name: '安徽', value: [{name: '文科', value: 57}, {name: '理科', value: 52}]},
-      {name: '福建', value: [{name: '文科', value: 59}, {name: '理科', value: 57}]},
-      {name: '江西', value: [{name: '文科', value: 49}, {name: '理科', value: 42}]},
-      {name: '山东', value: [{name: '文科', value: 67}, {name: '理科', value: 52}]},
-      {name: '河南', value: [{name: '文科', value: 69}, {name: '理科', value: 68}]},
-      {name: '湖北', value: [{name: '文科', value: 60}, {name: '理科', value: 56}]},
-      {name: '湖南', value: [{name: '文科', value: 62}, {name: '理科', value: 52}]},
-      {name: '重庆', value: [{name: '文科', value: 47}, {name: '理科', value: 44}]},
-      {name: '四川', value: [{name: '文科', value: 65}, {name: '理科', value: 60}]},
-      {name: '贵州', value: [{name: '文科', value: 32}, {name: '理科', value: 30}]},
-      {name: '云南', value: [{name: '文科', value: 42}, {name: '理科', value: 41}]},
-      {name: '西藏', value: [{name: '文科', value: 5}, {name: '理科', value: 4}]},
-      {name: '陕西', value: [{name: '文科', value: 38}, {name: '理科', value: 42}]},
-      {name: '甘肃', value: [{name: '文科', value: 28}, {name: '理科', value: 28}]},
-      {name: '青海', value: [{name: '文科', value: 5}, {name: '理科', value: 5}]},
-      {name: '宁夏', value: [{name: '文科', value: 10}, {name: '理科', value: 8}]},
-      {name: '新疆', value: [{name: '文科', value: 36}, {name: '理科', value: 31}]},
-      {name: '广东', value: [{name: '文科', value: 63}, {name: '理科', value: 60}]},
-      {name: '广西', value: [{name: '文科', value: 29}, {name: '理科', value: 30}]},
-      {name: '海南', value: [{name: '文科', value: 8}, {name: '理科', value: 6}]},
-    ];
     const mapFeatures = this.es.getMap(mapName).geoJson.features;
     mapFeatures.forEach(function(v) {
       // 地区名称
@@ -111,23 +85,17 @@ export class EchartNationaPersonComponent implements OnInit, OnChanges {
         formatter: function (params) {
           if (typeof(params.value)[2] === 'undefined') {
             let toolTiphtml = '';
-            for (let i = 0; i < toolTipData.length; i++) {
-              if (params.name === toolTipData[i].name) {
-                toolTiphtml += toolTipData[i].name + ':<br>';
-                for (let j = 0; j < toolTipData[i].value.length; j++) {
-                  toolTiphtml += toolTipData[i].value[j].name + ':' + toolTipData[i].value[j].value + '<br>';
-                }
+            for (let i = 0; i < data.length; i++) {
+              if (params.name === data[i].name) {
+                toolTiphtml += `${data[i].name}：${data[i].value}人/次`;
               }
             }
             return toolTiphtml;
           } else {
             let toolTiphtml = '';
-            for (let i = 0; i < toolTipData.length; i++) {
-              if (params.name === toolTipData[i].name) {
-                toolTiphtml += toolTipData[i].name + ':<br>';
-                for (let j = 0; j < toolTipData[i].value.length; j++) {
-                  toolTiphtml += toolTipData[i].value[j].name + ':' + toolTipData[i].value[j].value + '<br>';
-                }
+            for (let i = 0; i < data.length; i++) {
+              if (params.name === data[i].name) {
+                toolTiphtml += `${data[i].name}：${data[i].value}人/次`;
               }
             }
             return toolTiphtml;
@@ -187,11 +155,13 @@ export class EchartNationaPersonComponent implements OnInit, OnChanges {
           coordinateSystem: 'geo',
           data: convertData(data),
           symbolSize: function (val) {
-            return val[2] / 10;
+            return val[2] / 2;
           },
           label: {
             normal: {
-              formatter: '{b}',
+              formatter: function (params) {
+                return params.name;
+              },
               position: 'right',
               show: true
             },
@@ -235,7 +205,7 @@ export class EchartNationaPersonComponent implements OnInit, OnChanges {
           animation: false,
           data: data
         },
-       /* {
+        {
           name: '点',
           type: 'scatter',
           coordinateSystem: 'geo',
@@ -248,6 +218,9 @@ export class EchartNationaPersonComponent implements OnInit, OnChanges {
           },
           label: {
             normal: {
+              formatter: function (params) {
+                return params.value[2];
+              },
               show: true,
               textStyle: {
                 color: '#fff',
@@ -262,7 +235,7 @@ export class EchartNationaPersonComponent implements OnInit, OnChanges {
           },
           zlevel: 6,
           data: convertData(data),
-        },*/
+        },
       ]
     };
   }

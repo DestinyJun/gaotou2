@@ -39,17 +39,6 @@ export class EchartProvincePersonComponent implements OnInit, OnChanges {
       {name: '黔南布依族苗族自治州', value: 66},
     ];
     const geoCoordMap = {};
-    const toolTipData = [
-      {name: '贵阳市', value: [{name: '文科', value: 95}, {name: '理科', value: 82}]},
-      {name: '六盘水市', value: [{name: '文科', value: 22}, {name: '理科', value: 20}]},
-      {name: '遵义市', value: [{name: '文科', value: 60}, {name: '理科', value: 42}]},
-      {name: '安顺市', value: [{name: '文科', value: 40}, {name: '理科', value: 41}]},
-      {name: '毕节市', value: [{name: '文科', value: 23}, {name: '理科', value: 24}]},
-      {name: '铜仁市', value: [{name: '文科', value: 39}, {name: '理科', value: 28}]},
-      {name: '黔西南布依族苗族自治州', value: [{name: '文科', value: 41}, {name: '理科', value: 41}]},
-      {name: '黔东南苗族侗族自治州', value: [{name: '文科', value: 35}, {name: '理科', value: 31}]},
-      {name: '黔南布依族苗族自治州', value: [{name: '文科', value: 12}, {name: '理科', value: 12}]},
-    ];
     const mapFeatures = this.es.getMap(mapName).geoJson.features;
     mapFeatures.forEach(function(v) {
       // 地区名称
@@ -77,23 +66,17 @@ export class EchartProvincePersonComponent implements OnInit, OnChanges {
         formatter: function (params) {
           if (typeof(params.value)[2] === 'undefined') {
             let toolTiphtml = '';
-            for (let i = 0; i < toolTipData.length; i++) {
-              if (params.name === toolTipData[i].name) {
-                toolTiphtml += toolTipData[i].name + ':<br>';
-                for (let j = 0; j < toolTipData[i].value.length; j++) {
-                  toolTiphtml += toolTipData[i].value[j].name + ':' + toolTipData[i].value[j].value + '<br>';
-                }
+            for (let i = 0; i < data.length; i++) {
+              if (params.name === data[i].name) {
+                toolTiphtml += `${data[i].name}：${data[i].value}人/次`;
               }
             }
             return toolTiphtml;
           } else {
             let toolTiphtml = '';
-            for (let i = 0; i < toolTipData.length; i++) {
-              if (params.name === toolTipData[i].name) {
-                toolTiphtml += toolTipData[i].name + ':<br>';
-                for (let j = 0; j < toolTipData[i].value.length; j++) {
-                  toolTiphtml += toolTipData[i].value[j].name + ':' + toolTipData[i].value[j].value + '<br>';
-                }
+            for (let i = 0; i < data.length; i++) {
+              if (params.name === data[i].name) {
+                toolTiphtml += `${data[i].name}：${data[i].value}人/次`;
               }
             }
             return toolTiphtml;
@@ -157,7 +140,9 @@ export class EchartProvincePersonComponent implements OnInit, OnChanges {
           },
           label: {
             normal: {
-              formatter: '{b}',
+              formatter: function (params) {
+                return params.name;
+              },
               position: 'right',
               show: true
             },
@@ -214,6 +199,9 @@ export class EchartProvincePersonComponent implements OnInit, OnChanges {
           },
           label: {
             normal: {
+              formatter: function (params) {
+                return params.value[2];
+              },
               show: true,
               textStyle: {
                 color: '#fff',
