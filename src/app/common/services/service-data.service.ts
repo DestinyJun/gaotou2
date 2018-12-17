@@ -45,8 +45,17 @@ export class ServiceDataService {
     return this.http.get(`${this.globalService.urlc}/realTime/revenue/serviceArea/getRevenueTypePie/${params.id}`);
   }
   // 实时客流
-  public searchPersonTotal(params): Observable<any> {
+  /*public searchPersonTotal(params): Observable<any> {
     return this.http.get(`${this.globalService.urlc}/realTime/passenger/serviceArea/getPassengerDistribute/${params.id}`);
+  }*/
+  public searchPersonTotal(params): Observable<any> {
+    return this.http.get(`${this.globalService.urlt}/realTime/passenger/serviceArea/total/${params.id}`);
+  }
+  public searchPersonProvince(params): Observable<any> {
+    return this.http.get(`${this.globalService.urlt}/realTime/passenger/serviceArea/nationwideDistributeMap/${params.id}`);
+  }
+  public searchPersonCity(params): Observable<any> {
+    return this.http.get(`${this.globalService.urlt}/realTime/passenger/serviceArea/gzDistributeMap/${params.id}`);
   }
   // 修改服务区信息
   public modifySerAraItem(params): Observable<any> {

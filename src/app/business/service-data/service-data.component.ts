@@ -200,14 +200,12 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   }
   // 客流
   public getPerson(): void {
+    let total: any;
+    let province: any;
+    let city: any;
     this.serareaService.searchPersonTotal({id: 1}).subscribe(
       (val) => {
-        if (JSON.stringify(val.data) !== '{}') {
-          this.localService.persons.next({
-            total: val.data.total.toString().split(''),
-            // totalDistribute: val.data.passengerDistribute
-          });
-        }
+          console.log(val);
       }
     );
   }
