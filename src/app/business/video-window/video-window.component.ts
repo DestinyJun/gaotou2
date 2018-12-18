@@ -25,7 +25,10 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
   /************** 区域树************/
   public areas = [];
   public trees: TreeNode[];
-  public areaTrees: TreeNode[];
+  public areaTree1: TreeNode[];
+  public areaTree2: TreeNode[];
+  public areaTree3: TreeNode[];
+  public areaTree4: TreeNode[];
   public areaTree: TreeNode;
   public loading: boolean;
 
@@ -40,7 +43,7 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
     // 发射实时客流
     this.getPerson();
     // 发射业太数据名称
-    this.localService.eventBus.next({title: '全国高速视频监控大数据', flagState: 'window', flagName: '全国'});
+    this.localService.eventBus.next({title: '全国高速视频监控大数据', flagState: false, flagName: '全国'});
     this.getUploadDate();
     this.localService.videoShow.subscribe(
       (value) => {
@@ -73,14 +76,17 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
       (val) => {
         if (val.status === '200') {
           this.areas = val.data;
-          this.areaTrees = this.initializeTree(val.data);
+          this.areaTree1 = this.initializeTree(val.data);
+          this.areaTree2 = this.initializeTree(val.data);
+          this.areaTree3 = this.initializeTree(val.data);
+          this.areaTree4 = this.initializeTree(val.data);
           this.trees = [{
             label: '全国高速视频监控',
             children: [
-              {label: '一号监视窗口', children: this.areaTrees, showNumber: 1},
-              {label: '二号监视窗口', children: this.areaTrees, showNumber: 2},
-              {label: '三号监视窗口', children: this.areaTrees, showNumber: 3},
-              {label: '四号监视窗口', children: this.areaTrees, showNumber: 4},
+              {label: '一号监视窗口', children: this.areaTree1, showNumber: 1},
+              {label: '二号监视窗口', children: this.areaTree2, showNumber: 2},
+              {label: '三号监视窗口', children: this.areaTree3, showNumber: 3},
+              {label: '四号监视窗口', children: this.areaTree4, showNumber: 4},
             ]
           }];
           this.loading = false;
@@ -89,7 +95,7 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
     );
   }
   // 选择树结构
-  public nodeSelect(event): void {
+  public nodeExpand (event): void {
     if (event.node.label === '一号监视窗口') {
       this.showNumber = 1;
     } else if (event.node.label === '二号监视窗口') {
@@ -99,28 +105,35 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
     } else if (event.node.label === '四号监视窗口') {
       this.showNumber = 4;
     }
-    if (event.node.level === 2) {
-      this.videoWindowService.searchServiceAreaList(event.node.id).subscribe(
-      (value) => {
-        if (value.status === '200') {
-          event.node.children = this.initializeServiceAreaTree(value.data);
-        }
-      }
-    );
-    } else if (event.node.level === 4) {
-      this.videoWindowService.searchVideosList(event.node.id).subscribe(
-        (value) => {
-          if (value.status === '200') {
-            event.node.children = this.initializeSourceDesTree(value.data, this.showNumber);
+    if (event.node.children[0].level === 2) {
+      for (let i = 0; i < event.node.children.length; i++) {
+        this.videoWindowService.searchServiceAreaList(event.node.children[i].id).subscribe(
+          (value) => {
+            if (value.status === '200') {
+              event.node.children[i].children = this.initializeServiceAreaTree(value.data);
+            }
           }
-        }
-      );
-    } else if (event.node.level === 6) {
+        );
+      }
+    } else if (event.node.children[0].level === 4) {
+      for (let i = 0; i < event.node.children.length; i++) {
+        console.log(event.node.children[i].id);
+        this.videoWindowService.searchVideosList(event.node.children[i].id).subscribe(
+          (value) => {
+            if (value.status === '200') {
+              event.node.children[i].children = this.initializeSourceDesTree(value.data, this.showNumber);
+            }
+          }
+        );
+      }
+    }
+  }
+  public nodeSelect(event): void {
+    if (event.node.level === 6) {
       this.videoInfo = event.node;
       this.videoLocation(event.node.outUrl, event.node.label, event.node.showLocation);
     }
   }
-  public nodeUnselect(event) {}
   // 视频播放
   public videoLocation(url: string, name: string, location: number): void {
    if (location === 1) {
@@ -237,13 +250,13 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
   }
   // 上下行树数据格式化
   public initializeSourceDesTree(data, locationNumber): any {
-    console.log(data);
-    console.log(locationNumber);
-  /*  data.map((item, i) => {
+    // console.log(data);
+    // console.log(locationNumber);
+    data.map((item, i) => {
       item.cameraList = item.cameraList.filter((prop, j) => {
         return prop.showLocation === locationNumber;
       });
-    });*/
+    });
     const oneChild = [];
     for (let i = 0; i < data.length; i++) {
       const childnode =  new TreeNode();

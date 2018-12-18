@@ -29,11 +29,10 @@ export class PersonalComponent implements OnInit {
 
   ngOnInit() {
     this.userInfo = JSON.parse(this.localService.userSessionStorage.userDTO);
-    console.log(this.userInfo);
     // 发射实时客流
     this.getPerson();
     // 发射业太数据名称
-    this.localService.eventBus.next({title: '个人信息', flagState: 'personal', flagName: '全国'});
+    this.localService.eventBus.next({title: '个人信息', flagState: false, flagName: '全国'});
     // 时间初始化
     this.esDate = {
       firstDayOfWeek: 0,

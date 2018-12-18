@@ -9,7 +9,7 @@ import {GlobalService} from '../../common/services/global.service';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-  public flagState: string;  // 路由状态及名称
+  public flagState: any;  // 路由状态及名称
   public flagName: string;
   public dataTime = new Date();  // 时间
   public headerTitle: string;  // 顶部标题
