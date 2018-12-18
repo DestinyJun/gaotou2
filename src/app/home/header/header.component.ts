@@ -36,11 +36,6 @@ export class HeaderComponent implements OnInit {
         this.serviceNameArray = val;
       }
     );
-    this.http.get(`${this.globalService.urlc}/realTime/passenger/province/getPassengerDistributeMap/2`).subscribe(
-      (val) => {
-        // console.log(val);
-      }
-    );
     // 时间
     setInterval(() => {
       this.dataTime = new Date();

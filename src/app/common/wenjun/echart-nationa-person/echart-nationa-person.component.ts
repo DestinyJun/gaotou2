@@ -108,7 +108,7 @@ export class EchartNationaPersonComponent implements OnInit, OnChanges {
       visualMap: {
         show: true,
         min: 0,
-        max: 1000,
+        max: 5000,
         left: 'left',
         top: 'bottom',
         text: ['高', '低'], // 文本，默认为数值文本
@@ -164,7 +164,7 @@ export class EchartNationaPersonComponent implements OnInit, OnChanges {
             if (val[2] === 0) {
               return 1;
             }
-            return val[2] / 10;
+            return 10;
           },
           label: {
             normal: {
@@ -223,10 +223,11 @@ export class EchartNationaPersonComponent implements OnInit, OnChanges {
             if (val[2] === 0) {
               return 0;
             }
-            const a = (maxSize4Pin - minSize4Pin) / (max - min);
+            // const a = (maxSize4Pin - minSize4Pin) / (max - min);
             // const b = minSize4Pin - a * min;
-            const b = maxSize4Pin - a * max;
-            return a * val[2] + b;
+            // const b = maxSize4Pin - a * max;
+            // return a * val[2] + b;
+            return 40;
           },
           label: {
             normal: {
