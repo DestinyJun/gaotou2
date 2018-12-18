@@ -17,46 +17,49 @@ export class EchartNationaPersonComponent implements OnInit, OnChanges {
 
   ngOnInit() {}
   ngOnChanges(changes: SimpleChanges): void {
-    this.buildEchart();
+    if (!(JSON.stringify(this.option) === '[]')) {
+      this.buildEchart();
+    }
   }
   public buildEchart (): void {
+    /*const data = [
+      {name: '北京', value: 5},
+      {name: '天津', value: 15},
+      {name: '河北', value: 40},
+      {name: '山西', value: 117},
+      {name: '内蒙古', value: 0},
+      {name: '辽宁', value: 0},
+      {name: '吉林', value: 0},
+      {name: '黑龙江', value: 0},
+      {name: '上海', value: 0},
+      {name: '江苏', value: 0},
+      {name: '浙江', value: 0},
+      {name: '安徽', value: 0},
+      {name: '福建', value: 0},
+      {name: '江西', value: 0},
+      {name: '山东', value: 0},
+      {name: '河南', value: 0},
+      {name: '湖北', value: 0},
+      {name: '湖南', value: 0},
+      {name: '重庆', value: 0},
+      {name: '四川', value: 0},
+      {name: '贵州', value: 0},
+      {name: '云南', value: 0},
+      {name: '西藏', value: 0},
+      {name: '陕西', value: 0},
+      {name: '甘肃', value: 0},
+      {name: '青海', value: 0},
+      {name: '宁夏', value: 0},
+      {name: '新疆', value: 0},
+      {name: '广东', value: 0},
+      {name: '广西', value: 0},
+      {name: '海南', value: 0},
+    ];*/
+   const data = this.option;
     // 配置
     const max = 480, min = 9;
     const maxSize4Pin = 100, minSize4Pin = 20;
     const mapName = 'china';
-    const data = [
-      {name: '北京', value: 12},
-      {name: '天津', value: 12},
-      {name: '河北', value: 12},
-      {name: '山西', value: 12},
-      {name: '内蒙古', value: 12},
-      {name: '辽宁', value: 12},
-      {name: '吉林', value: 12},
-      {name: '黑龙江', value: 12},
-      {name: '上海', value: 12},
-      {name: '江苏', value: 12},
-      {name: '浙江', value: 12},
-      {name: '安徽', value: 12},
-      {name: '福建', value: 12},
-      {name: '江西', value: 12},
-      {name: '山东', value: 12},
-      {name: '河南', value: 12},
-      {name: '湖北', value: 12},
-      {name: '湖南', value: 12},
-      {name: '重庆', value: 12},
-      {name: '四川', value: 12},
-      {name: '贵州', value: 12},
-      {name: '云南', value: 12},
-      {name: '西藏', value: 12},
-      {name: '陕西', value: 12},
-      {name: '甘肃', value: 12},
-      {name: '青海', value: 12},
-      {name: '宁夏', value: 12},
-      {name: '新疆', value: 12},
-      {name: '广东', value: 12},
-      {name: '广西', value: 12},
-      {name: '海南', value: 12},
-    ];
     const geoCoordMap = {};
     const mapFeatures = this.es.getMap(mapName).geoJson.features;
     mapFeatures.forEach(function(v) {
@@ -105,7 +108,7 @@ export class EchartNationaPersonComponent implements OnInit, OnChanges {
       visualMap: {
         show: true,
         min: 0,
-        max: 200,
+        max: 1000,
         left: 'left',
         top: 'bottom',
         text: ['高', '低'], // 文本，默认为数值文本
@@ -124,6 +127,9 @@ export class EchartNationaPersonComponent implements OnInit, OnChanges {
           // color: ['#00467F', '#A5CC82'] // 蓝绿
           // color: ['#00467F', '#A5CC82'] // 蓝绿
 
+        },
+        textStyle: {
+          color: 'white'
         }
       },
       geo: {
@@ -155,7 +161,10 @@ export class EchartNationaPersonComponent implements OnInit, OnChanges {
           coordinateSystem: 'geo',
           data: convertData(data),
           symbolSize: function (val) {
-            return val[2] / 2;
+            if (val[2] === 0) {
+              return 1;
+            }
+            return val[2] / 10;
           },
           label: {
             normal: {
@@ -211,6 +220,9 @@ export class EchartNationaPersonComponent implements OnInit, OnChanges {
           coordinateSystem: 'geo',
           symbol: 'pin', // 气 泡
           symbolSize: function (val) {
+            if (val[2] === 0) {
+              return 0;
+            }
             const a = (maxSize4Pin - minSize4Pin) / (max - min);
             // const b = minSize4Pin - a * min;
             const b = maxSize4Pin - a * max;

@@ -151,15 +151,38 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
   }
   // 客流
   public getPerson(): void {
+    let total: any;
+    let province: any;
+    let city: any;
     this.financeDataService.searchPersonTotal({id: 2}).subscribe(
-      (val) => {
-        if (val.status === '200') {
-          if (val.data === 0) {
-            this.localService.persons.next({total: []});
+      (totalVal) => {
+        if (totalVal.status === '200') {
+          total = totalVal.data;
+          if (!(total === 0)) {
+            this.financeDataService.searchPersonProvince({id: 2}).subscribe(
+              (provinceVal) => {
+                if (provinceVal.status === '200') {
+                  province = provinceVal.data;
+                  this.financeDataService.searchPersonCity({id: 2}).subscribe(
+                    (cityVal) => {
+                      if (cityVal.status === '200') {
+                        city = cityVal.data;
+                        this.localService.persons.next({
+                          total: total.toString().split(''),
+                          province: province,
+                          city: city
+                        });
+                      }
+                    }
+                  );
+                }
+              }
+            );
           } else {
             this.localService.persons.next({
-              total: val.data.toString().split(''),
-              totalDistribute: []
+              total: [],
+              province: [],
+              city: []
             });
           }
         }

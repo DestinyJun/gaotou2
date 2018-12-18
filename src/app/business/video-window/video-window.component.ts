@@ -63,7 +63,8 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
   public getPerson(): void {
     this.localService.persons.next({
       total: [],
-      totalDistribute: []
+      province: [],
+      city: []
     });
   }
   public getUploadDate() {

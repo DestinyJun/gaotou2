@@ -56,7 +56,8 @@ export class WholeDataComponent implements OnInit, OnChanges {
   public getPerson(): void {
     this.localService.persons.next({
       total: [],
-      totalDistribute: []
+      province: [],
+      city: []
     });
   }
   /**********************************图表配置*****************************/

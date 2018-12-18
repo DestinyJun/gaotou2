@@ -24,8 +24,8 @@
       <div class="header-admin-flow text-center" (click)="personClick()">
         <span>{{this.flagName}}今日客流量：</span>
         <div class="text-center">
-          <span style="font-size: 0.875rem">{{persons.length === 0?'当前暂无客流数据': ''}}</span>
-          <span *ngFor="let item of persons">{{item}}</span>
+          <span style="font-size: 0.875rem">{{persons?.total.length === 0?'当前暂无客流数据': ''}}</span>
+          <span *ngFor="let item of persons?.total">{{item}}</span>
         </div>
         <span>人/次</span>
       </div>
@@ -107,9 +107,9 @@
           <div class="vehicle-amount citys">
             <p>
               <b>总人数：</b>
-              <b style="font-size:1rem">{{persons.length === 0? '当前暂无客流数据': ''}}</b>
-              <span *ngFor="let item of persons">{{item}}</span>
-              <small>人/次</small>
+              <b style="font-size:1rem">{{persons?.total.length === 0? '当前暂无客流数据': ''}}</b>
+              <span *ngFor="let item of persons?.total">{{item}}</span>
+              <small *ngIf="!(persons?.total.length === 0)">人/次</small>
             </p>
           </div>
         </div>
@@ -117,10 +117,10 @@
       <!--人数分布-->
       <div class="row">
         <div class="col-ld-6 col-md-6 text-center">
-          <app-echart-nationa-person [height]="'68vh'" [width]="'100%'" *ngIf="!(persons.length === 0)"></app-echart-nationa-person>
+          <app-echart-nationa-person *ngIf="!(persons?.total.length === 0)" [option]="persons?.province" [height]="'68vh'" [width]="'100%'"></app-echart-nationa-person>
         </div>
         <div class="col-ld-6 col-md-6 text-center">
-          <app-echart-province-person [height]="'68vh'" [width]="'100%'" *ngIf="!(persons.length === 0)"></app-echart-province-person>
+          <app-echart-province-person *ngIf="!(persons?.total.length === 0)" [option]="persons?.city" [height]="'68vh'" [width]="'100%'"></app-echart-province-person>
         </div>
       </div>
     </div>

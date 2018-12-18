@@ -50,7 +50,8 @@ export class PersonalComponent implements OnInit {
   public getPerson(): void {
     this.localService.persons.next({
       total: [],
-      totalDistribute: []
+      province: [],
+      city: []
     });
   }
   // 选择日期

@@ -13,7 +13,7 @@ export class HeaderComponent implements OnInit {
   public flagName: string;
   public dataTime = new Date();  // 时间
   public headerTitle: string;  // 顶部标题
-  public persons = [];  // 客流量
+  public persons: any;  // 客流量
   public personsTop: any;  // 客流量
   public personsBottom: any;  // 客流量
   public personNum = [];
@@ -53,10 +53,11 @@ export class HeaderComponent implements OnInit {
     });
     // 客流
     this.localService.persons.subscribe((value) => {
-      this.persons = value.total;
-      this.persons.map((val, index) => {
+      this.persons = value;
+      // console.log(this.persons.total);
+     /* this.persons.map((val, index) => {
         this.personNum.push({number: val});
-      });
+      });*/
      /* if (value.totalDistribute.length !== 0) {
         value.totalDistribute.map((item, i) => {
           if (item.flag === '2') {

@@ -57,7 +57,13 @@ export class CityDataService {
   }
   // 实时客流
   public searchPersonTotal(params): Observable<any> {
-    return this.http.get(`${this.globalService.urlc}/realTime/passenger/city/total/${params.id}`);
+    return this.http.get(`${this.globalService.urlt}/realTime/passenger/city/total/${params.id}`);
+  }
+  public searchPersonProvince(params): Observable<any> {
+    return this.http.get(`${this.globalService.urlt}/realTime/passenger/city/nationwideDistributeMap/${params.id}`);
+  }
+  public searchPersonCity(params): Observable<any> {
+    return this.http.get(`${this.globalService.urlt}/realTime/passenger/city/gzDistributeMap/${params.id}`);
   }
 // 事件类型
   public searchEventCategory(): Observable<any> {

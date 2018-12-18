@@ -1,1 +1,4 @@
-<div [ngStyle]="{'height': height, 'width': width}" echarts [options]="optionsPerson"></div>
+<div [ngStyle]="{'height': height, 'width': width}" echarts [options]="optionsPerson" *ngIf="!echartShow"></div>
+<div *ngIf="echartShow">
+  <h3>省级分布数据暂无</h3>
+</div>

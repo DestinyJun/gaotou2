@@ -11,33 +11,37 @@ export class EchartProvincePersonComponent implements OnInit, OnChanges {
   @Input() public width = 'auto';
   @Input() public height: any;
   public optionsPerson: any;
-
+  public echartShow = false;
   constructor(
     private es: NgxEchartsService,
   ) { }
 
-  ngOnInit() {
-    this.buildEchart();
-  }
+  ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges): void {
+    if (!(JSON.stringify(this.option) === '[]')) {
+      this.buildEchart();
+    } else {
+      this.echartShow = true;
+    }
   }
   public buildEchart (): void {
+   /* const data = [
+      {name: '贵阳市', value: 177},
+      {name: '六盘水市', value: 42},
+      {name: '遵义市', value: 300},
+      {name: '安顺市', value: 102},
+      {name: '毕节市', value: 47},
+      {name: '铜仁市', value: 81},
+      {name: '黔西南布依族苗族自治州', value: 300},
+      {name: '黔东南苗族侗族自治州', value: 82},
+      {name: '黔南布依族苗族自治州', value: 66},
+    ];*/
+    const data = this.option;
     // 配置
     const max = 480, min = 9;
     const maxSize4Pin = 100, minSize4Pin = 20;
     const mapName = '贵州';
-    const data = [
-      {name: '贵阳市', value: 177},
-      {name: '六盘水市', value: 42},
-      {name: '遵义市', value: 102},
-      {name: '安顺市', value: 102},
-      {name: '毕节市', value: 47},
-      {name: '铜仁市', value: 81},
-      {name: '黔西南布依族苗族自治州', value: 67},
-      {name: '黔东南苗族侗族自治州', value: 82},
-      {name: '黔南布依族苗族自治州', value: 66},
-    ];
     const geoCoordMap = {};
     const mapFeatures = this.es.getMap(mapName).geoJson.features;
     mapFeatures.forEach(function(v) {
@@ -86,7 +90,7 @@ export class EchartProvincePersonComponent implements OnInit, OnChanges {
       visualMap: {
         show: true,
         min: 0,
-        max: 200,
+        max: 1000,
         left: 'left',
         top: 'bottom',
         text: ['高', '低'], // 文本，默认为数值文本
@@ -105,6 +109,9 @@ export class EchartProvincePersonComponent implements OnInit, OnChanges {
           // color: ['#00467F', '#A5CC82'] // 蓝绿
           // color: ['#00467F', '#A5CC82'] // 蓝绿
 
+        },
+        textStyle: {
+          color: 'white'
         }
       },
       geo: {
@@ -136,6 +143,9 @@ export class EchartProvincePersonComponent implements OnInit, OnChanges {
           coordinateSystem: 'geo',
           data: convertData(data),
           symbolSize: function (val) {
+            if (val[2] === 0) {
+              return 1;
+            }
             return val[2] / 10;
           },
           label: {
@@ -192,6 +202,9 @@ export class EchartProvincePersonComponent implements OnInit, OnChanges {
           coordinateSystem: 'geo',
           symbol: 'pin', // 气 泡
           symbolSize: function (val) {
+            if (val[2] === 0) {
+              return 0;
+            }
             const a = (maxSize4Pin - minSize4Pin) / (max - min);
             // const b = minSize4Pin - a * min;
             const b = maxSize4Pin - a * max;

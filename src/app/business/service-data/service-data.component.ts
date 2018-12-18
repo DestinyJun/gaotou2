@@ -204,8 +204,37 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     let province: any;
     let city: any;
     this.serareaService.searchPersonTotal({id: 1}).subscribe(
-      (val) => {
-          console.log(val);
+      (totalVal) => {
+        if (totalVal.status === '200') {
+          total = totalVal.data;
+          if (!(total === 0)) {
+            this.serareaService.searchPersonProvince({id: 1}).subscribe(
+              (provinceVal) => {
+                if (provinceVal.status === '200') {
+                  province = provinceVal.data;
+                  this.serareaService.searchPersonCity({id: 1}).subscribe(
+                    (cityVal) => {
+                      if (cityVal.status === '200') {
+                        city = cityVal.data;
+                        this.localService.persons.next({
+                          total: total.toString().split(''),
+                          province: province,
+                          city: city
+                        });
+                      }
+                    }
+                  );
+                }
+              }
+            );
+          } else {
+            this.localService.persons.next({
+              total: [],
+              province: [],
+              city: []
+            });
+          }
+        }
       }
     );
   }
