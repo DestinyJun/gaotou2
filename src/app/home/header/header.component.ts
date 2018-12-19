@@ -19,6 +19,7 @@ export class HeaderComponent implements OnInit {
   public personNum = [];
   public serviceNameArray: any;
   public serviceName: string;
+  public serviceSearchList = [];
   // 弹窗
   public serviceZonePersonAlert = false;
   public cityPersonAlert = false;
@@ -65,10 +66,14 @@ export class HeaderComponent implements OnInit {
     });
   }
   public serviceSearchChange(e): void {
-    const a = this.serviceNameArray.data.filter((item, index) => {
-      return e.target.value === item.name;
-    });
-    if (a.length !== 0) {
+    if (this.serviceNameArray !== undefined) {
+      console.log(e.target.value);
+      this.serviceSearchList = this.serviceNameArray.data.filter((item, index) => {
+        return item.name.indexOf(e.target.value) !== -1;
+      });
+    }
+    console.log(this.serviceSearchList);
+    /*if (a.length !== 0) {
       if (a[0].name === '久长服务区') {
         this.router.navigate(['/home/serzone', {name: a[0].name}]);
       } else {
@@ -76,7 +81,7 @@ export class HeaderComponent implements OnInit {
       }
     } else {
       window.alert('暂无此服务区');
-    }
+    }*/
   }
   // 客流量弹窗
   public personClick() {

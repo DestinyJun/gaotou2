@@ -39,13 +39,13 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  public searchArea(): void {
+ /* public searchArea(): void {
     if (this.searchForm.valid) {
       console.log(this.searchForm.value);
     } else {
       window.alert('请输入服务区名称');
     }
-  }
+  }*/
 
   public selectArea(): void {
     if (this.selectForm.value.province === '贵州省' && this.selectForm.value.city === '贵阳市' && this.selectForm.value.serZone === '久长服务区') {

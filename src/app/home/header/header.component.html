@@ -7,7 +7,7 @@
     <div class="header-title text-center">
       <span>{{headerTitle}}</span>
       <div *ngIf="flagState" class="pull-right">
-        <input id="search" type="text" placeholder="请输入服务区名称" [(ngModel)]="serviceName" (change)="serviceSearchChange($event)">
+        <input id="search" type="text" placeholder="请输入服务区名称" (keyup)="serviceSearchChange($event)">
         <label for="search">
           <i><i class="fa fa-search" aria-hidden="true"></i></i>
         </label>
