@@ -10,6 +10,7 @@ import { MessageWindowComponent } from './message-window/message-window.componen
 import {DialogModule} from 'primeng/dialog';
 import {NgxEchartsModule} from 'ngx-echarts';
 import {EchartNationaPersonModule, EchartProvincePersonModule} from '../common/wenjun';
+import {ScrollPanelModule} from 'primeng/primeng';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import {EchartNationaPersonModule, EchartProvincePersonModule} from '../common/w
     DialogModule,
     NgxEchartsModule,
     EchartNationaPersonModule,
-    EchartProvincePersonModule
+    EchartProvincePersonModule,
+    ScrollPanelModule,
   ],
   declarations: [
     HomeComponent,

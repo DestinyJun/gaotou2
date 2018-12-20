@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {LocalStorageService} from '../../common/services/local-storage.service';
 import {HttpClient} from '@angular/common/http';
@@ -6,7 +6,8 @@ import {GlobalService} from '../../common/services/global.service';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.css']
+  styleUrls: ['./header.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class HeaderComponent implements OnInit {
   public flagState: any;  // 路由状态及名称
@@ -19,6 +20,7 @@ export class HeaderComponent implements OnInit {
   public personNum = [];
   public serviceNameArray: any;
   public serviceName: string;
+  public serviceSearchListShow = false;
   public serviceSearchList = [];
   // 弹窗
   public serviceZonePersonAlert = false;
@@ -32,11 +34,22 @@ export class HeaderComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    const that = this;
     this.http.get(`${this.globalService.urls}/common/config/getServiceAreaCoordinate/2`).subscribe(
       (val) => {
         this.serviceNameArray = val;
       }
     );
+    window.onclick = function (event) {
+      if (
+        event.srcElement.className === 'saerch-list-li' ||
+        event.srcElement.className === 'ui-scrollpanel-content' ||
+        event.srcElement.id === 'search'
+      ) {
+        return;
+      }
+      that.serviceSearchListShow = false;
+    };
     // 时间
     setInterval(() => {
       this.dataTime = new Date();
@@ -66,22 +79,41 @@ export class HeaderComponent implements OnInit {
     });
   }
   public serviceSearchChange(e): void {
+    if (e.keyCode === 13) {
+      if (this.serviceName === undefined) {
+        window.alert('请输入要搜索的关键字');
+        return;
+      }
+      if (this.serviceName === '久长服务区') {
+        this.router.navigate(['/home/serzone', {name: this.serviceName}]);
+        this.serviceSearchListShow = false;
+        return;
+      }
+      window.alert('此服务区暂无数据');
+    }
     if (this.serviceNameArray !== undefined) {
-      console.log(e.target.value);
       this.serviceSearchList = this.serviceNameArray.data.filter((item, index) => {
         return item.name.indexOf(e.target.value) !== -1;
       });
     }
-    console.log(this.serviceSearchList);
-    /*if (a.length !== 0) {
-      if (a[0].name === '久长服务区') {
-        this.router.navigate(['/home/serzone', {name: a[0].name}]);
-      } else {
-        window.alert('此服务区暂无数据');
-      }
+  }
+  public saerchListClick (e): void {
+    this.serviceName = e.name;
+    if (this.serviceName === '久长服务区') {
+      this.router.navigate(['/home/serzone', {name: this.serviceName}]);
+      this.serviceSearchListShow = false;
     } else {
-      window.alert('暂无此服务区');
-    }*/
+      window.alert('此服务区暂无数据');
+      this.serviceSearchListShow = false;
+    }
+  }
+  public searchFocus (e): void {
+    if (this.serviceNameArray !== undefined) {
+      this.serviceSearchList = this.serviceNameArray.data.filter((item, index) => {
+        return item.name.indexOf(e.target.value) !== -1;
+      });
+      this.serviceSearchListShow = true;
+    }
   }
   // 客流量弹窗
   public personClick() {

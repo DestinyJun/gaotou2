@@ -1,7 +1,7 @@
 /******************************头部****************************/
 .header{
   height: 10vh;
-  overflow: hidden;
+  /*overflow: hidden;*/
 }
 
 .header-logo{
@@ -244,7 +244,45 @@
 .citys{
   padding-left: 3vw;
 }
+.saerch-list{
+  position: absolute;
+  /*background: rgba(1,1,1,0.8);*/
+  background: rgb(25,49,77);
+  top:6.5vh;
+  left:0;
+  width: 18vw;
+  z-index: 1;
+  text-align: left;
+  padding-left: 0;
+  border-radius: 5px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+.saerch-list-li{
+  list-style: none;
+  height: 3vh;
+  line-height: 3vh;
+  cursor: pointer;
+  padding-left: 10px;
+}
+.saerch-list-li:hover{
+  background: #87FFFF;
+  color: black;
+}
 
+/***********************************primeng虚拟滚动*****************************/
+.search-scroll .ui-scrollpanel-wrapper {
+  background: transparent;
+  border: none; /*控制滚动轴背景色*/
+}
+.search-scroll .ui-scrollpanel-bar {
+  background-color: transparent;
+  opacity: 1;
+  transition: background-color .3s;
+}
+.search-scroll .ui-scrollpanel-content {
+  padding: 0 0 18px 0;
+}
 
 /***********************适配手机及平板***********************/
 @media (max-width: 992px) {

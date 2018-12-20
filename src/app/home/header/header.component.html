@@ -6,12 +6,18 @@
     </div>
     <div class="header-title text-center">
       <span>{{headerTitle}}</span>
-      <div *ngIf="flagState" class="pull-right">
-        <input id="search" type="text" placeholder="请输入服务区名称" (keyup)="serviceSearchChange($event)">
+      <div *ngIf="flagState" class="pull-right" style="position: relative;">
+        <input id="search" type="text" placeholder="请输入服务区名称" (focus)="searchFocus($event)" (keyup)="serviceSearchChange($event)" [(ngModel)]="serviceName">
         <label for="search">
           <i><i class="fa fa-search" aria-hidden="true"></i></i>
         </label>
+        <ul class="saerch-list" *ngIf="serviceSearchListShow">
+          <p-scrollPanel [style]="{width: '100%', height: '20vh'}" styleClass="search-scroll">
+            <li *ngFor="let item of serviceSearchList" class="saerch-list-li" (click)="saerchListClick(item)">{{item.name}}</li>
+          </p-scrollPanel>
+        </ul>
       </div>
+
     </div>
     <div class="header-admin">
       <!--头像-->
