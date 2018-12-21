@@ -266,7 +266,7 @@
           </div>
           <p-scrollPanel [style]="{width: '100%', height: '40vh'}" styleClass="city-scroll">
             <div class="event-table-processed-type">
-              <span *ngFor="let item of eventInfoUpTypes" [ngStyle]=" {'float': item.eventCategoryName === '党建类'?'right': 'none', 'margin-right': item.eventCategoryName === '党建类'?'5vw':'none'}" (click)="eventInfoUpClick(item)">{{item.eventCategoryName}}</span>
+              <span *ngFor="let item of eventInfoUpTypes" [ngStyle]=" {'float': item.eventCategoryName === '党群工作部'?'right': 'none', 'margin-right': item.eventCategoryName === '党群工作部'?'5vw':'none'}" (click)="eventInfoUpClick(item)">{{item.eventCategoryName}}</span>
             </div>
             <div class="event-table-processed-btn">
               <div class="col-lg-6 col-md-6">
@@ -343,7 +343,6 @@
         <div class="information-btn text-center">
           <span (click)="crosswiseClick()">信息修改</span>
           <span (click)="openServicesPlan()">服务区平面图</span>
-          <span (click)="servicesPactDown()">服务区合同</span>
         </div>
       </div>
       <!--收入统计-->
@@ -530,8 +529,9 @@
             </p>
             <p>今日收入：{{serviceShopInfo?.revenue}}元</p>
             <p>实用面积：{{serviceShopInfo?.usableArea}}</p>
-            <p>水费账户：{{serviceShopInfo?.waterAccount}}</p>
-            <p>电费账户：{{serviceShopInfo?.electricityAccount}}</p>
+            <p class="hetong">店铺合同：<span (click)="servicesPactDown()">点击查看合同</span></p>
+            <!--<p>水费账户：{{serviceShopInfo?.waterAccount}}</p>-->
+            <!--<p>电费账户：{{serviceShopInfo?.electricityAccount}}</p>-->
             <p>店铺摄像头布局图：{{!serviceShopInfo.cameraDistributionGraph?'该商家暂无摄像头布局图':''}}</p>
             <app-image-zoom
               *ngIf="serviceShopInfo.cameraDistributionGraph"
@@ -777,7 +777,8 @@
             <div class="form-horizontal">
               <div class="form-group text-center style-border">
                 <span (click)="modifySerAraItemClick()">确认修改</span>
-                <span (click)="alertCrosswiseShow=false">取消修改</span>
+                <span (click)="alertCrosswiseShow=false" style="margin: 0 1.2vw 0 1.2vw">取消修改</span>
+                <span (click)="servicesPactDown()">服务区合同</span>
               </div>
             </div>
           </div>

@@ -213,12 +213,12 @@
 }
 .center .event-table-processed-type{
   padding-left: 1vw;
-  height: 10vh;
+  min-height: 11vh;
 }
 .center .event-table-processed-type>span {
   display: inline-block;
   width:1.5rem;
-  height: 9vh;
+  height: 12vh;
   font-size:1rem;
   background: #03A9F7;
   padding: 0.5vh 0;
@@ -554,6 +554,16 @@
   line-height: 4vh;
   font-size: 1rem;
 }
+.shop-msg-content>.hetong>span{
+  display: inline-block;
+  width: 5vw;
+  padding: 0.3vh 0;
+  background: #30A7AD;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 0.5rem;
+  text-align: center;
+}
 .shop-echart-title>.table-export{
   display: inline-block;
   padding: 0 1vw;
@@ -628,10 +638,6 @@
   border-radius: 3px;
   cursor: pointer;
 }
-.style-border>span:nth-child(1){
-  margin-right: 1.2vw;
-}
-
 /*服务区平面图弹窗*/
 .services-plan-left{
   width: 20%;

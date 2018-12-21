@@ -447,6 +447,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   }
   // 服务区商家
   public openServiceShop(item): void {
+    console.log(item);
     this.videoShopList = [];
     this.serviceShopInfo = item;
     this.serviceShopShow = true;
