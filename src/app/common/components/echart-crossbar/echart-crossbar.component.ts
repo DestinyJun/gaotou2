@@ -41,7 +41,6 @@ export class EchartCrossbarComponent implements OnInit, OnChanges {
           label: {
             normal: {
               show: true,
-              position: 'insideRight'
             }
           },
           data: val.datas,
