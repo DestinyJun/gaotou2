@@ -388,6 +388,9 @@
   line-height: 5vh;
   padding-right: 10px;
 }
+.alert-window-content-table .toggle-btn .toggle-btn-area>service-date-types{
+  color: #1A2128;
+}
 .alert-window-content-table .toggle-btn .toggle-btn-area>span{
   margin-left: 10px;
   display: inline-block;
@@ -757,7 +760,7 @@
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
 }
-/***********************************primeng虚拟滚动*****************************/
+/***********************************primengy样式覆盖*****************************/
 .service-statistics .ui-scrollpanel-wrapper {
   background: transparent;
   border: none; /*控制滚动轴背景色*/
@@ -769,7 +772,7 @@
 }
 .service-statistics .ui-scrollpanel-bar:hover {
   background-color: #135ba1;
-}
+}  .
 /***********************媒体查询***********************/
 @media screen and (max-width: 992px) {
   .main{

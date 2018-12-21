@@ -105,6 +105,13 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   public alertIncomeTypeTitle: string;
   public alertIncomeTitle = '收入总数';
   public IncomeTableData: any;
+  public IncomeTimeTypes = [
+    {name: '小时', code: 'hour'},
+    {name: '日', code: 'day'},
+    {name: '周', code: 'week'},
+    {name: '月', code: 'month'},
+    {name: '年', code: 'year'}
+  ];
   public storeList: any;
   public arryIncomePie = [];
   public IncomeOptionType: any;
