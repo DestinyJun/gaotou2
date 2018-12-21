@@ -557,7 +557,7 @@
         <div class="col-ld-4 col-md-4">
           <div class="shop-echart-title">
             <span>店家业态数据统计</span>
-            <span class="table-export" (click)="serviceShopShowExport=true">表格导出</span>
+            <span class="table-export" (click)="serviceShopShowExport=true; cancelserviceShopVideo()">表格导出</span>
           </div>
           <div class="shop-echart-content">
             <app-echarts-line-broken [height]="'34vh'" [option]="shopEchartLine"></app-echarts-line-broken>
@@ -571,7 +571,7 @@
         <div class="alert-window-excel-header">
           <span>收入数据表格导出</span>
           <div class="pull-right">
-            <i class="fa fa-window-close " aria-hidden="true" (click)="serviceShopShowExport=false"></i>
+            <i class="fa fa-window-close " aria-hidden="true" (click)="serviceShopShowExport=false;addShopVideo(this.serviceShopInfo)"></i>
           </div>
         </div>
         <div class="alert-window-excel-content">
@@ -585,11 +585,11 @@
           </div>
         </div>
         <div class="alert-window-excel-footer text-center">
-          <span (click)="shopExportClick();serviceShopShowExport=false">确认导出</span>
-          <span (click)="serviceShopShowExport=false">取消导出</span>
+          <span (click)="shopExportClick();serviceShopShowExport=false;addShopVideo(this.serviceShopInfo)">确认导出</span>
+          <span (click)="serviceShopShowExport=false;addShopVideo(this.serviceShopInfo)">取消导出</span>
         </div>
       </div>
-      <iframe src="" frameborder="0" style="position: absolute;top: 0;left: 0; height: 100vh;width:100vw;z-index: -1"></iframe>
+      <iframe src="" frameborder="0" style="position: absolute;top: 0;left: 0; height: 100vh;width:100vw;z-index: -1;"></iframe>
     </div>
   </div>
 </div>

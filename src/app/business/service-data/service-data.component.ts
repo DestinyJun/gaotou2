@@ -452,7 +452,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     this.serviceShopShow = true;
     document.body.className = 'ui-overflow-hidden';
     if (item.cameraList.length > 0) {
-      this.addShopVideo(item);
+      this.addShopVideo(this.serviceShopInfo);
     }
     // 折线图
     this.serareaService.searchServiceShopLine({id: item.id, yIndex: ['revenue', 'passenger', 'vehicle', 'electric', 'water']}).subscribe(
@@ -558,6 +558,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
         <param name='volume' value='30'/>
         <param value="transparent" name="wmode">
         <param name='controls' value='false' />
+        <param name="wmode" value="opaque">
         <embed pluginspage="http://www.videolan.org"
                type="application/x-vlc-plugin"
                version="VideoLAN.VLCPlugin.2"
@@ -565,6 +566,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
                height="100%"
                text="Waiting for video"
                name="vlc${this.videoShopList[0].id}"
+               wmode="opaque"
         />
     </object>
       `;
@@ -580,7 +582,12 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       }, 100);
     }
   }
-
+  public cancelserviceShopVideo (): void {
+    this.videoBottomShopUrl = ``;
+    setTimeout(() => {
+      document.getElementById('shopVideo').innerHTML = this.videoBottomShopUrl;
+    }, 100);
+  }
   // 公共视频监控
   public openPublicVideo(e) {
     this.videoShopList = e;
