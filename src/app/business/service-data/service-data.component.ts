@@ -41,6 +41,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   public carExcelShow = false;
   public carStartTime: Date; // 时间选择器
   public carEndTime: Date; // 时间选择器
+  public carTimeTypes: any;
   /***********************中部************************/
   // 商家、视频及方向
   public incomeTopData: any;
@@ -57,7 +58,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     'fa fa-bed',
     'fa fa-car'];
   public serviceShopShow = false;
-  public iconImagesIndex: number;
   public serviceShopShowExport = false;
   public serviceShopInfo: any;
   public shopStartTime: Date; // 时间选择器
@@ -105,13 +105,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   public alertIncomeTypeTitle: string;
   public alertIncomeTitle = '收入总数';
   public IncomeTableData: any;
-  public IncomeTimeTypes = [
-    {name: '小时', code: 'hour'},
-    {name: '日', code: 'day'},
-    {name: '周', code: 'week'},
-    {name: '月', code: 'month'},
-    {name: '年', code: 'year'}
-  ];
+  public IncomeTimeTypes: any;
   public storeList: any;
   public arryIncomePie = [];
   public IncomeOptionType: any;
@@ -125,8 +119,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     private serareaService: ServiceDataService,
     private localService: LocalStorageService,
     private datePipe: DatePipe
-  ) {
-  }
+  ) {}
   ngOnInit() {
     this.serareaService.searchSerAraItem(1).subscribe(
       (value) => {
@@ -340,17 +333,23 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   public parkClick(e): void {
     this.alertCarShow = true;
     document.body.className = 'ui-overflow-hidden';
-    this.carDistribution(1);
+    this.carTimeTypes = 'hour';
+    this.carDistribution(1, this.carTimeTypes);
   }
-  public carDistribution(e): void {
-    const carTypes = {
+  public carSelectTime (event): void {
+    this.carTimeTypes = event.code;
+    // 表格
+    this.carDistribution(1,  this.carTimeTypes);
+  }
+  public carDistribution(e, time): void {
+    /*const carTypes = {
       '总数': 'total',
       '小车': 1,
       '客车': 2,
       '货车': 3,
-    };
+    };*/
     // 表格
-    this.serareaService.searchCarAlertTable({id: 1, type: carTypes['总数'], page: e, nums: 10}).subscribe(
+    this.serareaService.searchCarAlertTable({dateType: time, id: 1, page: e, nums: 10}).subscribe(
       (val) => {
         if (val.status === '200') {
           this.carTableData = val.data;
@@ -928,7 +927,8 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     this.alertIncomeShow = true;
     document.body.className = 'ui-overflow-hidden';
     this.alertIncomeTitle = e.name;
-    this.getIncomeTypesSingle(e.name, this.storeList);
+    this.IncomeTimeTypes = 'hour';
+    this.getIncomeTypesSingle(1, this.alertIncomeTitle, this.storeList, this.IncomeTimeTypes);
   }
   public getIncomeTotalTypes (): void {
     this.serareaService.searchIncomeTypes().subscribe(
@@ -939,8 +939,8 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       }
     );
   }
-  public getIncomeTotal(): void {
-    this.serareaService.searchIncomeTypesList({page: 1, nums: 10, types: this.storeList}).subscribe(
+  public getIncomeTotal(time, pageNums): void {
+    this.serareaService.searchIncomeTypesList({dateType: time, id: 1, page: pageNums, nums: 15}).subscribe(
       (incomeVal) => {
         if (incomeVal.status === '200') {
           this.IncomeTableData = incomeVal.data;
@@ -948,7 +948,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       }
     );
   }
-  public getIncomeTypesSingle(item, storeList): void {
+  public getIncomeTypesSingle(pageNums, item, storeList, time): void {
     const shopType = {
       '小吃': {
         'sequence': 1,
@@ -981,7 +981,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     });
     if (shopList) {
       this.serareaService.searchIncomeTypesItem(
-        {entryCode: shopType[this.IncomeOptionType].entryCode, page: 1, nums: 10, shopList: shopList[0].storeList}).subscribe(
+        {dateType: time, id: 1, entryCode: shopType[this.IncomeOptionType].entryCode, page: pageNums, nums: 10}).subscribe(
         (value) => {
           if (value.status === '200') {
             this.IncomeTableData = value.data;
@@ -990,46 +990,20 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       );
     }
   }
-  public getIncomeTypesSinglePaging(e, item, storeList): void {
-    const shopType = {
-      '小吃': {
-        'sequence': 1,
-        'entryCode': '1'
-      },
-      '中式快餐': {
-        'sequence': 2,
-        'entryCode': '2',
-      },
-      '西式快餐': {
-        'sequence': 3,
-        'entryCode': '3',
-      },
-      '商超': {
-        'sequence': 4,
-        'entryCode': '4',
-      },
-      '住宿': {
-        'sequence': 5,
-        'entryCode': '5',
-      },
-      '汽修': {
-        'sequence': 6,
-        'entryCode': '6',
-      },
-    };
-    const shopList = storeList.filter((prop, index) => {
-      return prop.entryCode === shopType[item].entryCode;
-    });
-    if (shopList) {
-      this.serareaService.searchIncomeTypesItem(
-        {entryCode: shopType[item].entryCode, page: e, nums: 10, shopList: shopList[0].storeList}).subscribe(
-        (value) => {
-          if (value.status === '200') {
-            this.IncomeTableData = value.data;
-          }
-        }
-      );
+  public IncomeSelectTime (event): void {
+    this.IncomeTimeTypes = event.code;
+    if (!this.alertIncomeTypeShow) {
+      this.getIncomeTotal(this.IncomeTimeTypes, 1);
+      return;
     }
+    this.getIncomeTypesSingle(1, this.alertIncomeTitle, this.storeList, this.IncomeTimeTypes);
+  }
+  public getIncomeTypesSinglePaging(page, item, storeList, time): void {
+    if (!this.alertIncomeTypeShow) {
+      this.getIncomeTotal(time, page);
+      return;
+    }
+    this.getIncomeTypesSingle(page, item, storeList, time);
   }
   public closeIncomeShow(): void {
     document.body.className = '';
@@ -1040,49 +1014,49 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       this.alertIncomeTitle = '收入总数';
       this.alertIncomeTypeShow = false;
       this.arryIncomePie = [];
-      this.getIncomeTotal();
+      this.getIncomeTotal(this.IncomeTimeTypes, 1);
     }
     else if (e.srcElement.innerText === '小吃') {
       this.alertIncomeTitle = '小吃';
       this.alertIncomeTypeTitle = '小吃';
       this.alertIncomeTypeShow = true;
       this.arryIncomePie = [];
-      this.getIncomeTypesSingle(e.srcElement.innerText, this.storeList);
+      this.getIncomeTypesSingle(1, e.srcElement.innerText, this.storeList, this.IncomeTimeTypes);
     }
     else if (e.srcElement.innerText === '中式快餐') {
       this.alertIncomeTitle = '中式快餐';
       this.alertIncomeTypeTitle = '中式快餐';
       this.alertIncomeTypeShow = true;
       this.arryIncomePie = [];
-      this.getIncomeTypesSingle(e.srcElement.innerText, this.storeList);
+      this.getIncomeTypesSingle(1, e.srcElement.innerText, this.storeList, this.IncomeTimeTypes);
     }
     else if (e.srcElement.innerText === '西式快餐') {
       this.alertIncomeTitle = '西式快餐';
       this.alertIncomeTypeTitle = '西式快餐';
       this.alertIncomeTypeShow = true;
       this.arryIncomePie = [];
-      this.getIncomeTypesSingle(e.srcElement.innerText, this.storeList);
+      this.getIncomeTypesSingle(1, e.srcElement.innerText, this.storeList, this.IncomeTimeTypes);
     }
     else if (e.srcElement.innerText === '商超') {
       this.alertIncomeTitle = '商超';
       this.alertIncomeTypeTitle = '商超';
       this.alertIncomeTypeShow = true;
       this.arryIncomePie = [];
-      this.getIncomeTypesSingle(e.srcElement.innerText, this.storeList);
+      this.getIncomeTypesSingle(1, e.srcElement.innerText, this.storeList, this.IncomeTimeTypes);
     }
     else if (e.srcElement.innerText === '住宿') {
       this.alertIncomeTitle = '住宿';
       this.alertIncomeTypeTitle = '住宿';
       this.alertIncomeTypeShow = true;
       this.arryIncomePie = [];
-      this.getIncomeTypesSingle(e.srcElement.innerText, this.storeList);
+      this.getIncomeTypesSingle(1, e.srcElement.innerText, this.storeList, this.IncomeTimeTypes);
     }
     else if (e.srcElement.innerText === '汽修') {
       this.alertIncomeTitle = '汽修';
       this.alertIncomeTypeTitle = '汽修';
       this.alertIncomeTypeShow = true;
       this.arryIncomePie = [];
-      this.getIncomeTypesSingle(e.srcElement.innerText, this.storeList);
+      this.getIncomeTypesSingle(1, e.srcElement.innerText, this.storeList, this.IncomeTimeTypes);
     }
   }
   public incomeExportClick() {

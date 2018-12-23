@@ -101,7 +101,7 @@
           </div>
           <app-echart-pie [option]="optionsCarModel" [height]="'20vh'" (pieClick)="parkClick($event)"></app-echart-pie>
         </div>
-        <!--车辆类型弹窗-->
+        <!--车辆类型弹窗 alertCarShow-->
         <div class="bg-box" *ngIf="alertCarShow">
           <div class="alert-window">
             <div class="alert-window-header">
@@ -123,6 +123,7 @@
                       <button class="btn btn-primary" [ngStyle]="{'background':alertCarTitle === '客车'?'black': ''}">客车</button>
                       <button class="btn btn-danger" [ngStyle]="{'background':alertCarTitle === '货车'?'black': ''}">货车</button>-->
                       <div class="toggle-btn-area text-center" style="">
+                        <app-input-dropdown (dropdownClick)="carSelectTime($event)"></app-input-dropdown>
                         <span (click)="carExcelShow = true">表格导出</span>
                       </div>
                     </div>
@@ -143,11 +144,11 @@
                           </thead>
                           <tbody>
                           <tr *ngFor="let item of carTableData?.contents">
-                            <td>{{item?.hour}}</td>
-                            <td>{{item?.totalVechile}}</td>
-                            <td>{{item?.sedanVechile}}</td>
-                            <td>{{item?.coachVechile}}</td>
-                            <td>{{item?.truckVechile}}</td>
+                            <td>{{item?.time}}</td>
+                            <td>{{item?.totalVehicle}}</td>
+                            <td>{{item?.coachVehicle}}</td>
+                            <td>{{item?.sedanVehicle}}</td>
+                            <td>{{item?.truckVehicle}}</td>
                             <!--<td [ngStyle]="{'background':alertCarTitle === '小车'?'black': ''}">{{item.cart}}</td>
                             <td [ngStyle]="{'background':alertCarTitle === '客车'?'black': ''}">{{item.trucks}}</td>
                             <td [ngStyle]="{'background':alertCarTitle === '货车'?'black': ''}">{{item.bus}}</td>-->
@@ -156,7 +157,7 @@
                         </table>
                       </p-scrollPanel>
                     </div>
-                    <app-paging [option]="{total: carTableData?.totalRecord,row: 10}" (pageClick)="carDistribution($event)"></app-paging>
+                    <app-paging [option]="{total: carTableData?.totalRecord,row: 10}" (pageClick)="carDistribution($event,carTimeTypes)"></app-paging>
                   </div>
                 </div>
               </div>
@@ -391,6 +392,7 @@
                       <button class="btn btn-warning" [ngStyle]="{'background':alertIncomeTitle === '住宿'?'black': ''}">住宿</button>
                       <button class="btn btn-primary" [ngStyle]="{'background':alertIncomeTitle === '汽修'?'black': ''}">汽修</button>
                       <div class="toggle-btn-area pull-right">
+                        <app-input-dropdown (dropdownClick)="IncomeSelectTime($event)"></app-input-dropdown>
                         <span (click)="incomeExcelShow=true">表格导出</span>
                       </div>
                     </div>
@@ -411,7 +413,7 @@
                           </thead>
                           <tbody>
                           <tr *ngFor="let item of IncomeTableData?.contents">
-                            <td>{{item?.hour}}</td>
+                            <td>{{item?.time}}</td>
                             <td [ngStyle]="{'background':alertIncomeTitle === '收入总数'?'black': ''}">{{item?.total}}</td>
                             <td [ngStyle]="{'background':alertIncomeTitle === '小吃'?'black': ''}">{{item[1]}}</td>
                             <td [ngStyle]="{'background':alertIncomeTitle === '中式快餐'?'black': ''}">{{item[2]}}</td>
@@ -434,7 +436,7 @@
                           </thead>
                           <tbody>
                           <tr *ngFor="let item of IncomeTableData?.contents;let i = index">
-                            <td>{{item?.hour}}</td>
+                            <td>{{item?.time}}</td>
                             <td>{{item?.totalRevenue}}</td>
                             <td colspan="3">
                               <table class="table table-bordered" style="background-color: transparent;">
@@ -459,7 +461,8 @@
                         </table>
                       </p-scrollPanel>
                     </div>
-                    <app-paging [option]="{total: IncomeTableData?.totalRecord,row: 10}" (pageClick)="getIncomeTypesSinglePaging($event,IncomeOptionType,storeList)"></app-paging>
+                    <app-paging *ngIf="alertIncomeTypeShow" [option]="{total: IncomeTableData?.totalRecord,row: 10}" (pageClick)="getIncomeTypesSinglePaging($event,alertIncomeTitle,storeList,IncomeTimeTypes)"></app-paging>
+                    <app-paging *ngIf="!alertIncomeTypeShow" [option]="{total: IncomeTableData?.totalRecord,row: 15}" (pageClick)="getIncomeTypesSinglePaging($event,alertIncomeTitle,storeList,IncomeTimeTypes)"></app-paging>
                   </div>
                 </div>
               </div>

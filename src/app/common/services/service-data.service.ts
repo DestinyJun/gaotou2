@@ -35,7 +35,7 @@ export class ServiceDataService {
     return this.http.get(`${this.globalService.urlc}/realTime/vechile/serviceArea/getVechileTypePie/${params.id}`);
   }
   public searchCarAlertTable(params): Observable<any> {
-    return this.http.get(`${this.globalService.urlc}/hourly/vechile/${params.id}/sortBy/${params.type}/${params.page}/${params.nums}`);
+    return this.http.get(`${this.globalService.urlc}/serviceArea/vehicle/${params.dateType}/${params.id}/${params.page}/${params.nums}`);
   }
   // 实时收入
   public searchIncomeTotal(params): Observable<any> {
@@ -99,13 +99,13 @@ export class ServiceDataService {
   }
   // 获取经营分类收入
   public searchIncomeTypesList(params): Observable<any> {
-    return this.http.post(`${this.globalService.urlc}/hourly/revenue/1/sortBy/total/${params.page}/${params.nums}`, params.types);
+    return this.http.get(`${this.globalService.urlc}/serviceArea/revenue/${params.dateType}/${params.id}/sortBy/total/${params.page}/${params.nums}`);
   }
   // 指定经营类型获取店铺收入
   /*public searchIncomeTypesItem(params): Observable<any> {
     return this.http.post(`${this.globalService.urlc}/hourly/revenue/1/${params.entryCode}/${params.page}/${params.nums}`, params.shopList);
   }*/
   public searchIncomeTypesItem(params): Observable<any> {
-    return this.http.get(`${this.globalService.urlc}/hourly/revenue/1/${params.entryCode}/${params.page}/${params.nums}`);
+    return this.http.get(`${this.globalService.urlc}/serviceArea/revenue/${params.dateType}/${params.id}/${params.entryCode}/${params.page}/${params.nums}`);
   }
 }

@@ -1,0 +1,36 @@
+.input-dropdown-box {
+  display: inline-block;
+  height: 3vh;
+  line-height: 3vh;
+  padding: 0 0.5vw;
+  font-size: 0.875rem;
+  border-radius: 3px;
+  background: #1a2128;
+  position: relative;
+  min-width: 7vw;
+  text-align: left;
+  cursor: pointer;
+}
+.input-dropdown-box>i{
+  float: right;
+  line-height: 3vh;
+  color: white;
+}
+.input-dropdown-box>.input-dropdown-ul{
+  position: absolute;
+  top: 3.1vh;
+  left: 0;
+  background: rgba(26,33,40,0.8);
+  width: 100%;
+  color: white;
+  list-style: none;
+  z-index: 99;
+  padding-left: 0;
+}
+.input-dropdown-box>.input-dropdown-ul>li{
+  padding-left: 5px;
+  cursor: pointer;
+}
+.input-dropdown-box>.input-dropdown-ul>li:hover{
+  background: #5595D5;
+}
