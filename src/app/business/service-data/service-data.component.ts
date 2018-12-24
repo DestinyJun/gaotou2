@@ -893,6 +893,11 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   }
   // 服务区合同下载
   public servicesPactDown (): void {
+    if (this.serviceInfo.contractUrl === null) {
+      window.alert('合同暂未上传');
+      return;
+      // console.log(this.serviceInfo.contractUrlPrefix + this.serviceInfo.contractUrl);
+    }
   window.open(`${this.serviceInfo.contractUrlPrefix}${this.serviceInfo.contractUrl}`);
 }
   // 收入监控
