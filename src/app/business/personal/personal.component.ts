@@ -96,4 +96,7 @@ export class PersonalComponent implements OnInit {
   public logOut(): void {
     this.localService.userSessionStorage = {};
   }
+  public goBack (): void {
+    window.history.back();
+  }
 }
