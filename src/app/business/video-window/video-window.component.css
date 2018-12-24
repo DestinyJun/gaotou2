@@ -39,19 +39,26 @@
 }
 
 /***********************************primeng虚拟滚动*****************************/
-.custom .ui-scrollpanel-wrapper {
+.video .ui-scrollpanel-wrapper {
   border: none; /*控制滚动轴背景色*/
 }
-.custom .ui-scrollpanel-bar {
+.video .ui-scrollpanel-bar {
   background-color: transparent;
   opacity: 1;
   transition: background-color .3s;
 }
-.custom .ui-scrollpanel-bar:hover {
+.video .ui-scrollpanel-bar:hover {
   background-color: #135ba1;
 }
-.custom:hover .ui-scrollpanel-bar {
+.video:hover .ui-scrollpanel-bar {
   background-color: rgba(56,68,96,0.3);
+}
+.video .ui-tree .ui-treenode-selectable.ui-treenode-content{
+  cursor: inherit;
+}
+body .ui-tree .ui-tree-container .ui-treenode .ui-treenode-content.ui-treenode-selectable .ui-treenode-label:not(.ui-state-highlight):hover{
+  background: none;
+  color: #87FFFF;
 }
 /***********************************bootstrap改造*****************************/
 .list-group>a{
