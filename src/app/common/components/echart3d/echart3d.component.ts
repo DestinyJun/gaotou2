@@ -1,8 +1,4 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
-import {Bar3dExportType} from '../../model/shared.model';
-import {Router} from '@angular/router';
-import {NgxEchartsService} from 'ngx-echarts';
-
 @Component({
   selector: 'app-echart3d',
   templateUrl: './echart3d.component.html',

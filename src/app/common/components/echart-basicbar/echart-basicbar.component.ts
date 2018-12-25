@@ -55,7 +55,7 @@ export class EchartBasicbarComponent implements OnInit, OnChanges {
         }
       },
       grid: {
-        left: '5%',
+        left: '8%',
         right: '3%',
         bottom: '10%'
       },

@@ -15,11 +15,17 @@ export class FinanceDataService {
     return this.http.get(`${this.globalService.urls}/common/config/getServiceAreaCoordinate/2`);
   }
   // 3D图数据、点击后的柱状图、扇形图
-  public search3DBar(params): Observable<any> {
+  /*public search3DBar(params): Observable<any> {
     return this.http.post(`${this.globalService.urlc}/administrativeAreaStatistics/monthly3D/${params.id}`, params.parameter);
+  }*/
+  /*public search3DAlertBar(params): Observable<any> {
+    return this.http.get(`${this.globalService.urlc}/administrativeAreaStatistics/monthlyByType/${params.id}/${params.types}`);
+  }*/
+  public search3DBar(params): Observable<any> {
+    return this.http.post(`${this.globalService.urlc}/administrativeAreaStatistics/currentYear/monthly3D/${params.id}`, params.parameter);
   }
   public search3DAlertBar(params): Observable<any> {
-    return this.http.get(`${this.globalService.urlc}/administrativeAreaStatistics/monthlyByType/${params.id}/${params.types}`);
+    return this.http.get(`${this.globalService.urlc}/administrativeAreaStatistics/currentYear/monthlyByType/${params.id}/${params.types}`);
   }
   public search3DAlertPie(params): Observable<any> {
     return this.http.get(`

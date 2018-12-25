@@ -277,11 +277,12 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       }
     );
     // 折线图
-    this.serareaService.search3DAlertLineMonth({id: 1, types: [0, 1, 2, 3, 4]}).subscribe(
+    this.serareaService.search3DAlertLineMonth(
+      {id: 1, month: e.pie.xType + 1, types: ['revenue', 'passenger', 'vehicle', 'electric', 'water']}).subscribe(
       (val) => {
         if (val.status === '200') {
           this.options3dLine = {
-            title: '贵州省久长服务区月度业态走势图',
+            title: `贵州省久长服务区${this.options3d.xdata[e.pie.xType]}业态走势图`,
             data: val.data,
             color: ['#7C7CD4', '#36B9AB', '#6ACD72', '#0A30BF', '#027204']
           };
@@ -289,7 +290,21 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       }
     );
   }
-  public onOutOptions3dBar(e): void {}
+  public onOutOptions3dBar(e): void {
+    // 折线图
+    this.serareaService.search3DAlertLineMonth(
+      {id: 1, month: e.xType + 1, types: ['revenue', 'passenger', 'vehicle', 'electric', 'water']}).subscribe(
+      (val) => {
+        if (val.status === '200') {
+          this.options3dLine = {
+            title: `贵州省久长服务区${this.options3d.xdata[e.xType]}业态走势图`,
+            data: val.data,
+            color: ['#7C7CD4', '#36B9AB', '#6ACD72', '#0A30BF', '#027204']
+          };
+        }
+      }
+    );
+  }
   public closeBarShow() {
     this.alertBarShow = false;
     document.body.className = '';
@@ -462,12 +477,13 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       this.addShopVideo(this.serviceShopInfo);
     }
     // 折线图
-    this.serareaService.searchServiceShopLine({id: item.id, yIndex: ['revenue', 'passenger', 'vehicle', 'electric', 'water']}).subscribe(
+    this.serareaService.searchServiceShopLine({id: item.id, yIndex: ['revenue', 'passenger', 'electric', 'water']}).subscribe(
       (val) => {
+        console.log(val);
         if (val.status === '200') {
           this.shopEchartLine = {
             data: val.data,
-            title: `${item.storeName}业态数据走势分析`,
+            title: `${item.storeName}今日业态数据走势分析`,
             color: ['#7C7CD4', '#36B9AB', '#6ACD72', '#0A30BF', '#027204']
           };
         }

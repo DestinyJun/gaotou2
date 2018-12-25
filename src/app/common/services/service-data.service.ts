@@ -14,19 +14,29 @@ export class ServiceDataService {
     return this.http.get(`${this.globalService.urls}/common/config/getStoreAndCamera/1`);
   }
   // 3D图数据、点击后的柱状图、折线图
-  public search3DBar(params): Observable<any> {
+ /* public search3DBar(params): Observable<any> {
     return this.http.post(`${this.globalService.urlc}/serviceAreaStatistics/monthly3D/${params.id}`, params.parameter);
-  }
-  public search3DAlertBar(params): Observable<any> {
-    return this.http.get(`${this.globalService.urlc}/serviceAreaStatistics/monthlyByType/${params.id}/${params.types}`);
-  }
-  public search3DAlertLineMonth(params): Observable<any> {
+  }*/
+  /*public search3DBar(params): Observable<any> {
+    return this.http.post(`${this.globalService.urlc}/serviceAreaStatistics/currentYear/monthly3D/${params.id}`, params.parameter);
+  }*/
+ /* public search3DAlertLineMonth(params): Observable<any> {
     return this.http.post(`${this.globalService.urlc}/serviceAreaStatistics/brokenLineLastMonth/${params.id}`, params.types);
-  }
-  public search3DAlertLineWeek(params): Observable<any> {
+  }*/
+  /*public search3DAlertLineWeek(params): Observable<any> {
     return this.http.get(`
     ${this.globalService.urlc}/administrativeAreaStatistics/mothlyChildAdministrtiveArea/${params.id}/${params.xType}/${params.types}`);
+  }*/
+  public search3DBar(params): Observable<any> {
+    return this.http.post(`${this.globalService.urlc}/serviceAreaStatistics/currentYear/monthly3D/${params.id}`, params.parameter);
   }
+  public search3DAlertBar(params): Observable<any> {
+    return this.http.get(`${this.globalService.urlc}/serviceAreaStatistics/currentYear/monthlyByType/${params.id}/${params.types}`);
+  }
+  public search3DAlertLineMonth(params): Observable<any> {
+    return this.http.post(`${this.globalService.urlc}/serviceAreaStatistics/brokenLineCurrentMonth/${params.id}/${params.month}`, params.types);
+  }
+
   // 实时车流
   public searchCarTotal(params): Observable<any> {
     return this.http.get(`${this.globalService.urlc}/realTime/vechile/serviceArea/total/${params.id}`);
@@ -86,12 +96,18 @@ export class ServiceDataService {
     return this.http.get(`${this.globalService.urlc}/realTime/revenue/serviceArea/storeRevenue2/1`);
   }
   // 服务区店铺折线图
-  public searchServiceShopLine(params): Observable<any> {
+ /* public searchServiceShopLine(params): Observable<any> {
     return this.http.post(`${this.globalService.urlc}/storeStatistics/brokenLineLastDayByHour/${params.id}`, params.yIndex);
+  }*/
+  public searchServiceShopLine(params): Observable<any> {
+    return this.http.post(`${this.globalService.urlc}/storeStatistics/brokenLineCurrentDayByHour/${params.id}`, params.yIndex);
   }
   // 服务区店铺面积图
-  public searchServiceShopArea(id): Observable<any> {
+ /* public searchServiceShopArea(id): Observable<any> {
     return this.http.get(`${this.globalService.urlc}/storeStatistics/brokenLineLastYearByMonth/${id}`);
+  }*/
+  public searchServiceShopArea(id): Observable<any> {
+    return this.http.get(`${this.globalService.urlc}/storeStatistics/brokenLineCurrentYearByMonth/${id}`);
   }
   // 获取经营类型
   public searchIncomeTypes(): Observable<any> {
