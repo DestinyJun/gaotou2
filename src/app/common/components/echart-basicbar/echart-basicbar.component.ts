@@ -17,7 +17,11 @@ export class EchartBasicbarComponent implements OnInit, OnChanges {
   ];
   constructor() { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    /*this.options3dBarInstance.on('click', (event) => {
+      console.log(event);
+    });*/
+  }
   ngOnChanges(changes: SimpleChanges): void {
     if (this.option) {
        if (this.option.data) {
@@ -60,6 +64,7 @@ export class EchartBasicbarComponent implements OnInit, OnChanges {
         bottom: '10%'
       },
       xAxis: {
+        show: true,
         type: 'category',
         data: this.option.data.xData,
         splitLine: {show: false},
@@ -71,6 +76,13 @@ export class EchartBasicbarComponent implements OnInit, OnChanges {
             color: 'white'
           }
         },
+        triggerEvent: true,
+        axisTick: {
+          interval: 0,
+        },
+        axisLabel: {
+          interval: 0
+        }
       },
       yAxis: {
         type: 'value',
@@ -111,7 +123,13 @@ export class EchartBasicbarComponent implements OnInit, OnChanges {
     this.options3dBarInstance = ec;
   }
   public options3dBarClick(e): void {
-    // console.log(e);
+    if (e.dataIndex === undefined) {
+      this.outOptions3dBar.emit({
+        xType: this.option.data.xData.indexOf(e.value),
+        total: e.data,
+      });
+      return;
+    }
     this.colorList = [
       '#356981', '#356981', '#356981', '#356981', '#356981', '#356981',
       '#356981', '#356981', '#356981', '#356981', '#356981 ', '#356981'
