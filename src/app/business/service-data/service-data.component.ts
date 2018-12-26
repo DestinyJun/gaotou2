@@ -260,6 +260,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     );
   }
   public onOutOptions3d(e): void {
+    const defaultMonth = new Date().getMonth() + 1;
     this.outOptions3d = e;
     document.body.className = 'ui-overflow-hidden';
     this.alertBarShow = true;
@@ -278,11 +279,11 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     );
     // 折线图
     this.serareaService.search3DAlertLineMonth(
-      {id: 1, month: e.pie.xType + 1, types: ['revenue', 'passenger', 'vehicle', 'electric', 'water']}).subscribe(
+      {id: 1, month: defaultMonth, types: ['revenue', 'passenger', 'vehicle', 'electric', 'water']}).subscribe(
       (val) => {
         if (val.status === '200') {
           this.options3dLine = {
-            title: `贵州省久长服务区${this.options3d.xdata[e.pie.xType]}业态走势图`,
+            title: `贵州省久长服务区${this.options3d.xdata[defaultMonth-1]}业态走势图`,
             data: val.data,
             color: ['#7C7CD4', '#36B9AB', '#6ACD72', '#0A30BF', '#027204']
           };
