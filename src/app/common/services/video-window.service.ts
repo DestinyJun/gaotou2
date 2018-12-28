@@ -23,4 +23,13 @@ export class VideoWindowService {
   public searchVideosList(id): Observable<any> {
     return this.http.get(`${this.globalService.urls}/common/config/getCameras/${id}`);
   }
+  // 初始化视频播放
+  public getVideosUrl(id): Observable<any> {
+    return this.http.get(`${this.globalService.urlc}/cameraRecord/queryByUserId/${id}`);
+  }
+  // 保存视频播放地址
+  public saveVideosUrl(id, params): Observable<any> {
+    console.log(params);
+    return this.http.post(`${this.globalService.urlc}/cameraRecord/addRecord/${id}`, params);
+  }
 }

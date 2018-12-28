@@ -293,6 +293,7 @@
   background: #30A7AD;
   border-radius: 3px;
   cursor: pointer;
+  font-size: 0.875rem;
 }
 .right .information-btn span:nth-child(2){
   margin-right: 1vw;

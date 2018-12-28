@@ -11,7 +11,7 @@ import {HttpClient} from '@angular/common/http';
 })
 export class VideoWindowComponent implements OnInit, OnDestroy {
   // 实时客流量
-  public videoRecord = ['', '', '', ''];
+  public videoRecord = [0, 0, 0, 0];
   public showNumber: number; // 监视窗的位置
   public videoInfo: any;
   public videoUrl1: string;
@@ -35,11 +35,17 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
   constructor(
     private videoWindowService: VideoWindowService,
     private localService: LocalStorageService,
-    private http: HttpClient
   ) {
   }
 
   ngOnInit() {
+    this.videoWindowService.getVideosUrl(this.localService.getObject('userDTO').id).subscribe(
+      (val) => {
+        if (val.data) {
+          this.videoInitialize(val.data);
+        }
+      }
+    );
     // 发射实时客流
     this.getPerson();
     // 发射业太数据名称
@@ -115,9 +121,10 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
           }
         );
       }
-    } else if (event.node.children[0].level === 4) {
+      return;
+    }
+    if (event.node.children[0].level === 4) {
       for (let i = 0; i < event.node.children.length; i++) {
-        console.log(event.node.children[i].id);
         this.videoWindowService.searchVideosList(event.node.children[i].id).subscribe(
           (value) => {
             if (value.status === '200') {
@@ -126,12 +133,71 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
           }
         );
       }
+      return;
     }
   }
   public nodeSelect(event): void {
     if (event.node.level === 6) {
+      console.log(event.node);
       this.videoInfo = event.node;
       this.videoLocation(event.node.outUrl, event.node.label, event.node.showLocation);
+      if (event.node.showLocation === 1) {
+        this.videoRecord[0] = event.node.id;
+        this.videoWindowService.saveVideosUrl(this.localService.getObject('userDTO').id, this.videoRecord).subscribe(
+          (val) => {
+            console.log(val);
+          }
+        );
+        return;
+      }
+      if (event.node.showLocation === 2) {
+        this.videoRecord[1] = event.node.id;
+        this.videoWindowService.saveVideosUrl(this.localService.getObject('userDTO').id, this.videoRecord).subscribe(
+          (val) => {
+            console.log(val);
+          }
+        );
+        return;
+      }
+      if (event.node.showLocation === 3) {
+        this.videoRecord[2] = event.node.id;
+        this.videoWindowService.saveVideosUrl(this.localService.getObject('userDTO').id, this.videoRecord).subscribe(
+          (val) => {
+            console.log(val);
+          }
+        );
+        return;
+      }
+      if (event.node.showLocation === 4) {
+        this.videoRecord[3] = event.node.id;
+        this.videoWindowService.saveVideosUrl(this.localService.getObject('userDTO').id, this.videoRecord).subscribe(
+          (val) => {
+            console.log(val);
+          }
+        );
+        return;
+      }
+    }
+  }
+  // 视频初始化
+  public videoInitialize (item): void {
+    for (let i = 0; i < item.length; i++) {
+      if (item[i].showLocation === 1) {
+        this.videoRecord[0] = item[i].id;
+        this.videoLocation(item[i].outUrl, item[i].cameraName, item[i].showLocation);
+      }
+      if (item[i].showLocation === 2) {
+        this.videoRecord[1] = item[i].id;
+        this.videoLocation(item[i].outUrl, item[i].cameraName, item[i].showLocation);
+      }
+      if (item[i].showLocation === 3) {
+        this.videoRecord[2] = item[i].id;
+        this.videoLocation(item[i].outUrl, item[i].cameraName, item[i].showLocation);
+      }
+      if (item[i].showLocation === 4) {
+        this.videoRecord[3] = item[i].id;
+        this.videoLocation(item[i].outUrl, item[i].cameraName, item[i].showLocation);
+      }
     }
   }
   // 视频播放
@@ -141,16 +207,13 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
      this.videoUrl1 = url;
      document.querySelector('#window1').innerHTML = this.addHtmlVideo1('window1');
      setTimeout(() => {
-       this.videoRecord[0] = url;
        const vlc = window.document[`vlcwindow1`];
        const mrl = url;
-       console.log(vlc);
        const options = ['rtsp-tcp=true', ' network-caching=500'];
        const itemId = vlc['playlist'].add(mrl, 'asd', options);
        vlc['playlist'].playItem(itemId);
      }, 500);
    } else if (location === 2) {
-     this.videoRecord[1] = url;
      this.videoLocation2 = name;
      document.querySelector('#window2').innerHTML = this.addHtmlVideo1('window2');
      setTimeout(() => {
@@ -162,7 +225,6 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
      }, 500);
      this.videoUrl2 = url;
    } else if (location === 3) {
-     this.videoRecord[2] = url;
      this.videoLocation3 = name;
      this.videoUrl3 = url;
      document.querySelector('#window3').innerHTML = this.addHtmlVideo1('window3');
@@ -175,7 +237,6 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
        vlc['playlist'].playItem(itemId);
      }, 500);
    } else if (location === 4) {
-     this.videoRecord[3] = url;
      this.videoLocation4 = name;
      this.videoUrl4 = url;
      document.querySelector('#window4').innerHTML = this.addHtmlVideo1('window4');
@@ -274,6 +335,7 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
     for (let i = 0; i < data.length; i++) {
       const childnode =  new TreeNode();
       childnode.label = data[i].cameraName;
+      childnode.id = data[i].id;
       childnode.outUrl = data[i].outUrl;
       childnode.showLocation = data[i].showLocation;
       childnode.level = 6;
