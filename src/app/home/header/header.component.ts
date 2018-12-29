@@ -2,7 +2,7 @@ import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {LocalStorageService} from '../../common/services/local-storage.service';
 import {HttpClient} from '@angular/common/http';
-import {GlobalService} from '../../common/services/global.service';
+import {environment} from '../../../environments/environment';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -15,9 +15,6 @@ export class HeaderComponent implements OnInit {
   public dataTime = new Date();  // 时间
   public headerTitle: string;  // 顶部标题
   public persons: any;  // 客流量
-  public personsTop: any;  // 客流量
-  public personsBottom: any;  // 客流量
-  public personNum = [];
   public serviceNameArray: any;
   public serviceName: string;
   public serviceSearchListShow = false;
@@ -29,13 +26,12 @@ export class HeaderComponent implements OnInit {
     private routerInfo: ActivatedRoute,
     private localService: LocalStorageService,
     private http: HttpClient,
-    private globalService: GlobalService,
     private router: Router
   ) { }
 
   ngOnInit() {
     const that = this;
-    this.http.get(`${this.globalService.urls}/common/config/getServiceAreaCoordinate/2`).subscribe(
+    this.http.get(`${environment.urls}/common/config/getServiceAreaCoordinate/2`).subscribe(
       (val) => {
         this.serviceNameArray = val;
       }

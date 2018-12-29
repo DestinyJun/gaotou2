@@ -8,7 +8,6 @@ import {LocalStorageService} from './common/services/local-storage.service';
 import {LoginService} from './common/services/login.service';
 import {LoginComponent} from './login/login.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {GlobalService} from './common/services/global.service';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {ProgressSpinnerModule} from 'primeng/primeng';
@@ -35,7 +34,6 @@ import { InterceptorService } from './common/services/interceptor.service';
     LoginService,
     LocalStorageService,
     LoginGuard,
-    GlobalService,
     {provide: LocationStrategy, useClass: HashLocationStrategy},
     /*{provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true}*/
   ],

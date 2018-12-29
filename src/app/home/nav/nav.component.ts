@@ -1,8 +1,8 @@
 import {Component, HostListener, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-import {GlobalService} from '../../common/services/global.service';
 import {HttpClient} from '@angular/common/http';
 import {LocalStorageService} from '../../common/services/local-storage.service';
+import {environment} from '../../../environments/environment';
 
 @Component({
   selector: 'app-nav',
@@ -33,13 +33,12 @@ export class NavComponent implements OnInit {
   }
   constructor(
     private router: Router,
-    private globalService: GlobalService,
     private localSessionStorage: LocalStorageService,
     private http: HttpClient
   ) {}
 
   ngOnInit() {
-    this.http.get(`${this.globalService.urla}/authenticator/init/business/accessToken/${this.globalService.accessToken}`).subscribe(
+    this.http.get(`${environment.urla}/authenticator/init/business/accessToken/${this.localSessionStorage.accessToken}`).subscribe(
       (value) => {
         let a: any;
         a = value;

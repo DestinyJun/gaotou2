@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {environment} from '../environments/environment';
-import {GlobalService} from './common/services/global.service';
 import {LocalStorageService} from './common/services/local-storage.service';
 
 @Component({
@@ -14,7 +13,7 @@ export class AppComponent implements OnInit {
   constructor(
     private localSessionStorage: LocalStorageService
   ) {
-    console.log('当前产品状态是：' + environment.weixin);
+    console.log('当前产品状态是：' + environment.env);
   }
   ngOnInit(): void {
     this.localSessionStorage.loading.subscribe(
