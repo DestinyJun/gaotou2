@@ -3,6 +3,7 @@ import {Subject} from 'rxjs/Subject';
 
 @Injectable()
 export class LocalStorageService {
+  public accessToken: string;
   public eventBus: Subject<any> = new Subject<any>();
   public persons: Subject<any> = new Subject<any>();
   public loading: Subject<any> = new Subject<any>(); // 加载动画控制

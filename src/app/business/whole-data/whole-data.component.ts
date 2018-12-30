@@ -2,6 +2,7 @@ import {Component, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {LocalStorageService} from '../../common/services/local-storage.service';
 import {HttpClient} from '@angular/common/http';
 import {Router} from '@angular/router';
+import {environment} from '../../../environments/environment';
 declare let BMap;
 @Component({
   selector: 'app-whole-data',

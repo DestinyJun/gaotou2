@@ -138,16 +138,16 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
      this.vehicleAmountCountClean = setInterval(() => {
        this.vehicleAmountCount();
        this.CarTypes();
-     }, 5000);
+     }, 3000);
     // 收入监控
     this.incomeAmountCountClean = setInterval(() => {
       this.incomeAmountCount();
       this.IncomeTypes();
-    }, 5000);
+    }, 3000);
     // 实时客流
     this.personAmountCountClean = setInterval(() => {
       this.getPerson();
-    }, 5000);
+    }, 3000);
   }
   // 客流
   public getPerson(): void {

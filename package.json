@@ -4,8 +4,11 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --host 0.0.0.0 --port 3030 --proxy-config proxy.conf.json",
-    "build": "ng build --prod --base-href /gaotou3/",
+    "start-dev": "ng serve --host 0.0.0.0 --port 3030 --proxy-config proxy.conf.json",
+    "start-test": "ng serve --env=test --host 0.0.0.0 --port 3030 --proxy-config proxy.conf.json",
+    "start-prod": "ng serve --prod --host 0.0.0.0 --port 3030 --proxy-config proxy.conf.json",
+    "build-test": "ng build --env=test --base-href /gaotou3/",
+    "build-prod": "ng build --prod --base-href /gaotou/",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
