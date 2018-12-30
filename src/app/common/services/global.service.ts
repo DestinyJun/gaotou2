@@ -6,7 +6,7 @@ import {LocalStorageService} from './local-storage.service';
 export class GlobalService {
   public accessToken: string;
   // gaotou
-  /*public urls = `http://120.78.137.182:8888/highway-management`;
+ /* public urls = `http://120.78.137.182:8888/highway-management`;
   public urlc = `http://120.78.137.182:8888/highway-interactive`;
   public urlt = `http://120.78.137.182:8888/highway-interactive`;
   public urla = `http://120.77.171.73:8080/highway-authentication`;*/
