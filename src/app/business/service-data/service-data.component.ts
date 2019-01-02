@@ -6,6 +6,7 @@ import {EventListInfo, UploadEventInfoUp} from '../../common/model/service-data.
 import {ServiceDataService} from '../../common/services/service-data.service';
 import {LocalStorageService} from '../../common/services/local-storage.service';
 import {DatePipe} from '@angular/common';
+
 @Component({
   selector: 'app-service-data',
   templateUrl: './service-data.component.html',
@@ -15,14 +16,15 @@ import {DatePipe} from '@angular/common';
 export class ServiceDataComponent implements OnInit, OnDestroy {
   /***********************基础信息************************/
   public esDate: any;  // 时间初始化
-    // 组件销毁后清除时钟任务
+  // 组件销毁后清除时钟任务
   public vehicleAmountCountClean: any;
   public incomeAmountCountClean: any;
   public personAmountCountClean: any;
+  public incomeShopInfoClean: any;
   // 服务区名称
   public serviceZoneTitle: string;
   /***********************左边************************/
-  //  3D柱状图配置
+    //  3D柱状图配置
   public options3d: any;
   public options3dCopy: any;
   public alertBarShow = false;   // 3D柱状图弹窗
@@ -43,7 +45,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   public carEndTime: Date; // 时间选择器
   public carTimeTypes: any;
   /***********************中部************************/
-  // 商家、视频及方向
+    // 商家、视频及方向
   public incomeTopData: any;
   public incomeBottomData: any;
   // 服务区商家视频弹窗
@@ -119,7 +121,9 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     private serareaService: ServiceDataService,
     private localService: LocalStorageService,
     private datePipe: DatePipe
-  ) {}
+  ) {
+  }
+
   ngOnInit() {
     this.serareaService.searchSerAraItem(1).subscribe(
       (value) => {
@@ -163,20 +167,23 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     // 数据初始化
     this.upData();
   }
+
   ngOnDestroy(): void {
     clearInterval(this.vehicleAmountCountClean);
     clearInterval(this.incomeAmountCountClean);
     clearInterval(this.personAmountCountClean);
+    clearInterval(this.incomeShopInfoClean);
   }
+
   /*************数据初始化****************/
   public upData() {
     //  3d图统计
     this.packOption3();
     // 车流监控
-     this.vehicleAmountCountClean = setInterval(() => {
-       this.vehicleAmountCount();
-       this.CarTypes();
-     }, 3000);
+    this.vehicleAmountCountClean = setInterval(() => {
+      this.vehicleAmountCount();
+      this.CarTypes();
+    }, 3000);
     // 收入监控
     this.incomeAmountCountClean = setInterval(() => {
       this.incomeAmountCount();
@@ -186,8 +193,11 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     this.personAmountCountClean = setInterval(() => {
       this.getPerson();
     }, 3000);
+    // 实时店铺信息
+    this.incomeShopInfoClean = setInterval(() => {
+      this.backCenterDate();
+    }, 3000);
     // 事件列表
-    this.backCenterDate();
     this.eventNotPoocess();
     // 事件上报类型
     this.serareaService.searchEventCategory().subscribe(
@@ -198,6 +208,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       }
     );
   }
+
   // 客流
   public getPerson(): void {
     let total: any;
@@ -259,6 +270,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       }
     );
   }
+
   public onOutOptions3d(e): void {
     const defaultMonth = new Date().getMonth() + 1;
     this.outOptions3d = e;
@@ -283,7 +295,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       (val) => {
         if (val.status === '200') {
           this.options3dLine = {
-            title: `贵州省久长服务区${this.options3d.xdata[defaultMonth-1]}业态走势图`,
+            title: `贵州省久长服务区${this.options3d.xdata[defaultMonth - 1]}业态走势图`,
             data: val.data,
             color: ['#7C7CD4', '#36B9AB', '#6ACD72', '#0A30BF', '#027204']
           };
@@ -291,6 +303,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       }
     );
   }
+
   public onOutOptions3dBar(e): void {
     // 折线图
     this.serareaService.search3DAlertLineMonth(
@@ -306,10 +319,12 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       }
     );
   }
+
   public closeBarShow() {
     this.alertBarShow = false;
     document.body.className = '';
   }
+
   public bar3dExportClick() {
     const startTime = this.datePipe.transform(this.startTime3d, 'yyyyMMdd');
     const endTime = this.datePipe.transform(this.endTime3d, 'yyyyMMdd');
@@ -319,6 +334,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       window.alert('请把数据选择全在提交');
     }
   }
+
   // 车辆监控及表格导出
   public vehicleAmountCount(): void {
     this.serareaService.searchCarTotal({id: 1}).subscribe(
@@ -332,6 +348,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       }
     );
   }
+
   public CarTypes() {
     this.serareaService.searchCarTotalPie({id: 1}).subscribe(
       (value) => {
@@ -346,17 +363,20 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       }
     );
   }
+
   public parkClick(e): void {
     this.alertCarShow = true;
     document.body.className = 'ui-overflow-hidden';
     this.carTimeTypes = 'hour';
     this.carDistribution(1, this.carTimeTypes);
   }
-  public carSelectTime (event): void {
+
+  public carSelectTime(event): void {
     this.carTimeTypes = event.code;
     // 表格
-    this.carDistribution(1,  this.carTimeTypes);
+    this.carDistribution(1, this.carTimeTypes);
   }
+
   public carDistribution(e, time): void {
     /*const carTypes = {
       '总数': 'total',
@@ -373,10 +393,12 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       }
     );
   }
+
   public closeCarShow(): void {
     document.body.className = '';
     this.alertCarShow = false;
   }
+
   /*public carBtnClick(e): void {
     if (e.srcElement.innerText === '小车') {
       this.alertCarTitle = '小车';
@@ -409,6 +431,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       window.alert('请把数据选择全在提交');
     }
   }
+
   /************************中部***************************/
   // 店铺、视频及方向
   public backCenterDate() {
@@ -463,10 +486,12 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       }
     );
   }
+
   public closeServiceShop(): void {
     document.body.className = '';
     this.serviceShopShow = false;
   }
+
   // 服务区商家
   public openServiceShop(item): void {
     console.log(item);
@@ -502,6 +527,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       }
     );
   }
+
   public openMerchantVideo(item): void {
     /*this.videoBottomShopUrl = `
         <object type='application/x-vlc-plugin' pluginspage="http://www.videolan.org/" id='vlc' events='false' width="100%" height="96%">
@@ -546,6 +572,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       }, 100);
     }, 100);
   }
+
   public shopExportClick() {
     const startTime = this.datePipe.transform(this.shopStartTime, 'yyyyMMdd');
     const endTime = this.datePipe.transform(this.shopEndTime, 'yyyyMMdd');
@@ -555,13 +582,15 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       window.alert('请把数据选择全在提交');
     }
   }
-  public shopImageZoom (e): void {
-      if (e) {
-        document.getElementById('shopVideo').innerHTML = ``;
-      } else {
-        this.addShopVideo(this.serviceShopInfo);
-      }
+
+  public shopImageZoom(e): void {
+    if (e) {
+      document.getElementById('shopVideo').innerHTML = ``;
+    } else {
+      this.addShopVideo(this.serviceShopInfo);
+    }
   }
+
   public addShopVideo(item) {
     // 视频监控
     if (!item.cameraList.length) {
@@ -606,12 +635,14 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       }, 100);
     }
   }
-  public cancelserviceShopVideo (): void {
+
+  public cancelserviceShopVideo(): void {
     this.videoBottomShopUrl = ``;
     setTimeout(() => {
       document.getElementById('shopVideo').innerHTML = this.videoBottomShopUrl;
     }, 100);
   }
+
   // 公共视频监控
   public openPublicVideo(e) {
     this.videoShopList = e;
@@ -619,31 +650,30 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     document.body.className = 'ui-overflow-hidden';
     this.videoPublicShow = true;
     this.publicVideoTitle = e.cameraName;
-   /* videoUrlHtml = videoUrlHtml + `
-
-<object type='application/x-vlc-plugin' pluginspage="http://www.videolan.org/" id='vlc' events='false' width="100%" height="99%">
-              <param name='mrl' value='${e.outUrl}' />
-              <param name='volume' value='50' />
-              <param name='autoplay' value='true' />
-              <param name='loop' value='false' />
-              <param name='fullscreen' value='true' />
-              <param name='controls' value='true' />
-            </object>
-    `; */
-  /*  videoUrlHtml = videoUrlHtml + `
-         <object type='application/x-vlc-plugin'
-            id='vlc' width="100%" height="100%" events='True' pluginspage="http://www.videolan.org"
-            codebase="http://downloads.videolan.org/pub/videolan/vlc-webplugins/2.2.1/npapi-vlc-2.2.1.tar.xz">
-                  <param name='mrl' value='${e.outUrl}'/>
-                  <param name='volume' value='30'/>
-                  <param name='autoplay' value='true'/>
-                  <param name='loop' value='false'/>
-                  <param value="transparent" name="wmode">
-                  <embed id='vlc1' wmode="transparent" type="application/x-vlc-plugin"
-                     width="100%" height="100%" pluginspage="http://www.videolan.org"
-                     allownetworking="internal" allowscriptaccess="always" quality="high" src='${e.outUrl}'>
-         </object>
-    `;*/
+    /* videoUrlHtml = videoUrlHtml + `
+ <object type='application/x-vlc-plugin' pluginspage="http://www.videolan.org/" id='vlc' events='false' width="100%" height="99%">
+               <param name='mrl' value='${e.outUrl}' />
+               <param name='volume' value='50' />
+               <param name='autoplay' value='true' />
+               <param name='loop' value='false' />
+               <param name='fullscreen' value='true' />
+               <param name='controls' value='true' />
+             </object>
+     `; */
+    /*  videoUrlHtml = videoUrlHtml + `
+           <object type='application/x-vlc-plugin'
+              id='vlc' width="100%" height="100%" events='True' pluginspage="http://www.videolan.org"
+              codebase="http://downloads.videolan.org/pub/videolan/vlc-webplugins/2.2.1/npapi-vlc-2.2.1.tar.xz">
+                    <param name='mrl' value='${e.outUrl}'/>
+                    <param name='volume' value='30'/>
+                    <param name='autoplay' value='true'/>
+                    <param name='loop' value='false'/>
+                    <param value="transparent" name="wmode">
+                    <embed id='vlc1' wmode="transparent" type="application/x-vlc-plugin"
+                       width="100%" height="100%" pluginspage="http://www.videolan.org"
+                       allownetworking="internal" allowscriptaccess="always" quality="high" src='${e.outUrl}'>
+           </object>
+      `;*/
     videoUrlHtml = videoUrlHtml + `
          <object classid="clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921"
             id="vlc${e.id}" codebase="" width="100%" height="100%" events="True">
@@ -682,10 +712,12 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       }, 100);
     }, 100);
   }
+
   public closePublicVideo() {
     document.body.className = '';
     this.videoPublicShow = false;
   }
+
   public publicTopVideoGroupOver(videoList, i): void {
     videoList.map(() => {
       this.videoTopOpen.push(false);
@@ -698,9 +730,11 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       this.publicVideoList = videoList;
     }
   }
+
   public publicTopVideoGroupLeave(i): void {
     this.videoTopOpen[i] = false;
   }
+
   public publicTopBottomGroupOver(videoList, i): void {
     videoList.map(() => {
       this.videoBottomOpen.push(false);
@@ -713,6 +747,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       this.publicVideoList = videoList;
     }
   }
+
   public publicTopBottomGroupLeave(i): void {
     this.videoBottomOpen[i] = false;
   }
@@ -727,6 +762,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       }
     );
   }
+
   public openEventAlert(item): void {
     document.body.className = 'ui-overflow-hidden';
     this.eventAlertShow = true;
@@ -747,20 +783,25 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       }
     );
   }
+
   public closeEventAlert() {
     document.body.className = '';
     this.eventAlertShow = false;
   }
+
   public eventAlertListCtrlw(): void {
     this.eventAlertListShow = true;
   }
+
   public eventAlertListCtrly(): void {
     this.eventAlertListShow = false;
   }
+
   public eventListInfosClick(item): void {
     console.log(item);
     this.eventListInfo = item;
   }
+
   // 事件上报
   public eventInfoUpClick(e): void {
     if (e.eventCategoryName !== '经营类') {
@@ -773,10 +814,12 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       this.eventAlertInfoUp = true;
     }
   }
+
   public closeEventInfoUpClick(): void {
     // document.body.className = '';
     this.eventAlertInfoUp = false;
   }
+
   public serviceInfoUpAlertClick() {
     document.body.className = '';
     this.eventAlertInfoUp = false;
@@ -792,12 +835,14 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       }
     );
   }
+
   // 卫生间及停车位弹窗
   public openServersToiletAlert(e) {
     document.body.className = 'ui-overflow-hidden';
     this.waitTitle = e;
     this.serversToiletAlertShow = true;
   }
+
   public closeServersToiletAlert() {
     document.body.className = '';
     this.serversToiletAlertShow = false;
@@ -814,15 +859,18 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     }
     return car;
   }
+
   // 服务区信息修改
   public crosswiseClick(): void {
     this.alertCrosswiseShow = true;
     document.body.className = 'ui-overflow-hidden';
   }
+
   public closeCrosswiseShow(): void {
     document.body.className = '';
     this.alertCrosswiseShow = false;
   }
+
   public modifySerAraItemClick(): void {
     this.serareaService.modifySerAraItem(
       {
@@ -880,6 +928,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       }
     );
   }
+
   // 平面图
   public openServicesPlan() {
     document.body.className = 'ui-overflow-hidden';
@@ -904,19 +953,22 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       },
     };
   }
+
   public closeServicesPlan() {
     document.body.className = '';
     this.servicesPlan = false;
   }
+
   // 服务区合同下载
-  public servicesPactDown (): void {
+  public servicesPactDown(): void {
     if (this.serviceInfo.contractUrl === null) {
       window.alert('合同暂未上传');
       return;
       // console.log(this.serviceInfo.contractUrlPrefix + this.serviceInfo.contractUrl);
     }
-  window.open(`${this.serviceInfo.contractUrlPrefix}${this.serviceInfo.contractUrl}`);
-}
+    window.open(`${this.serviceInfo.contractUrlPrefix}${this.serviceInfo.contractUrl}`);
+  }
+
   // 收入监控
   public incomeAmountCount(): void {
     this.serareaService.searchIncomeTotal({id: 1}).subscribe(
@@ -930,6 +982,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       }
     );
   }
+
   public IncomeTypes() {
     this.serareaService.searchIncomeTotalPie({id: 1}).subscribe(
       (value) => {
@@ -944,6 +997,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       }
     );
   }
+
   public incomeClick(e): void {
     this.alertIncomeTypeShow = true;
     this.alertIncomeShow = true;
@@ -952,7 +1006,8 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     this.IncomeTimeTypes = 'hour';
     this.getIncomeTypesSingle(1, this.alertIncomeTitle, this.storeList, this.IncomeTimeTypes);
   }
-  public getIncomeTotalTypes (): void {
+
+  public getIncomeTotalTypes(): void {
     this.serareaService.searchIncomeTypes().subscribe(
       (value) => {
         if (value.status === '200') {
@@ -961,6 +1016,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       }
     );
   }
+
   public getIncomeTotal(time, pageNums): void {
     this.serareaService.searchIncomeTypesList({dateType: time, id: 1, page: pageNums, nums: 15}).subscribe(
       (incomeVal) => {
@@ -970,6 +1026,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       }
     );
   }
+
   public getIncomeTypesSingle(pageNums, item, storeList, time): void {
     const shopType = {
       '小吃': {
@@ -1012,7 +1069,8 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       );
     }
   }
-  public IncomeSelectTime (event): void {
+
+  public IncomeSelectTime(event): void {
     this.IncomeTimeTypes = event.code;
     if (!this.alertIncomeTypeShow) {
       this.getIncomeTotal(this.IncomeTimeTypes, 1);
@@ -1020,6 +1078,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     }
     this.getIncomeTypesSingle(1, this.alertIncomeTitle, this.storeList, this.IncomeTimeTypes);
   }
+
   public getIncomeTypesSinglePaging(page, item, storeList, time): void {
     if (!this.alertIncomeTypeShow) {
       this.getIncomeTotal(time, page);
@@ -1027,53 +1086,49 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     }
     this.getIncomeTypesSingle(page, item, storeList, time);
   }
+
   public closeIncomeShow(): void {
     document.body.className = '';
     this.alertIncomeShow = false;
   }
+
   public IncomeBtnClick(e): void {
     if (e.srcElement.innerText === '收入总数') {
       this.alertIncomeTitle = '收入总数';
       this.alertIncomeTypeShow = false;
       this.arryIncomePie = [];
       this.getIncomeTotal(this.IncomeTimeTypes, 1);
-    }
-    else if (e.srcElement.innerText === '小吃') {
+    } else if (e.srcElement.innerText === '小吃') {
       this.alertIncomeTitle = '小吃';
       this.alertIncomeTypeTitle = '小吃';
       this.alertIncomeTypeShow = true;
       this.arryIncomePie = [];
       this.getIncomeTypesSingle(1, e.srcElement.innerText, this.storeList, this.IncomeTimeTypes);
-    }
-    else if (e.srcElement.innerText === '中式快餐') {
+    } else if (e.srcElement.innerText === '中式快餐') {
       this.alertIncomeTitle = '中式快餐';
       this.alertIncomeTypeTitle = '中式快餐';
       this.alertIncomeTypeShow = true;
       this.arryIncomePie = [];
       this.getIncomeTypesSingle(1, e.srcElement.innerText, this.storeList, this.IncomeTimeTypes);
-    }
-    else if (e.srcElement.innerText === '西式快餐') {
+    } else if (e.srcElement.innerText === '西式快餐') {
       this.alertIncomeTitle = '西式快餐';
       this.alertIncomeTypeTitle = '西式快餐';
       this.alertIncomeTypeShow = true;
       this.arryIncomePie = [];
       this.getIncomeTypesSingle(1, e.srcElement.innerText, this.storeList, this.IncomeTimeTypes);
-    }
-    else if (e.srcElement.innerText === '商超') {
+    } else if (e.srcElement.innerText === '商超') {
       this.alertIncomeTitle = '商超';
       this.alertIncomeTypeTitle = '商超';
       this.alertIncomeTypeShow = true;
       this.arryIncomePie = [];
       this.getIncomeTypesSingle(1, e.srcElement.innerText, this.storeList, this.IncomeTimeTypes);
-    }
-    else if (e.srcElement.innerText === '住宿') {
+    } else if (e.srcElement.innerText === '住宿') {
       this.alertIncomeTitle = '住宿';
       this.alertIncomeTypeTitle = '住宿';
       this.alertIncomeTypeShow = true;
       this.arryIncomePie = [];
       this.getIncomeTypesSingle(1, e.srcElement.innerText, this.storeList, this.IncomeTimeTypes);
-    }
-    else if (e.srcElement.innerText === '汽修') {
+    } else if (e.srcElement.innerText === '汽修') {
       this.alertIncomeTitle = '汽修';
       this.alertIncomeTypeTitle = '汽修';
       this.alertIncomeTypeShow = true;
@@ -1081,6 +1136,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       this.getIncomeTypesSingle(1, e.srcElement.innerText, this.storeList, this.IncomeTimeTypes);
     }
   }
+
   public incomeExportClick() {
     const startTime = this.datePipe.transform(this.incomeStartTime, 'yyyyMMdd');
     const endTime = this.datePipe.transform(this.incomeEndTime, 'yyyyMMdd');

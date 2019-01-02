@@ -217,9 +217,9 @@
 }
 .center .event-table-processed-type>span {
   display: inline-block;
-  width:1.5rem;
-  height: 13vh;
-  font-size:1rem;
+  width:1.2rem;
+  height: 9.5vh;
+  font-size:0.5rem;
   background: #03A9F7;
   padding: 0.5vh 0;
   text-align: center;

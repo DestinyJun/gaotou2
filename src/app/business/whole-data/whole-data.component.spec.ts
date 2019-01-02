@@ -1,7 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { WholeDataComponent } from './whole-data.componentt';
-
+import {WholeDataComponent} from './whole-data.component';
 describe('WholeDataComponent', () => {
   let component: WholeDataComponent;
   let fixture: ComponentFixture<WholeDataComponent>;
