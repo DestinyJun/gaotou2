@@ -146,6 +146,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     this.IncomeTypes();
     this.getPerson();
     this.getIncomeTotalTypes();
+    this.backCenterDate();
     // 时间初始化
     this.esDate = {
       firstDayOfWeek: 0,
@@ -651,6 +652,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     this.videoPublicShow = true;
     this.publicVideoTitle = e.cameraName;
     /* videoUrlHtml = videoUrlHtml + `
+
  <object type='application/x-vlc-plugin' pluginspage="http://www.videolan.org/" id='vlc' events='false' width="100%" height="99%">
                <param name='mrl' value='${e.outUrl}' />
                <param name='volume' value='50' />
