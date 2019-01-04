@@ -11,6 +11,7 @@ export class PersonalService {
   ) {}
   // 修改用户信息
   public updateProfile(params): Observable<any> {
+    console.log(params);
     return this.http.post(`${environment.urls}/common/auth/editUser`, params);
   }
   // 修改密码

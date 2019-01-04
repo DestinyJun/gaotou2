@@ -140,6 +140,7 @@
                             <th>客车车辆</th>
                             <th>小车车辆</th>
                             <th>货车车辆</th>
+                            <th>服务区方向</th>
                           </tr>
                           </thead>
                           <tbody>
@@ -149,6 +150,12 @@
                             <td>{{item?.coachVehicle}}</td>
                             <td>{{item?.sedanVehicle}}</td>
                             <td>{{item?.truckVehicle}}</td>
+                            <td>
+                              <span *ngIf="item?.source">
+                                {{item?.source+'——>'+item?.destination}}
+                              </span>
+                              <span *ngIf="!(item?.source)">方向数据丢失</span>
+                            </td>
                             <!--<td [ngStyle]="{'background':alertCarTitle === '小车'?'black': ''}">{{item.cart}}</td>
                             <td [ngStyle]="{'background':alertCarTitle === '客车'?'black': ''}">{{item.trucks}}</td>
                             <td [ngStyle]="{'background':alertCarTitle === '货车'?'black': ''}">{{item.bus}}</td>-->
@@ -540,7 +547,8 @@
               *ngIf="serviceShopInfo.cameraDistributionGraph"
               [option]="{url: serviceShopInfo.graphPrefix + serviceShopInfo.cameraDistributionGraph}"
               [height]="'22vh'"
-              [zoom]="false"
+              [zoom]="true"
+              (eventClick)="shopImageZoom($event)"
             ></app-image-zoom>
           </div>
         </div>

@@ -290,6 +290,22 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
         }
       }
     );
+    if (e.bar.types === 'electric' || e.bar.types === 'water') {
+      // 折线图
+      this.serareaService.search3DAlertLineMonth(
+        {id: 1, month: defaultMonth, types: ['electric', 'water']}).subscribe(
+        (val) => {
+          if (val.status === '200') {
+            this.options3dLine = {
+              title: `贵州省久长服务区${this.options3d.xdata[defaultMonth - 1]}业态走势图`,
+              data: val.data,
+              color: ['#7C7CD4', '#36B9AB', '#6ACD72', '#0A30BF', '#027204']
+            };
+          }
+        }
+      );
+      return;
+    }
     // 折线图
     this.serareaService.search3DAlertLineMonth(
       {id: 1, month: defaultMonth, types: ['revenue', 'passenger', 'vehicle', 'electric', 'water']}).subscribe(
@@ -390,6 +406,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       (val) => {
         if (val.status === '200') {
           this.carTableData = val.data;
+          console.log(val.data);
         }
       }
     );

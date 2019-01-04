@@ -12,8 +12,6 @@ import {PersonalService} from '../../common/services/personal.service';
 export class PersonalComponent implements OnInit {
   public value: Date; // 时间选择器
   public  esDate: any; // 时间名称初始化
-  // 实时客流量
-  public persons = [];
   // btn状态值判断
   public btnProfileTxt = true;
   public btnPasswordTxt = true;
@@ -29,6 +27,7 @@ export class PersonalComponent implements OnInit {
 
   ngOnInit() {
     this.userInfo = JSON.parse(this.localService.userSessionStorage.userDTO);
+    console.log(this.userInfo);
     // 发射实时客流
     this.getPerson();
     // 发射业太数据名称
@@ -66,15 +65,16 @@ export class PersonalComponent implements OnInit {
         this.updateUser[prop] = this.userInfo[prop];
       }
     }
-    console.log(this.updateUser);
-    this.personalService.updateProfile(this.updateUser).subscribe(
-      (value) => {
-        console.log(value);
-        if (value.status === '200') {
-
+    if (this.updateUser) {
+      this.personalService.updateProfile(this.updateUser).subscribe(
+        (value) => {
+          if (value.status === '200') {
+            window.alert(value.message);
+            // console.log(value);
+          }
         }
-      }
-    );
+      );
+    }
   }
   public updatePasswordClick() {
     if (this.confirmPassword === this.updatePassword.newPassword) {
