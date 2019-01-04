@@ -97,7 +97,7 @@
     <div class="form-group text-center style-border">
       <button *ngIf="btnPasswordTxt" class="btn btn-lg btn-primary" type="button" (click)="btnPasswordTxt=false">修改密码</button>
       <button *ngIf="!btnPasswordTxt" class="btn btn-lg btn-primary" type="button" (click)="updatePasswordClick()">确认修改</button>
-      <button class="btn btn-lg btn-danger" type="button" style="margin-left: 1vw" (click)="logOut()" [routerLink]="['/login']">退出登陆</button>
+      <button class="btn btn-lg btn-danger" type="button" style="margin-left: 1vw" (click)="logOut()" [routerLink]="['/login']">退出登录</button>
       <button class="btn btn-lg btn-info" type="button" style="margin-left: 1vw" (click)="goBack()">返回</button>
     </div>
   </div>

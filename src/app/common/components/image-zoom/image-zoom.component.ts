@@ -18,12 +18,22 @@ export class ImageZoomComponent implements OnInit, OnChanges {
   }
 
   @HostListener('click', ['$event.target']) onClick(element) {
+    this.closeFlag = !this.closeFlag;
+    if (!this.zoom) {
+      return;
+    }
     if (this.closeFlag) {
+      element.parentElement.className = 'max';
+      this.height = '80vh';
+      this.eventClick.emit(true);
+    } else {
       if (element.tagName !== 'IMG') {
-        console.log(element);
         element.className = '';
         this.height = this.acceptHeight;
-        this.closeFlag = false;
+        this.eventClick.emit(false);
+      } else {
+        element.parentElement.className = '';
+        this.height = this.acceptHeight;
         this.eventClick.emit(false);
       }
     }
@@ -39,12 +49,12 @@ export class ImageZoomComponent implements OnInit, OnChanges {
   }
 
   public openClick(e): void {
-    if (this.zoom) {
-      this.closeFlag = true;
-      e.target.parentElement.className = 'max';
-      this.height = '80vh';
-      this.eventClick.emit(true);
-    }
+    /* if (this.zoom) {
+       this.closeFlag = true;
+       e.target.parentElement.className = 'max';
+       this.height = '80vh';
+       this.eventClick.emit(true);
+     }*/
   }
 
   public onClose(e): void {
