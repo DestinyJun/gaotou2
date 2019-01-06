@@ -1,8 +1,6 @@
 import {Component, HostListener, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-import {HttpClient} from '@angular/common/http';
 import {LocalStorageService} from '../../common/services/local-storage.service';
-import {environment} from '../../../environments/environment';
 
 @Component({
   selector: 'app-nav',
@@ -11,7 +9,14 @@ import {environment} from '../../../environments/environment';
 })
 export class NavComponent implements OnInit {
   public urlList: any;
-  public urlIcon = ['fa fa-area-chart', 'fa fa-bar-chart', 'fa fa-line-chart', 'fa fa-video-camera', 'fa fa-pie-chart', 'fa fa-server'];
+  public urlIcon = {
+    whole: 'fa fa-area-chart',
+    province: 'fa fa-bar-chart',
+    city: 'fa fa-line-chart',
+    serzone: 'fa fa-pie-chart',
+    camera: 'fa fa-video-camera',
+    };
+  public urlClass = [];
   public navOpacity = '0.4';
   public navHeight = '50px';
   @HostListener('mouseenter') onMouserEnter() {
@@ -34,22 +39,11 @@ export class NavComponent implements OnInit {
   constructor(
     private router: Router,
     private localSessionStorage: LocalStorageService,
-    private http: HttpClient
   ) {}
 
   ngOnInit() {
-    this.http.get(`${environment.urla}/authenticator/init/business/accessToken/${this.localSessionStorage.accessToken}`).subscribe(
-      (value) => {
-        let a: any;
-        a = value;
-        if (a.status === '200') {
-          this.urlList = a.data.menuAscxs;
-          console.log(this.urlList);
-        } else {
-          // window.alert('初始化菜单失败');
-        }
-      }
-    );
+    this.urlList = this.localSessionStorage.getObject('urlList');
+    this.urlClass = this.localSessionStorage.getObject('urlClass');
   }
   public wholeClick(): void {
     this.router.navigate(['home/whole']);

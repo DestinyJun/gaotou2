@@ -10,6 +10,7 @@ import {LocalStorageService} from '../common/services/local-storage.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
+  public urlClass = [];
   // 表单
   public myFromModule: FormGroup;
   public formUsername: any;
@@ -37,14 +38,31 @@ export class LoginComponent implements OnInit {
         (value) => {
           this.localSessionStorage.loading.next({display: true});
           if (value.status === '200') {
+            // 隐藏加载动画
             this.localSessionStorage.loading.next({display: false});
-            // 本地存储信息
-            for ( const prop in value.data) {
-              if (value.data.hasOwnProperty(prop)) {
-                this.localSessionStorage.setObject(prop, value.data[prop]);
-              }
-            }
-            this.route.navigate([value.data.homePageRoute]);
+            // 初始化路由信息
+            this.loginService.getRouter(value.data.authentication.accessToken).subscribe(
+              (routerInfo) => {
+                if (routerInfo.status === '200') {
+                  console.log(routerInfo);
+                  routerInfo.data.menuAscxs.map((item) => {
+                    const aString = item.menuCode;
+                    this.urlClass.push(aString.split(':')[1]);
+                  });
+                  console.log(routerInfo.data.menuAscxs);
+                  value.data.urlList = routerInfo.data.menuAscxs;
+                  value.data.urlClass = this.urlClass;
+                  // 本地存储信息
+                  for ( const prop in value.data) {
+                    if (value.data.hasOwnProperty(prop)) {
+                      this.localSessionStorage.setObject(prop, value.data[prop]);
+                    }
+                  }
+                  this.route.navigate([value.data.homePageRoute, {id: 1, name: '久长服务区'}]);
+                } else {
+                  window.alert('初始化菜单失败');
+                }
+            });
           } else {
             this.localSessionStorage.loading.next({display: false});
             window.alert(value.message);

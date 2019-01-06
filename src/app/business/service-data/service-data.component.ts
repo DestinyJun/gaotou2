@@ -21,8 +21,8 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   public incomeAmountCountClean: any;
   public personAmountCountClean: any;
   public incomeShopInfoClean: any;
-  // 服务区名称
-  public serviceZoneTitle: string;
+  public serviceZoneTitle: string;  // 服务区名称
+  public serviceZoneID: string;   // 服务区ID
   /***********************左边************************/
     //  3D柱状图配置
   public options3d: any;
@@ -125,7 +125,15 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.serareaService.searchSerAraItem(1).subscribe(
+    // 路由接受参数
+    this.routerInfo.params.subscribe(
+      (params) => {
+        this.serviceZoneTitle = params.name;
+        this.serviceZoneID = params.id;
+        this.localService.eventBus.next({title: this.serviceZoneTitle + '业态大数据', flagState: 'serzone', flagName: this.serviceZoneTitle});
+      }
+    );
+    this.serareaService.searchSerAraItem(this.serviceZoneID).subscribe(
       (value) => {
         this.serviceInfo = value.data;
         value.data.commonAttributeValues.map((val, index) => {
@@ -158,13 +166,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       today: '今天',
       clear: '清除'
     };
-    // 路由接受参数
-    this.routerInfo.params.subscribe(
-      (params) => {
-        this.serviceZoneTitle = params.name;
-        this.localService.eventBus.next({title: this.serviceZoneTitle + '业态大数据', flagState: 'serzone', flagName: this.serviceZoneTitle});
-      }
-    );
     // 数据初始化
     this.upData();
   }
@@ -215,16 +216,16 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     let total: any;
     let province: any;
     let city: any;
-    this.serareaService.searchPersonTotal({id: 1}).subscribe(
+    this.serareaService.searchPersonTotal({id: this.serviceZoneID}).subscribe(
       (totalVal) => {
         if (totalVal.status === '200') {
           total = totalVal.data;
           if (!(total === 0)) {
-            this.serareaService.searchPersonProvince({id: 1}).subscribe(
+            this.serareaService.searchPersonProvince({id: this.serviceZoneID}).subscribe(
               (provinceVal) => {
                 if (provinceVal.status === '200') {
                   province = provinceVal.data;
-                  this.serareaService.searchPersonCity({id: 1}).subscribe(
+                  this.serareaService.searchPersonCity({id: this.serviceZoneID}).subscribe(
                     (cityVal) => {
                       if (cityVal.status === '200') {
                         city = cityVal.data;
@@ -255,7 +256,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   // 3D柱状图图表配置及表格导出
   public packOption3() {
     // 车流客流人流
-    this.serareaService.search3DBar({id: 1, parameter: ['revenue', 'passenger', 'vehicle']}).subscribe(
+    this.serareaService.search3DBar({id: this.serviceZoneID, parameter: ['revenue', 'passenger', 'vehicle']}).subscribe(
       (val) => {
         if (val.status === '200') {
           this.options3d = val.data;
@@ -263,7 +264,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       }
     );
     // 用电量用水量
-    this.serareaService.search3DBar({id: 1, parameter: ['electric', 'water']}).subscribe(
+    this.serareaService.search3DBar({id: this.serviceZoneID, parameter: ['electric', 'water']}).subscribe(
       (val) => {
         if (val.status === '200') {
           this.options3dCopy = val.data;
@@ -279,7 +280,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     this.alertBarShow = true;
     this.alertBarTitle = this.outOptions3d.alertBarTitle;
     // 柱状图
-    this.serareaService.search3DAlertBar({id: 1, types: this.outOptions3d.bar.types}).subscribe(
+    this.serareaService.search3DAlertBar({id: this.serviceZoneID, types: this.outOptions3d.bar.types}).subscribe(
       (val) => {
         if (val.status === '200') {
           this.options3dBar = {
@@ -293,7 +294,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     if (e.bar.types === 'electric' || e.bar.types === 'water') {
       // 折线图
       this.serareaService.search3DAlertLineMonth(
-        {id: 1, month: defaultMonth, types: ['electric', 'water']}).subscribe(
+        {id: this.serviceZoneID, month: defaultMonth, types: ['electric', 'water']}).subscribe(
         (val) => {
           if (val.status === '200') {
             this.options3dLine = {
@@ -308,7 +309,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     }
     // 折线图
     this.serareaService.search3DAlertLineMonth(
-      {id: 1, month: defaultMonth, types: ['revenue', 'passenger', 'vehicle', 'electric', 'water']}).subscribe(
+      {id: this.serviceZoneID, month: defaultMonth, types: ['revenue', 'passenger', 'vehicle', 'electric', 'water']}).subscribe(
       (val) => {
         if (val.status === '200') {
           this.options3dLine = {
@@ -324,7 +325,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   public onOutOptions3dBar(e): void {
     // 折线图
     this.serareaService.search3DAlertLineMonth(
-      {id: 1, month: e.xType + 1, types: ['revenue', 'passenger', 'vehicle', 'electric', 'water']}).subscribe(
+      {id: this.serviceZoneID, month: e.xType + 1, types: ['revenue', 'passenger', 'vehicle', 'electric', 'water']}).subscribe(
       (val) => {
         if (val.status === '200') {
           this.options3dLine = {
@@ -354,7 +355,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
 
   // 车辆监控及表格导出
   public vehicleAmountCount(): void {
-    this.serareaService.searchCarTotal({id: 1}).subscribe(
+    this.serareaService.searchCarTotal({id: this.serviceZoneID}).subscribe(
       (value) => {
         if (value.status === '200') {
           this.vehicleAmount = {
@@ -367,7 +368,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   }
 
   public CarTypes() {
-    this.serareaService.searchCarTotalPie({id: 1}).subscribe(
+    this.serareaService.searchCarTotalPie({id: this.serviceZoneID}).subscribe(
       (value) => {
         if (value.status === '200') {
           this.optionsCarModel = {
@@ -402,7 +403,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       '货车': 3,
     };*/
     // 表格
-    this.serareaService.searchCarAlertTable({dateType: time, id: 1, page: e, nums: 10}).subscribe(
+    this.serareaService.searchCarAlertTable({dateType: time, id: this.serviceZoneID, page: e, nums: 10}).subscribe(
       (val) => {
         if (val.status === '200') {
           this.carTableData = val.data;
@@ -547,27 +548,17 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   }
 
   public openMerchantVideo(item): void {
-    /*this.videoBottomShopUrl = `
-        <object type='application/x-vlc-plugin' pluginspage="http://www.videolan.org/" id='vlc' events='false' width="100%" height="96%">
-              <param name='mrl' value='${item.outUrl}' />
-              <param name='volume' value='50' />
-              <param name='autoplay' value='true' />
-              <param name='loop' value='false' />
-              <param name='fullscreen' value='true' />
-              <param name='controls' value='true' />
-            </object>
-      `; */
     this.videoBottomShopUrl = `
-        <object classid="clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921"
+       <object classid="clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921"
             id="vlc${item.id}" codebase="" width="100%" height="100%" events="True">
         <param name="mrl" value=""/>
         <param name="src" value=""/>
+        <param name="controls" value="false"/>
         <param name="ShowDisplay" value="true"/>
         <param name="AutoLoop" value="false"/>
         <param name="autoplay" value="true"/>
         <param name="Time" value="True"/>
         <param name='volume' value='30'/>
-        <param name='controls' value='false' />
         <param value="transparent" name="wmode">
         <embed pluginspage="http://www.videolan.org"
                type="application/x-vlc-plugin"
@@ -622,14 +613,13 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
             id="vlc${this.videoShopList[0].id}" codebase="" width="100%" height="100%" events="True">
         <param name="mrl" value=""/>
         <param name="src" value=""/>
+        <param name="controls" value="false"/>
         <param name="ShowDisplay" value="true"/>
         <param name="AutoLoop" value="false"/>
         <param name="autoplay" value="true"/>
         <param name="Time" value="True"/>
         <param name='volume' value='30'/>
         <param value="transparent" name="wmode">
-        <param name='controls' value='false' />
-        <param name="wmode" value="opaque">
         <embed pluginspage="http://www.videolan.org"
                type="application/x-vlc-plugin"
                version="VideoLAN.VLCPlugin.2"
@@ -668,43 +658,18 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     document.body.className = 'ui-overflow-hidden';
     this.videoPublicShow = true;
     this.publicVideoTitle = e.cameraName;
-    /* videoUrlHtml = videoUrlHtml + `
-
- <object type='application/x-vlc-plugin' pluginspage="http://www.videolan.org/" id='vlc' events='false' width="100%" height="99%">
-               <param name='mrl' value='${e.outUrl}' />
-               <param name='volume' value='50' />
-               <param name='autoplay' value='true' />
-               <param name='loop' value='false' />
-               <param name='fullscreen' value='true' />
-               <param name='controls' value='true' />
-             </object>
-     `; */
-    /*  videoUrlHtml = videoUrlHtml + `
-           <object type='application/x-vlc-plugin'
-              id='vlc' width="100%" height="100%" events='True' pluginspage="http://www.videolan.org"
-              codebase="http://downloads.videolan.org/pub/videolan/vlc-webplugins/2.2.1/npapi-vlc-2.2.1.tar.xz">
-                    <param name='mrl' value='${e.outUrl}'/>
-                    <param name='volume' value='30'/>
-                    <param name='autoplay' value='true'/>
-                    <param name='loop' value='false'/>
-                    <param value="transparent" name="wmode">
-                    <embed id='vlc1' wmode="transparent" type="application/x-vlc-plugin"
-                       width="100%" height="100%" pluginspage="http://www.videolan.org"
-                       allownetworking="internal" allowscriptaccess="always" quality="high" src='${e.outUrl}'>
-           </object>
-      `;*/
     videoUrlHtml = videoUrlHtml + `
-         <object classid="clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921"
+        <object classid="clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921"
             id="vlc${e.id}" codebase="" width="100%" height="100%" events="True">
         <param name="mrl" value=""/>
         <param name="src" value=""/>
+        <param name="controls" value="false"/>
         <param name="ShowDisplay" value="true"/>
         <param name="AutoLoop" value="false"/>
         <param name="autoplay" value="true"/>
         <param name="Time" value="True"/>
         <param name='volume' value='30'/>
         <param value="transparent" name="wmode">
-        <param name='controls' value='false' />
         <embed pluginspage="http://www.videolan.org"
                type="application/x-vlc-plugin"
                version="VideoLAN.VLCPlugin.2"
@@ -990,7 +955,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
 
   // 收入监控
   public incomeAmountCount(): void {
-    this.serareaService.searchIncomeTotal({id: 1}).subscribe(
+    this.serareaService.searchIncomeTotal({id: this.serviceZoneID}).subscribe(
       (value) => {
         if (value.status === '200') {
           this.incomeAmount = {
@@ -1003,7 +968,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   }
 
   public IncomeTypes() {
-    this.serareaService.searchIncomeTotalPie({id: 1}).subscribe(
+    this.serareaService.searchIncomeTotalPie({id: this.serviceZoneID}).subscribe(
       (value) => {
         if (value.status === '200') {
           this.optionsIncomeModel = {
@@ -1037,7 +1002,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   }
 
   public getIncomeTotal(time, pageNums): void {
-    this.serareaService.searchIncomeTypesList({dateType: time, id: 1, page: pageNums, nums: 15}).subscribe(
+    this.serareaService.searchIncomeTypesList({dateType: time, id: this.serviceZoneID, page: pageNums, nums: 15}).subscribe(
       (incomeVal) => {
         if (incomeVal.status === '200') {
           this.IncomeTableData = incomeVal.data;
@@ -1079,7 +1044,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     });
     if (shopList) {
       this.serareaService.searchIncomeTypesItem(
-        {dateType: time, id: 1, entryCode: shopType[this.IncomeOptionType].entryCode, page: pageNums, nums: 10}).subscribe(
+        {dateType: time, id: this.serviceZoneID, entryCode: shopType[this.IncomeOptionType].entryCode, page: pageNums, nums: 10}).subscribe(
         (value) => {
           if (value.status === '200') {
             this.IncomeTableData = value.data;

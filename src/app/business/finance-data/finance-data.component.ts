@@ -506,6 +506,7 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
     this.financeDataService.searchTop10Bar({id: 2, type: type}).subscribe(
       (value) => {
         if (value.status === '200') {
+          // 这里是排序算法
           value.data.barDatas.map((val, index, obj) => {
             if (val.titleCode === type) {
               obj.unshift(val);
