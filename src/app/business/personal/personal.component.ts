@@ -21,17 +21,22 @@ export class PersonalComponent implements OnInit {
   public updatePassword = new UpdatePassword('', '', '');
   constructor(
     private personalService: PersonalService,
-    private localService: LocalStorageService,
+    private localSessionStorage: LocalStorageService,
     private datePipe: DatePipe
   ) { }
 
   ngOnInit() {
-    this.userInfo = JSON.parse(this.localService.userSessionStorage.userDTO);
-    console.log(this.userInfo);
+    this.personalService.getUsers(this.localSessionStorage.getObject('authentication').accessToken).subscribe(
+      (value) => {
+        if (value.status === '200') {
+          this.userInfo = value.data.userDTO;
+        }
+      }
+    );
     // 发射实时客流
     this.getPerson();
     // 发射业太数据名称
-    this.localService.eventBus.next({title: '个人信息', flagState: false, flagName: '全国'});
+    this.localSessionStorage.eventBus.next({title: '个人信息', flagState: false, flagName: '全国'});
     // 时间初始化
     this.esDate = {
       firstDayOfWeek: 0,
@@ -46,7 +51,7 @@ export class PersonalComponent implements OnInit {
   }
   // 客流
   public getPerson(): void {
-    this.localService.persons.next({
+    this.localSessionStorage.persons.next({
       total: [],
       province: [],
       city: []
@@ -70,7 +75,6 @@ export class PersonalComponent implements OnInit {
         (value) => {
           if (value.status === '200') {
             window.alert(value.message);
-            // console.log(value);
           }
         }
       );
@@ -78,7 +82,7 @@ export class PersonalComponent implements OnInit {
   }
   public updatePasswordClick() {
     if (this.confirmPassword === this.updatePassword.newPassword) {
-      this.updatePassword.userName = this.localService.userSessionStorage.userName;
+      this.updatePassword.userName = this.localSessionStorage.userSessionStorage.userName;
       this.personalService.updatePassword(this.updatePassword).subscribe(
         (value) => {
           if (value.status === '500') {
@@ -94,7 +98,7 @@ export class PersonalComponent implements OnInit {
     }
   }
   public logOut(): void {
-    this.localService.userSessionStorage = {};
+    this.localSessionStorage.userSessionStorage = {};
   }
   public goBack (): void {
     window.history.back();

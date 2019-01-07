@@ -1,10 +1,10 @@
 <div class="row">
   <div class="nav" [ngStyle]="{opacity: navOpacity, height: navHeight}">
     <ul class="list-group">
-     <!-- <li *ngFor="let item of urlList;let i =index" class="list-group-item" [routerLink]="[item.url]">
-        <i [class]="urlIcon[i]" aria-hidden="true" data-toggle="tooltip" data-placement="right" [title]="item.menuName"></i>
-      </li>-->
-      <li class="list-group-item" [routerLink]="['./whole']">
+      <li *ngFor="let item of urlList;let i =index" class="list-group-item" [routerLink]="[item?.url, {id: 1, name: '久长服务区'}]">
+        <i [class]="urlIcon[urlClass[i]]" aria-hidden="true" data-toggle="tooltip" data-placement="right" [title]="item?.menuName"></i>
+      </li>
+      <!--<li class="list-group-item" [routerLink]="['./whole']">
         <i class="fa fa-area-chart" aria-hidden="true" data-toggle="tooltip" data-placement="right" title="全国业态大数据"></i>
       </li>
       <li class="list-group-item" [routerLink]="['./finance']">
@@ -18,9 +18,6 @@
       </li>
       <li class="list-group-item" [routerLink]="['./videow']">
         <i class="fa fa-video-camera" aria-hidden="true" data-toggle="tooltip" data-placement="right" title="视频监控"></i>
-      </li>
-    <!--  <li class="list-group-item" [routerLink]="['./videom']">
-        <i class="fa fa-server" aria-hidden="true" data-toggle="tooltip" data-placement="right" title="视频管理"></i>
       </li>-->
     </ul>
   </div>

@@ -11,6 +11,7 @@ export class EchartCrossbarComponent implements OnInit, OnChanges {
   @Input() public height: any;
   @Input() public width = 'auto';
   public crosswiseBar = {};
+  public serviceZoneId = [];
   constructor(
     private router: Router
   ) { }
@@ -21,16 +22,16 @@ export class EchartCrossbarComponent implements OnInit, OnChanges {
       this.backCrosswiseBar('revenue');
     }
   }
-  /*等候数据调试*/
-  public rankingClick(e) {
-    this.router.navigate(['/home/serzone', {name: e.name}]);
-  }
+  // 统计图渲染
   public backCrosswiseBar(type) {
     const barData = [];
     const barArea = [];
     this.option.data.yAxis.map((val, index) => {
+      this.serviceZoneId.push(val.serviceAreaId);
       barArea.push(val.serviceName);
     });
+    // console.log(this.serviceZoneId);
+    // console.log(this.option.data.yAxis);
     this.option.data.barDatas.map((val, index) => {
       barData.push(
         {
@@ -96,5 +97,11 @@ export class EchartCrossbarComponent implements OnInit, OnChanges {
       },
       series: barData
     };
+  }
+  /*统计图点击事件*/
+  public rankingClick(e) {
+   /* console.log(this.serviceZoneId[e.dataIndex]);
+    console.log(e.name);*/
+    this.router.navigate(['/home/serzone', {id: this.serviceZoneId[e.dataIndex], name: e.name}]);
   }
 }

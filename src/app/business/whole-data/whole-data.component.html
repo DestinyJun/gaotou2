@@ -12,13 +12,13 @@
       <!--离散地图分布图--> <!--中部分-->
       <div class="col-lg-6 col-md-6">
         <div class="map">
-          <div class="tab-map">
+        <!--  <div class="tab-map">
             <div class="location" (click)="provinceClick()">
               <i class="fa fa-caret-down" aria-hidden="true"></i>
               <span>当前的位置是：</span>
               <span>{{selectDate}}</span>
             </div>
-            <div class="province-city">
+           &lt;!&ndash; <div class="province-city">
               <ul class="select-list-province" *ngIf="provinceShow">
                 <li *ngFor="let item of province"
                     (mouseenter)="provinceMouseEnter(item.province)"
@@ -34,8 +34,8 @@
                   {{item.city}}
                 </li>
               </ul>
-            </div>
-          </div>
+            </div>&ndash;&gt;
+          </div>-->
           <!--<div class="top-map" id="center_map" echarts [options]="optionsMap" (chartClick)="mapClick($event)"></div>-->
           <div class="top-map" id="center_map"></div>
           <!--<div class="top-map" id="center_map"></div>-->

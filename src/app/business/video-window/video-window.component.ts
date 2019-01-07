@@ -2,7 +2,6 @@ import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {VideoWindowService} from '../../common/services/video-window.service';
 import {LocalStorageService} from '../../common/services/local-storage.service';
 import {TreeNode} from '../../common/model/video-window.model';
-import {HttpClient} from '@angular/common/http';
 @Component({
   selector: 'app-video-window',
   templateUrl: './video-window.component.html',
@@ -256,6 +255,7 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
             id="vlc${flag}" codebase="" width="100%" height="100%" events="True">
         <param name="mrl" value=""/>
         <param name="src" value=""/>
+        <param name="controls" value="false"/>
         <param name="ShowDisplay" value="true"/>
         <param name="AutoLoop" value="false"/>
         <param name="autoplay" value="true"/>
