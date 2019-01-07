@@ -123,7 +123,7 @@
                       <button class="btn btn-primary" [ngStyle]="{'background':alertCarTitle === '客车'?'black': ''}">客车</button>
                       <button class="btn btn-danger" [ngStyle]="{'background':alertCarTitle === '货车'?'black': ''}">货车</button>-->
                       <div class="toggle-btn-area text-center" style="">
-                        <app-input-dropdown (dropdownClick)="carSelectTime($event)"></app-input-dropdown>
+                        <app-input-dropdown [option]="carTimeSelect" (dropdownClick)="carSelectTime($event)"></app-input-dropdown>
                         <span (click)="carExcelShow = true">表格导出</span>
                       </div>
                     </div>
@@ -216,7 +216,7 @@
             <ul class="dropdown-menu" style="background-color: rgba(27,29,41,0.8)">
               <li  *ngFor="let item of publicVideoList" (click)="openPublicVideo(item)">
                 <a href="javascript:" style="color: white">
-                  <i class="fa fa-video-camera" aria-hidden="true"></i>
+                  <i [ngClass]="{'icon-Hemispherical-camera': item.cameraType == 2, 'icon--ball-camera': item.cameraType == 1, 'icon-camera-one': item.cameraType == 3}" aria-hidden="true"></i>
                   {{item.cameraName}}
                 </a>
               </li>
@@ -236,7 +236,7 @@
             <ul class="dropdown-menu" style="background-color: rgba(27,29,41,0.5)">
               <li  *ngFor="let item of publicVideoList" (click)="openPublicVideo(item)">
                 <a href="javascript:" style="color: white">
-                  <i class="fa fa-video-camera" aria-hidden="true"></i>
+                  <i [ngClass]="{'icon-Hemispherical-camera': item.cameraType == 2, 'icon--ball-camera': item.cameraType == 1, 'icon-camera-one': item.cameraType == 3}" aria-hidden="true"></i>
                   {{item.cameraName}}
                 </a>
               </li>

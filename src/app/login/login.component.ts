@@ -44,12 +44,10 @@ export class LoginComponent implements OnInit {
             this.loginService.getRouter(value.data.authentication.accessToken).subscribe(
               (routerInfo) => {
                 if (routerInfo.status === '200') {
-                  console.log(routerInfo);
                   routerInfo.data.menuAscxs.map((item) => {
                     const aString = item.menuCode;
                     this.urlClass.push(aString.split(':')[1]);
                   });
-                  console.log(routerInfo.data.menuAscxs);
                   value.data.urlList = routerInfo.data.menuAscxs;
                   value.data.urlClass = this.urlClass;
                   // 本地存储信息

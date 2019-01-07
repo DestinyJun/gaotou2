@@ -16,6 +16,13 @@ import {DatePipe} from '@angular/common';
 export class ServiceDataComponent implements OnInit, OnDestroy {
   /***********************基础信息************************/
   public esDate: any;  // 时间初始化
+  public carTimeSelect = [
+    {name: '时', code: 'hour'},
+    {name: '天', code: 'day'},
+    {name: '周', code: 'week'},
+    {name: '月', code: 'month'},
+    {name: '年', code: 'year'},
+  ];
   // 组件销毁后清除时钟任务
   public vehicleAmountCountClean: any;
   public incomeAmountCountClean: any;
@@ -407,7 +414,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       (val) => {
         if (val.status === '200') {
           this.carTableData = val.data;
-          console.log(val.data);
         }
       }
     );
