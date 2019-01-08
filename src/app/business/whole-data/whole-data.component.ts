@@ -259,7 +259,7 @@ export class WholeDataComponent implements OnInit, OnChanges {
       geoc.getLocation(pt, function (rs) {
         const addComp = rs.addressComponents;
         if (addComp.province === '贵州省') {
-          that.router.navigate(['/home/finance', {name: addComp.province}]);
+          that.router.navigate(['/home/province', {name: addComp.province}]);
         } else {
           window.alert(addComp.province + '暂无数据，敬请期待');
         }
@@ -311,7 +311,7 @@ export class WholeDataComponent implements OnInit, OnChanges {
       this.dataToggle = '全国';
     } else if (item.name === '贵州') {
       this.dataToggle = '贵州';
-      this.router.navigate(['/home/finance']);
+      this.router.navigate(['/home/province']);
       // this.centerMap1();
     } else {
       window.confirm('此地区暂未开通');

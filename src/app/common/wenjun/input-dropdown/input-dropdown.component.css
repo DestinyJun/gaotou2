@@ -1,13 +1,12 @@
 .input-dropdown-box {
   display: inline-block;
-  height: 3vh;
-  line-height: 3vh;
+  /*height: 3vh;*/
+  /*line-height: 3vh;*/
   padding: 0 0.5vw;
   font-size: 0.875rem;
   border-radius: 3px;
-  background: #1a2128;
   position: relative;
-  min-width: 7vw;
+  min-width: 5vw;
   text-align: left;
   cursor: pointer;
 }
@@ -20,7 +19,6 @@
   position: absolute;
   top: 3.1vh;
   left: 0;
-  background: rgba(26,33,40,0.8);
   width: 100%;
   color: white;
   list-style: none;
@@ -30,7 +28,4 @@
 .input-dropdown-box>.input-dropdown-ul>li{
   padding-left: 5px;
   cursor: pointer;
-}
-.input-dropdown-box>.input-dropdown-ul>li:hover{
-  background: #5595D5;
 }

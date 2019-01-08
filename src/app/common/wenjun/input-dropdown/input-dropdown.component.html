@@ -1,8 +1,8 @@
-<div class="input-dropdown-box" (click)="boxClick()">
+<div class="input-dropdown-box" [ngStyle]="{'height': height, 'line-height': height, 'background': background}">
   <span>{{selectCity}}</span>
-  <i class="fa fa-angle-down" aria-hidden="true"></i>
-  <ul class="input-dropdown-ul" *ngIf="uiShow">
-    <li *ngFor="let item of option;let i = index" (click)="boxLiClick(item,$event)">
+  <i class="fa fa-angle-down" aria-hidden="true" [ngStyle]="{'line-height': height}"></i>
+  <ul class="input-dropdown-ul" *ngIf="uiShow" [ngStyle]="{'background': dropdownBackground}">
+    <li *ngFor="let item of option;let i = index" (click)="boxLiClick(item,$event)" appInputDropdownHover [hoverColor]="hover">
       {{item.name}}
     </li>
   </ul>

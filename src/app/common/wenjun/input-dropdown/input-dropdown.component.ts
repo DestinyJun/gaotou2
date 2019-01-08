@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, HostListener, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {DropList} from './input-dropdown.model';
 
 @Component({
@@ -8,22 +8,23 @@ import {DropList} from './input-dropdown.model';
 })
 export class InputDropdownComponent implements OnInit, OnChanges {
   @Input() public option: DropList[];
+  @Input() public height = '3vh';
+  @Input() public background = '#1a2128';
+  @Input() public dropdownBackground = 'rgba(26,33,40,0.8)';
+  @Input() public hover = '#5595D5';
   @Output() public dropdownClick = new EventEmitter<any>();
-  // public city: DropList[];
   public selectCity: any;
   public uiShow = false;
+  @HostListener('click', ['$event.target']) onClick(element: HTMLElement) {
+    this.uiShow = !this.uiShow;
+  }
   constructor() { }
 
-  ngOnInit() {
-    /*this.city = */
-  }
+  ngOnInit() {}
   ngOnChanges(changes: SimpleChanges): void {
     if (this.option) {
       this.selectCity = this.option[0].name;
     }
-  }
-  public boxClick (): void {
-    this.uiShow = !this.uiShow;
   }
   public boxLiClick (item, event): void {
     event.stopPropagation();
