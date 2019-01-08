@@ -419,7 +419,7 @@ export class CityDataComponent implements OnInit, OnDestroy {
   public mapCityClick (param): void {
     if (param.areaName !== undefined) {
       if (param.areaName === '久长服务区') {
-        this.router.navigate(['/home/serzone', {name: param.areaName}]);
+        this.router.navigate(['/home/serzone', {id: 1, name: param.areaName}]);
       } else {
         window.alert('此服务区暂无数据');
       }
