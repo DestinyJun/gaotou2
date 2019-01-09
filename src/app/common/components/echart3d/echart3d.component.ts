@@ -12,6 +12,7 @@ export class Echart3dComponent implements OnInit, OnChanges {
       '#78F991': ['车流量', 'vehicle'],
       '#D06052': ['用电量', 'electric'],
       '#E29F39': ['用水量', 'water'],
+      '#2BB5F0': ['排污量', 'pollution'],
   };
   // 3D柱状图配置
   @Input() public option: any;

@@ -81,7 +81,7 @@ export class HeaderComponent implements OnInit {
         return;
       }
       if (this.serviceName === '久长服务区') {
-        this.router.navigate(['/home/serzone', {name: this.serviceName}]);
+        this.router.navigate(['/home/serzone', {id: 1, name: this.serviceName}]);
         this.serviceSearchListShow = false;
         return;
       }
@@ -96,7 +96,7 @@ export class HeaderComponent implements OnInit {
   public saerchListClick (e): void {
     this.serviceName = e.name;
     if (this.serviceName === '久长服务区') {
-      this.router.navigate(['/home/serzone', {name: this.serviceName}]);
+      this.router.navigate(['/home/serzone', {id: 1, name: this.serviceName}]);
       this.serviceSearchListShow = false;
     } else {
       window.alert('此服务区暂无数据');

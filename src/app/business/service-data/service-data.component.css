@@ -6,6 +6,20 @@
 .main{
   position: relative;
 }
+.income-div{
+  margin-bottom: 1vh;
+}
+.income-div>span{
+  display: inline-block;
+  height: 3vh;
+  line-height: 3vh;
+  font-size: 0.875rem;
+  border-left: 1px solid white;
+  border-top: 1px solid white;
+  border-bottom: 1px solid white;
+  min-width: 11vw;
+  padding-left: 0.5vw;
+}
 .title{
   height: 3vh;
   line-height: 3vh;

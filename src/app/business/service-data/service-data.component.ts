@@ -274,7 +274,25 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     this.serareaService.search3DBar({id: this.serviceZoneID, parameter: ['electric', 'water']}).subscribe(
       (val) => {
         if (val.status === '200') {
+          const aArray = [
+            [0, 2, 0, 0],
+            [1, 2, 0, 0],
+            [2, 2, 0, 0],
+            [3, 2, 0, 0],
+            [4, 2, 0, 0],
+            [5, 2, 0, 0],
+            [6, 2, 0, 0],
+            [7, 2, 0, 0],
+            [8, 2, 0, 0],
+            [9, 2, 0, 0],
+            [10, 2, 0, 0],
+            [11, 2, 0, 0],
+          ];
           this.options3dCopy = val.data;
+          this.options3dCopy.yData.push('排污量');
+          aArray.map((params, index) => {
+            this.options3dCopy.coordinate.push(params);
+          });
         }
       }
     );
@@ -283,12 +301,25 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   public onOutOptions3d(e): void {
     const defaultMonth = new Date().getMonth() + 1;
     this.outOptions3d = e;
+    console.log(e);
     document.body.className = 'ui-overflow-hidden';
     this.alertBarShow = true;
     this.alertBarTitle = this.outOptions3d.alertBarTitle;
     // 柱状图
     this.serareaService.search3DAlertBar({id: this.serviceZoneID, types: this.outOptions3d.bar.types}).subscribe(
       (val) => {
+        if (e.bar.types === 'pollution') {
+          const a = {
+            xData: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+            coordinate: [22918, 188612, 223787, 225436, 254298, 233201, 124071, 80720, 313150, 80775, 97796, 204784]
+          };
+          this.options3dBar = {
+            data: a,
+            xType: this.outOptions3d.pie.xType,
+            title: `贵州省久长服务区年度${this.outOptions3d.alertBarTitle}统计`
+          };
+          return;
+        }
         if (val.status === '200') {
           this.options3dBar = {
             data: val.data,
@@ -298,16 +329,21 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
         }
       }
     );
-    if (e.bar.types === 'electric' || e.bar.types === 'water') {
+    if (e.bar.types === 'electric' || e.bar.types === 'water' || e.bar.types === 'pollution') {
       // 折线图
       this.serareaService.search3DAlertLineMonth(
-        {id: this.serviceZoneID, month: defaultMonth, types: ['electric', 'water']}).subscribe(
+        {id: this.serviceZoneID, month: defaultMonth, types: ['revenue', 'passenger', 'vehicle', 'electric', 'water']}).subscribe(
         (val) => {
           if (val.status === '200') {
+            val.data.yData.push({
+              code: 'pollution',
+              data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+              name: '排污量'
+            });
             this.options3dLine = {
               title: `贵州省久长服务区${this.options3d.xdata[defaultMonth - 1]}业态走势图`,
               data: val.data,
-              color: ['#7C7CD4', '#36B9AB', '#6ACD72', '#0A30BF', '#027204']
+              color: ['#7C7CD4', '#36B9AB', '#6ACD72', '#0A30BF', '#027204', '#E36E57']
             };
           }
         }
@@ -319,10 +355,15 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       {id: this.serviceZoneID, month: defaultMonth, types: ['revenue', 'passenger', 'vehicle', 'electric', 'water']}).subscribe(
       (val) => {
         if (val.status === '200') {
+          val.data.yData.push({
+            code: 'pollution',
+            data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            name: '排污量'
+          });
           this.options3dLine = {
             title: `贵州省久长服务区${this.options3d.xdata[defaultMonth - 1]}业态走势图`,
             data: val.data,
-            color: ['#7C7CD4', '#36B9AB', '#6ACD72', '#0A30BF', '#027204']
+            color: ['#7C7CD4', '#36B9AB', '#6ACD72', '#0A30BF', '#027204', '#E36E57']
           };
         }
       }
@@ -413,6 +454,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     this.serareaService.searchCarAlertTable({dateType: time, id: this.serviceZoneID, page: e, nums: 10}).subscribe(
       (val) => {
         if (val.status === '200') {
+          console.log(val.data);
           this.carTableData = val.data;
         }
       }
@@ -532,10 +574,16 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       (val) => {
         console.log(val);
         if (val.status === '200') {
+          console.log(val.data);
+          val.data.yData.push({
+            code: 'pollution',
+            data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            name: '排污量'
+          });
           this.shopEchartLine = {
             data: val.data,
             title: `${item.storeName}今日业态数据走势分析`,
-            color: ['#7C7CD4', '#36B9AB', '#6ACD72', '#0A30BF', '#027204']
+            color: ['#36B9AB', '#6ACD72', '#0A30BF', '#027204', '#E36E57']
           };
         }
       }
@@ -993,6 +1041,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     this.alertIncomeShow = true;
     document.body.className = 'ui-overflow-hidden';
     this.alertIncomeTitle = e.name;
+    this.alertIncomeTypeTitle = e.name;
     this.IncomeTimeTypes = 'hour';
     this.getIncomeTypesSingle(1, this.alertIncomeTitle, this.storeList, this.IncomeTimeTypes);
   }
