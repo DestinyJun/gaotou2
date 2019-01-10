@@ -48,6 +48,7 @@ export class EchartsLineBrokenComponent implements OnInit, OnChanges {
       legend: {
         show: true,
         left: '10%',
+        top: '8%',
         data: legendData,
         y: '5%',
         itemWidth: 18,

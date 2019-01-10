@@ -38,7 +38,8 @@
               <div class="col-ld-6 col-md-6">
                 <app-echarts-line-broken [height]="'55vh'" [option]="options3dLine"></app-echarts-line-broken>
               </div>
-              <p class="toggle-btn-area-table" (click)="bar3dExcelShow = true">表格导出</p>
+              <p class="toggle-btn-area-table" (click)="bar3dExcelShow = true" style="top: 5.5vh">表格导出</p>
+              <p class="toggle-btn-area-table" (click)="serversToiletAlertShow = true" style="left:58%;top: 5.5vh">详细信息</p>
             </div>
             <!--表格导出-->
             <div class="bg-excel" *ngIf="bar3dExcelShow">

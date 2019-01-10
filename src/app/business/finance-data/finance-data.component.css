@@ -369,8 +369,8 @@
   position: absolute;
   border-radius: 3px;
   background: #1a2128;
-  top: 8vh;
-  left: 50%;
+  top: 5.5vh;
+  left: 45%;
   transform: translateX(-70%);
 }
 .bar3D-charts .toggle-btn-area-date{

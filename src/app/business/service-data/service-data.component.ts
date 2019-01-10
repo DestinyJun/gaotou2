@@ -376,10 +376,15 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       {id: this.serviceZoneID, month: e.xType + 1, types: ['revenue', 'passenger', 'vehicle', 'electric', 'water']}).subscribe(
       (val) => {
         if (val.status === '200') {
+          val.data.yData.push({
+            code: 'pollution',
+            data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            name: '排污量'
+          });
           this.options3dLine = {
             title: `贵州省久长服务区${this.options3d.xdata[e.xType]}业态走势图`,
             data: val.data,
-            color: ['#7C7CD4', '#36B9AB', '#6ACD72', '#0A30BF', '#027204']
+            color: ['#7C7CD4', '#36B9AB', '#6ACD72', '#0A30BF', '#027204', '#E36E57']
           };
         }
       }
