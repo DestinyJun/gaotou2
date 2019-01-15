@@ -10,6 +10,9 @@
   text-align: left;
   cursor: pointer;
 }
+.input-dropdown-box>span{
+  font-size: 0.875rem !important;
+}
 .input-dropdown-box>i{
   float: right;
   line-height: 3vh;

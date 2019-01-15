@@ -71,12 +71,12 @@ export class EchartBasicbarComponent implements OnInit, OnChanges {
         nameTextStyle: {
           color: 'white'
         },
+        triggerEvent: true,
         axisLine: {
           lineStyle: {
             color: 'white'
           }
         },
-        triggerEvent: true,
         axisTick: {
           interval: 0,
         },
@@ -125,6 +125,8 @@ export class EchartBasicbarComponent implements OnInit, OnChanges {
   public options3dBarClick(e): void {
     if (e.dataIndex === undefined) {
       this.outOptions3dBar.emit({
+        name: e.name,
+        timeType: this.option.timeType,
         xType: this.option.data.xData.indexOf(e.value),
         total: e.data,
       });
@@ -137,6 +139,8 @@ export class EchartBasicbarComponent implements OnInit, OnChanges {
     this.colorList[e.dataIndex] = '#D43839';
     this.options3dBarInstance.setOption(this.options3dBar);
     this.outOptions3dBar.emit({
+      name: e.name,
+      timeType: this.option.timeType,
       xType: e.dataIndex,
       total: e.data,
     });

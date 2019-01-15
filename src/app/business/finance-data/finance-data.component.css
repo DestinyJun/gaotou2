@@ -339,14 +339,30 @@
   line-height: 5vh;
   background: #1a2128;
   text-align: center;
+  position: relative;
+}
+.alert-3D-bar-header .toggle-btn-area-table{
+  display: inline-block;
+  min-width: 5vw;
+  padding: 0 0.5vw;
+  font-size: 0.875rem;
+  border-radius: 3px;
+  background: #28A745;
+  /*position: absolute;*/
+  /*top: 5.5vh;*/
+  /*left: 45%;*/
+  /*transform: translateX(-70%);*/
+  cursor: pointer;
+  height: 3vh;
+  line-height: 3vh;
 }
 .alert-3D-bar-header span{
-  margin-left: 10px;
+  /*margin-left: 10px;*/
   font-size: 1.625rem;
 }
 .alert-3D-bar-header .pull-right{
   height: 5vh;
-  width: 5vh;
+  min-width: 5vh;
   cursor: pointer;
   text-align: center;
 }
@@ -362,17 +378,8 @@
   left: 50%;
   transform: translateX(-50%);
 }
-.bar3D-charts .toggle-btn-area-table{
-  display: inline-block;
-  padding: 0.5vh 1vw;
-  font-size: 0.875rem;
-  position: absolute;
-  border-radius: 3px;
-  background: #1a2128;
-  top: 5.5vh;
-  left: 45%;
-  transform: translateX(-70%);
-}
+
+
 .bar3D-charts .toggle-btn-area-date{
   display: inline-block;
   padding: 0.5vh 1vw;
@@ -383,7 +390,7 @@
   top: 8vh;
   right: 4vw;
 }
-.toggle-btn-area-table:hover,.toggle-btn-area-date:hover{
+.toggle-btn-area-date:hover{
   cursor: pointer;
 }
 

@@ -60,19 +60,37 @@ export class EchartsLineBrokenComponent implements OnInit, OnChanges {
       tooltip: {trigger: 'axis', axisPointer: {type: 'shadow'}},
       xAxis: [
         {
+          show: true,
           type: 'category',
-          axisLine: {show: true, lineStyle: {color: '#6173A3'}},
-          axisLabel: {interval: 'auto', textStyle: {color: '#fff', fontSize: 14}},
-          axisTick: {show: false},
           data: this.option.data.xData,
+          splitLine: {show: false},
+          nameTextStyle: {
+            color: 'white'
+          },
+         /* axisLine: {show: true, lineStyle: {color: '#6173A3'}},
+          axisLabel: {interval: 'auto', textStyle: {color: '#fff', fontSize: 14}},
+          axisTick: {
+            show: false
+          },*/
+          axisLine: {
+            lineStyle: {
+              color: 'white'
+            }
+          },
+          axisTick: {
+            interval: 0,
+          },
+          axisLabel: {
+            interval: 0
+          }
         },
       ],
       yAxis: [
         {
           axisTick: {show: false},
           splitLine: {show: false},
-          axisLabel: {textStyle: {color: '#9ea7c4', fontSize: 14}},
-          axisLine: {show: true, lineStyle: {color: '#6173A3'}},
+          axisLabel: {textStyle: {color: 'white', fontSize: 14}},
+          axisLine: {show: true, lineStyle: {color: 'white'}},
         },
       ],
       series: serieData

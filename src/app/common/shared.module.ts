@@ -16,7 +16,6 @@ import { EventListInfoComponent } from './components/event-list-info/event-list-
 import { EventOfficeComponent } from './components/event-office/event-office.component';
 import { EventPersonComponent } from './components/event-person/event-person.component';
 import { EchartBmapComponent } from './components/echart-bmap/echart-bmap.component';
-import {TableModule} from 'primeng/table';
 @NgModule({
   declarations: [
     Echart3dComponent,

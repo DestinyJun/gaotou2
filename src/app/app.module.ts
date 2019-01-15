@@ -13,6 +13,7 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {ProgressSpinnerModule} from 'primeng/primeng';
 import { LoginRemindComponent } from './login-remind/login-remind.component';
 import { InterceptorService } from './common/services/interceptor.service';
+import {ExampleDataService} from './common/services/example-data.service';
 
 
 @NgModule({
@@ -34,6 +35,7 @@ import { InterceptorService } from './common/services/interceptor.service';
     LoginService,
     LocalStorageService,
     LoginGuard,
+    ExampleDataService,
     {provide: LocationStrategy, useClass: HashLocationStrategy},
     /*{provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true}*/
   ],

@@ -16,13 +16,61 @@
           [color]="['#D06052', '#E29F39']"
           (outOptions3d)="onOutOptions3d($event)"
         ></app-echart3d>
-        <!--3D柱状图弹窗-->
+        <!--3D柱状图弹窗 alertBarShow-->
         <div class="bg-box" *ngIf="alertBarShow">
           <div class="alert-3D-bar">
             <div class="alert-3D-bar-header">
-              <span>{{alertBarTitle}}</span>
+              <span class="pull-left">{{alertBarTitle}}</span>
               <div class="pull-right" (click)="closeBarShow()">
                 <i class="fa fa-window-close " aria-hidden="true"></i>
+              </div>
+              <div class="" style="height: 5vh;min-width: 5vh;cursor: pointer;text-align: center;float: right;margin-right: 3vw;vertical-align: middle">
+                <span class="toggle-btn-area-table" (click)="bar3dYearClick()" style="background: #3B78B1;">整年数据</span>
+                <app-input-dropdown
+                  [option]="[
+                    {name: '请选择年', code: '-1'},
+                    {name: '2015年', code: 'year'},
+                    {name: '2016年', code: 'year'},
+                    {name: '2017年', code: 'year'},
+                    {name: '2018年', code: 'year'}
+                    ]"
+                  [height]="'3vh'"
+                  [background]="'#DC3545'"
+                  [dropdownBackground]="'rgba(26,33,40,0.8)'"
+                  [hover]="'#5595D5'"
+                ></app-input-dropdown>
+                <app-input-dropdown
+                  [option]="[
+                    {name: '请选择月', code: '-1'},
+                    {name: '一月', code: 'month'},
+                    {name: '二月', code: 'month'},
+                    {name: '三月', code: 'month'},
+                    {name: '四月', code: 'month'},
+                    {name: '五月', code: 'month'},
+                    {name: '六月', code: 'month'},
+                    {name: '七月', code: 'month'},
+                    {name: '八月', code: 'month'},
+                    {name: '九月', code: 'month'},
+                    {name: '十月', code: 'month'},
+                    {name: '十一月', code: 'month'},
+                    {name: '十二月', code: 'month'}
+                    ]"
+                  [height]="'3vh'"
+                  [background]="'#FFC107'"
+                  [dropdownBackground]="'rgba(26,33,40,0.8)'"
+                  [hover]="'#5595D5'"
+                ></app-input-dropdown>
+                <app-input-dropdown
+                  [option]="[
+                    {name: '请选择日', code: '-1'}
+                    ]"
+                  [height]="'3vh'"
+                  [background]="'#17A2B8'"
+                  [dropdownBackground]="'rgba(26,33,40,0.8)'"
+                  [hover]="'#5595D5'"
+                  ></app-input-dropdown>
+                <span class="toggle-btn-area-table" (click)="bar3dExcelShow = true">确定</span>
+                <span class="toggle-btn-area-table" (click)="bar3dExcelShow = true" style="margin-left: 10px;background: #007BFF;">表格导出</span>
               </div>
             </div>
             <div class="row bar3D-charts">
@@ -30,9 +78,9 @@
                 <app-echart-basicbar [option]="options3dBar" [height]="'55vh'" (outOptions3dBar)="onOutOptions3dBar($event)"></app-echart-basicbar>
               </div>
               <div class="col-ld-6 col-md-6">
-                <app-echart-pie [option]="options3dPie" [height]="'55vh'" (pieClick)="onOptions3dPie($event)"></app-echart-pie>
+                <!--<app-echart-pie [option]="options3dPie" [height]="'55vh'" (pieClick)="onOptions3dPie($event)"></app-echart-pie>-->
+                <app-echarts-line-broken [height]="'55vh'" [option]="options3dPie"></app-echarts-line-broken>
               </div>
-              <span class="toggle-btn-area-table" (click)="bar3dExcelShow = true">表格导出</span>
             </div>
             <!--表格导出-->
             <div class="bg-excel" *ngIf="bar3dExcelShow">

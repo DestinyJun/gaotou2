@@ -4,7 +4,7 @@ import {SharedModule} from '../../common/shared.module';
 import {FinanceDataRoutingModule} from './finance-data.routing.module';
 import { FinanceDataComponent } from './finance-data.component';
 import {FormsModule} from '@angular/forms';
-import {PagingModule, WenjunAlertModule} from '../../common/wenjun';
+import {EchartsLineBrokenModule, InputDropdownModule, PagingModule, WenjunAlertModule} from '../../common/wenjun';
 import { FinanceDataService } from '../../common/services/finance-data.service';
 import {CalendarModule, ScrollPanelModule} from 'primeng/primeng';
 import {DataService} from '../../common/services/data.service';
@@ -18,7 +18,9 @@ import {DataService} from '../../common/services/data.service';
     WenjunAlertModule,
     CalendarModule,
     ScrollPanelModule,
-    PagingModule
+    PagingModule,
+    InputDropdownModule,
+    EchartsLineBrokenModule,
   ],
   declarations: [FinanceDataComponent],
   entryComponents: [],

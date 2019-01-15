@@ -5,6 +5,7 @@ import {ConfigModule, WenjunAlertService} from '../../common/wenjun';
 import {FinanceDataService} from '../../common/services/finance-data.service';
 import {LocalStorageService} from '../../common/services/local-storage.service';
 import {DatePipe} from '@angular/common';
+import {ExampleDataService} from '../../common/services/example-data.service';
 @Component({
   selector: 'app-finance-data',
   templateUrl: './finance-data.component.html',
@@ -88,7 +89,8 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
     private wenJunAlertService: WenjunAlertService,
     private financeDataService: FinanceDataService,
     private localService: LocalStorageService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private exampleService: ExampleDataService
   ) {}
 
   ngOnInit() {
@@ -215,7 +217,13 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
     this.alertBarShow = true;
     this.alertBarTitle = this.outOptions3d.alertBarTitle;
     // 柱状图
-    this.financeDataService.search3DAlertBar({id: 2, types: this.outOptions3d.bar.types}).subscribe(
+    this.options3dBar = {
+      timeType: 'month',
+      data: this.exampleService.getProvinceBarMonthData(),
+      xType: this.outOptions3d.pie.xType,
+      title: `贵州省所有服务月度${this.outOptions3d.alertBarTitle}统计`
+    };
+    /*this.financeDataService.search3DAlertBar({id: 2, types: this.outOptions3d.bar.types}).subscribe(
       (val) => {
         if (val.status === '200') {
           this.options3dBar = {
@@ -225,9 +233,9 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
           };
         }
       }
-    );
+    );*/
     // 类型占比扇形图
-    this.financeDataService.search3DAlertPie({id: 2, xType: this.outOptions3d.pie.xType, types: this.outOptions3d.pie.types}).subscribe(
+   /* this.financeDataService.search3DAlertPie({id: 2, xType: this.outOptions3d.pie.xType, types: this.outOptions3d.pie.types}).subscribe(
       (val) => {
         if (val.status === '200') {
           this.options3dPie = {
@@ -239,11 +247,45 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
           };
         }
       }
-    );
+    );*/
+
+   // 折线图
+    this.options3dPie = {
+      title: `贵州省久长服务区月度业态走势图`,
+      data: this.exampleService.getProvinceLineMonthData(),
+      color: ['#7C7CD4', '#36B9AB', '#6ACD72', '#0A30BF', '#027204', '#E36E57']
+    };
   }
   public onOutOptions3dBar(e): void {
+    if (e.timeType === 'year') {
+      // 折线图
+      this.options3dPie = {
+        title: `贵州省久长服务区${e.name}业态走势图`,
+        data: this.exampleService.getProvinceLineMonthData(),
+        color: ['#7C7CD4', '#36B9AB', '#6ACD72', '#0A30BF', '#027204', '#E36E57']
+      };
+      return;
+    }
+    if (e.timeType === 'month') {
+      // 折线图
+      this.options3dPie = {
+        title: `贵州省久长服务区${e.name}业态走势图`,
+        data: this.exampleService.getProvinceLineDayData(),
+        color: ['#7C7CD4', '#36B9AB', '#6ACD72', '#0A30BF', '#027204', '#E36E57']
+      };
+      return;
+    }
+    if (e.timeType === 'day') {
+      // 折线图
+      this.options3dPie = {
+        title: `贵州省久长服务区${e.name}业态走势图`,
+        data: this.exampleService.getProvinceBarHourData(),
+        color: ['#7C7CD4', '#36B9AB', '#6ACD72', '#0A30BF', '#027204', '#E36E57']
+      };
+      return;
+    }
     // 类型占比扇形图
-    this.financeDataService.search3DAlertPie({id: 2, xType: e.xType, types: this.outOptions3d.pie.types}).subscribe(
+   /* this.financeDataService.search3DAlertPie({id: 2, xType: e.xType, types: this.outOptions3d.pie.types}).subscribe(
       (val) => {
         if (val.status === '200') {
           this.options3dPie = {
@@ -255,7 +297,7 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
           };
         }
       }
-    );
+    );*/
   }
   public onOptions3dPie(e): void {
     if (e.name === '贵阳市') {
@@ -276,6 +318,22 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
     } else {
       window.alert('请把数据选择全在提交');
     }
+  }
+    // 二期测试
+    public bar3dYearClick(): void {
+      // 柱状图
+      this.options3dBar = {
+        timeType: 'year',
+        data: this.exampleService.getProvinceBarYearData(),
+        xType: this.outOptions3d.pie.xType,
+        title: `贵州省所有服务年度${this.outOptions3d.alertBarTitle}统计`
+      };
+      // 折线图
+      this.options3dPie = {
+        title: `贵州省久长服务区年度业态走势图`,
+        data: this.exampleService.getProvinceLineYearData(),
+        color: ['#7C7CD4', '#36B9AB', '#6ACD72', '#0A30BF', '#027204', '#E36E57']
+      };
   }
   // 车流监控
   public vehicleAmountCount(): void {
