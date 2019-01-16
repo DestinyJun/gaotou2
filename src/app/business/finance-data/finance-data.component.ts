@@ -19,6 +19,18 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
   public vehicleAmountCountClean: any;
   public incomeAmountCountClean: any;
   public personAmountCountClean: any;
+  public dataMonthChinese = [
+    '一月', '二月', '三月', '四月', '五月', '六月',
+    '七月', '八月', '九月', '十月', '十一月', '十二月'
+  ];
+  public selectDataYear: any;
+  public selectDataMonth: any;
+  public selectDataDay: any;
+  public dataYear = [];
+  public dataMonth = [];
+  public dataDay = [];
+  public monthShow = false;
+  public dayShow = false;
   /****************************左边***************************/
     // 3D柱状图配置
   public options3d: any;
@@ -335,6 +347,50 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
         color: ['#7C7CD4', '#36B9AB', '#6ACD72', '#0A30BF', '#027204', '#E36E57']
       };
   }
+    public bar3dInputDropDownYearClick (e): void {
+      if (e.code === -1) {
+        this.dataMonth = [
+          {name: '请选择月', code: -1}
+        ];
+        this.monthShow = false;
+        return;
+      }
+      this.monthShow = true;
+      this.dataMonth = [
+        {name: '请选择月', code: -1}
+      ];
+      const year = parseInt(e.name.split('年')[0], 10);
+      this.selectDataYear = year;
+      if (year < new Date().getFullYear()) {
+        for (let i = 0; i < 12; i++) {
+          this.dataMonth.push({name: this.dataMonthChinese[i], code: 'month'});
+        }
+      } else {
+        for (let i = 0; i < new Date().getMonth() + 1; i++) {
+          this.dataMonth.push({name: this.dataMonthChinese[i], code: 'month'});
+        }
+        this.monthShow = true;
+      }
+    }
+    public bar3dInputDropDownMonthClick (e): void {
+      this.dataDay = [];
+      if (e.code === -1) {
+        this.dayShow = false;
+        return;
+      }
+      this.dayShow = true;
+      const months = this.dataMonthChinese.indexOf(e.name) + 1;
+      const days = new Date(this.selectDataYear, months, 0).getDate();
+      for (let i = 1; i <= days; i++) {
+        this.dataDay.push({name: i, code: 'day'});
+      }
+    }
+    public bar3dInputDropDownDayClick (e): void {
+      console.log(e);
+    }
+      // 根据日期算月数及天数
+
+
   // 车流监控
   public vehicleAmountCount(): void {
     this.financeDataService.searchCarTotal({id: 2}).subscribe(

@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { InputDropdownComponent } from './input-dropdown.component';
+import { InputDropdownDayComponent } from './input-dropdown-day.component';
 
 describe('InputDropdownDayComponent', () => {
-  let component: InputDropdownComponent;
-  let fixture: ComponentFixture<InputDropdownComponent>;
+  let component: InputDropdownDayComponent;
+  let fixture: ComponentFixture<InputDropdownDayComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ InputDropdownComponent ]
+      declarations: [ InputDropdownDayComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(InputDropdownComponent);
+    fixture = TestBed.createComponent(InputDropdownDayComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

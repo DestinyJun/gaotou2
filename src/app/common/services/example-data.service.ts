@@ -11,32 +11,32 @@ export class ExampleDataService {
       yData: [
         {
           code: 'revenue',
-          data: this.getRandomData(year, 0, 10000),
+          data: this.getRandomData(year, 25000, 30000),
           name: '经营收入'
         },
         {
           code: 'passenger',
-          data: this.getRandomData(year, 0, 10000),
+          data: this.getRandomData(year, 20000, 25000),
           name: '客流量'
         },
         {
           code: 'vehicle',
-          data: this.getRandomData(year, 0, 10000),
+          data: this.getRandomData(year, 10000, 15000),
           name: '车流量'
         },
         {
           code: 'electric',
-          data: this.getRandomData(year, 0, 10000),
+          data: this.getRandomData(year, 5000, 10000),
           name: '用电量'
         },
         {
           code: 'water',
-          data: this.getRandomData(year, 0, 10000),
+          data: this.getRandomData(year, 3000, 6000),
           name: '用水量'
         },
         {
           code: 'washing_out',
-          data: this.getRandomData(year, 0, 10000),
+          data: this.getRandomData(year, 0, 1000),
           name: '排污量'
         },
       ]
@@ -109,32 +109,32 @@ export class ExampleDataService {
       yData: [
         {
           code: 'revenue',
-          data: this.getRandomData(day, 0, 10000),
+          data: this.getRandomData(day, 25000, 30000),
           name: '经营收入'
         },
         {
           code: 'passenger',
-          data: this.getRandomData(day, 0, 10000),
+          data: this.getRandomData(day, 20000, 25000),
           name: '客流量'
         },
         {
           code: 'vehicle',
-          data: this.getRandomData(day, 0, 10000),
+          data: this.getRandomData(day, 10000, 15000),
           name: '车流量'
         },
         {
           code: 'electric',
-          data: this.getRandomData(day, 0, 10000),
+          data: this.getRandomData(day, 5000, 10000),
           name: '用电量'
         },
         {
           code: 'water',
-          data: this.getRandomData(day, 0, 10000),
+          data: this.getRandomData(day, 3000, 6000),
           name: '用水量'
         },
         {
           code: 'washing_out',
-          data: this.getRandomData(day, 0, 10000),
+          data: this.getRandomData(day, 0, 1000),
           name: '排污量'
         },
       ]
@@ -152,6 +152,45 @@ export class ExampleDataService {
   }
 
   // 返回小时数据
+  public getProvinceLineHourData(): any {
+    const hour = ['00:00', '02:00', '04:00', '06:00', '08:00', '10:00',
+      '12:00', '14:00', '16:00', '18:00', '20:00', '22:00'];
+    return {
+      xData: hour,
+      yData: [
+        {
+          code: 'revenue',
+          data: this.getRandomData(hour, 25000, 30000),
+          name: '经营收入'
+        },
+        {
+          code: 'passenger',
+          data: this.getRandomData(hour, 20000, 25000),
+          name: '客流量'
+        },
+        {
+          code: 'vehicle',
+          data: this.getRandomData(hour, 10000, 15000),
+          name: '车流量'
+        },
+        {
+          code: 'electric',
+          data: this.getRandomData(hour, 5000, 10000),
+          name: '用电量'
+        },
+        {
+          code: 'water',
+          data: this.getRandomData(hour, 3000, 6000),
+          name: '用水量'
+        },
+        {
+          code: 'washing_out',
+          data: this.getRandomData(hour, 0, 1000),
+          name: '排污量'
+        },
+      ]
+    };
+  }
   public getProvinceBarHourData(): any {
     const hour = ['00:00', '02:00', '04:00', '06:00', '08:00', '10:00',
       '12:00', '14:00', '16:00', '18:00', '20:00', '22:00'];

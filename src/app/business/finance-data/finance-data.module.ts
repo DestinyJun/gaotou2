@@ -8,6 +8,7 @@ import {EchartsLineBrokenModule, InputDropdownModule, PagingModule, WenjunAlertM
 import { FinanceDataService } from '../../common/services/finance-data.service';
 import {CalendarModule, ScrollPanelModule} from 'primeng/primeng';
 import {DataService} from '../../common/services/data.service';
+import {InputDropdownDayModule} from '../../common/wenjun/input-dropdown-day/input-dropdown-day.module';
 
 @NgModule({
   imports: [
@@ -21,6 +22,7 @@ import {DataService} from '../../common/services/data.service';
     PagingModule,
     InputDropdownModule,
     EchartsLineBrokenModule,
+    InputDropdownDayModule
   ],
   declarations: [FinanceDataComponent],
   entryComponents: [],

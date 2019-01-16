@@ -28,47 +28,36 @@
                 <span class="toggle-btn-area-table" (click)="bar3dYearClick()" style="background: #3B78B1;">整年数据</span>
                 <app-input-dropdown
                   [option]="[
-                    {name: '请选择年', code: '-1'},
+                    {name: '请选择年', code: -1},
                     {name: '2015年', code: 'year'},
                     {name: '2016年', code: 'year'},
                     {name: '2017年', code: 'year'},
-                    {name: '2018年', code: 'year'}
+                    {name: '2018年', code: 'year'},
+                    {name: '2019年', code: 'year'}
                     ]"
                   [height]="'3vh'"
                   [background]="'#DC3545'"
                   [dropdownBackground]="'rgba(26,33,40,0.8)'"
                   [hover]="'#5595D5'"
+                  (dropdownClick)="bar3dInputDropDownYearClick($event)"
                 ></app-input-dropdown>
                 <app-input-dropdown
-                  [option]="[
-                    {name: '请选择月', code: '-1'},
-                    {name: '一月', code: 'month'},
-                    {name: '二月', code: 'month'},
-                    {name: '三月', code: 'month'},
-                    {name: '四月', code: 'month'},
-                    {name: '五月', code: 'month'},
-                    {name: '六月', code: 'month'},
-                    {name: '七月', code: 'month'},
-                    {name: '八月', code: 'month'},
-                    {name: '九月', code: 'month'},
-                    {name: '十月', code: 'month'},
-                    {name: '十一月', code: 'month'},
-                    {name: '十二月', code: 'month'}
-                    ]"
+                  *ngIf="monthShow"
+                  [option]="dataMonth"
                   [height]="'3vh'"
                   [background]="'#FFC107'"
                   [dropdownBackground]="'rgba(26,33,40,0.8)'"
                   [hover]="'#5595D5'"
+                  (dropdownClick)="bar3dInputDropDownMonthClick($event)"
                 ></app-input-dropdown>
-                <app-input-dropdown
-                  [option]="[
-                    {name: '请选择日', code: '-1'}
-                    ]"
+                <app-input-dropdown-day
+                  *ngIf="dayShow"
+                  [option]="dataDay"
                   [height]="'3vh'"
                   [background]="'#17A2B8'"
                   [dropdownBackground]="'rgba(26,33,40,0.8)'"
                   [hover]="'#5595D5'"
-                  ></app-input-dropdown>
+                  ></app-input-dropdown-day>
                 <span class="toggle-btn-area-table" (click)="bar3dExcelShow = true">确定</span>
                 <span class="toggle-btn-area-table" (click)="bar3dExcelShow = true" style="margin-left: 10px;background: #007BFF;">表格导出</span>
               </div>
