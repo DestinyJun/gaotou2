@@ -258,11 +258,11 @@
   margin-right: 1vw;
   cursor: pointer;
 }
-.center .event-table-processed-btn p:nth-child(1){
+.center .event-table-processed-btn p{
   margin-bottom: 0.5vh;
 }
 .center .event-table-processed-btn p:nth-child(2){
-  margin-bottom: 0.5vh;
+  /*margin-bottom: 0.5vh;*/
 }
 .center .event-table-processed-btn span:nth-child(1){
   background: #03A9F7;

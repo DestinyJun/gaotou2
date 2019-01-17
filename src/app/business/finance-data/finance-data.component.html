@@ -27,14 +27,7 @@
               <div class="" style="height: 5vh;min-width: 5vh;cursor: pointer;text-align: center;float: right;margin-right: 3vw;vertical-align: middle">
                 <span class="toggle-btn-area-table" (click)="bar3dYearClick()" style="background: #3B78B1;">整年数据</span>
                 <app-input-dropdown
-                  [option]="[
-                    {name: '请选择年', code: -1},
-                    {name: '2015年', code: 'year'},
-                    {name: '2016年', code: 'year'},
-                    {name: '2017年', code: 'year'},
-                    {name: '2018年', code: 'year'},
-                    {name: '2019年', code: 'year'}
-                    ]"
+                  [option]="dataYear"
                   [height]="'3vh'"
                   [background]="'#DC3545'"
                   [dropdownBackground]="'rgba(26,33,40,0.8)'"
@@ -57,8 +50,10 @@
                   [background]="'#17A2B8'"
                   [dropdownBackground]="'rgba(26,33,40,0.8)'"
                   [hover]="'#5595D5'"
+                  (dropdownClick)="bar3dInputDropDownDayClick($event)"
                   ></app-input-dropdown-day>
-                <span class="toggle-btn-area-table" (click)="bar3dExcelShow = true">确定</span>
+                <span class="toggle-btn-area-table" (click)="bar3dDateSureClick()">确定</span>
+                <span class="toggle-btn-area-table" (click)="bar3dDateCleanClick()" style="background: #6C757D;">清除日期</span>
                 <span class="toggle-btn-area-table" (click)="bar3dExcelShow = true" style="margin-left: 10px;background: #007BFF;">表格导出</span>
               </div>
             </div>

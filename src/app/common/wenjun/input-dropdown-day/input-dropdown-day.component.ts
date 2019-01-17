@@ -13,7 +13,7 @@ export class InputDropdownDayComponent implements OnInit, OnChanges {
   @Input() public dropdownBackground = 'rgba(26,33,40,0.8)';
   @Input() public hover = '#5595D5';
   @Output() public dropdownClick = new EventEmitter<any>();
-  public selectCity: any;
+  public selectCity = '请选择日';
   public uiShow = false;
   public dayChinese = ['01号', '02号', '03号', '04号', '05号', '06号', '07号', '08号',
   '09号', '10号', '11号', '12号', '13号', '14号', '15号', '16号', '17号', '18号', '19号',
@@ -27,7 +27,7 @@ export class InputDropdownDayComponent implements OnInit, OnChanges {
   ngOnInit() {}
   ngOnChanges(changes: SimpleChanges): void {
     if (this.option) {
-      this.selectCity = this.dayChinese[this.option[0].name - 1];
+      // this.selectCity = this.dayChinese[this.option[0].name - 1];
     }
   }
   public boxLiClick (item, event): void {

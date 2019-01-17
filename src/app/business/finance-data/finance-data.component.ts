@@ -26,7 +26,13 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
   public selectDataYear: any;
   public selectDataMonth: any;
   public selectDataDay: any;
-  public dataYear = [];
+  public dataYear = [
+    {name: '请选择年', code: -1},
+    {name: '2015年', code: 'year'},
+    {name: '2016年', code: 'year'},
+    {name: '2017年', code: 'year'},
+    {name: '2018年', code: 'year'},
+    {name: '2019年', code: 'year'}];
   public dataMonth = [];
   public dataDay = [];
   public monthShow = false;
@@ -233,7 +239,7 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
       timeType: 'month',
       data: this.exampleService.getProvinceBarMonthData(),
       xType: this.outOptions3d.pie.xType,
-      title: `贵州省所有服务月度${this.outOptions3d.alertBarTitle}统计`
+      title: `贵州省本年度服务区${this.outOptions3d.alertBarTitle}统计`
     };
     /*this.financeDataService.search3DAlertBar({id: 2, types: this.outOptions3d.bar.types}).subscribe(
       (val) => {
@@ -263,7 +269,7 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
 
    // 折线图
     this.options3dPie = {
-      title: `贵州省久长服务区月度业态走势图`,
+      title: `贵州省本年度服务区业态走势图`,
       data: this.exampleService.getProvinceLineMonthData(),
       color: ['#7C7CD4', '#36B9AB', '#6ACD72', '#0A30BF', '#027204', '#E36E57']
     };
@@ -272,7 +278,7 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
     if (e.timeType === 'year') {
       // 折线图
       this.options3dPie = {
-        title: `贵州省久长服务区${e.name}业态走势图`,
+        title: `贵州省本年度服务区${e.name}业态走势图`,
         data: this.exampleService.getProvinceLineMonthData(),
         color: ['#7C7CD4', '#36B9AB', '#6ACD72', '#0A30BF', '#027204', '#E36E57']
       };
@@ -281,7 +287,7 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
     if (e.timeType === 'month') {
       // 折线图
       this.options3dPie = {
-        title: `贵州省久长服务区${e.name}业态走势图`,
+        title: `贵州省本年度服务区${e.name}业态走势图`,
         data: this.exampleService.getProvinceLineDayData(),
         color: ['#7C7CD4', '#36B9AB', '#6ACD72', '#0A30BF', '#027204', '#E36E57']
       };
@@ -290,7 +296,7 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
     if (e.timeType === 'day') {
       // 折线图
       this.options3dPie = {
-        title: `贵州省久长服务区${e.name}业态走势图`,
+        title: `贵州省本年度服务区${e.name}业态走势图`,
         data: this.exampleService.getProvinceBarHourData(),
         color: ['#7C7CD4', '#36B9AB', '#6ACD72', '#0A30BF', '#027204', '#E36E57']
       };
@@ -360,7 +366,7 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
         {name: '请选择月', code: -1}
       ];
       const year = parseInt(e.name.split('年')[0], 10);
-      this.selectDataYear = year;
+      this.selectDataYear = e;
       if (year < new Date().getFullYear()) {
         for (let i = 0; i < 12; i++) {
           this.dataMonth.push({name: this.dataMonthChinese[i], code: 'month'});
@@ -380,17 +386,83 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
       }
       this.dayShow = true;
       const months = this.dataMonthChinese.indexOf(e.name) + 1;
-      const days = new Date(this.selectDataYear, months, 0).getDate();
+      this.selectDataMonth = e;
+      const days = new Date(parseInt(this.selectDataYear.name.split('年')[0], 10), months, 0).getDate();
       for (let i = 1; i <= days; i++) {
         this.dataDay.push({name: i, code: 'day'});
       }
     }
     public bar3dInputDropDownDayClick (e): void {
-      console.log(e);
+      this.selectDataDay = e;
     }
-      // 根据日期算月数及天数
-
-
+    public bar3dDateSureClick (): void {
+      // 日
+      if (this.selectDataDay && this.selectDataDay.code !== '-1') {
+        // 柱状图
+        this.options3dBar = {
+          timeType: 'month',
+          data: this.exampleService.getProvinceBarHourData(),
+          xType: this.outOptions3d.pie.xType,
+          title: `贵州省${this.selectDataYear.name}${this.selectDataMonth.name}${this.selectDataDay.name}日服务区${this.outOptions3d.alertBarTitle}统计`
+        };
+        // 折线图
+        this.options3dPie = {
+          title: `贵州省${this.selectDataYear.name}${this.selectDataMonth.name}${this.selectDataDay.name}日服务区业态走势图`,
+          data: this.exampleService.getProvinceLineHourData(),
+          color: ['#7C7CD4', '#36B9AB', '#6ACD72', '#0A30BF', '#027204', '#E36E57']
+        };
+        return;
+      }
+      // 月
+      if (this.selectDataMonth && this.selectDataMonth.code !== '-1') {
+        // 柱状图
+        this.options3dBar = {
+          timeType: 'month',
+          data: this.exampleService.getProvinceBarDayData(),
+          xType: this.outOptions3d.pie.xType,
+          title: `贵州省${this.selectDataYear.name}${this.selectDataMonth.name}服务区${this.outOptions3d.alertBarTitle}统计`
+        };
+        // 折线图
+        this.options3dPie = {
+          title: `贵州省${this.selectDataYear.name}${this.selectDataMonth.name}服务区业态走势图`,
+          data: this.exampleService.getProvinceLineDayData(),
+          color: ['#7C7CD4', '#36B9AB', '#6ACD72', '#0A30BF', '#027204', '#E36E57']
+        };
+        return;
+      }
+      // 年
+      if (this.selectDataYear) {
+        // 柱状图
+        this.options3dBar = {
+          timeType: 'month',
+          data: this.exampleService.getProvinceBarMonthData(),
+          xType: this.outOptions3d.pie.xType,
+          title: `贵州省${this.selectDataYear.name}服务区${this.outOptions3d.alertBarTitle}统计`
+        };
+        // 折线图
+        this.options3dPie = {
+          title: `贵州省${this.selectDataYear.name}服务区业态走势图`,
+          data: this.exampleService.getProvinceLineMonthData(),
+          color: ['#7C7CD4', '#36B9AB', '#6ACD72', '#0A30BF', '#027204', '#E36E57']
+        };
+      }
+      return;
+    }
+    public bar3dDateCleanClick (): void {
+        this.monthShow = false;
+        this.dayShow = false;
+        this.selectDataDay = null;
+        this.selectDataMonth = null;
+        this.selectDataYear = null;
+        this.dataYear = [
+          {name: '请选择年', code: -1},
+          {name: '2015年', code: 'year'},
+          {name: '2016年', code: 'year'},
+          {name: '2017年', code: 'year'},
+          {name: '2018年', code: 'year'},
+          {name: '2019年', code: 'year'}
+        ];
+    }
   // 车流监控
   public vehicleAmountCount(): void {
     this.financeDataService.searchCarTotal({id: 2}).subscribe(
