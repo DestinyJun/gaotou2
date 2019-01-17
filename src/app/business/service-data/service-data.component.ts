@@ -1009,7 +1009,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
             data: value.data,
             title: '',
             total: '',
-            color: ['#00CAE2', '#2307EF', '#4791D8']
+            color: ['#00CAE2', '#2307EF', '#4791D8', '#F86110', '#0096A4', '#F0B801']
           };
         }
       }
