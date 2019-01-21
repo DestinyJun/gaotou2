@@ -119,6 +119,12 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   public arryIncomePie = [];
   public IncomeOptionType: any;
   public incomeExcelShow = false;
+  public incomeManualShow = false;
+  public incomeManualDirectionSelect = [];
+  public incomeManualStoreShow = false;
+  public incomeManualStoreSelect = [
+    {name: '请选择店铺......', code: '-1'}
+  ];
   public incomeStartTime: Date; // 时间选择器
   public incomeEndTime: Date; // 时间选择器
   constructor(
@@ -143,6 +149,11 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     this.serareaService.searchSerAraItem(this.serviceZoneID).subscribe(
       (value) => {
         this.serviceInfo = value.data;
+        this.incomeManualDirectionSelect = [
+            {name: `请选择服务区方向......`, code: '-1'},
+            {name: `${value.data.upAttributeValues.source}——>${value.data.upAttributeValues.destination}`, code: 'top'},
+            {name: `${value.data.downAttributeValues.source}——>${value.data.downAttributeValues.destination}`, code: 'bottom'},
+          ];
         value.data.commonAttributeValues.map((val, index) => {
           this.alterCommonAttributeValues.push(this.cloneValue(val));
         });
@@ -883,12 +894,10 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     this.alertCrosswiseShow = true;
     document.body.className = 'ui-overflow-hidden';
   }
-
   public closeCrosswiseShow(): void {
     document.body.className = '';
     this.alertCrosswiseShow = false;
   }
-
   public modifySerAraItemClick(): void {
     this.serareaService.modifySerAraItem(
       {
@@ -971,12 +980,42 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       },
     };
   }
-
   public closeServicesPlan() {
     document.body.className = '';
     this.servicesPlan = false;
   }
 
+  // 业态输入
+  public openIncomeManual (): void {
+      this.incomeManualShow = true;
+  }
+  public incomeManualDirectionClick (item): void {
+    this.incomeManualStoreSelect = [
+      {name: '请选择店铺......', code: '-1'}
+    ];
+    this.incomeManualStoreShow = true;
+     if (item.code === 'top') {
+       this.incomeTopData.map((val) => {
+         this.incomeManualStoreSelect.push(
+           {name: `${val.storeName}`, code: 'store'}
+         );
+       });
+       return;
+     }
+    if (item.code === 'bottom') {
+      this.incomeBottomData.map((val) => {
+        this.incomeManualStoreSelect.push(
+          {name: `${val.storeName}`, code: 'store'}
+        );
+      });
+      return;
+    }
+
+  }
+  public incomeManualShopClick (item): void {}
+  public incomeManualUpClick (): void {
+      window.alert('上传成功');
+  }
   // 服务区合同下载
   public servicesPactDown(): void {
     if (this.serviceInfo.contractUrl === null) {
@@ -1000,7 +1039,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       }
     );
   }
-
   public IncomeTypes() {
     this.serareaService.searchIncomeTotalPie({id: this.serviceZoneID}).subscribe(
       (value) => {
@@ -1015,7 +1053,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       }
     );
   }
-
   public incomeClick(e): void {
     this.alertIncomeTypeShow = true;
     this.alertIncomeShow = true;
@@ -1025,7 +1062,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     this.IncomeTimeTypes = 'hour';
     this.getIncomeTypesSingle(1, this.alertIncomeTitle, this.storeList, this.IncomeTimeTypes);
   }
-
   public getIncomeTotalTypes(): void {
     this.serareaService.searchIncomeTypes().subscribe(
       (value) => {
@@ -1035,7 +1071,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       }
     );
   }
-
   public getIncomeTotal(time, pageNums): void {
     this.serareaService.searchIncomeTypesList({dateType: time, id: this.serviceZoneID, page: pageNums, nums: 15}).subscribe(
       (incomeVal) => {
@@ -1045,7 +1080,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       }
     );
   }
-
   public getIncomeTypesSingle(pageNums, item, storeList, time): void {
     const shopType = {
       '小吃': {
@@ -1088,7 +1122,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       );
     }
   }
-
   public IncomeSelectTime(event): void {
     this.IncomeTimeTypes = event.code;
     if (!this.alertIncomeTypeShow) {
@@ -1097,7 +1130,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     }
     this.getIncomeTypesSingle(1, this.alertIncomeTitle, this.storeList, this.IncomeTimeTypes);
   }
-
   public getIncomeTypesSinglePaging(page, item, storeList, time): void {
     if (!this.alertIncomeTypeShow) {
       this.getIncomeTotal(time, page);
@@ -1105,12 +1137,10 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     }
     this.getIncomeTypesSingle(page, item, storeList, time);
   }
-
   public closeIncomeShow(): void {
     document.body.className = '';
     this.alertIncomeShow = false;
   }
-
   public IncomeBtnClick(e): void {
     if (e.srcElement.innerText === '收入总数') {
       this.alertIncomeTitle = '收入总数';
@@ -1155,7 +1185,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       this.getIncomeTypesSingle(1, e.srcElement.innerText, this.storeList, this.IncomeTimeTypes);
     }
   }
-
   public incomeExportClick() {
     const startTime = this.datePipe.transform(this.incomeStartTime, 'yyyyMMdd');
     const endTime = this.datePipe.transform(this.incomeEndTime, 'yyyyMMdd');

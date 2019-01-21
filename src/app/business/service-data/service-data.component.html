@@ -312,30 +312,30 @@
               <span *ngFor="let item of eventInfoUpTypes" [ngStyle]=" {'float': item.eventCategoryName === '党群工作部'?'right': 'none', 'margin-right': item.eventCategoryName === '党群工作部'?'5vw':'none'}" (click)="eventInfoUpClick(item)">{{item.eventCategoryName}}</span>
             </div>
             <div class="event-table-processed-btn">
-              <div class="col-lg-6 col-md-6">
+              <div class="col-lg-6 col-md-6" style="padding-right: 0;">
                 <div class="btn-toilet" (click)="openServersToiletAlert('服务区卫生间使用率')">
-                  <p>遵义->贵阳卫生间使用率</p>
-                  <p class=""><span>男厕剩余空位：25</span></p>
-                  <p><span>女厕剩余空位：45</span></p>
+                  <p>遵义->贵阳卫生间数据监控</p>
+                  <p class=""><span>男厕剩余空位：25/50</span></p>
+                  <p><span>女厕剩余空位：45/70</span></p>
                 </div>
                 <div class="btn-carport" (click)="openServersToiletAlert('服务区停车位监控')">
                   <p>遵义->贵阳停车位数据监控</p>
-                  <p class=""><span>大车剩余车位：256</span></p>
-                  <p class=""><span>客车剩余车位：256</span></p>
-                  <p><span>小车剩余车位：318</span></p>
+                  <p class=""><span>大车剩余车位：256/300</span></p>
+                  <p class=""><span>客车剩余车位：256/300</span></p>
+                  <p><span>小车剩余车位：256/300</span></p>
                 </div>
               </div>
-              <div class="col-lg-6 col-md-6" style="margin-bottom: 2vh">
+              <div class="col-lg-6 col-md-6" style="margin-bottom: 2vh;padding-right: 0;">
                 <div class="btn-toilet" (click)="openServersToiletAlert('服务区卫生间使用率')">
-                  <p>贵阳->遵义卫生间使用率</p>
-                  <p class=""><span>男厕剩余空位：25</span></p>
-                  <p><span>女厕剩余空位：45</span></p>
+                  <p>贵阳->遵义卫生间数据监控</p>
+                  <p class=""><span>男厕剩余空位：25/50</span></p>
+                  <p><span>女厕剩余空位：45/总70</span></p>
                 </div>
                 <div class="btn-carport" (click)="openServersToiletAlert('服务区停车位监控')">
                   <p>贵阳->遵义停车位数据监控</p>
-                  <p><span>大车剩余车位：256</span></p>
-                  <p><span>客车剩余车位：256</span></p>
-                  <p><span>小车剩余车位：318</span></p>
+                  <p><span>大车剩余车位：256/300</span></p>
+                  <p><span>客车剩余车位：256/300</span></p>
+                  <p><span>小车剩余车位：256/300</span></p>
                 </div>
               </div>
             </div>
@@ -404,6 +404,7 @@
         <div class="information-btn text-center">
           <span (click)="crosswiseClick()">信息修改</span>
           <span (click)="openServicesPlan()">服务区平面图</span>
+          <span (click)="openIncomeManual()">业态输入</span>
         </div>
       </div>
       <!--收入统计-->
@@ -766,9 +767,9 @@
               <div class="col-sm-4">
                 <input type="text" class="form-control" id="eventName" name="type" [(ngModel)]="uploadEventInfoUp.eventName">
               </div>
-              <label for="principal" class="col-sm-2 control-label" disabled="">责任人</label>
+              <label class="col-sm-2 control-label" disabled="">责任人</label>
               <div class="col-sm-4">
-                <input type="text" class="form-control" id="principal" name="type" [(ngModel)]="uploadEventInfoUp.principal">
+                <input type="text" class="form-control" name="type" [(ngModel)]="uploadEventInfoUp.principal">
               </div>
             </div>
             <div class="form-group">
@@ -902,6 +903,65 @@
         </div>
         <div class="col-lg-6 col-md-6 text-center">
           <div style="height:74.5vh" echarts [options]="servicesMap"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--业态手动输入框-->
+<div class="bg-box" *ngIf="incomeManualShow" >
+  <div class="alert-window" style="height:40vh; margin-top: -20vh;width: 40vw;margin-left: -20vw">
+    <div class="alert-window-header" >
+      <div class="row">
+        <div class="col-lg-12 col-md-12">
+          <span>服务区手动业态输入</span>
+          <div class="pull-right" (click)="incomeManualShow = false">
+            <i class="fa fa-window-close " aria-hidden="true"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="alert-window-content" style="padding: 10px 10px 0 10px;">
+      <div class="row">
+        <div class="col-ld-12 col-md-12">
+          <form class="form-horizontal">
+            <div class="form-group">
+              <label for="eventName" class="col-sm-3 control-label" disabled="">请选择服务区方向：</label>
+              <div class="col-sm-9">
+                <app-input-dropdown
+                  [option]="incomeManualDirectionSelect"
+                  [height]="'34px'"
+                  [width]="'100%'"
+                  [background]="'rgba(255,255,255,0.11)'"
+                  [dropdownBackground]="'rgba(26,33,40,0.8)'"
+                  [hover]="'#5595D5'"
+                  (dropdownClick)="incomeManualDirectionClick($event)"></app-input-dropdown>
+              </div>
+            </div>
+            <div class="form-group"  [hidden]='!incomeManualStoreShow'>
+              <label for="eventName" class="col-sm-3 control-label" disabled="">请选择店铺名称：</label>
+              <div class="col-sm-9">
+                <app-input-dropdown
+                  [option]="incomeManualStoreSelect"
+                  [height]="'34px'"
+                  [width]="'100%'"
+                  [background]="'rgba(255,255,255,0.11)'"
+                  [dropdownBackground]="'rgba(26,33,40,0.8)'"
+                  [hover]="'#5595D5'"
+                  (dropdownClick)="incomeManualShopClick($event)"></app-input-dropdown>
+              </div>
+            </div>
+            <div class="form-group"  *ngIf='incomeManualStoreShow'>
+              <label class="col-sm-3 control-label" disabled="">请输入业态收入：</label>
+              <div class="col-sm-9">
+                <input type="number" class="form-control" name="type" [(ngModel)]="uploadEventInfoUp.principal">
+              </div>
+            </div>
+            <div class="form-group text-center style-border">
+              <button class="btn btn-success" type="button" (click)="incomeManualUpClick()">上传</button>
+              <button class="btn btn-danger" type="button" (click)="incomeManualShow = false">取消</button>
+            </div>
+          </form>
         </div>
       </div>
     </div>

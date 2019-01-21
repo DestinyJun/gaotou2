@@ -1,4 +1,10 @@
-<div class="input-dropdown-box" [ngStyle]="{'height': height, 'line-height': height, 'background': background}">
+<div class="input-dropdown-box" [ngStyle]="{
+  'height': height,
+  'line-height': height,
+  'background': background,
+  'min-width': width
+  }
+">
   <span>{{selectCity}}</span>
   <i class="fa fa-angle-down" aria-hidden="true" [ngStyle]="{'line-height': height}"></i>
   <ul class="input-dropdown-ul" *ngIf="uiShow" [ngStyle]="{'background': dropdownBackground}">
