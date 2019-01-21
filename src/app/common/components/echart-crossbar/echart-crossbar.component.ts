@@ -49,6 +49,14 @@ export class EchartCrossbarComponent implements OnInit, OnChanges {
       );
     });
     this.crosswiseBar = {
+      title: {
+        text: `${this.option.title}`,
+        x: '3%',
+        textStyle: {
+          color: '#fff',
+          fontSize: 14
+        }
+      },
       tooltip : {
         trigger: 'axis',
         axisPointer : {            // 坐标轴指示器，坐标轴触发有效
@@ -56,10 +64,10 @@ export class EchartCrossbarComponent implements OnInit, OnChanges {
         }
       },
       grid: {
-        top: '5%',
-        left: '1%',
+        top: '10%',
+        left: '2%',
         right: '5%',
-        bottom: '5%',
+        bottom: '10%',
         containLabel: true
       },
       xAxis: {

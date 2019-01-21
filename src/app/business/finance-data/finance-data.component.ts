@@ -45,10 +45,16 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
   public alertBarTitle: string;
   public options3dBar = {};
   public options3dPie = {};
+  public options3dLine = {};
   public outOptions3d: any; // 3D图组件传出来的值
   public bar3dExcelShow = false;  // 3D图统计的表格导出
   public startTime3d: Date; // 时间选择器
   public endTime3d: Date; // 时间选择器
+  public bar3DBtnData = [
+    {name: '用电量/度', backColor: '#6C757D'},
+    {name: '用水量/立方', backColor: '#3B78B1'},
+    {name: '排污量/立方', backColor: '#04A6BB'},
+  ];
   // 车辆监控
   public vehicleAmount: any;
   public optionsCarModel: any; // 车辆饼状图
@@ -241,19 +247,8 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
       xType: this.outOptions3d.pie.xType,
       title: `贵州省本年度服务区${this.outOptions3d.alertBarTitle}统计`
     };
-    /*this.financeDataService.search3DAlertBar({id: 2, types: this.outOptions3d.bar.types}).subscribe(
-      (val) => {
-        if (val.status === '200') {
-          this.options3dBar = {
-            data: val.data,
-            xType: this.outOptions3d.pie.xType,
-            title: `贵州省所有服务区年度${this.outOptions3d.alertBarTitle}统计`
-          };
-        }
-      }
-    );*/
     // 类型占比扇形图
-   /* this.financeDataService.search3DAlertPie({id: 2, xType: this.outOptions3d.pie.xType, types: this.outOptions3d.pie.types}).subscribe(
+    this.financeDataService.search3DAlertPie({id: 2, xType: this.outOptions3d.pie.xType, types: this.outOptions3d.pie.types}).subscribe(
       (val) => {
         if (val.status === '200') {
           this.options3dPie = {
@@ -265,10 +260,20 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
           };
         }
       }
-    );*/
-
+    );
+    /*this.financeDataService.search3DAlertBar({id: 2, types: this.outOptions3d.bar.types}).subscribe(
+         (val) => {
+           if (val.status === '200') {
+             this.options3dBar = {
+               data: val.data,
+               xType: this.outOptions3d.pie.xType,
+               title: `贵州省所有服务区年度${this.outOptions3d.alertBarTitle}统计`
+             };
+           }
+         }
+       );*/
    // 折线图
-    this.options3dPie = {
+    this.options3dLine = {
       title: `贵州省本年度服务区业态走势图`,
       data: this.exampleService.getProvinceLineMonthData(),
       color: ['#7C7CD4', '#36B9AB', '#6ACD72', '#0A30BF', '#027204', '#E36E57']
@@ -277,7 +282,7 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
   public onOutOptions3dBar(e): void {
     if (e.timeType === 'year') {
       // 折线图
-      this.options3dPie = {
+      this.options3dLine = {
         title: `贵州省本年度服务区${e.name}业态走势图`,
         data: this.exampleService.getProvinceLineMonthData(),
         color: ['#7C7CD4', '#36B9AB', '#6ACD72', '#0A30BF', '#027204', '#E36E57']
@@ -286,7 +291,7 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
     }
     if (e.timeType === 'month') {
       // 折线图
-      this.options3dPie = {
+      this.options3dLine = {
         title: `贵州省本年度服务区${e.name}业态走势图`,
         data: this.exampleService.getProvinceLineDayData(),
         color: ['#7C7CD4', '#36B9AB', '#6ACD72', '#0A30BF', '#027204', '#E36E57']
@@ -295,7 +300,7 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
     }
     if (e.timeType === 'day') {
       // 折线图
-      this.options3dPie = {
+      this.options3dLine = {
         title: `贵州省本年度服务区${e.name}业态走势图`,
         data: this.exampleService.getProvinceBarHourData(),
         color: ['#7C7CD4', '#36B9AB', '#6ACD72', '#0A30BF', '#027204', '#E36E57']
@@ -347,7 +352,7 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
         title: `贵州省所有服务年度${this.outOptions3d.alertBarTitle}统计`
       };
       // 折线图
-      this.options3dPie = {
+      this.options3dLine = {
         title: `贵州省久长服务区年度业态走势图`,
         data: this.exampleService.getProvinceLineYearData(),
         color: ['#7C7CD4', '#36B9AB', '#6ACD72', '#0A30BF', '#027204', '#E36E57']
@@ -406,7 +411,7 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
           title: `贵州省${this.selectDataYear.name}${this.selectDataMonth.name}${this.selectDataDay.name}日服务区${this.outOptions3d.alertBarTitle}统计`
         };
         // 折线图
-        this.options3dPie = {
+        this.options3dLine = {
           title: `贵州省${this.selectDataYear.name}${this.selectDataMonth.name}${this.selectDataDay.name}日服务区业态走势图`,
           data: this.exampleService.getProvinceLineHourData(),
           color: ['#7C7CD4', '#36B9AB', '#6ACD72', '#0A30BF', '#027204', '#E36E57']
@@ -423,7 +428,7 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
           title: `贵州省${this.selectDataYear.name}${this.selectDataMonth.name}服务区${this.outOptions3d.alertBarTitle}统计`
         };
         // 折线图
-        this.options3dPie = {
+        this.options3dLine= {
           title: `贵州省${this.selectDataYear.name}${this.selectDataMonth.name}服务区业态走势图`,
           data: this.exampleService.getProvinceLineDayData(),
           color: ['#7C7CD4', '#36B9AB', '#6ACD72', '#0A30BF', '#027204', '#E36E57']
@@ -440,7 +445,7 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
           title: `贵州省${this.selectDataYear.name}服务区${this.outOptions3d.alertBarTitle}统计`
         };
         // 折线图
-        this.options3dPie = {
+        this.options3dLine= {
           title: `贵州省${this.selectDataYear.name}服务区业态走势图`,
           data: this.exampleService.getProvinceLineMonthData(),
           color: ['#7C7CD4', '#36B9AB', '#6ACD72', '#0A30BF', '#027204', '#E36E57']
@@ -462,6 +467,14 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
           {name: '2018年', code: 'year'},
           {name: '2019年', code: 'year'}
         ];
+    }
+    public bar3dCrosswiseBtnClick (i): void {
+      this.bar3DBtnData = [
+        {name: '用电量/度', backColor: '#6C757D'},
+        {name: '用水量/立方', backColor: '#3B78B1'},
+        {name: '排污量/立方', backColor: '#04A6BB'},
+      ];
+      this.bar3DBtnData[i].backColor = '#1F0BC4';
     }
   // 车流监控
   public vehicleAmountCount(): void {
@@ -518,6 +531,7 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
         value.data.map((val, index) => {
           arryCarPie.push({value: val.value, name: val.name});
         });
+        console.log(arryCarPie);
         this.optionsCarType = {
           data: arryCarPie,
           title: `贵州省各市所有服务区今日${e.name}占比统计`,
@@ -700,6 +714,7 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
             }
           });
           this.crosswiseBar = {
+            title: '受到核辐射点击返回',
             data: value.data,
             color: ['#2307EF', '#3B78B1', '#04A6BB']
           };

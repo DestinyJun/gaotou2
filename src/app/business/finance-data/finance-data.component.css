@@ -323,16 +323,10 @@
 /*3D柱状图弹窗*/
 .alert-3D-bar{
   position: absolute;
-  width: 80vw;
-  height:60vh;
   left: 50%;
-  margin-left: -40vw;
   top: 50%;
-  margin-top: -30vh;
-  /*background: #273440;*/
   background: rgba(39,52,64,0.8);
   z-index: 1;
-  /*overflow: auto;*/
 }
 .alert-3D-bar-header{
   height: 5vh;
@@ -372,13 +366,19 @@
 .toggle-btn-area{
   position: relative;
 }
+
 .bar3D-charts>.toggle-btn-area{
   position: absolute;
   top: 6vh;
   left: 50%;
   transform: translateX(-50%);
 }
-
+.bar3D-charts .crosswise-btn{
+  position: absolute;
+  right: 25px;
+  z-index: 999;
+  cursor: pointer;
+}
 
 .bar3D-charts .toggle-btn-area-date{
   display: inline-block;

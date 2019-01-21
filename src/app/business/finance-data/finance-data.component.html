@@ -18,7 +18,7 @@
         ></app-echart3d>
         <!--3D柱状图弹窗 alertBarShow-->
         <div class="bg-box" *ngIf="alertBarShow">
-          <div class="alert-3D-bar">
+          <div class="alert-3D-bar" style=" width: 90vw;margin-left: -45vw; height:90vh;margin-top: -45vh;">
             <div class="alert-3D-bar-header">
               <span class="pull-left">{{alertBarTitle}}</span>
               <div class="pull-right" (click)="closeBarShow()">
@@ -59,11 +59,28 @@
             </div>
             <div class="row bar3D-charts">
               <div class="col-ld-6 col-md-6">
-                <app-echart-basicbar [option]="options3dBar" [height]="'55vh'" (outOptions3dBar)="onOutOptions3dBar($event)"></app-echart-basicbar>
+                <app-echart-basicbar [option]="options3dBar" [height]="'42.5vh'" (outOptions3dBar)="onOutOptions3dBar($event)"></app-echart-basicbar>
               </div>
               <div class="col-ld-6 col-md-6">
-                <!--<app-echart-pie [option]="options3dPie" [height]="'55vh'" (pieClick)="onOptions3dPie($event)"></app-echart-pie>-->
-                <app-echarts-line-broken [height]="'55vh'" [option]="options3dPie"></app-echarts-line-broken>
+                <app-echarts-line-broken [height]="'45.5vh'" [option]="options3dLine"></app-echarts-line-broken>
+              </div>
+              <div class="col-ld-6 col-md-6">
+                <app-echart-pie [option]="options3dPie" [height]="'42.5vh'" (pieClick)="onOptions3dPie($event)"></app-echart-pie>
+              </div>
+              <div class="col-ld-6 col-md-6" style="position: relative;">
+                <div class="crosswise-btn text-center">
+                  <!--<span [ngStyle]="{'background': barStatus1?'#1F0BC4': '#27375B'}">用电量/度</span>
+                  <span [ngStyle]="{'background': barStatus2?'#1F0BC4': '#3B78B1'}">用水量/立方</span>
+                  <span [ngStyle]="{'background': barStatus3?'#1F0BC4': '#04A6BB'}">排污量/立方</span>-->
+                  <span *ngFor="let item of bar3DBtnData,let i = index"
+                        [ngStyle]="{
+                          'background': item.backColor,
+                          'margin-right': '10px',
+                          'padding': '0 5px',
+                          'border-radius': '3px'
+                        }" (click)="bar3dCrosswiseBtnClick(i)">{{item.name}}</span>
+                </div>
+                <app-echart-crossbar [option]="crosswiseBar" [height]="'42.5vh'"></app-echart-crossbar>
               </div>
             </div>
             <!--表格导出-->

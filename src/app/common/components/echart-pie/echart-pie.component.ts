@@ -59,16 +59,23 @@ export class EchartPieComponent implements OnInit, OnChanges {
     } else {
       this.options3dPie = {
         title: {
-          text: `${this.option.title}`,
+          text: `${this.option.title == null ? '' : this.option.title}`,
           x: 'center',
           textStyle: {
             color: '#fff',
-            fontSize: 16
+            fontSize: 14
           }
         },
         tooltip: {
           trigger: 'item',
           formatter: '{b} : {c} ({d}%)'
+        },
+        grid: {
+          top: '5%',
+          left: '1%',
+          right: '5%',
+          bottom: '5%',
+          containLabel: true
         },
         series: [
           {
