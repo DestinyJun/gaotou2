@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class ExampleDataService {
   constructor() { }
-  // 返回折线图数据年数据
+  // 返回折线图年数据
   public getProvinceLineYearData(): any {
     const year = ['2015年', '2016年', '2017年', '2018年', '2019年'];
     return {
@@ -42,7 +42,7 @@ export class ExampleDataService {
       ]
     };
   }
-  // 返回折线图数据年数据
+  // 返回柱状图年数据
   public getProvinceBarYearData(): any {
     const year = ['2015年', '2016年', '2017年', '2018年', '2019年'];
     return {
@@ -50,35 +50,30 @@ export class ExampleDataService {
       coordinate: this.getRandomData(year, 0, 10000)
     };
   }
-  // 返回横向市级柱状图年数据
+  // 返回地区排名横向柱状图年数据
   public getCityCrosswiseBarYearData(): any {
     const year = [
-      {serviceAreaId: 16, serviceName: '贵阳市'},
-      {serviceAreaId: 32, serviceName: '六盘水市'},
-      {serviceAreaId: 32, serviceName: '遵义市'},
-      {serviceAreaId: 32, serviceName: '安顺市'},
-      {serviceAreaId: 8, serviceName: '铜仁市'},
-      {serviceAreaId: 35, serviceName: '黔西南州'},
-      {serviceAreaId: 6, serviceName: '毕节市'},
-      {serviceAreaId: 9, serviceName: '黔东南州'},
-      {serviceAreaId: 4, serviceName: '黔南州'},
+      {serviceAreaId: 16, serviceName: '2015年'},
+      {serviceAreaId: 32, serviceName: '2016年'},
+      {serviceAreaId: 32, serviceName: '2017年'},
+      {serviceAreaId: 32, serviceName: '2018年'},
+      {serviceAreaId: 8, serviceName: '2019年'},
     ];
     return {
       barDatas: [
-        {title: '用水量', titleCode: 'water', datas: this.bubbleSortBig(this.getRandomData(year, 0, 10000))},
-        {title: '用电量', titleCode: 'electricity', datas: this.bubbleSortBig(this.getRandomData(year, 0, 15000))},
-        {title: '排污量', titleCode: 'pollution', datas: this.bubbleSortBig(this.getRandomData(year, 0, 9000))}
+        {title: '用水量', titleCode: 'water', datas: this.bubbleSortBig(this.getRandomData(year, 0, 20000))},
+        {title: '用电量', titleCode: 'electricity', datas: this.bubbleSortBig(this.getRandomData(year, 0, 18000))},
+        {title: '排污量', titleCode: 'pollution', datas: this.bubbleSortBig(this.getRandomData(year, 0, 16000))}
       ],
       yAxis: year,
     };
   }
-  // 返回横向服务区柱状图年数据
+  // 返回服务区排名横向柱状图年数据
   public getServiceCrosswiseBarYearData(): any {
     const year = [
       {serviceAreaId: 16, serviceName: '吊堡停车区'},
       {serviceAreaId: 32, serviceName: '龙山停车区'},
       {serviceAreaId: 8, serviceName: '子为停车区'},
-      {serviceAreaId: 35, serviceName: '柿花寨服务区'},
       {serviceAreaId: 6, serviceName: '上堡服务区'},
       {serviceAreaId: 9, serviceName: '新寨服务区'},
       {serviceAreaId: 4, serviceName: '牟珠洞服务区'},
@@ -89,9 +84,9 @@ export class ExampleDataService {
     ];
     return {
       barDatas: [
-        {title: '用水量', titleCode: 'water', datas: this.bubbleSortBig(this.getRandomData(year, 0, 6000))},
-        {title: '用电量', titleCode: 'electricity', datas: this.bubbleSortBig(this.getRandomData(year, 0, 4500))},
-        {title: '排污量', titleCode: 'pollution', datas: this.bubbleSortBig(this.getRandomData(year, 0, 3500))}
+        {title: '用水量', titleCode: 'water', datas: this.bubbleSortBig(this.getRandomData(year, 0, 10000))},
+        {title: '用电量', titleCode: 'electricity', datas: this.bubbleSortBig(this.getRandomData(year, 0, 9000))},
+        {title: '排污量', titleCode: 'pollution', datas: this.bubbleSortBig(this.getRandomData(year, 0, 8000))}
       ],
       yAxis: year,
     };
@@ -142,6 +137,51 @@ export class ExampleDataService {
     return {
       xData: month,
       coordinate: this.getRandomData(month, 0, 10000)
+    };
+  }
+  // 返回地区排名横向柱状图月数据
+  public getCityCrosswiseBarMonthData(): any {
+    const year = [
+      {serviceAreaId: 32, serviceName: '六盘水市'},
+      {serviceAreaId: 32, serviceName: '遵义市'},
+      {serviceAreaId: 32, serviceName: '安顺市'},
+      {serviceAreaId: 8, serviceName: '铜仁市'},
+      {serviceAreaId: 35, serviceName: '黔西南州'},
+      {serviceAreaId: 6, serviceName: '毕节市'},
+      {serviceAreaId: 9, serviceName: '黔东南州'},
+      {serviceAreaId: 4, serviceName: '黔南州'},
+      {serviceAreaId: 16, serviceName: '贵阳市'},
+    ];
+    return {
+      barDatas: [
+        {title: '用水量', titleCode: 'water', datas: this.bubbleSortBig(this.getRandomData(year, 0, 15000))},
+        {title: '用电量', titleCode: 'electricity', datas: this.bubbleSortBig(this.getRandomData(year, 0, 14000))},
+        {title: '排污量', titleCode: 'pollution', datas: this.bubbleSortBig(this.getRandomData(year, 0, 13000))}
+      ],
+      yAxis: year,
+    };
+  }
+  // 返回服务区排名横向柱状图月数据
+  public getServiceCrosswiseBarMonthData(): any {
+    const year = [
+      {serviceAreaId: 16, serviceName: '吊堡停车区'},
+      {serviceAreaId: 32, serviceName: '龙山停车区'},
+      {serviceAreaId: 8, serviceName: '子为停车区'},
+      {serviceAreaId: 6, serviceName: '上堡服务区'},
+      {serviceAreaId: 9, serviceName: '新寨服务区'},
+      {serviceAreaId: 4, serviceName: '牟珠洞服务区'},
+      {serviceAreaId: 36, serviceName: '楠木渡服务区'},
+      {serviceAreaId: 5, serviceName: '都匀北停车区'},
+      {serviceAreaId: 111, serviceName: '红枫湖服务区'},
+      {serviceAreaId: 1, serviceName: '久长服务区'}
+    ];
+    return {
+      barDatas: [
+        {title: '用水量', titleCode: 'water', datas: this.bubbleSortBig(this.getRandomData(year, 0, 9000))},
+        {title: '用电量', titleCode: 'electricity', datas: this.bubbleSortBig(this.getRandomData(year, 0, 8000))},
+        {title: '排污量', titleCode: 'pollution', datas: this.bubbleSortBig(this.getRandomData(year, 0, 7000))}
+      ],
+      yAxis: year,
     };
   }
 
@@ -196,6 +236,51 @@ export class ExampleDataService {
       coordinate: this.getRandomData(day, 0, 10000)
     };
   }
+  // 返回地区排名横向柱状图日数据
+  public getCityCrosswiseBarDayData(): any {
+    const year = [
+      {serviceAreaId: 16, serviceName: '贵阳市'},
+      {serviceAreaId: 32, serviceName: '六盘水市'},
+      {serviceAreaId: 32, serviceName: '遵义市'},
+      {serviceAreaId: 32, serviceName: '安顺市'},
+      {serviceAreaId: 8, serviceName: '铜仁市'},
+      {serviceAreaId: 35, serviceName: '黔西南州'},
+      {serviceAreaId: 6, serviceName: '毕节市'},
+      {serviceAreaId: 9, serviceName: '黔东南州'},
+      {serviceAreaId: 4, serviceName: '黔南州'},
+    ];
+    return {
+      barDatas: [
+        {title: '用水量', titleCode: 'water', datas: this.bubbleSortBig(this.getRandomData(year, 0, 18000))},
+        {title: '用电量', titleCode: 'electricity', datas: this.bubbleSortBig(this.getRandomData(year, 0, 17000))},
+        {title: '排污量', titleCode: 'pollution', datas: this.bubbleSortBig(this.getRandomData(year, 0, 16000))}
+      ],
+      yAxis: year,
+    };
+  }
+  // 返回服务区排名横向柱状图日数据
+  public getServiceCrosswiseBarDayData(): any {
+    const year = [
+      {serviceAreaId: 16, serviceName: '吊堡停车区'},
+      {serviceAreaId: 32, serviceName: '龙山停车区'},
+      {serviceAreaId: 8, serviceName: '子为停车区'},
+      {serviceAreaId: 6, serviceName: '上堡服务区'},
+      {serviceAreaId: 9, serviceName: '新寨服务区'},
+      {serviceAreaId: 4, serviceName: '牟珠洞服务区'},
+      {serviceAreaId: 36, serviceName: '楠木渡服务区'},
+      {serviceAreaId: 5, serviceName: '都匀北停车区'},
+      {serviceAreaId: 111, serviceName: '红枫湖服务区'},
+      {serviceAreaId: 1, serviceName: '久长服务区'}
+    ];
+    return {
+      barDatas: [
+        {title: '用水量', titleCode: 'water', datas: this.bubbleSortBig(this.getRandomData(year, 0, 8000))},
+        {title: '用电量', titleCode: 'electricity', datas: this.bubbleSortBig(this.getRandomData(year, 0, 7000))},
+        {title: '排污量', titleCode: 'pollution', datas: this.bubbleSortBig(this.getRandomData(year, 0, 6000))}
+      ],
+      yAxis: year,
+    };
+  }
 
   // 返回小时数据
   public getProvinceLineHourData(): any {
@@ -243,6 +328,51 @@ export class ExampleDataService {
     return {
       xData: hour,
       coordinate: this.getRandomData(hour, 0, 10000)
+    };
+  }
+  // 返回地区排名横向柱状图小时数据
+  public getCityCrosswiseBarHourData(): any {
+    const year = [
+      {serviceAreaId: 16, serviceName: '贵阳市'},
+      {serviceAreaId: 32, serviceName: '六盘水市'},
+      {serviceAreaId: 32, serviceName: '遵义市'},
+      {serviceAreaId: 32, serviceName: '安顺市'},
+      {serviceAreaId: 8, serviceName: '铜仁市'},
+      {serviceAreaId: 35, serviceName: '黔西南州'},
+      {serviceAreaId: 6, serviceName: '毕节市'},
+      {serviceAreaId: 9, serviceName: '黔东南州'},
+      {serviceAreaId: 4, serviceName: '黔南州'},
+    ];
+    return {
+      barDatas: [
+        {title: '用水量', titleCode: 'water', datas: this.bubbleSortBig(this.getRandomData(year, 0, 8000))},
+        {title: '用电量', titleCode: 'electricity', datas: this.bubbleSortBig(this.getRandomData(year, 0, 7000))},
+        {title: '排污量', titleCode: 'pollution', datas: this.bubbleSortBig(this.getRandomData(year, 0, 6000))}
+      ],
+      yAxis: year,
+    };
+  }
+  // 返回服务区排名横向柱状图小时数据
+  public getServiceCrosswiseBarHourData(): any {
+    const year = [
+      {serviceAreaId: 16, serviceName: '吊堡停车区'},
+      {serviceAreaId: 32, serviceName: '龙山停车区'},
+      {serviceAreaId: 8, serviceName: '子为停车区'},
+      {serviceAreaId: 6, serviceName: '上堡服务区'},
+      {serviceAreaId: 9, serviceName: '新寨服务区'},
+      {serviceAreaId: 4, serviceName: '牟珠洞服务区'},
+      {serviceAreaId: 36, serviceName: '楠木渡服务区'},
+      {serviceAreaId: 5, serviceName: '都匀北停车区'},
+      {serviceAreaId: 111, serviceName: '红枫湖服务区'},
+      {serviceAreaId: 1, serviceName: '久长服务区'}
+    ];
+    return {
+      barDatas: [
+        {title: '用水量', titleCode: 'water', datas: this.bubbleSortBig(this.getRandomData(year, 0, 5000))},
+        {title: '用电量', titleCode: 'electricity', datas: this.bubbleSortBig(this.getRandomData(year, 0, 4000))},
+        {title: '排污量', titleCode: 'pollution', datas: this.bubbleSortBig(this.getRandomData(year, 0, 3000))}
+      ],
+      yAxis: year,
     };
   }
 

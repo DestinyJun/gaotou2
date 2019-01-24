@@ -26,6 +26,7 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
   public selectDataYear: any;
   public selectDataMonth: any;
   public selectDataDay: any;
+  public isYear = true;
   public dataYear = [
     {name: '请选择年', code: -1},
     {name: '2015年', code: 'year'},
@@ -46,14 +47,21 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
   public options3dBar = {};
   public options3dPie = {};
   public options3dLine = {};
+  public options3dCityCrosswise: any;
+  public options3dServiceCrosswise: any;
   public outOptions3d: any; // 3D图组件传出来的值
   public bar3dExcelShow = false;  // 3D图统计的表格导出
   public startTime3d: Date; // 时间选择器
   public endTime3d: Date; // 时间选择器
-  public bar3DBtnData = [
-    {name: '用电量/度', backColor: '#6C757D'},
-    {name: '用水量/立方', backColor: '#3B78B1'},
-    {name: '排污量/立方', backColor: '#04A6BB'},
+  public bar3DCityBtnData = [
+    {name: '用水量/立方', backColor: '#59B2EE', titleCode: 'water'},
+    {name: '用电量/度', backColor: '#B3A5DE', titleCode: 'electricity'},
+    {name: '排污量/立方', backColor: '#FCB984', titleCode: 'pollution'},
+  ];
+  public bar3DServiceBtnData = [
+    {name: '用水量/立方', backColor: '#F01C70', titleCode: 'water'},
+    {name: '用电量/度', backColor: '#4DE5B0', titleCode: 'electricity'},
+    {name: '排污量/立方', backColor: '#FEAC00', titleCode: 'pollution'},
   ];
   // 车辆监控
   public vehicleAmount: any;
@@ -240,12 +248,33 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
     document.body.className = 'ui-overflow-hidden';
     this.alertBarShow = true;
     this.alertBarTitle = this.outOptions3d.alertBarTitle;
+    this.selectDataYear = {
+      name: '2019年', code: 'year'
+    };
     // 柱状图
     this.options3dBar = {
       timeType: 'month',
       data: this.exampleService.getProvinceBarMonthData(),
       xType: this.outOptions3d.pie.xType,
-      title: `贵州省本年度服务区${this.outOptions3d.alertBarTitle}统计`
+      title: `贵州省${this.selectDataYear.name}服务区${this.outOptions3d.alertBarTitle}统计`
+    };
+   // 折线图
+    this.options3dLine = {
+      title: `贵州省2019年服务区业态走势图`,
+      data: this.exampleService.getProvinceLineMonthData(),
+      color: ['#7C7CD4', '#36B9AB', '#6ACD72', '#0A30BF', '#027204', '#E36E57']
+    };
+    // 地区横向排名柱状图
+    this.options3dCityCrosswise = {
+      title: `贵州省2019年地区功耗排污前十排名`,
+      data: this.exampleService.getCityCrosswiseBarMonthData(),
+      color: ['#B3A5DE', '#59B2EE', '#FCB984']
+    };
+    // 服务区横向排名柱状图
+    this.options3dServiceCrosswise = {
+      title: `贵州省2019年服务区功耗排污前十排名`,
+      data: this.exampleService.getServiceCrosswiseBarMonthData(),
+      color: ['#4DE5B0', '#F01C70', '#FEAC00']
     };
     // 类型占比扇形图
     this.financeDataService.search3DAlertPie({id: 2, xType: this.outOptions3d.pie.xType, types: this.outOptions3d.pie.types}).subscribe(
@@ -262,48 +291,80 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
       }
     );
     /*this.financeDataService.search3DAlertBar({id: 2, types: this.outOptions3d.bar.types}).subscribe(
-         (val) => {
-           if (val.status === '200') {
-             this.options3dBar = {
-               data: val.data,
-               xType: this.outOptions3d.pie.xType,
-               title: `贵州省所有服务区年度${this.outOptions3d.alertBarTitle}统计`
-             };
-           }
-         }
-       );*/
-   // 折线图
-    this.options3dLine = {
-      title: `贵州省本年度服务区业态走势图`,
-      data: this.exampleService.getProvinceLineMonthData(),
-      color: ['#7C7CD4', '#36B9AB', '#6ACD72', '#0A30BF', '#027204', '#E36E57']
-    };
+        (val) => {
+          if (val.status === '200') {
+            this.options3dBar = {
+              data: val.data,
+              xType: this.outOptions3d.pie.xType,
+              title: `贵州省所有服务区年度${this.outOptions3d.alertBarTitle}统计`
+            };
+          }
+        }
+      );*/
   }
   public onOutOptions3dBar(e): void {
     if (e.timeType === 'year') {
+      this.isYear = true;
       // 折线图
       this.options3dLine = {
-        title: `贵州省本年度服务区${e.name}业态走势图`,
+        title: `贵州省${e.name}服务区业态走势图`,
         data: this.exampleService.getProvinceLineMonthData(),
         color: ['#7C7CD4', '#36B9AB', '#6ACD72', '#0A30BF', '#027204', '#E36E57']
+      };
+      // 地区横向排名柱状图
+      this.options3dCityCrosswise = {
+        title: `贵州省${e.name}地区功耗排污前十排名`,
+        data: this.exampleService.getCityCrosswiseBarMonthData(),
+        color: ['#B3A5DE', '#59B2EE', '#FCB984']
+      };
+      // 服务区横向排名柱状图
+      this.options3dServiceCrosswise = {
+        title: `贵州省${e.name}服务区功耗排污前十排名`,
+        data: this.exampleService.getServiceCrosswiseBarMonthData(),
+        color: ['#4DE5B0', '#F01C70', '#FEAC00']
       };
       return;
     }
     if (e.timeType === 'month') {
+      console.log();
       // 折线图
       this.options3dLine = {
-        title: `贵州省本年度服务区${e.name}业态走势图`,
+        title: `贵州省${this.selectDataYear.name}${e.name}服务区业态走势图`,
         data: this.exampleService.getProvinceLineDayData(),
         color: ['#7C7CD4', '#36B9AB', '#6ACD72', '#0A30BF', '#027204', '#E36E57']
+      };
+      // 地区横向排名柱状图
+      this.options3dCityCrosswise = {
+        title: `贵州省${this.selectDataYear.name}${e.name}地区功耗排污前十排名`,
+        data: this.exampleService.getCityCrosswiseBarMonthData(),
+        color: ['#B3A5DE', '#59B2EE', '#FCB984']
+      };
+      // 服务区横向排名柱状图
+      this.options3dServiceCrosswise = {
+        title: `贵州省${this.selectDataYear.name}${e.name}服务区功耗排污前十排名`,
+        data: this.exampleService.getServiceCrosswiseBarMonthData(),
+        color: ['#4DE5B0', '#F01C70', '#FEAC00']
       };
       return;
     }
     if (e.timeType === 'day') {
       // 折线图
       this.options3dLine = {
-        title: `贵州省本年度服务区${e.name}业态走势图`,
-        data: this.exampleService.getProvinceBarHourData(),
+        title: `贵州省贵州省${this.selectDataYear.name}${this.selectDataMonth.name}${e.name}日服务区业态走势图`,
+        data: this.exampleService.getProvinceLineHourData(),
         color: ['#7C7CD4', '#36B9AB', '#6ACD72', '#0A30BF', '#027204', '#E36E57']
+      };
+      // 地区横向排名柱状图
+      this.options3dCityCrosswise = {
+        title: `贵州省贵州省贵州省${this.selectDataYear.name}${this.selectDataMonth.name}${e.name}日地区功耗排污前十排名`,
+        data: this.exampleService.getCityCrosswiseBarDayData(),
+        color: ['#B3A5DE', '#59B2EE', '#FCB984']
+      };
+      // 服务区横向排名柱状图
+      this.options3dServiceCrosswise = {
+        title: `贵州省贵州省贵州省${this.selectDataYear.name}${this.selectDataMonth.name}${e.name}日服务区功耗排污前十排名`,
+        data: this.exampleService.getServiceCrosswiseBarDayData(),
+        color: ['#4DE5B0', '#F01C70', '#FEAC00']
       };
       return;
     }
@@ -343,19 +404,62 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
     }
   }
     // 二期测试
+    public bar3dCrosswiseBtnClick (i, area): void {
+      const that = this;
+      const a = that.exampleService.getCityCrosswiseBarMonthData();
+      // 这里是排序算法
+      a.barDatas.map((val, index, obj) => {
+        if (val.titleCode === this.bar3DCityBtnData[i].titleCode) {
+          obj.unshift(val);
+          obj.splice(index + 1, 1);
+        }
+      });
+      if (area === 'city') {
+        this.bar3DCityBtnData = [
+          {name: '用水量/立方', backColor: '#59B2EE', titleCode: 'water'},
+          {name: '用电量/度', backColor: '#B3A5DE', titleCode: 'electricity'},
+          {name: '排污量/立方', backColor: '#FCB984', titleCode: 'pollution'},
+        ];
+        this.bar3DCityBtnData[i].backColor = 'red';
+        // 从新刷新数据
+        this.options3dCityCrosswise = {
+          data: a,
+          color: ['red', '#59B2EE', '#FCB984']
+        };
+        return;
+    }
+      this.bar3DServiceBtnData = [
+      {name: '用水量/立方', backColor: '#F01C70', titleCode: 'water'},
+      {name: '用电量/度', backColor: '#4DE5B0', titleCode: 'electricity'},
+      {name: '排污量/立方', backColor: '#FEAC00', titleCode: 'pollution'},
+    ];
+      this.bar3DServiceBtnData[i].backColor = 'red';
+      // 从新刷新数据
+      this.options3dServiceCrosswise = {
+        data: a,
+        color: ['red', '#59B2EE', '#FCB984']
+      };
+  }
     public bar3dYearClick(): void {
+      this.isYear = false;
       // 柱状图
       this.options3dBar = {
         timeType: 'year',
         data: this.exampleService.getProvinceBarYearData(),
         xType: this.outOptions3d.pie.xType,
-        title: `贵州省所有服务年度${this.outOptions3d.alertBarTitle}统计`
+        title: `贵州省所有服务近年${this.outOptions3d.alertBarTitle}统计`
       };
       // 折线图
       this.options3dLine = {
-        title: `贵州省久长服务区年度业态走势图`,
+        title: `贵州省久长服务区近年业态走势图`,
         data: this.exampleService.getProvinceLineYearData(),
         color: ['#7C7CD4', '#36B9AB', '#6ACD72', '#0A30BF', '#027204', '#E36E57']
+      };
+      // 年度横向排名柱状图
+      this.options3dCityCrosswise = {
+        title: `贵州省近年地区功耗排污排名`,
+        data: this.exampleService.getCityCrosswiseBarYearData(),
+        color: ['#B3A5DE', '#59B2EE', '#FCB984']
       };
   }
     public bar3dInputDropDownYearClick (e): void {
@@ -401,11 +505,12 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
       this.selectDataDay = e;
     }
     public bar3dDateSureClick (): void {
+      this.isYear = true;
       // 日
       if (this.selectDataDay && this.selectDataDay.code !== '-1') {
         // 柱状图
         this.options3dBar = {
-          timeType: 'month',
+          timeType: 'hour',
           data: this.exampleService.getProvinceBarHourData(),
           xType: this.outOptions3d.pie.xType,
           title: `贵州省${this.selectDataYear.name}${this.selectDataMonth.name}${this.selectDataDay.name}日服务区${this.outOptions3d.alertBarTitle}统计`
@@ -416,22 +521,46 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
           data: this.exampleService.getProvinceLineHourData(),
           color: ['#7C7CD4', '#36B9AB', '#6ACD72', '#0A30BF', '#027204', '#E36E57']
         };
+        // 地区横向排名柱状图
+        this.options3dCityCrosswise = {
+          title: `贵州省${this.selectDataYear.name}${this.selectDataMonth.name}${this.selectDataDay.name}日地区功耗排污前十排名`,
+          data: this.exampleService.getCityCrosswiseBarDayData(),
+          color: ['#B3A5DE', '#59B2EE', '#FCB984']
+        };
+        // 服务区横向排名柱状图
+        this.options3dServiceCrosswise = {
+          title: `贵州省${this.selectDataYear.name}${this.selectDataMonth.name}${this.selectDataDay.name}日服务区功耗排污前十排名`,
+          data: this.exampleService.getServiceCrosswiseBarDayData(),
+          color: ['#4DE5B0', '#F01C70', '#FEAC00']
+        };
         return;
       }
       // 月
       if (this.selectDataMonth && this.selectDataMonth.code !== '-1') {
         // 柱状图
         this.options3dBar = {
-          timeType: 'month',
+          timeType: 'day',
           data: this.exampleService.getProvinceBarDayData(),
           xType: this.outOptions3d.pie.xType,
           title: `贵州省${this.selectDataYear.name}${this.selectDataMonth.name}服务区${this.outOptions3d.alertBarTitle}统计`
         };
         // 折线图
-        this.options3dLine= {
+        this.options3dLine = {
           title: `贵州省${this.selectDataYear.name}${this.selectDataMonth.name}服务区业态走势图`,
           data: this.exampleService.getProvinceLineDayData(),
           color: ['#7C7CD4', '#36B9AB', '#6ACD72', '#0A30BF', '#027204', '#E36E57']
+        };
+        // 地区横向排名柱状图
+        this.options3dCityCrosswise = {
+          title: `贵州省${this.selectDataYear.name}${this.selectDataMonth.name}地区功耗排污前十排名`,
+          data: this.exampleService.getCityCrosswiseBarMonthData(),
+          color: ['#B3A5DE', '#59B2EE', '#FCB984']
+        };
+        // 服务区横向排名柱状图
+        this.options3dServiceCrosswise = {
+          title: `贵州省${this.selectDataYear.name}${this.selectDataMonth.name}服务区功耗排污前十排名`,
+          data: this.exampleService.getServiceCrosswiseBarMonthData(),
+          color: ['#4DE5B0', '#F01C70', '#FEAC00']
         };
         return;
       }
@@ -445,13 +574,25 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
           title: `贵州省${this.selectDataYear.name}服务区${this.outOptions3d.alertBarTitle}统计`
         };
         // 折线图
-        this.options3dLine= {
+        this.options3dLine = {
           title: `贵州省${this.selectDataYear.name}服务区业态走势图`,
           data: this.exampleService.getProvinceLineMonthData(),
           color: ['#7C7CD4', '#36B9AB', '#6ACD72', '#0A30BF', '#027204', '#E36E57']
         };
+        // 地区横向排名柱状图
+        this.options3dCityCrosswise = {
+          title: `贵州省${this.selectDataYear.name}地区功耗排污前十排名`,
+          data: this.exampleService.getCityCrosswiseBarMonthData(),
+          color: ['#B3A5DE', '#59B2EE', '#FCB984']
+        };
+        // 服务区横向排名柱状图
+        this.options3dServiceCrosswise = {
+          title: `贵州省${this.selectDataYear.name}服务区功耗排污前十排名`,
+          data: this.exampleService.getServiceCrosswiseBarMonthData(),
+          color: ['#4DE5B0', '#F01C70', '#FEAC00']
+        };
+        return;
       }
-      return;
     }
     public bar3dDateCleanClick (): void {
         this.monthShow = false;
@@ -467,14 +608,6 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
           {name: '2018年', code: 'year'},
           {name: '2019年', code: 'year'}
         ];
-    }
-    public bar3dCrosswiseBtnClick (i): void {
-      this.bar3DBtnData = [
-        {name: '用电量/度', backColor: '#6C757D'},
-        {name: '用水量/立方', backColor: '#3B78B1'},
-        {name: '排污量/立方', backColor: '#04A6BB'},
-      ];
-      this.bar3DBtnData[i].backColor = '#1F0BC4';
     }
   // 车流监控
   public vehicleAmountCount(): void {
@@ -714,7 +847,6 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
             }
           });
           this.crosswiseBar = {
-            title: '受到核辐射点击返回',
             data: value.data,
             color: ['#2307EF', '#3B78B1', '#04A6BB']
           };

@@ -1,3 +1,5 @@
+import {number} from 'ng4-validators/src/app/number/validator';
+
 export class EventListInfo {
   eventCategoryCode: string; // 事件分类编码
   eventCategoryName: string; // 事件分类名称
@@ -32,4 +34,14 @@ export class AttributeValue {
   attributeName: 'longitude';
   id: 479;
   value: '106.705393';
+}
+
+export class IncomeManualAddIncome {
+  storeId: any;
+  serviceAreaId: any;
+  serviceAreaName: string;
+  orientationId: any;
+  storeName: string;
+  categoryCode: any;
+  revenue: any;
 }

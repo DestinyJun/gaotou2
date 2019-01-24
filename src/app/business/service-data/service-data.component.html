@@ -314,28 +314,41 @@
             <div class="event-table-processed-btn">
               <div class="col-lg-6 col-md-6" style="padding-right: 0;">
                 <div class="btn-toilet" (click)="openServersToiletAlert('服务区卫生间使用率')">
-                  <p>遵义->贵阳卫生间数据监控</p>
-                  <p class=""><span>男厕剩余空位：25/50</span></p>
+                  <p>
+                    {{serviceInfo?.upAttributeValues.source}}-->
+                    {{serviceInfo?.upAttributeValues.destination}}卫生间数据监控
+                  </p>
+                  <p><span>男厕剩余空位：25/50</span></p>
                   <p><span>女厕剩余空位：45/70</span></p>
                 </div>
                 <div class="btn-carport" (click)="openServersToiletAlert('服务区停车位监控')">
-                  <p>遵义->贵阳停车位数据监控</p>
-                  <p class=""><span>大车剩余车位：256/300</span></p>
-                  <p class=""><span>客车剩余车位：256/300</span></p>
-                  <p><span>小车剩余车位：256/300</span></p>
+                  <p>
+                    {{serviceInfo?.downAttributeValues.source}}-->
+                    {{serviceInfo?.downAttributeValues.destination}}停车位数据监控
+                  </p>
+                  <p><span>大车剩余车位：11/20</span></p>
+                  <p><span>小车剩余车位：15/32</span></p>
+                  <p><span>客车剩余车位：06/22</span></p>
                 </div>
               </div>
               <div class="col-lg-6 col-md-6" style="margin-bottom: 2vh;padding-right: 0;">
                 <div class="btn-toilet" (click)="openServersToiletAlert('服务区卫生间使用率')">
-                  <p>贵阳->遵义卫生间数据监控</p>
-                  <p class=""><span>男厕剩余空位：25/50</span></p>
-                  <p><span>女厕剩余空位：45/总70</span></p>
+                 <p>
+                   {{serviceInfo?.upAttributeValues.source}}-->
+                   {{serviceInfo?.upAttributeValues.destination}}卫生间数据监控
+                 </p>
+                  <p><span>男厕剩余空位：25/50</span></p>
+                  <p><span>女厕剩余空位：45/70</span></p>
                 </div>
                 <div class="btn-carport" (click)="openServersToiletAlert('服务区停车位监控')">
-                  <p>贵阳->遵义停车位数据监控</p>
-                  <p><span>大车剩余车位：256/300</span></p>
-                  <p><span>客车剩余车位：256/300</span></p>
-                  <p><span>小车剩余车位：256/300</span></p>
+                  <p>
+                    {{serviceInfo?.downAttributeValues.source}}-->
+                    {{serviceInfo?.downAttributeValues.destination}}停车位数据监控
+                  </p>
+                  <p><span>大车剩余车位：03/15</span></p>
+                  <p><span>小车剩余车位：21/30</span></p>
+                  <p><span>客车剩余车位：18/22</span></p>
+
                 </div>
               </div>
             </div>
@@ -954,7 +967,7 @@
             <div class="form-group"  *ngIf='incomeManualStoreShow'>
               <label class="col-sm-3 control-label" disabled="">请输入业态收入：</label>
               <div class="col-sm-9">
-                <input type="number" class="form-control" name="type" [(ngModel)]="uploadEventInfoUp.principal">
+                <input type="number" class="form-control" name="type" [(ngModel)]="incomeManualAddIncome.revenue">
               </div>
             </div>
             <div class="form-group text-center style-border">

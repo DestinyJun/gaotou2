@@ -12,6 +12,7 @@ export class EchartCrossbarComponent implements OnInit, OnChanges {
   @Input() public width = 'auto';
   public crosswiseBar = {};
   public serviceZoneId = [];
+  public title = '';
   constructor(
     private router: Router
   ) { }
@@ -19,11 +20,14 @@ export class EchartCrossbarComponent implements OnInit, OnChanges {
   ngOnInit() {}
   ngOnChanges(changes: SimpleChanges): void {
     if (JSON.stringify(this.option) !== '{}') {
-      this.backCrosswiseBar('revenue');
+      if (this.option.title) {
+        this.title = this.option.title;
+      }
+      this.backCrosswiseBar();
     }
   }
   // 统计图渲染
-  public backCrosswiseBar(type) {
+  public backCrosswiseBar() {
     const barData = [];
     const barArea = [];
     this.option.data.yAxis.map((val, index) => {
@@ -50,7 +54,7 @@ export class EchartCrossbarComponent implements OnInit, OnChanges {
     });
     this.crosswiseBar = {
       title: {
-        text: `${this.option.title}`,
+        text: `${this.title}`,
         x: '3%',
         textStyle: {
           color: '#fff',

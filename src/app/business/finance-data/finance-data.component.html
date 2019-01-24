@@ -18,13 +18,13 @@
         ></app-echart3d>
         <!--3D柱状图弹窗 alertBarShow-->
         <div class="bg-box" *ngIf="alertBarShow">
-          <div class="alert-3D-bar" style=" width: 90vw;margin-left: -45vw; height:90vh;margin-top: -45vh;">
+          <div class="alert-3D-bar" #alert3Dbar style=" width: 90vw;margin-left: -45vw; height:90vh;margin-top: -45vh;">
             <div class="alert-3D-bar-header">
               <span class="pull-left">{{alertBarTitle}}</span>
               <div class="pull-right" (click)="closeBarShow()">
                 <i class="fa fa-window-close " aria-hidden="true"></i>
               </div>
-              <div class="" style="height: 5vh;min-width: 5vh;cursor: pointer;text-align: center;float: right;margin-right: 3vw;vertical-align: middle">
+              <div style="height: 5vh;min-width: 5vh;cursor: pointer;text-align: center;float: right;margin-right: 3vw;vertical-align: middle">
                 <span class="toggle-btn-area-table" (click)="bar3dYearClick()" style="background: #3B78B1;">整年数据</span>
                 <app-input-dropdown
                   [option]="dataYear"
@@ -62,25 +62,33 @@
                 <app-echart-basicbar [option]="options3dBar" [height]="'42.5vh'" (outOptions3dBar)="onOutOptions3dBar($event)"></app-echart-basicbar>
               </div>
               <div class="col-ld-6 col-md-6">
-                <app-echarts-line-broken [height]="'45.5vh'" [option]="options3dLine"></app-echarts-line-broken>
+                <app-echarts-line-broken [height]="'42.5vh'" [option]="options3dLine"></app-echarts-line-broken>
               </div>
               <div class="col-ld-6 col-md-6">
-                <app-echart-pie [option]="options3dPie" [height]="'42.5vh'" (pieClick)="onOptions3dPie($event)"></app-echart-pie>
-              </div>
-              <div class="col-ld-6 col-md-6" style="position: relative;">
                 <div class="crosswise-btn text-center">
-                  <!--<span [ngStyle]="{'background': barStatus1?'#1F0BC4': '#27375B'}">用电量/度</span>
-                  <span [ngStyle]="{'background': barStatus2?'#1F0BC4': '#3B78B1'}">用水量/立方</span>
-                  <span [ngStyle]="{'background': barStatus3?'#1F0BC4': '#04A6BB'}">排污量/立方</span>-->
-                  <span *ngFor="let item of bar3DBtnData,let i = index"
+                  <span *ngFor="let item of bar3DCityBtnData,let i = index"
                         [ngStyle]="{
                           'background': item.backColor,
                           'margin-right': '10px',
                           'padding': '0 5px',
-                          'border-radius': '3px'
-                        }" (click)="bar3dCrosswiseBtnClick(i)">{{item.name}}</span>
+                          'border-radius': '3px',
+                          'font-size': '12px'
+                        }" (click)="bar3dCrosswiseBtnClick(i, 'city')">{{item.name}}</span>
                 </div>
-                <app-echart-crossbar [option]="crosswiseBar" [height]="'42.5vh'"></app-echart-crossbar>
+                <app-echart-crossbar [option]="options3dCityCrosswise" [height]="'42.5vh'"></app-echart-crossbar>
+              </div>
+              <div class="col-ld-6 col-md-6" *ngIf="isYear" style="position: relative;">
+                <div class="crosswise-btn text-center">
+                  <span *ngFor="let item of bar3DServiceBtnData,let i = index"
+                        [ngStyle]="{
+                          'background': item.backColor,
+                          'margin-right': '10px',
+                          'padding': '0 5px',
+                          'border-radius': '3px',
+                          'font-size': '12px'
+                        }" (click)="bar3dCrosswiseBtnClick(i, 'service')">{{item.name}}</span>
+                </div>
+                <app-echart-crossbar [option]="options3dServiceCrosswise" [height]="'42.5vh'"></app-echart-crossbar>
               </div>
             </div>
             <!--表格导出-->
@@ -149,9 +157,41 @@
             <div class="alert-window-header">
               <div class="row">
                 <div class="col-ld-12 col-md-12">
-                  <span>{{alertCarTitle}}车辆分布统计</span>
+                  <span class="pull-left">{{alertCarTitle}}车辆分布统计</span>
                   <div class="pull-right" (click)="closeCarShow()">
                     <i class="fa fa-window-close " aria-hidden="true"></i>
+                  </div>
+                  <div class="btn-array" style="height: 5vh;min-width: 5vh;cursor: pointer;text-align: center;float: right;margin-right: 3vw;vertical-align: middle">
+                    <span class="toggle-btn-area-table" (click)="bar3dYearClick()" style="background: #3B78B1;font-size: 0.875rem;">整年数据</span>
+                    <app-input-dropdown
+                      [option]="dataYear"
+                      [height]="'3vh'"
+                      [background]="'#DC3545'"
+                      [dropdownBackground]="'rgba(26,33,40,0.8)'"
+                      [hover]="'#5595D5'"
+                      (dropdownClick)="bar3dInputDropDownYearClick($event)"
+                    ></app-input-dropdown>
+                    <app-input-dropdown
+                      *ngIf="monthShow"
+                      [option]="dataMonth"
+                      [height]="'3vh'"
+                      [background]="'#FFC107'"
+                      [dropdownBackground]="'rgba(26,33,40,0.8)'"
+                      [hover]="'#5595D5'"
+                      (dropdownClick)="bar3dInputDropDownMonthClick($event)"
+                    ></app-input-dropdown>
+                    <app-input-dropdown-day
+                      *ngIf="dayShow"
+                      [option]="dataDay"
+                      [height]="'3vh'"
+                      [background]="'#17A2B8'"
+                      [dropdownBackground]="'rgba(26,33,40,0.8)'"
+                      [hover]="'#5595D5'"
+                      (dropdownClick)="bar3dInputDropDownDayClick($event)"
+                    ></app-input-dropdown-day>
+                    <span style="font-size: 0.875rem;" class="toggle-btn-area-table" (click)="bar3dDateSureClick()">确定</span>
+                    <span class="toggle-btn-area-table" (click)="bar3dDateCleanClick()" style="background: #6C757D;font-size: 0.875rem;">清除日期</span>
+                    <span class="toggle-btn-area-table" (click)="bar3dExcelShow = true" style="margin-left: 10px;background: #007BFF;font-size: 0.875rem;">表格导出</span>
                   </div>
                 </div>
               </div>
@@ -373,9 +413,41 @@
           <div class="alert-window-header">
             <div class="row">
               <div class="col-lg-12 col-md-12">
-                <span>{{alertIncomeTitle}}收入分布统计</span>
+                <span class="pull-left">{{alertIncomeTitle}}收入分布统计</span>
                 <div class="pull-right" (click)="closeIncomeShow()">
                   <i class="fa fa-window-close " aria-hidden="true"></i>
+                </div>
+                <div class="btn-array" style="height: 5vh;min-width: 5vh;cursor: pointer;text-align: center;float: right;margin-right: 3vw;vertical-align: middle">
+                  <span class="toggle-btn-area-table" (click)="bar3dYearClick()" style="background: #3B78B1;font-size: 0.875rem;">整年数据</span>
+                  <app-input-dropdown
+                    [option]="dataYear"
+                    [height]="'3vh'"
+                    [background]="'#DC3545'"
+                    [dropdownBackground]="'rgba(26,33,40,0.8)'"
+                    [hover]="'#5595D5'"
+                    (dropdownClick)="bar3dInputDropDownYearClick($event)"
+                  ></app-input-dropdown>
+                  <app-input-dropdown
+                    *ngIf="monthShow"
+                    [option]="dataMonth"
+                    [height]="'3vh'"
+                    [background]="'#FFC107'"
+                    [dropdownBackground]="'rgba(26,33,40,0.8)'"
+                    [hover]="'#5595D5'"
+                    (dropdownClick)="bar3dInputDropDownMonthClick($event)"
+                  ></app-input-dropdown>
+                  <app-input-dropdown-day
+                    *ngIf="dayShow"
+                    [option]="dataDay"
+                    [height]="'3vh'"
+                    [background]="'#17A2B8'"
+                    [dropdownBackground]="'rgba(26,33,40,0.8)'"
+                    [hover]="'#5595D5'"
+                    (dropdownClick)="bar3dInputDropDownDayClick($event)"
+                  ></app-input-dropdown-day>
+                  <span style="font-size: 0.875rem;" class="toggle-btn-area-table" (click)="bar3dDateSureClick()">确定</span>
+                  <span class="toggle-btn-area-table" (click)="bar3dDateCleanClick()" style="background: #6C757D;font-size: 0.875rem;">清除日期</span>
+                  <span class="toggle-btn-area-table" (click)="bar3dExcelShow = true" style="margin-left: 10px;background: #007BFF;font-size: 0.875rem;">表格导出</span>
                 </div>
               </div>
             </div>

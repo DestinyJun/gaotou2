@@ -205,6 +205,17 @@
   background: #1a2128;
   text-align: center;
 }
+.alert-window-header .btn-array>span{
+  display: inline-block;
+  min-width: 5vw;
+  padding: 0 0.5vw;
+  font-size: 0.875rem;
+  border-radius: 3px;
+  background: #28A745;
+  cursor: pointer;
+  height: 3vh;
+  line-height: 3vh;
+}
 .alert-window-header span{
   margin-left: 10px;
   font-size: 1.625rem;
