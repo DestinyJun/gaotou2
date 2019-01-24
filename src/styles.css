@@ -2,6 +2,9 @@
 html,body {
   font-family:"微软雅黑", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
+body .ui-widget{
+  font-size: 0.875rem;
+}
 .loading{
   text-align: center;
   height: 100vh;
