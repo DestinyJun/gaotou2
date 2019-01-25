@@ -25,36 +25,7 @@
                 <i class="fa fa-window-close " aria-hidden="true"></i>
               </div>
               <div class="" style="height: 5vh;min-width: 5vh;cursor: pointer;text-align: center;float: right;margin-right: 3vw;vertical-align: middle">
-                <span class="toggle-btn-area-table" (click)="bar3dYearClick()" style="background: #3B78B1;">整年数据</span>
-                <app-input-dropdown
-                  [option]="dataYear"
-                  [height]="'3vh'"
-                  [background]="'#DC3545'"
-                  [dropdownBackground]="'rgba(26,33,40,0.8)'"
-                  [hover]="'#5595D5'"
-                  (dropdownClick)="bar3dInputDropDownYearClick($event)"
-                ></app-input-dropdown>
-                <app-input-dropdown
-                  *ngIf="monthShow"
-                  [option]="dataMonth"
-                  [height]="'3vh'"
-                  [background]="'#FFC107'"
-                  [dropdownBackground]="'rgba(26,33,40,0.8)'"
-                  [hover]="'#5595D5'"
-                  (dropdownClick)="bar3dInputDropDownMonthClick($event)"
-                ></app-input-dropdown>
-                <app-input-dropdown-day
-                  *ngIf="dayShow"
-                  [option]="dataDay"
-                  [height]="'3vh'"
-                  [background]="'#17A2B8'"
-                  [dropdownBackground]="'rgba(26,33,40,0.8)'"
-                  [hover]="'#5595D5'"
-                  (dropdownClick)="bar3dInputDropDownDayClick($event)"
-                  ></app-input-dropdown-day>
-                <span class="toggle-btn-area-table" (click)="bar3dDateSureClick()">确定</span>
-                <span class="toggle-btn-area-table" (click)="bar3dDateCleanClick()" style="background: #6C757D;">清除日期</span>
-                <span class="toggle-btn-area-table" (click)="bar3dExcelShow = true" style="margin-left: 10px;background: #007BFF;">表格导出</span>
+                <span class="toggle-btn-area-table" (click)="bar3dExcelShow = true" style="margin-left: 10px;background: #1A2128;">表格导出</span>
               </div>
             </div>
             <div class="row bar3D-charts">
@@ -62,8 +33,7 @@
                 <app-echart-basicbar [option]="options3dBar" [height]="'55vh'" (outOptions3dBar)="onOutOptions3dBar($event)"></app-echart-basicbar>
               </div>
               <div class="col-ld-6 col-md-6">
-                <!--<app-echart-pie [option]="options3dPie" [height]="'55vh'" (pieClick)="onOptions3dPie($event)"></app-echart-pie>-->
-                <app-echarts-line-broken [height]="'55vh'" [option]="options3dPie"></app-echarts-line-broken>
+                <app-echart-pie [option]="options3dPie" [height]="'55vh'" (pieClick)="onOptions3dPie($event)"></app-echart-pie>
               </div>
             </div>
             <!--表格导出-->

@@ -114,7 +114,7 @@ export class EchartBasicbarComponent implements OnInit, OnChanges {
             // 柱状图的数值是否显示
             show: true,
             textStyle: {
-              fontSize: 16,
+              fontSize: 12,
               borderWidth: 1
             }
           },

@@ -241,7 +241,7 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
       xType: this.outOptions3d.pie.xType,
       title: `贵州省本年度服务区${this.outOptions3d.alertBarTitle}统计`
     };
-    /*this.financeDataService.search3DAlertBar({id: 2, types: this.outOptions3d.bar.types}).subscribe(
+    this.financeDataService.search3DAlertBar({id: 2, types: this.outOptions3d.bar.types}).subscribe(
       (val) => {
         if (val.status === '200') {
           this.options3dBar = {
@@ -251,9 +251,9 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
           };
         }
       }
-    );*/
+    );
     // 类型占比扇形图
-   /* this.financeDataService.search3DAlertPie({id: 2, xType: this.outOptions3d.pie.xType, types: this.outOptions3d.pie.types}).subscribe(
+    this.financeDataService.search3DAlertPie({id: 2, xType: this.outOptions3d.pie.xType, types: this.outOptions3d.pie.types}).subscribe(
       (val) => {
         if (val.status === '200') {
           this.options3dPie = {
@@ -265,45 +265,11 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
           };
         }
       }
-    );*/
-
-   // 折线图
-    this.options3dPie = {
-      title: `贵州省本年度服务区业态走势图`,
-      data: this.exampleService.getProvinceLineMonthData(),
-      color: ['#7C7CD4', '#36B9AB', '#6ACD72', '#0A30BF', '#027204', '#E36E57']
-    };
+    );
   }
   public onOutOptions3dBar(e): void {
-    if (e.timeType === 'year') {
-      // 折线图
-      this.options3dPie = {
-        title: `贵州省本年度服务区${e.name}业态走势图`,
-        data: this.exampleService.getProvinceLineMonthData(),
-        color: ['#7C7CD4', '#36B9AB', '#6ACD72', '#0A30BF', '#027204', '#E36E57']
-      };
-      return;
-    }
-    if (e.timeType === 'month') {
-      // 折线图
-      this.options3dPie = {
-        title: `贵州省本年度服务区${e.name}业态走势图`,
-        data: this.exampleService.getProvinceLineDayData(),
-        color: ['#7C7CD4', '#36B9AB', '#6ACD72', '#0A30BF', '#027204', '#E36E57']
-      };
-      return;
-    }
-    if (e.timeType === 'day') {
-      // 折线图
-      this.options3dPie = {
-        title: `贵州省本年度服务区${e.name}业态走势图`,
-        data: this.exampleService.getProvinceBarHourData(),
-        color: ['#7C7CD4', '#36B9AB', '#6ACD72', '#0A30BF', '#027204', '#E36E57']
-      };
-      return;
-    }
     // 类型占比扇形图
-   /* this.financeDataService.search3DAlertPie({id: 2, xType: e.xType, types: this.outOptions3d.pie.types}).subscribe(
+    this.financeDataService.search3DAlertPie({id: 2, xType: e.xType, types: this.outOptions3d.pie.types}).subscribe(
       (val) => {
         if (val.status === '200') {
           this.options3dPie = {
@@ -315,7 +281,7 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
           };
         }
       }
-    );*/
+    );
   }
   public onOptions3dPie(e): void {
     if (e.name === '贵阳市') {
@@ -337,132 +303,6 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
       window.alert('请把数据选择全在提交');
     }
   }
-    // 二期测试
-    public bar3dYearClick(): void {
-      // 柱状图
-      this.options3dBar = {
-        timeType: 'year',
-        data: this.exampleService.getProvinceBarYearData(),
-        xType: this.outOptions3d.pie.xType,
-        title: `贵州省所有服务年度${this.outOptions3d.alertBarTitle}统计`
-      };
-      // 折线图
-      this.options3dPie = {
-        title: `贵州省久长服务区年度业态走势图`,
-        data: this.exampleService.getProvinceLineYearData(),
-        color: ['#7C7CD4', '#36B9AB', '#6ACD72', '#0A30BF', '#027204', '#E36E57']
-      };
-  }
-    public bar3dInputDropDownYearClick (e): void {
-      if (e.code === -1) {
-        this.dataMonth = [
-          {name: '请选择月', code: -1}
-        ];
-        this.monthShow = false;
-        return;
-      }
-      this.monthShow = true;
-      this.dataMonth = [
-        {name: '请选择月', code: -1}
-      ];
-      const year = parseInt(e.name.split('年')[0], 10);
-      this.selectDataYear = e;
-      if (year < new Date().getFullYear()) {
-        for (let i = 0; i < 12; i++) {
-          this.dataMonth.push({name: this.dataMonthChinese[i], code: 'month'});
-        }
-      } else {
-        for (let i = 0; i < new Date().getMonth() + 1; i++) {
-          this.dataMonth.push({name: this.dataMonthChinese[i], code: 'month'});
-        }
-        this.monthShow = true;
-      }
-    }
-    public bar3dInputDropDownMonthClick (e): void {
-      this.dataDay = [];
-      if (e.code === -1) {
-        this.dayShow = false;
-        return;
-      }
-      this.dayShow = true;
-      const months = this.dataMonthChinese.indexOf(e.name) + 1;
-      this.selectDataMonth = e;
-      const days = new Date(parseInt(this.selectDataYear.name.split('年')[0], 10), months, 0).getDate();
-      for (let i = 1; i <= days; i++) {
-        this.dataDay.push({name: i, code: 'day'});
-      }
-    }
-    public bar3dInputDropDownDayClick (e): void {
-      this.selectDataDay = e;
-    }
-    public bar3dDateSureClick (): void {
-      // 日
-      if (this.selectDataDay && this.selectDataDay.code !== '-1') {
-        // 柱状图
-        this.options3dBar = {
-          timeType: 'month',
-          data: this.exampleService.getProvinceBarHourData(),
-          xType: this.outOptions3d.pie.xType,
-          title: `贵州省${this.selectDataYear.name}${this.selectDataMonth.name}${this.selectDataDay.name}日服务区${this.outOptions3d.alertBarTitle}统计`
-        };
-        // 折线图
-        this.options3dPie = {
-          title: `贵州省${this.selectDataYear.name}${this.selectDataMonth.name}${this.selectDataDay.name}日服务区业态走势图`,
-          data: this.exampleService.getProvinceLineHourData(),
-          color: ['#7C7CD4', '#36B9AB', '#6ACD72', '#0A30BF', '#027204', '#E36E57']
-        };
-        return;
-      }
-      // 月
-      if (this.selectDataMonth && this.selectDataMonth.code !== '-1') {
-        // 柱状图
-        this.options3dBar = {
-          timeType: 'month',
-          data: this.exampleService.getProvinceBarDayData(),
-          xType: this.outOptions3d.pie.xType,
-          title: `贵州省${this.selectDataYear.name}${this.selectDataMonth.name}服务区${this.outOptions3d.alertBarTitle}统计`
-        };
-        // 折线图
-        this.options3dPie = {
-          title: `贵州省${this.selectDataYear.name}${this.selectDataMonth.name}服务区业态走势图`,
-          data: this.exampleService.getProvinceLineDayData(),
-          color: ['#7C7CD4', '#36B9AB', '#6ACD72', '#0A30BF', '#027204', '#E36E57']
-        };
-        return;
-      }
-      // 年
-      if (this.selectDataYear) {
-        // 柱状图
-        this.options3dBar = {
-          timeType: 'month',
-          data: this.exampleService.getProvinceBarMonthData(),
-          xType: this.outOptions3d.pie.xType,
-          title: `贵州省${this.selectDataYear.name}服务区${this.outOptions3d.alertBarTitle}统计`
-        };
-        // 折线图
-        this.options3dPie = {
-          title: `贵州省${this.selectDataYear.name}服务区业态走势图`,
-          data: this.exampleService.getProvinceLineMonthData(),
-          color: ['#7C7CD4', '#36B9AB', '#6ACD72', '#0A30BF', '#027204', '#E36E57']
-        };
-      }
-      return;
-    }
-    public bar3dDateCleanClick (): void {
-        this.monthShow = false;
-        this.dayShow = false;
-        this.selectDataDay = null;
-        this.selectDataMonth = null;
-        this.selectDataYear = null;
-        this.dataYear = [
-          {name: '请选择年', code: -1},
-          {name: '2015年', code: 'year'},
-          {name: '2016年', code: 'year'},
-          {name: '2017年', code: 'year'},
-          {name: '2018年', code: 'year'},
-          {name: '2019年', code: 'year'}
-        ];
-    }
   // 车流监控
   public vehicleAmountCount(): void {
     this.financeDataService.searchCarTotal({id: 2}).subscribe(
