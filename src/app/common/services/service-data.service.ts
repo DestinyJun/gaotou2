@@ -123,4 +123,16 @@ export class ServiceDataService {
   public searchIncomeTypesItem(params): Observable<any> {
     return this.http.get(`${environment.urlc}/serviceArea/revenue/${params.dateType}/${params.id}/${params.entryCode}/${params.page}/${params.nums}`);
   }
+  // 查询服务区方向
+  public searchServiceDirection (id): Observable<any> {
+    return this.http.get(`${environment.urls}/common/config/getOrientation/${id}`);
+  }
+  // 根据服务区方向查询没有收银机的店铺
+  public searchServiceNoCashShop (id): Observable<any> {
+    return this.http.get(`${environment.urls}/common/config/getNoCashStore/${id}`);
+  }
+  // 添加输入没有收银机的店铺收入
+  public addNoCashShopIncome (params): Observable<any> {
+    return this.http.post(`${environment.urlc}/storeStatistics/addStoreCash`, params);
+  }
 }

@@ -2,10 +2,11 @@ import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {DataService} from '../../common/services/data.service';
 import {FormBuilder} from '@angular/forms';
-import {EventListInfo, UploadEventInfoUp} from '../../common/model/service-data.model';
+import {EventListInfo, IncomeManualAddIncome, UploadEventInfoUp} from '../../common/model/service-data.model';
 import {ServiceDataService} from '../../common/services/service-data.service';
 import {LocalStorageService} from '../../common/services/local-storage.service';
 import {DatePipe} from '@angular/common';
+import {number} from 'ng4-validators/src/app/number/validator';
 
 @Component({
   selector: 'app-service-data',
@@ -125,6 +126,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   public incomeManualStoreSelect = [
     {name: '请选择店铺......', code: '-1'}
   ];
+  public incomeManualAddIncome = new IncomeManualAddIncome();
   public incomeStartTime: Date; // 时间选择器
   public incomeEndTime: Date; // 时间选择器
   constructor(
@@ -149,11 +151,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     this.serareaService.searchSerAraItem(this.serviceZoneID).subscribe(
       (value) => {
         this.serviceInfo = value.data;
-        this.incomeManualDirectionSelect = [
-            {name: `请选择服务区方向......`, code: '-1'},
-            {name: `${value.data.upAttributeValues.source}——>${value.data.upAttributeValues.destination}`, code: 'top'},
-            {name: `${value.data.downAttributeValues.source}——>${value.data.downAttributeValues.destination}`, code: 'bottom'},
-          ];
         value.data.commonAttributeValues.map((val, index) => {
           this.alterCommonAttributeValues.push(this.cloneValue(val));
         });
@@ -197,6 +194,18 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
 
   /*************数据初始化****************/
   public upData() {
+    // 查询服务区方向
+    this.serareaService.searchServiceDirection(1).subscribe(
+      (val) => {
+        if (val.status === '200') {
+          this.incomeManualDirectionSelect = [
+            {name: `请选择服务区方向......`, code: '-1'},
+            {name: `${val.data[0].source}——>${val.data[1].destination}`, code: val.data[0].orientaionId},
+            {name: `${val.data[1].source}——>${val.data[1].destination}`, code: val.data[1].orientaionId}
+          ];
+        }
+      }
+    );
     //  3d图统计
     this.packOption3();
     // 车流监控
@@ -990,31 +999,44 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       this.incomeManualShow = true;
   }
   public incomeManualDirectionClick (item): void {
-    this.incomeManualStoreSelect = [
-      {name: '请选择店铺......', code: '-1'}
-    ];
-    this.incomeManualStoreShow = true;
-     if (item.code === 'top') {
-       this.incomeTopData.map((val) => {
-         this.incomeManualStoreSelect.push(
-           {name: `${val.storeName}`, code: 'store'}
-         );
-       });
-       return;
-     }
-    if (item.code === 'bottom') {
-      this.incomeBottomData.map((val) => {
-        this.incomeManualStoreSelect.push(
-          {name: `${val.storeName}`, code: 'store'}
-        );
-      });
-      return;
+    if (item.code !== '-1') {
+      this.incomeManualStoreSelect = [
+        {name: '请选择店铺......', code: '-1'}
+      ];
+      this.incomeManualStoreShow = true;
+      this.serareaService.searchServiceNoCashShop(item.code).subscribe(
+        (val) => {
+          if (val.status === '200') {
+            console.log(val.data);
+            val.data.map((prop) => {
+              this.incomeManualStoreSelect.push(
+                {name: `${prop.storeName}`, code: prop}
+              );
+            });
+          }
+        });
     }
-
   }
-  public incomeManualShopClick (item): void {}
+  public incomeManualShopClick (item): void {
+    this.incomeManualAddIncome.storeId = item.code.id;
+    this.incomeManualAddIncome.serviceAreaId = item.code.serviceAreaId;
+    this.incomeManualAddIncome.serviceAreaName = item.code.serviceAreaName;
+    this.incomeManualAddIncome.orientationId = item.code.saOrientationId;
+    this.incomeManualAddIncome.storeName = item.code.storeName;
+    this.incomeManualAddIncome.categoryCode = item.code.categoryCode;
+  }
   public incomeManualUpClick (): void {
-      window.alert('上传成功');
+    this.serareaService.addNoCashShopIncome(this.incomeManualAddIncome).subscribe(
+      (val) => {
+        if (val.status === '200') {
+          this.incomeManualShow = false;
+          window.alert('上传成功');
+          return;
+        }
+        this.incomeManualShow = false;
+        window.alert('添加失败');
+      }
+    );
   }
   // 服务区合同下载
   public servicesPactDown(): void {
