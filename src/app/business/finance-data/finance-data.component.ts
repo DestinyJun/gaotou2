@@ -276,8 +276,19 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
       data: this.exampleService.getServiceCrosswiseBarMonthData(),
       color: ['#4DE5B0', '#F01C70', '#FEAC00']
     };
+    this.financeDataService.search3DAlertBar({id: 2, types: this.outOptions3d.bar.types}).subscribe(
+      (val) => {
+        if (val.status === '200') {
+          this.options3dBar = {
+            data: val.data,
+            xType: this.outOptions3d.pie.xType,
+            title: `贵州省所有服务区年度${this.outOptions3d.alertBarTitle}统计`
+          };
+        }
+      }
+    );
     // 类型占比扇形图
-    this.financeDataService.search3DAlertPie({id: 2, xType: this.outOptions3d.pie.xType, types: this.outOptions3d.pie.types}).subscribe(
+   /* this.financeDataService.search3DAlertPie({id: 2, xType: this.outOptions3d.pie.xType, types: this.outOptions3d.pie.types}).subscribe(
       (val) => {
         if (val.status === '200') {
           this.options3dPie = {
@@ -289,7 +300,7 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
           };
         }
       }
-    );
+    );*/
     /*this.financeDataService.search3DAlertBar({id: 2, types: this.outOptions3d.bar.types}).subscribe(
         (val) => {
           if (val.status === '200') {
@@ -326,7 +337,6 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
       return;
     }
     if (e.timeType === 'month') {
-      console.log();
       // 折线图
       this.options3dLine = {
         title: `贵州省${this.selectDataYear.name}${e.name}服务区业态走势图`,
@@ -368,20 +378,6 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
       };
       return;
     }
-    // 类型占比扇形图
-   /* this.financeDataService.search3DAlertPie({id: 2, xType: e.xType, types: this.outOptions3d.pie.types}).subscribe(
-      (val) => {
-        if (val.status === '200') {
-          this.options3dPie = {
-            data: val.data,
-            title: `贵州省所有服务区年度${this.outOptions3d.alertBarTitle}类型占比统计`,
-            total: e.data,
-            color: ['#CE2D79', '#BDD139', '#78E77D', '#09D4D6', '#3C75B9',
-              '#6769B1', '#FF8C9D', '#2796C4', '#E57D0D']
-          };
-        }
-      }
-    );*/
   }
   public onOptions3dPie(e): void {
     if (e.name === '贵阳市') {

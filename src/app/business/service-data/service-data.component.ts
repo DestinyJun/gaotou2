@@ -123,6 +123,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   public incomeManualShow = false;
   public incomeManualDirectionSelect = [];
   public incomeManualStoreShow = false;
+  public incomeManualIncomeShow = false;
   public incomeManualStoreSelect = [
     {name: '请选择店铺......', code: '-1'}
   ];
@@ -200,7 +201,11 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
         if (val.status === '200') {
           this.incomeManualDirectionSelect = [
             {name: `请选择服务区方向......`, code: '-1'},
+<<<<<<< HEAD
             {name: `${val.data[0].source}——>${val.data[1].destination}`, code: val.data[0].orientaionId},
+=======
+            {name: `${val.data[0].source}——>${val.data[0].destination}`, code: val.data[0].orientaionId},
+>>>>>>> gaotou
             {name: `${val.data[1].source}——>${val.data[1].destination}`, code: val.data[1].orientaionId}
           ];
         }
@@ -1007,7 +1012,10 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       this.serareaService.searchServiceNoCashShop(item.code).subscribe(
         (val) => {
           if (val.status === '200') {
+<<<<<<< HEAD
             console.log(val.data);
+=======
+>>>>>>> gaotou
             val.data.map((prop) => {
               this.incomeManualStoreSelect.push(
                 {name: `${prop.storeName}`, code: prop}
@@ -1015,6 +1023,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
             });
           }
         });
+<<<<<<< HEAD
     }
   }
   public incomeManualShopClick (item): void {
@@ -1025,6 +1034,25 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     this.incomeManualAddIncome.storeName = item.code.storeName;
     this.incomeManualAddIncome.categoryCode = item.code.categoryCode;
   }
+=======
+      return;
+    }
+    this.incomeManualStoreShow = false;
+  }
+  public incomeManualShopClick (item): void {
+    if (item.code !== '-1') {
+      this.incomeManualIncomeShow = true;
+      this.incomeManualAddIncome.storeId = item.code.id;
+      this.incomeManualAddIncome.serviceAreaId = item.code.serviceAreaId;
+      this.incomeManualAddIncome.serviceAreaName = item.code.serviceAreaName;
+      this.incomeManualAddIncome.orientationId = item.code.saOrientationId;
+      this.incomeManualAddIncome.storeName = item.code.storeName;
+      this.incomeManualAddIncome.categoryCode = item.code.categoryCode;
+      return;
+    }
+    this.incomeManualIncomeShow = false;
+  }
+>>>>>>> gaotou
   public incomeManualUpClick (): void {
     this.serareaService.addNoCashShopIncome(this.incomeManualAddIncome).subscribe(
       (val) => {

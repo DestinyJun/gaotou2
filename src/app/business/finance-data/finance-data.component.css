@@ -240,6 +240,7 @@
 .alert-window-content-table .toggle-btn{
   height: 5vh;
   line-height: 5vh;
+  text-align: right;
 }
 .alert-window-content-table .toggle-btn>button{
   margin-right: 10px;
@@ -387,7 +388,7 @@
 .bar3D-charts .crosswise-btn{
   position: absolute;
   right: 25px;
-  z-index: 999;
+  z-index: 1;
   cursor: pointer;
 }
 

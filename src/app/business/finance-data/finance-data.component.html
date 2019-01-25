@@ -89,6 +89,7 @@
                         }" (click)="bar3dCrosswiseBtnClick(i, 'service')">{{item.name}}</span>
                 </div>
                 <app-echart-crossbar [option]="options3dServiceCrosswise" [height]="'42.5vh'"></app-echart-crossbar>
+                <app-echart-pie [option]="options3dPie" [height]="'55vh'" (pieClick)="onOptions3dPie($event)"></app-echart-pie>
               </div>
             </div>
             <!--表格导出-->
@@ -191,7 +192,7 @@
                     ></app-input-dropdown-day>
                     <span style="font-size: 0.875rem;" class="toggle-btn-area-table" (click)="bar3dDateSureClick()">确定</span>
                     <span class="toggle-btn-area-table" (click)="bar3dDateCleanClick()" style="background: #6C757D;font-size: 0.875rem;">清除日期</span>
-                    <span class="toggle-btn-area-table" (click)="bar3dExcelShow = true" style="margin-left: 10px;background: #007BFF;font-size: 0.875rem;">表格导出</span>
+                    <span class="toggle-btn-area-table" (click)="carExcelShow = true" style="margin-left: 10px;background: #007BFF;font-size: 0.875rem;">表格导出</span>
                   </div>
                 </div>
               </div>
@@ -208,9 +209,6 @@
                       <button class="btn btn-info" [ngStyle]="{'background':alertCarTitle === '小车'?'black': ''}">小车</button>
                       <button class="btn btn-primary" [ngStyle]="{'background':alertCarTitle === '客车'?'black': ''}">客车</button>
                       <button class="btn btn-danger" [ngStyle]="{'background':alertCarTitle === '货车'?'black': ''}">货车</button>
-                      <div class="toggle-btn-area pull-right" style="">
-                        <span (click)="carExcelShow = true">表格导出</span>
-                      </div>
                     </div>
                     <div class="content-table">
                       <p-scrollPanel [style]="{width: '100%', height: '40vh'}" styleClass="finance-statistics">
@@ -447,7 +445,7 @@
                   ></app-input-dropdown-day>
                   <span style="font-size: 0.875rem;" class="toggle-btn-area-table" (click)="bar3dDateSureClick()">确定</span>
                   <span class="toggle-btn-area-table" (click)="bar3dDateCleanClick()" style="background: #6C757D;font-size: 0.875rem;">清除日期</span>
-                  <span class="toggle-btn-area-table" (click)="bar3dExcelShow = true" style="margin-left: 10px;background: #007BFF;font-size: 0.875rem;">表格导出</span>
+                  <span class="toggle-btn-area-table" (click)="incomeExcelShow = true" style="margin-left: 10px;background: #007BFF;font-size: 0.875rem;">表格导出</span>
                 </div>
               </div>
             </div>
@@ -467,9 +465,6 @@
                     <button class="btn btn-info" [ngStyle]="{'background':alertIncomeTitle === '商超'?'black': ''}">商超</button>
                     <button class="btn btn-warning" [ngStyle]="{'background':alertIncomeTitle === '住宿'?'black': ''}">住宿</button>
                     <button class="btn btn-primary" [ngStyle]="{'background':alertIncomeTitle === '汽修'?'black': ''}">汽修</button>
-                    <div class="toggle-btn-area pull-right" style="">
-                      <span (click)="incomeExcelShow = true">表格导出</span>
-                    </div>
                   </div>
                   <div class="content-table">
                     <p-scrollPanel [style]="{width: '100%', height: '40vh'}" styleClass="finance-statistics">
