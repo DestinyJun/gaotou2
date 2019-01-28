@@ -1,8 +1,8 @@
 import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
-import {FinanceDataComponent} from './finance-data.component';
+import {ProvinceDataComponent} from './province-data.component';
 const routes: Routes = [
-  {path: '', component: FinanceDataComponent},
+  {path: '', component: ProvinceDataComponent},
 ];
 @NgModule({
   imports: [
@@ -10,4 +10,4 @@ const routes: Routes = [
   ],
   exports: [RouterModule]
 })
-export class FinanceDataRoutingModule {}
+export class ProvinceDataRoutingModule {}

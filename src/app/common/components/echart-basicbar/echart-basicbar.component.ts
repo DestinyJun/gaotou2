@@ -1,4 +1,5 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
+
 @Component({
   selector: 'app-echart-basicbar',
   templateUrl: './echart-basicbar.component.html',
@@ -19,20 +20,24 @@ export class EchartBasicbarComponent implements OnInit, OnChanges {
     '#356981', '#356981', '#356981', '#356981', '#356981 ', '#356981',
     '#356981', '#356981', '#356981', '#356981', '#356981 ', '#356981'
   ];
-  constructor() { }
+
+  constructor() {
+  }
 
   ngOnInit() {
     /*this.options3dBarInstance.on('click', (event) => {
       console.log(event);
     });*/
   }
+
   ngOnChanges(changes: SimpleChanges): void {
     if (this.option) {
-       if (this.option.data) {
-         this.optionsBar();
-       }
+      if (this.option.data) {
+        this.optionsBar();
+      }
     }
   }
+
   public optionsBar(): void {
     const that = this;
     this.colorList = [
@@ -126,10 +131,12 @@ export class EchartBasicbarComponent implements OnInit, OnChanges {
         }]
     };
   }
+
   // 车型日分布类型占比饼状图弹窗
   public options3dBarInit(ec): void {
     this.options3dBarInstance = ec;
   }
+
   public options3dBarClick(e): void {
     if (e.dataIndex === undefined) {
       this.outOptions3dBar.emit({
@@ -156,5 +163,5 @@ export class EchartBasicbarComponent implements OnInit, OnChanges {
       xType: e.dataIndex,
       total: e.data,
     });
- }
+  }
 }

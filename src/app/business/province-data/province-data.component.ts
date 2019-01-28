@@ -8,11 +8,11 @@ import {DatePipe} from '@angular/common';
 import {ExampleDataService} from '../../common/services/example-data.service';
 @Component({
   selector: 'app-finance-data',
-  templateUrl: './finance-data.component.html',
-  styleUrls: ['./finance-data.component.css'],
+  templateUrl: './province-data.component.html',
+  styleUrls: ['./province-data.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class FinanceDataComponent implements OnInit, OnDestroy {
+export class ProvinceDataComponent implements OnInit, OnDestroy {
   /***********************基础信息************************/
   public esDate: any;  // 时间初始化
     // 组件销毁后清除时钟任务
@@ -276,7 +276,8 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
       data: this.exampleService.getServiceCrosswiseBarMonthData(),
       color: ['#4DE5B0', '#F01C70', '#FEAC00']
     };
-    this.financeDataService.search3DAlertBar({id: 2, types: this.outOptions3d.bar.types}).subscribe(
+    // 服务器的柱状图
+    /*this.financeDataService.search3DAlertBar({id: 2, types: this.outOptions3d.bar.types}).subscribe(
       (val) => {
         if (val.status === '200') {
           this.options3dBar = {
@@ -286,7 +287,7 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
           };
         }
       }
-    );
+    );*/
     // 类型占比扇形图
    /* this.financeDataService.search3DAlertPie({id: 2, xType: this.outOptions3d.pie.xType, types: this.outOptions3d.pie.types}).subscribe(
       (val) => {
