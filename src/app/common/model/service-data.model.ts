@@ -44,4 +44,5 @@ export class IncomeManualAddIncome {
   storeName: string;
   categoryCode: any;
   revenue: any;
+  day: string;
 }
