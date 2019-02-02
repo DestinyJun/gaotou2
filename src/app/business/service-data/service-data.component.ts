@@ -126,6 +126,10 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   public incomeManualStoreSelect = [
     {name: '请选择店铺......', code: '-1'}
   ];
+  public incomeManualTime: Date;
+  public invalidDates = [];
+  public minDate: Date;
+  public maxDate: Date;
   public incomeManualAddIncome = new IncomeManualAddIncome();
   public incomeStartTime: Date; // 时间选择器
   public incomeEndTime: Date; // 时间选择器
@@ -170,6 +174,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     this.getPerson();
     this.getIncomeTotalTypes();
     this.backCenterDate();
+    this.timeDate();
     // 时间初始化
     this.esDate = {
       firstDayOfWeek: 0,
@@ -237,7 +242,28 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       }
     );
   }
-
+  public timeDate (): void {
+    let today = new Date();
+    let month = today.getMonth();
+    let year = today.getFullYear();
+    let prevMonth = (month === 0) ? 11 : month -1;
+    let prevYear = (prevMonth === 11) ? year - 1 : year;
+    let nextMonth = (month === 11) ? 0 : month + 1;
+    let nextYear = (nextMonth === 0) ? year + 1 : year;
+    this.minDate = new Date();
+    this.minDate.setMonth(1);
+    this.minDate.setFullYear(prevYear - 3);
+    this.maxDate = new Date();
+    this.maxDate.setMonth(month);
+    this.maxDate.setFullYear(nextYear);
+    let endDay = new Date(year, month + 1, 0).getDate();
+    for (let i = today.getDate() - 1; i <= endDay; i++) {
+      let invalidDate = new Date();
+      invalidDate.setDate(i);
+      this.invalidDates.push(invalidDate);
+    }
+    // 请你记住，时间的月份是从0月开始算的
+  }
   // 客流
   public getPerson(): void {
     let total: any;
@@ -1017,6 +1043,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     }
   }
   public incomeManualShopClick (item): void {
+    console.log();
     if (item.code !== '-1') {
       this.incomeManualIncomeShow = true;
       this.incomeManualAddIncome.storeId = item.code.id;
@@ -1025,6 +1052,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       this.incomeManualAddIncome.orientationId = item.code.saOrientationId;
       this.incomeManualAddIncome.storeName = item.code.storeName;
       this.incomeManualAddIncome.categoryCode = item.code.categoryCode;
+      this.incomeManualAddIncome.day = this.datePipe.transform(this.incomeManualTime, 'yyyy-MM-dd');
       return;
     }
     this.incomeManualIncomeShow = false;
