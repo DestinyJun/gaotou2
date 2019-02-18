@@ -13,6 +13,8 @@ const routes: Routes = [
       {path: 'serzone', loadChildren: 'app/business/service-data/service-data.module#ServiceDataModule',  canActivate: [LoginGuard]},
       {path: 'camera', loadChildren: 'app/business/video-window/video-window.module#VideoWindowModule',  canActivate: [LoginGuard]},
       {path: 'personal', loadChildren: 'app/business/personal/personal.module#PersonalModule', canActivate: [LoginGuard]},
+      {path: 'shop', loadChildren: 'app/business/shop-manager/shop-manager.module#ShopManagerModule'},
+      {path: 'sermanger', loadChildren: 'app/business/service-manager/service-manager.module#ServiceManagerModule'},
     ]
   },
 ];
