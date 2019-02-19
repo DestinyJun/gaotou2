@@ -38,9 +38,10 @@
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {
+        "devprod": "environments/environment.devprod.ts",
         "dev": "environments/environment.ts",
-        "devtest": "environments/environment.devtest.ts",
-        "test": "environments/environment.test.ts",
+        "gaotou": "environments/environment.gaotou.ts",
+        "gaoto3": "environments/environment.gaotou3.ts",
         "prod": "environments/environment.prod.ts"
       }
     }
