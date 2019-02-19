@@ -256,15 +256,9 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     this.maxDate = new Date();
     this.maxDate.setMonth(month);
     this.maxDate.setFullYear(nextYear);
-<<<<<<< HEAD
     let endDay = new Date(year, month + 1, 0).getDate();
-    for (let i = today.getDate() - 1; i <= endDay; i++) {
-      let invalidDate = new Date();
-=======
-    const endDay = new Date(year, month + 1, 0).getDate();
     for (let i = today.getDate(); i <= endDay; i++) {
       const invalidDate = new Date();
->>>>>>> 7a466a1... 操作日志：
       invalidDate.setDate(i);
       this.invalidDates.push(invalidDate);
     }
