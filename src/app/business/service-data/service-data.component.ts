@@ -326,7 +326,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       }
     );
   }
-
   public onOutOptions3d(e): void {
     const defaultMonth = new Date().getMonth() + 1;
     this.outOptions3d = e;
@@ -394,7 +393,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       }
     );
   }
-
   public onOutOptions3dBar(e): void {
     // 折线图
     this.serareaService.search3DAlertLineMonth(
@@ -412,12 +410,10 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       }
     );
   }
-
   public closeBarShow() {
     this.alertBarShow = false;
     document.body.className = '';
   }
-
   public bar3dExportClick() {
     const startTime = this.datePipe.transform(this.startTime3d, 'yyyyMMdd');
     const endTime = this.datePipe.transform(this.endTime3d, 'yyyyMMdd');
