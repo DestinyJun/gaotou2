@@ -1,7 +1,7 @@
-.vehicle-amount-number{
+.number-show{
   padding-top: 1vh;
 }
-.vehicle-amount-number>p>span{
+.number-show>p>span{
   display: inline-block;
   width: 1.6vw;
   height: 5vh;
@@ -17,7 +17,7 @@
   background: -ms-linear-gradient(top, #01071D 0%,#0A4D84 100%);
   background: linear-gradient(to bottom, #01071D 0%,#0A4D84 100%);*/
 }
-.vehicle-amount-number>p>small{
+.number-show>p>small{
   font-size: 1rem;
   color: white;
 }

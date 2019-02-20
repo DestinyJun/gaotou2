@@ -1,0 +1,45 @@
+.service-manager{
+  position: relative;
+}
+/*z左边*/
+.left .manager-car-amount{
+  height: 11vh;
+  box-shadow: 0 0 10px 2px rgba(255,255,255,0.2) inset;
+  margin-bottom: 1vh;
+}
+.left .manager-event-list{
+  padding-top: 1vh;
+  height: 73vh;
+  box-shadow: 0 0 10px 2px rgba(255,255,255,0.2) inset;
+  margin-bottom: 1vh;
+}
+/*中间*/
+.center .manager-store-list{
+  height: 50vh;
+  box-shadow: 0 0 10px 2px rgba(170,170,170,0.2) inset;
+  margin-bottom: 1vh;
+  color: white;
+}
+.center .manager-office{
+  padding-top: 1vh;
+  height: 34vh;
+  box-shadow: 0 0 10px 2px rgba(255,255,255,0.2) inset;
+  overflow: hidden;
+  padding-bottom: 5vh;
+  font-size: 1rem;
+}
+/*右边*/
+.right .manager-income-amount{
+  padding-top: 1vh;
+  height: 11vh;
+  box-shadow: 0 0 10px 2px rgba(255,255,255,0.2) inset;
+  margin-bottom: 1vh;
+}
+.right .manager-video-list{
+  padding-top: 1vh;
+  height: 73vh;
+  box-shadow: 0 0 10px 2px rgba(255,255,255,0.2) inset;
+  margin-bottom: 1vh;
+  position: relative;
+}
+

@@ -1,0 +1,20 @@
+.event-list{
+  padding: 5px;
+  height: calc(100% - 30px);
+}
+.event-list>.event-list-scroll>.list-group>.list-group-item{
+  background-color: rgba(77,231,255, 0.2);
+  border: none;
+  font-size: 1rem;
+  height: 5vh;
+  padding: 0;
+}
+.event-list>.event-list-scroll>.list-group>.list-group-item>.box{
+  display: inline-list-item;
+  background-color: red;
+  margin-right: 15px;
+  height: 3vh;
+  width: 2.5rem;
+  vertical-align: middle;
+  align-items: start;
+}

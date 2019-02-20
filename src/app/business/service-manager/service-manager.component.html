@@ -1,3 +1,28 @@
 <div class="service-manager">
-  <app-manager-event></app-manager-event>
+  <div class="row">
+    <div class="left col-lg-3 col-md-3">
+      <div class="manager-car-amount">
+        <app-title-one [option]="{title: '服务区今日车流量'}" [height]="'3vh'"></app-title-one>
+        <app-number-show [option]="vehicleAmount"></app-number-show>
+      </div>
+      <div class="manager-event-list">
+        <app-title-one [option]="{title: '服务区监控中心'}" [height]="'3vh'"></app-title-one>
+        <app-manager-event></app-manager-event>
+      </div>
+    </div>
+    <div class="center col-lg-6 col-md-6">
+      <div class="manager-store-list"></div>
+      <div class="manager-office"></div>
+    </div>
+    <div class="right col-lg-3 col-md-3">
+      <div class="manager-income-amount">
+        <app-title-one [option]="{title: '服务区今日收入'}" [height]="'3vh'"></app-title-one>
+        <app-number-show [option]="incomeAmount"></app-number-show>
+      </div>
+      <div class="manager-video-list">
+        <p-galleria [images]="images" panelWidth="auto" panelHeight="313" showCaption="true"></p-galleria>
+      </div>
+    </div>
+  </div>
+
 </div>

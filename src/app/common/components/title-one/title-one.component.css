@@ -2,10 +2,34 @@
   font-size: 1rem;
   font-weight: 500;
   color: #5595D5;
-  border-top: 1px solid #5595D5;
-  border-bottom: 1px solid #5595D5;
-  margin: 0 2vw;
+  /*border-bottom: 1px solid #5595D5;*/
   position: relative;
+}
+.title:before{
+   content:" ";
+   position: absolute;
+   left: 50%;
+   top: 2px;
+   right: 0;
+   height: 1px;
+   width: 94%;
+   border-top: 1px solid #5595D5;
+   color: #e5e5e5;
+   transform: translateX(-50%);
+   z-index: 2;
+ }
+.title:after{
+  content:" ";
+  position: absolute;
+  left: 50%;
+  bottom: -4px;
+  right: 0;
+  height: 1px;
+  width: 94%;
+  border-top: 1px solid #5595D5;
+  color: #e5e5e5;
+  transform: translateX(-50%);
+  z-index: 2;
 }
 .title>span{
   position: absolute;
@@ -13,25 +37,27 @@
 }
 .title>span:nth-child(1){
   border-width: 0.2vw 0.7vw 0.2vw 0.2vw;
-  left: -0.6vw;
-  top: -0.5vh;
-  border-color: transparent #5595D5 transparent transparent ;
-}
-.title>span:nth-child(2){
-  border-width: 0.2vw 0.7vw 0.2vw 0.2vw;
-  left: -0.6vw;
-  top: 2.4vh;
+  left: 0;
+  top: 0;
   border-color: transparent #5595D5 transparent transparent ;
 }
 .title>span:nth-child(3){
   border-width: 0.2vw 0.2vw 0.2vw  0.7vw;
-  left: 18.9vw;
-  top: -0.5vh;
+  right:0;
+  top: 0;
   border-color: transparent transparent transparent #5595D5;
 }
+
+
+.title>span:nth-child(2){
+  border-width: 0.2vw 0.7vw 0.2vw 0.2vw;
+  left: 0;
+  top: 3vh;
+  border-color: transparent #5595D5 transparent transparent ;
+}
 .title>span:nth-child(4){
-  left: 18.9vw;
-  top: 2.4vh;
+  right: 0;
+  top: 3vh;
   border-width: 0.2vw 0.2vw 0.2vw  0.7vw;
   border-color: transparent transparent transparent #5595D5;
 }
