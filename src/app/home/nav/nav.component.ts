@@ -15,6 +15,7 @@ export class NavComponent implements OnInit {
     city: 'fa fa-line-chart',
     serzone: 'fa fa-pie-chart',
     camera: 'fa fa-video-camera',
+    personal: 'fa fa-user-circle-o',
     };
   public urlClass = [];
   public navOpacity = '0.4';
@@ -44,6 +45,7 @@ export class NavComponent implements OnInit {
   ngOnInit() {
     this.urlList = this.localSessionStorage.getObject('urlList');
     this.urlClass = this.localSessionStorage.getObject('urlClass');
+    console.log(this.urlList);
   }
   public wholeClick(): void {
     this.router.navigate(['home/whole']);
