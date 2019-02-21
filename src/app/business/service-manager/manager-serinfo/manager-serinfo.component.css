@@ -1,104 +1,78 @@
-/*上部分*/
-.service-manager-store .servicesMap-top{
-  height: 18vh;
-  display: flex;
-  justify-content: flex-start;
-  flex-wrap: wrap ;
+.service-manager-serinfo .information-title{
+  margin-bottom: 1vh;
 }
-.service-manager-store .servicesMap-top .shop-info{
-  /*width: 30vw;*/
-  height: 6vh;
-  background: rgba(56,109,166,0.1);
-  line-height: 2vh;
-  border-right: 1px solid #1E2F39 ;
-  border-bottom: 1px solid #1E2F39 ;
-  font-size: 0.875rem;
-  /*overflow: hidden;*/
-  /*text-overflow: ellipsis;*/
-  /*white-space: nowrap;*/
-  padding-left: 1vw;
-  padding-right: 1vw;
-  padding-top: 1vh;
+.service-manager-serinfo .information-info{
+  height: 40vh;
+  overflow: hidden;
+  font-size: 0.8rem;
+  margin-bottom: 1vh;
 }
-.service-manager-store .servicesMap-top .shop-info:last-child{
-  border-right: none;
+.service-manager-serinfo .information-info p>span{
+  margin-top: 1vh;
 }
-.service-manager-store .servicesMap-top .shop-info:hover {
-  background: rgba(152,77,80,0.5);
-  cursor: pointer;
+.service-manager-serinfo .information-btn{
+  height: 3vh;
+  position: absolute;
+  bottom: 1vh;
+  width: 100%;
 }
-/*中部分*/
-.service-manager-store .servicesMap-center{
-  height: 6vh;
-  line-height: 6vh;
-  font-size: 1.2rem;
-  font-weight: 500;
-}
-.service-manager-store .servicesMap-center>span:nth-child(1){
-  margin-right: 3vw;
-}
-.service-manager-store .servicesMap-center>span:nth-child(3){
-  margin-left: 3vw;
-}
-/*摄像头部分*/
-.service-manager-store .servicesMap-video{
-  position: relative;
-  height: 4vh;
-  display: flex;
-}
-.service-manager-store .first{
-  justify-content: flex-end;
-}
-.service-manager-store .servicesMap-video span{
+.service-manager-serinfo .information-btn span{
   display: inline-block;
-  height: 4vh;
-  line-height: 4vh;
-  padding: 0 1vw;
-  margin-right: 0.5vw;
+  width: 5vw;
+  padding: 0.5vh 0;
+  background: #30A7AD;
   border-radius: 3px;
-  font-size: 1rem;
-}
-.service-manager-store .servicesMap-video span:hover{
   cursor: pointer;
-}
-.service-manager-store .second.servicesMap-video>span{
-  margin-right: 0;
-  margin-left: 0.5vw;
-}
-.service-manager-store .servicesMap-video>.btn-group:nth-child(odd)>span{
-  background: #376EA6;
-}
-.service-manager-store .servicesMap-video>.btn-group:nth-child(even)>span{
-  background: #376EA6;
-}
-.service-manager-store .servicesMap-video>.btn-group>.dropdown-menu>li>a:hover{
-  background: rgba(255,255,255,0.3);
-}
-/*下部分*/
-.service-manager-store .servicesMap-bottom{
-  height: 18vh;
-  display: flex;
-  justify-content: flex-end;
-  flex-wrap: wrap-reverse;
-  align-items: flex-start;
-}
-.service-manager-store .servicesMap-bottom .shop-info{
-  height: 6vh;
-  background: rgba(56,109,166,0.1);
-  line-height: 2vh;
-  border-right: 1px solid #1E2F39 ;
-  border-bottom: 1px solid #1E2F39 ;
   font-size: 0.875rem;
-  padding-left: 1vw;
-  padding-right: 1vw;
-  padding-top: 1vh;
 }
-.service-manager-store .servicesMap-bottom .shop-info:last-child{
-  border-right: none;
+.service-manager-serinfo .information-btn span:nth-child(2){
+  margin-right: 1vw;
+  margin-left: 1vw;
 }
-.service-manager-store .servicesMap-bottom .shop-info:hover {
-  background: rgba(152,77,80,0.5);
+/*服务区修改弹窗*/
+.style-border>span{
+  background: #1A2128;
+  display: inline-block;
+  padding: 0.5vh 1vw;
+  font-size: 0.75rem;
+  border-radius: 3px;
   cursor: pointer;
+}
+/*表单样式覆盖*/
+.form-horizontal{
+  margin-top: 15px;
+}
+.form-horizontal .form-control{
+  background: rgba(255,255,255,0.11);
+  border: none;
+  color: white;
+}
+.list-group>a{
+  color: #87FFFF;
+}
+.list-group {
+  padding-left: 0;
+  margin-bottom: 20px;
+}
+.list-group-item {
+  position: relative;
+  display: block;
+  padding: 10px 15px;
+  margin-bottom: -1px;
+  background-color: transparent;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: 1px solid white;
+}
+.list-group-item:first-child {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+.list-group-item:last-child {
+  margin-bottom: 0;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
 }
 /****************************弹窗部分****************************/
 /*弹窗基本样式控制*/
@@ -161,7 +135,7 @@
   line-height: 5vh;
   padding-right: 10px;
 }
-.alert-window-content-table .toggle-btn .toggle-btn-area>service-date-types{
+.alert-window-content-table .toggle-btn .toggle-btn-area>.service-date-types{
   color: #1A2128;
 }
 .alert-window-content-table .toggle-btn .toggle-btn-area>span{

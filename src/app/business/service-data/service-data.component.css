@@ -98,6 +98,7 @@
   margin-bottom: 1vh;
   color: white;
 }
+
 /*上部分*/
 .center .servicesMap-top{
   height: 18vh;
@@ -200,6 +201,7 @@
   background: rgba(152,77,80,0.5);
   cursor: pointer;
 }
+
 /*事件监控列表*/
 .center .event-table{
   padding-top: 1vh;

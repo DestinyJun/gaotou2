@@ -1,106 +1,76 @@
-/*上部分*/
-.service-manager-store .servicesMap-top{
-  height: 18vh;
-  display: flex;
-  justify-content: flex-start;
-  flex-wrap: wrap ;
-}
-.service-manager-store .servicesMap-top .shop-info{
-  /*width: 30vw;*/
-  height: 6vh;
-  background: rgba(56,109,166,0.1);
-  line-height: 2vh;
-  border-right: 1px solid #1E2F39 ;
-  border-bottom: 1px solid #1E2F39 ;
-  font-size: 0.875rem;
-  /*overflow: hidden;*/
-  /*text-overflow: ellipsis;*/
-  /*white-space: nowrap;*/
-  padding-left: 1vw;
-  padding-right: 1vw;
+/*事件监控列表*/
+.service-manager-office .event-table{
   padding-top: 1vh;
-}
-.service-manager-store .servicesMap-top .shop-info:last-child{
-  border-right: none;
-}
-.service-manager-store .servicesMap-top .shop-info:hover {
-  background: rgba(152,77,80,0.5);
-  cursor: pointer;
-}
-/*中部分*/
-.service-manager-store .servicesMap-center{
-  height: 6vh;
-  line-height: 6vh;
-  font-size: 1.2rem;
-  font-weight: 500;
-}
-.service-manager-store .servicesMap-center>span:nth-child(1){
-  margin-right: 3vw;
-}
-.service-manager-store .servicesMap-center>span:nth-child(3){
-  margin-left: 3vw;
-}
-/*摄像头部分*/
-.service-manager-store .servicesMap-video{
-  position: relative;
-  height: 4vh;
-  display: flex;
-}
-.service-manager-store .first{
-  justify-content: flex-end;
-}
-.service-manager-store .servicesMap-video span{
-  display: inline-block;
-  height: 4vh;
-  line-height: 4vh;
-  padding: 0 1vw;
-  margin-right: 0.5vw;
-  border-radius: 3px;
+  height: 34vh;
+  box-shadow: 0 0 10px 2px rgba(255,255,255,0.2) inset;
+  overflow: hidden;
+  padding-bottom: 5vh;
   font-size: 1rem;
 }
-.service-manager-store .servicesMap-video span:hover{
-  cursor: pointer;
+/*未处理事件*/
+.service-manager-office .event-table-untreated-title {
+  margin-bottom: 1vh;
 }
-.service-manager-store .second.servicesMap-video>span{
-  margin-right: 0;
-  margin-left: 0.5vw;
+/*事件上报*/
+.event-table .event-table-untreated-title>span:nth-child(3),.event-table .event-table-processed-title>span:nth-child(3){
+  left:unset;
+  right: -8px;
 }
-.service-manager-store .servicesMap-video>.btn-group:nth-child(odd)>span{
-  background: #376EA6;
+.event-table .event-table-untreated-title>span:nth-child(4),.event-table .event-table-processed-title>span:nth-child(4){
+  left:unset;
+  right: -8px;
 }
-.service-manager-store .servicesMap-video>.btn-group:nth-child(even)>span{
-  background: #376EA6;
+.service-manager-office .event-table-processed-title{
+  margin-bottom: 1vh;
 }
-.service-manager-store .servicesMap-video>.btn-group>.dropdown-menu>li>a:hover{
-  background: rgba(255,255,255,0.3);
-}
-/*下部分*/
-.service-manager-store .servicesMap-bottom{
-  height: 18vh;
-  display: flex;
-  justify-content: flex-end;
-  flex-wrap: wrap-reverse;
-  align-items: flex-start;
-}
-.service-manager-store .servicesMap-bottom .shop-info{
-  height: 6vh;
-  background: rgba(56,109,166,0.1);
-  line-height: 2vh;
-  border-right: 1px solid #1E2F39 ;
-  border-bottom: 1px solid #1E2F39 ;
-  font-size: 0.875rem;
+.service-manager-office .event-table-processed-type{
   padding-left: 1vw;
-  padding-right: 1vw;
-  padding-top: 1vh;
+  min-height: 11vh;
 }
-.service-manager-store .servicesMap-bottom .shop-info:last-child{
-  border-right: none;
+.service-manager-office .event-table-processed-type>span {
+  display: inline-block;
+  width:1.2rem;
+  height: 9.5vh;
+  font-size:0.5rem;
+  background: #03A9F7;
+  padding: 0.5vh 0;
+  text-align: center;
+  margin-right: 1vw;
 }
-.service-manager-store .servicesMap-bottom .shop-info:hover {
-  background: rgba(152,77,80,0.5);
+.service-manager-office .event-table-processed-type>span:hover {
+  background: #0157A0;
   cursor: pointer;
 }
-/****************************弹窗部分****************************/
+.event-table-processed-btn{
+  height: 18vh;
+}
+.event-table-processed-btn .btn-carport{
+  margin-top: 1vh;
+}
+.service-manager-office .event-table-processed-btn span{
+  display: inline-block;
+  /*width: 9.5vw;*/
+  padding: 0.1vh 0.5vw;
+  font-size: 0.5rem;
+  border-radius: 3px;
+  margin-right: 1vw;
+  cursor: pointer;
+}
+.service-manager-office .event-table-processed-btn p{
+  margin-bottom: 0.5vh;
+}
+.service-manager-office .event-table-processed-btn p:nth-child(2){
+  /*margin-bottom: 0.5vh;*/
+}
+.service-manager-office .event-table-processed-btn span:nth-child(1){
+  background: #03A9F7;
+}
+.service-manager-office .event-table-processed-btn .btn-toilet >p:nth-child(3)>span{
+  background: #4590D4;
+}
+.service-manager-office .event-table-processed-btn .btn-carport >p:nth-child(3)>span{
+  background: #4590D4;
+}
 /*弹窗基本样式控制*/
 .bg-box{
   width: 100vw;
@@ -245,4 +215,18 @@
 }
 .alert-window-excel-footer>span:nth-child(1){
   margin-right: 1.2vw;
+}
+/***********************************primengy样式覆盖*****************************/
+/*虚拟滚动*/
+.service-statistics .ui-scrollpanel-wrapper {
+  background: transparent;
+  border: none; /*控制滚动轴背景色*/
+}
+.service-statistics .ui-scrollpanel-bar {
+  background-color: transparent;
+  opacity: 1;
+  transition: background-color .3s;
+}
+.service-statistics .ui-scrollpanel-bar:hover {
+  background-color: #135ba1;
 }

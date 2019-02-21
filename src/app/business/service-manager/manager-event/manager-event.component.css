@@ -2,19 +2,24 @@
   padding: 5px;
   height: calc(100% - 30px);
 }
-.event-list>.event-list-scroll>.list-group>.list-group-item{
-  background-color: rgba(77,231,255, 0.2);
-  border: none;
-  font-size: 1rem;
-  height: 5vh;
-  padding: 0;
+.event-list>.weui-cells{
+  color: white;
+  background-color: transparent;
+  font-size: 0.875rem;
 }
-.event-list>.event-list-scroll>.list-group>.list-group-item>.box{
-  display: inline-list-item;
-  background-color: red;
-  margin-right: 15px;
-  height: 3vh;
-  width: 2.5rem;
-  vertical-align: middle;
-  align-items: start;
+.event-list .weui-cell{
+  cursor: pointer;
+  margin-top: 1vh;
+}
+.event-list .weui-cell:before{
+  border: none;
+}
+.event-list .weui-cells:before{
+  border: none;
+}
+.event-list .weui-cells:after{
+  border: none;
+}
+.event-list .btn-group>button{
+  margin-top: 1vh;
 }

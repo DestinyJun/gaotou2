@@ -11,16 +11,23 @@
       </div>
     </div>
     <div class="center col-lg-6 col-md-6">
-      <div class="manager-store-list"></div>
-      <div class="manager-office"></div>
+      <div class="manager-store-list">
+        <app-manager-store></app-manager-store>
+      </div>
+      <div class="manager-office">
+        <app-manager-office></app-manager-office>
+      </div>
     </div>
     <div class="right col-lg-3 col-md-3">
       <div class="manager-income-amount">
         <app-title-one [option]="{title: '服务区今日收入'}" [height]="'3vh'"></app-title-one>
         <app-number-show [option]="incomeAmount"></app-number-show>
       </div>
+      <div class="manager-info">
+        <app-manager-serinfo></app-manager-serinfo>
+      </div>
       <div class="manager-video-list">
-        <p-galleria [images]="images" panelWidth="auto" panelHeight="313" showCaption="true"></p-galleria>
+        <p-galleria [images]="images" panelWidth="auto" panelHeight="313" showCaption="true" [autoPlay]="true" [transitionInterval]="3000"></p-galleria>
       </div>
     </div>
   </div>

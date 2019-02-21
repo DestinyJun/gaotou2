@@ -576,12 +576,10 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       }
     );
   }
-
   public closeServiceShop(): void {
     document.body.className = '';
     this.serviceShopShow = false;
   }
-
   // 服务区商家
   public openServiceShop(item): void {
     console.log(item);
@@ -623,7 +621,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       }
     );
   }
-
   public openMerchantVideo(item): void {
     this.videoBottomShopUrl = `
        <object classid="clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921"
@@ -658,7 +655,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       }, 100);
     }, 100);
   }
-
   public shopExportClick() {
     const startTime = this.datePipe.transform(this.shopStartTime, 'yyyyMMdd');
     const endTime = this.datePipe.transform(this.shopEndTime, 'yyyyMMdd');
@@ -668,7 +664,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       window.alert('请把数据选择全在提交');
     }
   }
-
   public shopImageZoom(e): void {
     if (e) {
       document.getElementById('shopVideo').innerHTML = ``;
@@ -676,7 +671,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       this.addShopVideo(this.serviceShopInfo);
     }
   }
-
   public addShopVideo(item) {
     // 视频监控
     if (!item.cameraList.length) {
@@ -720,14 +714,12 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       }, 100);
     }
   }
-
   public cancelserviceShopVideo(): void {
     this.videoBottomShopUrl = ``;
     setTimeout(() => {
       document.getElementById('shopVideo').innerHTML = this.videoBottomShopUrl;
     }, 100);
   }
-
   // 公共视频监控
   public openPublicVideo(e) {
     this.videoShopList = e;
@@ -773,12 +765,10 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       }, 100);
     }, 100);
   }
-
   public closePublicVideo() {
     document.body.className = '';
     this.videoPublicShow = false;
   }
-
   public publicTopVideoGroupOver(videoList, i): void {
     videoList.map(() => {
       this.videoTopOpen.push(false);
@@ -791,11 +781,9 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       this.publicVideoList = videoList;
     }
   }
-
   public publicTopVideoGroupLeave(i): void {
     this.videoTopOpen[i] = false;
   }
-
   public publicTopBottomGroupOver(videoList, i): void {
     videoList.map(() => {
       this.videoBottomOpen.push(false);
@@ -808,7 +796,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       this.publicVideoList = videoList;
     }
   }
-
   public publicTopBottomGroupLeave(i): void {
     this.videoBottomOpen[i] = false;
   }
@@ -823,7 +810,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       }
     );
   }
-
   public openEventAlert(item): void {
     document.body.className = 'ui-overflow-hidden';
     this.eventAlertShow = true;
@@ -844,25 +830,20 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       }
     );
   }
-
   public closeEventAlert() {
     document.body.className = '';
     this.eventAlertShow = false;
   }
-
   public eventAlertListCtrlw(): void {
     this.eventAlertListShow = true;
   }
-
   public eventAlertListCtrly(): void {
     this.eventAlertListShow = false;
   }
-
   public eventListInfosClick(item): void {
     console.log(item);
     this.eventListInfo = item;
   }
-
   // 事件上报
   public eventInfoUpClick(e): void {
     if (e.eventCategoryName !== '经营类') {
@@ -875,12 +856,10 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       this.eventAlertInfoUp = true;
     }
   }
-
   public closeEventInfoUpClick(): void {
     // document.body.className = '';
     this.eventAlertInfoUp = false;
   }
-
   public serviceInfoUpAlertClick() {
     document.body.className = '';
     this.eventAlertInfoUp = false;
@@ -896,14 +875,12 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       }
     );
   }
-
   // 卫生间及停车位弹窗
   public openServersToiletAlert(e) {
     document.body.className = 'ui-overflow-hidden';
     this.waitTitle = e;
     this.serversToiletAlertShow = true;
   }
-
   public closeServersToiletAlert() {
     document.body.className = '';
     this.serversToiletAlertShow = false;

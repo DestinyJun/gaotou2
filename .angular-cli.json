@@ -22,6 +22,7 @@
         "../node_modules/font-awesome/css/font-awesome.min.css",
         "./assets/icon/font-wenjun.css",
         "../node_modules/bootstrap/dist/css/bootstrap.min.css",
+        "../node_modules/weui/dist/style/weui.min.css",
         "../node_modules/primeicons/primeicons.css",
         "../node_modules/primeng/resources/themes/nova-light/theme.css",
         "../node_modules/primeng/resources/primeng.min.css",

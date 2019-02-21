@@ -1,14 +1,15 @@
-import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
 
 @Component({
   selector: 'app-manager-event',
   templateUrl: './manager-event.component.html',
-  styleUrls: ['./manager-event.component.css']
+  styleUrls: ['./manager-event.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class ManagerEventComponent implements OnInit {
   tbody: any = [];
   @Input() url; // 将地址变成组件的一个参数，也就是输入属性
-  @ViewChild('scroller') scrollerRef: ElementRef;  // 控制滚动的元素
+  // @ViewChild('scroller') scrollerRef: ElementRef;  // 控制滚动的元素
   timer: any;
   freshData: any;
 
@@ -18,7 +19,7 @@ export class ManagerEventComponent implements OnInit {
 
   ngOnInit() {
     // 初始化拿到native
-    const scroller: HTMLElement = this.scrollerRef.nativeElement;
+    // const scroller: HTMLElement = this.scrollerRef.nativeElement;
     /*this.http.sendRequest(this.url).subscribe((data: any[]) => {
       this.tbody = data.concat(data);
     });*/
