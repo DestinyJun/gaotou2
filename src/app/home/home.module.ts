@@ -11,8 +11,8 @@ import {DialogModule} from 'primeng/dialog';
 import {NgxEchartsModule} from 'ngx-echarts';
 import {EchartNationaPersonModule, EchartProvincePersonModule} from '../common/wenjun';
 import {ScrollPanelModule} from 'primeng/primeng';
-
-
+import {SidebarModule} from 'primeng/sidebar';
+import {PanelMenuModule} from 'primeng/panelmenu';
 @NgModule({
   imports: [
     CommonModule,
@@ -24,6 +24,8 @@ import {ScrollPanelModule} from 'primeng/primeng';
     EchartNationaPersonModule,
     EchartProvincePersonModule,
     ScrollPanelModule,
+    SidebarModule,
+    PanelMenuModule
   ],
   declarations: [
     HomeComponent,

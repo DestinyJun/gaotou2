@@ -28,6 +28,12 @@
   cursor: pointer;
   color: orangered
 }
+/*************************primeng*************************/
+.nav-sidebar .ui-sidebar{
+  background-color: rgba(15,26,43, 0.8);
+  color: white;
+  border: none;
+}
 /*****************************bootstrap改造******************************/
 .active{
   color: orangered

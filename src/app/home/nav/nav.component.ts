@@ -1,13 +1,42 @@
-import {Component, HostListener, OnInit} from '@angular/core';
+import {Component, HostListener, OnInit, ViewEncapsulation} from '@angular/core';
 import {Router} from '@angular/router';
 import {LocalStorageService} from '../../common/services/local-storage.service';
+import {MenuItem} from 'primeng/api';
+/*export interface MenuItem {
+  label?: string;
+  icon?: string;
+  command?: (event?: any) => void;
+  url?: string;
+  routerLink?: any;
+  queryParams?: {
+    [k: string]: any;
+  };
+  items?: MenuItem[] | MenuItem[][] | MenuItem[][][];
+  expanded?: boolean;
+  disabled?: boolean;
+  visible?: boolean;
+  target?: string;
+  routerLinkActiveOptions?: any;
+  separator?: boolean;
+  badge?: string;
+  badgeStyleClass?: string;
+  style?: any;
+  styleClass?: string;
+  title?: string;
+  id?: string;
+  automationId?: any;
+}*/
+
 
 @Component({
   selector: 'app-nav',
   templateUrl: './nav.component.html',
-  styleUrls: ['./nav.component.css']
+  styleUrls: ['./nav.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class NavComponent implements OnInit {
+  items: MenuItem[];
+  public visibleSidebar2: true;
   public urlList: any;
   public urlIcon = {
     whole: 'fa fa-area-chart',
@@ -42,6 +71,32 @@ export class NavComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.items = [
+      {
+        label: '全国大数据',
+        icon: 'pi pi-pw pi-file',
+        items: [
+          {
+          label: '贵州省大数据',
+          icon: 'pi pi-fw pi-plus',
+          items: [
+            {
+              label: '贵阳市大数据',
+              icon: 'pi pi-fw pi-user-plus',
+              items: [
+                {label: '久长服务区大数据',  icon: 'pi pi-fw pi-user-plus'},
+                {label: '安顺服务区大数据',  icon: 'pi pi-fw pi-user-plus'},
+              ]
+            },
+            {label: '遵义市大数据', icon: 'pi pi-fw pi-filter'},
+            {label: '安顺市大数据', icon: 'pi pi-fw pi-filter'},
+          ]
+        },
+          {label: '云南省大数据', icon: 'pi pi-fw pi-external-link'},
+          {label: '湖南省大数据', icon: 'pi pi-fw pi-times'}
+        ]
+      }
+    ];
     this.urlList = this.localSessionStorage.getObject('urlList');
     this.urlClass = this.localSessionStorage.getObject('urlClass');
   }
