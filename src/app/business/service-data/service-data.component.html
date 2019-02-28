@@ -656,17 +656,39 @@
           </div>
           <div class="shop-video-content" id="shopVideo"></div>
           <div class="shop-video-list">
-            <span>商家监控视频列表：</span>
+            <span data-toggle="dropdown">商家监控视频列表：</span>
             <span *ngIf="!(videoShopList.length>0)">视频暂无</span>
-            <span *ngFor="let item of videoShopList" (click)="openMerchantVideo(item)">
+            <!--<span *ngFor="let item of videoShopList" (click)="openMerchantVideo(item)">
                 {{item.cameraName}}
-            </span>
+            </span>-->
+            <p-dropdown [options]="cars" [(ngModel)]="selectedCar2" [style]="{'min-width':'200px', 'max-height':'100px'}" (onChange)="openMerchantVideo($event)">
+              <ng-template let-item pTemplate="selectedItem">
+                <span style="vertical-align:middle; margin-left: .5em">{{item.label}}</span>
+              </ng-template>
+              <ng-template let-car pTemplate="item">
+                <div class="ui-helper-clearfix" style="position: relative;height: 25px;">
+                  <div style="font-size:14px;float:right;margin-top:4px">{{car.label}}</div>
+                </div>
+              </ng-template>
+            </p-dropdown>
           </div>
         </div>
         <div class="col-ld-4 col-md-4">
           <div class="shop-echart-title">
             <span>店家业态数据统计</span>
-            <span class="table-export" (click)="serviceShopShowExport=true; cancelserviceShopVideo()">表格导出</span>
+            <span class="table-export" style="margin-right: 6vw;">
+               <app-input-dropdown
+                 [option]="storeInfoSelect"
+                 [height]="'3vh'"
+                 [background]="'#1a2128'"
+                 [dropdownBackground]="'rgba(26,33,40,0.8)'"
+                 [hover]="'#5595D5'"
+                 (dropdownClick)="storeSelectTime($event)"></app-input-dropdown>
+            </span>
+            <span class="table-export" (click)="serviceShopShowExport=true; cancelserviceShopVideo()">
+              表格导出
+            </span>
+
           </div>
           <div class="shop-echart-content">
             <app-echarts-line-broken [height]="'34vh'" [option]="shopEchartLine"></app-echarts-line-broken>

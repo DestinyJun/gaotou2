@@ -6,8 +6,15 @@ import {EventListInfo, IncomeManualAddIncome, UploadEventInfoUp} from '../../com
 import {ServiceDataService} from '../../common/services/service-data.service';
 import {LocalStorageService} from '../../common/services/local-storage.service';
 import {DatePipe} from '@angular/common';
-import {number} from 'ng4-validators/src/app/number/validator';
-
+export interface SelectVideoItem {
+  label?: string;
+  value: any;
+  styleClass?: string;
+  icon?: string;
+  title?: string;
+  disabled?: boolean;
+  outUrl?: string;
+}
 @Component({
   selector: 'app-service-data',
   templateUrl: './service-data.component.html',
@@ -19,6 +26,12 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   public esDate: any;  // 时间初始化
   public carTimeSelect = [
     {name: '时', code: 'hour'},
+    {name: '天', code: 'day'},
+    {name: '周', code: 'week'},
+    {name: '月', code: 'month'},
+    {name: '年', code: 'year'},
+  ];
+  public storeInfoSelect = [
     {name: '天', code: 'day'},
     {name: '周', code: 'week'},
     {name: '月', code: 'month'},
@@ -56,7 +69,13 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     // 商家、视频及方向
   public incomeTopData: any;
   public incomeBottomData: any;
-  // 服务区商家视频弹窗
+  // 服务区商家视频弹窗7
+  public cars: SelectVideoItem[];
+  public selectedCar2 = {
+    value: '请选择视频...',
+    id: null,
+    outUrl: null
+  };
   public videoShopList = [];
   public videoBottomShopUrl: string;
   // 服务区商家信息弹窗
@@ -145,6 +164,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.cars = [];
     // 路由接受参数
     this.routerInfo.params.subscribe(
       (params) => {
@@ -581,16 +601,14 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       }
     );
   }
-
   public closeServiceShop(): void {
     document.body.className = '';
     this.serviceShopShow = false;
   }
-
   // 服务区商家
   public openServiceShop(item): void {
-    console.log(item);
     this.videoShopList = [];
+    this.cars = [];
     this.serviceShopInfo = item;
     this.serviceShopShow = true;
     document.body.className = 'ui-overflow-hidden';
@@ -628,11 +646,11 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       }
     );
   }
-
-  public openMerchantVideo(item): void {
+  public openMerchantVideo(): void {
+    console.log(this.selectedCar2);
     this.videoBottomShopUrl = `
        <object classid="clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921"
-            id="vlc${item.id}" codebase="" width="100%" height="100%" events="True">
+            id="vlc${this.selectedCar2.id}" codebase="" width="100%" height="100%" events="True">
         <param name="mrl" value=""/>
         <param name="src" value=""/>
         <param name="controls" value="false"/>
@@ -648,20 +666,23 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
                width="100%"
                height="100%"
                text="Waiting for video"
-               name="vlc${item.id}"
+               name="vlc${this.selectedCar2.id}"
         />
     </object>
       `;
     setTimeout(() => {
       document.getElementById('shopVideo').innerHTML = this.videoBottomShopUrl;
       setTimeout(() => {
-        const vlc = window.document[`vlc${item.id}`];
-        const mrl = item.outUrl;
+        const vlc = window.document[`vlc${this.selectedCar2.id}`];
+        const mrl = this.selectedCar2.outUrl;
         const options = ['rtsp-tcp=true', ' network-caching=500'];
         const itemId = vlc['playlist'].add(mrl, 'asd', options);
         vlc['playlist'].playItem(itemId);
       }, 100);
     }, 100);
+  }
+  public storeSelectTime (event): void {
+      console.log(event);
   }
 
   public shopExportClick() {
@@ -683,6 +704,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   }
 
   public addShopVideo(item) {
+    this.videoShopList = [];
     // 视频监控
     if (!item.cameraList.length) {
       setTimeout(() => {
@@ -690,6 +712,11 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       }, 100);
     } else {
       this.videoShopList = item.cameraList;
+      this.cars.unshift({label: '请选择视频...', value: null, outUrl: null});
+      this.videoShopList.map((val) => {
+        console.log(val);
+        this.cars.push({label: val.cameraName, value: {outUrl: val.outUrl, id: val.id}, outUrl: val.outUrl});
+      });
       this.videoBottomShopUrl = `
         <object classid="clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921"
             id="vlc${this.videoShopList[0].id}" codebase="" width="100%" height="100%" events="True">

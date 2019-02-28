@@ -415,7 +415,7 @@ body .income-manual-time .ui-inputtext::placeholder{
   line-height: 5vh;
   padding-right: 10px;
 }
-.alert-window-content-table .toggle-btn .toggle-btn-area>service-date-types{
+.alert-window-content-table .toggle-btn .toggle-btn-area>.service-date-types{
   color: #1A2128;
 }
 .alert-window-content-table .toggle-btn .toggle-btn-area>span{
@@ -787,7 +787,7 @@ body .income-manual-time .ui-inputtext::placeholder{
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
 }
-/***********************************primengy样式覆盖*****************************/
+/***********************************primeng样式覆盖*****************************/
 /*虚拟滚动*/
 .service-statistics .ui-scrollpanel-wrapper {
   background: transparent;
@@ -801,6 +801,31 @@ body .income-manual-time .ui-inputtext::placeholder{
 .service-statistics .ui-scrollpanel-bar:hover {
   background-color: #135ba1;
 }
+.bg-box .shop-video-list .ui-dropdown{
+  background: rgba(26,33,40,0.8);
+  border: none;
+}
+.bg-box .shop-video-list .ui-dropdown-panel {
+  border: none;
+  background-color: rgba(26,33,40,0.8);
+  min-width: 200px;
+}
+.bg-box .shop-video-list .ui-dropdown-panel .ui-dropdown-items .ui-dropdown-item{
+  color: white
+}
+.bg-box .shop-video-list .ui-inputtext{
+  background: rgba(26,33,40,0.8);
+  color: white;
+  padding-bottom: 0;
+  padding-top: 0;
+}
+.bg-box .shop-video-list .ui-dropdown-panel .ui-dropdown-items-wrapper {
+  max-height: 150px !important;
+}
+.bg-box .shop-video-list .ui-dropdown .ui-dropdown-trigger{
+  background: rgba(26,33,40,0.8);
+}
+
 /***********************媒体查询***********************/
 @media screen and (max-width: 992px) {
   .main{

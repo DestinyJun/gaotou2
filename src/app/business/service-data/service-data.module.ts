@@ -4,7 +4,7 @@ import {SharedModule} from '../../common/shared.module';
 import { ServiceDataComponent } from './service-data.component';
 import {ServiceDataRoutingModule} from './service-data.routing.module';
 import { ServiceDataService } from '../../common/services/service-data.service';
-import {CalendarModule, ScrollPanelModule} from 'primeng/primeng';
+import {CalendarModule, ScrollPanelModule, DropdownModule} from 'primeng/primeng';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {DataService} from '../../common/services/data.service';
 import {ButtonModule} from 'primeng/button';
@@ -24,7 +24,8 @@ import {ImageZoomModule} from '../../common/components/image-zoom/image-zoom.mod
     EchartLineAreaModule,
     ImageZoomModule,
     PagingModule,
-    InputDropdownModule
+    InputDropdownModule,
+    DropdownModule
   ],
   declarations: [ServiceDataComponent],
   providers: [ServiceDataService, DataService, DatePipe]
