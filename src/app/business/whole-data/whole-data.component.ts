@@ -44,13 +44,13 @@ export class WholeDataComponent implements OnInit, OnChanges {
     this.localService.eventBus.next({title: this.dataToggle + '高速业态大数据',  flagState: 'whole', flagName: this.dataToggle});
     this.updataEcharts();
     // 全屏点击事件
-    window.document.addEventListener('click', (e) => {
+    /*window.document.addEventListener('click', (e) => {
       this.flag = e.srcElement.parentElement.className;
       if ((this.provinceShow || this.cityShow) && !(this.flag === 'location')) {
         this.provinceShow = false;
         this.cityShow = false;
       }
-    });
+    });*/
   }
   ngOnChanges(changes: SimpleChanges): void {}
   // 客流

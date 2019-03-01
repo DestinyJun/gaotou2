@@ -34,6 +34,29 @@
   color: white;
   border: none;
 }
+.nav-sidebar .ui-sidebar .ui-tree{
+  border: transparent;
+  background-color: transparent;
+  color: white;
+  padding: 0;
+}
+.nav-sidebar .ui-sidebar .ui-tree .ui-treenode-label .ui-corner-all{
+   color: red;
+ }
+.nav-sidebar .ui-sidebar .ui-tree .ui-tree-container .ui-treenode .ui-treenode-content .ui-treenode-label.ui-state-highlight{
+  background-color: transparent;
+}
+.nav-sidebar .ui-sidebar .ui-tree .ui-tree-container .ui-treenode .ui-treenode-content .ui-treenode-label.ui-state-highlight:hover{
+  color: #209E91;
+}
+.nav-sidebar .ui-sidebar .ui-tree .ui-tree-container .ui-treenode .ui-treenode-content .ui-tree-toggler {
+  float: right;
+  color: white;
+  background: transparent;
+}
+.nav-sidebar .ui-sidebar .ui-tree .ui-treenode-content-selected{
+  color: red;
+}
 /*****************************bootstrap改造******************************/
 .active{
   color: orangered

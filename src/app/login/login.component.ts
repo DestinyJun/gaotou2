@@ -48,7 +48,7 @@ export class LoginComponent implements OnInit {
                     const aString = item.menuCode;
                     this.urlClass.push(aString.split(':')[1]);
                   });
-                  console.log(routerInfo.data.menuAscxs);
+                  // console.log(routerInfo.data.menuAscxs);
                   value.data.urlList = routerInfo.data.menuAscxs;
                   value.data.urlClass = this.urlClass;
                   // 本地存储信息

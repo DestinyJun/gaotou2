@@ -12,7 +12,8 @@ import {NgxEchartsModule} from 'ngx-echarts';
 import {EchartNationaPersonModule, EchartProvincePersonModule} from '../common/wenjun';
 import {ScrollPanelModule} from 'primeng/primeng';
 import {SidebarModule} from 'primeng/sidebar';
-import {PanelMenuModule} from 'primeng/panelmenu';
+import {TreeModule} from 'primeng/tree';
+import {SidebarComponent} from './sidebar/sidebar.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -25,14 +26,15 @@ import {PanelMenuModule} from 'primeng/panelmenu';
     EchartProvincePersonModule,
     ScrollPanelModule,
     SidebarModule,
-    PanelMenuModule
+    TreeModule
   ],
   declarations: [
     HomeComponent,
     HeaderComponent,
     NavComponent,
     FooterComponent,
-    MessageWindowComponent
+    MessageWindowComponent,
+    SidebarComponent
   ],
   providers: [],
   entryComponents: [NavComponent]

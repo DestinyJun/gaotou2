@@ -1,12 +1,12 @@
 <div class="row">
   <div class="nav" [ngStyle]="{opacity: navOpacity, height: navHeight}">
     <ul class="list-group">
-      <li *ngFor="let item of urlList;let i =index" class="list-group-item" [routerLink]="[item?.url, {id: 1, name: '久长服务区'}]">
+     <!-- <li *ngFor="let item of urlList;let i =index" class="list-group-item" [routerLink]="[item?.url, {id: 1, name: '久长服务区'}]">
         <i [class]="urlIcon[urlClass[i]]" aria-hidden="true" data-toggle="tooltip" data-placement="right" [title]="item?.menuName"></i>
-      </li>
-     <!-- <li  class="list-group-item" (click)="visibleSidebar2 = true">
-        <i class="fa fa-area-chart" aria-hidden="true" data-toggle="tooltip" data-placement="right"></i>
       </li>-->
+      <li  class="list-group-item" (click)="visibleSidebar2 = true">
+        <i class="fa fa-area-chart" aria-hidden="true" data-toggle="tooltip" data-placement="right"></i>
+      </li>
       <!--<li class="list-group-item" [routerLink]="['./whole']">
         <i class="fa fa-area-chart" aria-hidden="true" data-toggle="tooltip" data-placement="right" title="全国业态大数据"></i>
       </li>
@@ -27,8 +27,11 @@
 </div>
 <div class="nav-sidebar">
   <p-sidebar [(visible)]="visibleSidebar2" position="right" [baseZIndex]="10000" [showCloseIcon]="false">
-    <h3 style="font-weight:normal">高投集团</h3>
-    <p-panelMenu [model]="items" [multiple]="false" [style]="{'width':'300px'}"></p-panelMenu>
+    <h4 style="font-weight:normal;text-align: center">高投集团</h4>
+    <p-tree [value]="filesTree2" selectionMode="single" [(selection)]="selectedFile"
+            (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="nodeUnselect($event)">
+
+    </p-tree>
   </p-sidebar>
 </div>
 
