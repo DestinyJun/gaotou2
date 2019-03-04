@@ -9,10 +9,10 @@ export class LoginGuard implements CanActivate {
     private router: Router
   ) {}
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    if (state.url === '/home/serzone') {
+   /* if (state.url === '/home/serzone') {
       this.router.navigate([this.localSessionStorage.getObject('homePageRoute'), {id: 1, name: '久长服务区'}]);
       return false;
-    }
+    }*/
     const stateUrlFirst = state.url.split('/')[2];
     const stateUrlSecond = stateUrlFirst.split(';');
     if (this.localSessionStorage.getObject('authentication').accessToken) {
@@ -23,7 +23,8 @@ export class LoginGuard implements CanActivate {
         this.router.navigate([this.localSessionStorage.getObject('homePageRoute'), {id: 1, name: '久长服务区'}]);
         return false;
       }
-    } else {
+    }
+    else {
       this.router.navigate(['/remind']);
       return false;
     }

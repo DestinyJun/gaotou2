@@ -714,7 +714,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       this.videoShopList = item.cameraList;
       this.cars.unshift({label: '请选择视频...', value: null, outUrl: null});
       this.videoShopList.map((val) => {
-        console.log(val);
         this.cars.push({label: val.cameraName, value: {outUrl: val.outUrl, id: val.id}, outUrl: val.outUrl});
       });
       this.videoBottomShopUrl = `

@@ -1,6 +1,8 @@
 import {Component, HostListener, OnInit, ViewEncapsulation} from '@angular/core';
 import {Router} from '@angular/router';
 import {LocalStorageService} from '../../common/services/local-storage.service';
+import {LoginService} from '../../common/services/login.service';
+
 export interface TreeNode {
   id?: any;
   label?: string;
@@ -18,6 +20,8 @@ export interface TreeNode {
   draggable?: boolean;
   droppable?: boolean;
   selectable?: boolean;
+  parentId?: boolean;
+  dataLevel?: any;
 }
 
 
@@ -29,64 +33,64 @@ export interface TreeNode {
 })
 export class NavComponent implements OnInit {
   filesTree2: TreeNode[] = [
-   /* {
-      'label': 'Documents',
-      'data': 'Documents Folder',
-      'expandedIcon': 'fa fa-folder-open',
-      'collapsedIcon': 'fa fa-area-chart',
-      'children': [
-        {
-        'label': 'Work',
-        'data': 'Work Folder',
-        'expandedIcon': 'fa fa-folder-open',
-        'collapsedIcon': 'fa fa-folder',
-        'children': [{'label': 'Expenses.doc', 'icon': 'fa fa-file-word-o', 'data': 'Expenses Document'}, {
-          'label': 'Resume.doc',
-          'icon': 'fa fa-file-word-o',
-          'data': 'Resume Document'
-        }]
-      },
-        {
-          'label': 'Home',
-          'data': 'Home Folder',
-          'expandedIcon': 'fa fa-folder-open',
-          'collapsedIcon': 'fa fa-folder',
-          'children': [{'label': 'Invoices.txt', 'icon': 'fa fa-file-word-o', 'data': 'Invoices for this month'}]
-        }]
-    },
-    {
-      'label': 'Pictures',
-      'data': 'Pictures Folder',
-      'expandedIcon': 'fa fa-folder-open',
-      'collapsedIcon': 'fa fa-bar-chart',
-      'children': [
-        {'label': 'barcelona.jpg', 'icon': 'fa fa-file-image-o', 'data': 'Barcelona Photo'},
-        {'label': 'logo.jpg', 'icon': 'fa fa-file-image-o', 'data': 'PrimeFaces Logo'},
-        {'label': 'primeui.png', 'icon': 'fa fa-file-image-o', 'data': 'PrimeUI Logo'}]
-    },
-    {
-      'label': 'Movies',
-      'data': 'Movies Folder',
-      'expandedIcon': 'fa fa-folder-open',
-      'collapsedIcon': 'fa fa-line-chart',
-      'children': [
-        {
-          'label': 'Al Pacino', 'data': 'Pacino Movies',
-          'children': [
-          {'label': 'Scarface', 'icon': 'fa fa-file-video-o', 'data': 'Scarface Movie'},
-          {'label': 'Serpico', 'icon': 'fa fa-file-video-o', 'data': 'Serpico Movie'
-        }]
-      },
-        {
-          'label': 'Robert De Niro',
-          'data': 'De Niro Movies',
-          'children': [{'label': 'Goodfellas', 'icon': 'fa fa-file-video-o', 'data': 'Goodfellas Movie'}, {
-            'label': 'Untouchables',
-            'icon': 'fa fa-file-video-o',
-            'data': 'Untouchables Movie'
-          }]
-        }]
-    }*/
+    /* {
+       'label': 'Documents',
+       'data': 'Documents Folder',
+       'expandedIcon': 'fa fa-folder-open',
+       'collapsedIcon': 'fa fa-area-chart',
+       'children': [
+         {
+         'label': 'Work',
+         'data': 'Work Folder',
+         'expandedIcon': 'fa fa-folder-open',
+         'collapsedIcon': 'fa fa-folder',
+         'children': [{'label': 'Expenses.doc', 'icon': 'fa fa-file-word-o', 'data': 'Expenses Document'}, {
+           'label': 'Resume.doc',
+           'icon': 'fa fa-file-word-o',
+           'data': 'Resume Document'
+         }]
+       },
+         {
+           'label': 'Home',
+           'data': 'Home Folder',
+           'expandedIcon': 'fa fa-folder-open',
+           'collapsedIcon': 'fa fa-folder',
+           'children': [{'label': 'Invoices.txt', 'icon': 'fa fa-file-word-o', 'data': 'Invoices for this month'}]
+         }]
+     },
+     {
+       'label': 'Pictures',
+       'data': 'Pictures Folder',
+       'expandedIcon': 'fa fa-folder-open',
+       'collapsedIcon': 'fa fa-bar-chart',
+       'children': [
+         {'label': 'barcelona.jpg', 'icon': 'fa fa-file-image-o', 'data': 'Barcelona Photo'},
+         {'label': 'logo.jpg', 'icon': 'fa fa-file-image-o', 'data': 'PrimeFaces Logo'},
+         {'label': 'primeui.png', 'icon': 'fa fa-file-image-o', 'data': 'PrimeUI Logo'}]
+     },
+     {
+       'label': 'Movies',
+       'data': 'Movies Folder',
+       'expandedIcon': 'fa fa-folder-open',
+       'collapsedIcon': 'fa fa-line-chart',
+       'children': [
+         {
+           'label': 'Al Pacino', 'data': 'Pacino Movies',
+           'children': [
+           {'label': 'Scarface', 'icon': 'fa fa-file-video-o', 'data': 'Scarface Movie'},
+           {'label': 'Serpico', 'icon': 'fa fa-file-video-o', 'data': 'Serpico Movie'
+         }]
+       },
+         {
+           'label': 'Robert De Niro',
+           'data': 'De Niro Movies',
+           'children': [{'label': 'Goodfellas', 'icon': 'fa fa-file-video-o', 'data': 'Goodfellas Movie'}, {
+             'label': 'Untouchables',
+             'icon': 'fa fa-file-video-o',
+             'data': 'Untouchables Movie'
+           }]
+         }]
+     }*/
   ];
   selectedFile: TreeNode;
   public visibleSidebar2: true;
@@ -125,58 +129,76 @@ export class NavComponent implements OnInit {
   constructor(
     private router: Router,
     private localSessionStorage: LocalStorageService,
+    private logins: LoginService
   ) {
   }
 
   ngOnInit() {
     this.urlList = this.localSessionStorage.getObject('urlList');
-    console.log(this.urlList);
     this.urlClass = this.localSessionStorage.getObject('urlClass');
     this.filesTree2 = this.tableTreeInitialize(this.urlList);
   }
+
   // 递归调用重组数据结构
   public tableTreeInitialize(data): any {
-    console.log(data);
     const oneChild: TreeNode[] = [];
     for (let i = 0; i < data.length; i++) {
-      const childnode: TreeNode = {};
-      /*childnode.data = {
-        areaName: data[i].areaName,
-        areaCode: data[i].areaCode,
-        id: data[i].id,
-        idt: data[i].idt,
-        udt: data[i].udt,
-        level: this.areaService.levelEnu[data[i].level],
-        parentId: data[i].parentId,
-        pids: data[i].pids,
-      };*/
-      childnode.leaf = true;
-      childnode.expandedIcon = 'fa fa-folder-open';
-      childnode.collapsedIcon = 'fa fa-area-chart';
-      childnode.label = data[i]['menuName'];
-      childnode.data = data[i]['url'];
-      childnode.leaf = data[i]['isLeaf'];
-      childnode.id = data[i]['id'];
-      childnode.children = [
-        {label: '文君'}
-      ];
-      /*if (!data[i].menu) {
-        childnode.children = [];
+      if (data[i]['isData']) {
+        for (let j = 0; j < data[i]['dataModels'].length; j++) {
+          const childnode: TreeNode = {};
+          childnode.leaf = true;
+          childnode.expandedIcon = 'fa fa-folder-open';
+          childnode.collapsedIcon = 'fa fa-area-chart';
+          childnode.label = data[i]['dataModels'][j]['name'];
+          childnode.data = data[i]['url'];
+          childnode.leaf = data[i]['isLeaf'];
+          childnode.id = data[i]['dataModels'][j]['id'];
+          childnode.parentId = data[i]['id'];
+          childnode.dataLevel = data[i]['dataLevel'];
+          if (!data[i].menu) {
+            childnode.children = [];
+          } else {
+            childnode.children = this.tableTreeInitialize(data[i].menu);
+          }
+          oneChild.push(childnode);
+        }
       } else {
-        childnode.children = this.tableTreeInitialize(data[i].menu);
-      }*/
-      oneChild.push(childnode);
+        const childnode: TreeNode = {};
+        childnode.leaf = true;
+        childnode.expandedIcon = 'fa fa-folder-open';
+        childnode.collapsedIcon = 'fa fa-area-chart';
+        childnode.label = data[i]['menuName'];
+        childnode.data = data[i]['url'];
+        childnode.leaf = data[i]['isLeaf'];
+        childnode.id = data[i]['id'];
+        if (!data[i].menu) {
+          childnode.children = [];
+        } else {
+          childnode.children = this.tableTreeInitialize(data[i].menu);
+        }
+        oneChild.push(childnode);
+      }
     }
     return oneChild;
   }
 
   public nodeSelect(event) {
     this.router.navigate([`${event.node.data}`, {id: event.node.id, name: event.node.label}]);
-    console.log(event);
+    // console.log(event);
     // this.messageService.add({severity: 'info', summary: 'Node Selected', detail: event.node.label});
   }
 
   public nodeUnselect(e) {
     console.log(e);
+  }
+
+  public nodeExpand(event) {
+    if (event.node) {
+      this.logins.getChildrenRouter({menuId: event.node.parentId, dataModelId: event.node.id, dataLevel: event.node.dataLevel}).subscribe(
+        (val) => {
+          event.node.children = this.tableTreeInitialize(val.data);
+        }
+      );
+    }
   }
 }

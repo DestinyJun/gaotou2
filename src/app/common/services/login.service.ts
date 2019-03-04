@@ -15,6 +15,10 @@ export class LoginService {
   }
   // 初始化路由
   public getRouter (accessToken): Observable<any> {
-      return this.http.get(`${environment.urla}/authenticator/init/business/accessToken/${accessToken}`)
+      return this.http.get(`${environment.urla}/authenticator/init/business/accessToken/${accessToken}`);
+  }
+  // 获取子化路由
+  public getChildrenRouter (params): Observable<any> {
+    return this.http.get(`${environment.urla}/authenticator/childDataMenu/${params.menuId}/dataModel/${params.dataModelId}/dataLevel/${params.dataLevel}`);
   }
 }

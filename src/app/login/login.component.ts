@@ -44,9 +44,8 @@ export class LoginComponent implements OnInit {
             this.loginService.getRouter(value.data.authentication.accessToken).subscribe(
               (routerInfo) => {
                 if (routerInfo.status === '200') {
-                  routerInfo.data.menuAscxs.map((item) => {
-                    const aString = item.menuCode;
-                    this.urlClass.push(aString.split(':')[1]);
+                  routerInfo.data.routers.map((item) => {
+                    this.urlClass.push(item.split('/')[2]);
                   });
                   // console.log(routerInfo.data.menuAscxs);
                   value.data.urlList = routerInfo.data.menuAscxs;
@@ -57,7 +56,8 @@ export class LoginComponent implements OnInit {
                       this.localSessionStorage.setObject(prop, value.data[prop]);
                     }
                   }
-                  this.route.navigate([value.data.homePageRoute, {id: 1, name: '久长服务区'}]);
+                  // console.log(value.data);
+                  this.route.navigate([value.data.homePageRoute]);
                 } else {
                   window.alert('初始化菜单失败');
                 }
