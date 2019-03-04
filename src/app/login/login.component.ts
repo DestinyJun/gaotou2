@@ -15,7 +15,6 @@ export class LoginComponent implements OnInit {
   public myFromModule: FormGroup;
   public formUsername: any;
   public formPassword: any;
-  public urlString: any[];
 
   constructor(
     private fb: FormBuilder,
@@ -48,16 +47,19 @@ export class LoginComponent implements OnInit {
             this.loginService.getRouter(value.data.authentication.accessToken).subscribe(
               (routerInfo) => {
                 if (routerInfo.status === '200') {
+                  console.log(routerInfo);
                   routerInfo.data.routers.map((item) => {
                     this.urlClass.push(item.split('/')[2]);
                   });
                   value.data.urlClass = this.urlClass;
+                  value.data.urlList =  routerInfo.data.menuAscxs;
                   // 本地存储信息
                   for (const prop in value.data) {
                     if (value.data.hasOwnProperty(prop)) {
                       this.localSessionStorage.setObject(prop, value.data[prop]);
                     }
                   }
+                  console.log(this.localSessionStorage);
                   this.route.navigate([value.data.homePageRoute]);
                 } else {
                   window.alert('初始化菜单失败');

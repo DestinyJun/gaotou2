@@ -10,8 +10,8 @@ export class CityDataService {
     private http: HttpClient,
   ) {}
   // 获取服务区坐标点
-  public getServiceNamePoint(): Observable<any> {
-    return this.http.get(`${environment.urls}/common/config/getServiceAreaCoordinate/2`);
+  public getServiceNamePoint(params): Observable<any> {
+    return this.http.get(`${environment.urls}/common/config/getServiceAreaCoordinate/${params.id}`);
   }
   // 3D图数据、点击后的柱状图、扇形图
  /* public search3DBar(params): Observable<any> {
@@ -78,6 +78,6 @@ export class CityDataService {
     return this.http.post(`${environment.urlc}/event/administrativeArea/countNoProcess/${params.id}`, params.list);
   }
   public searchEventsTypeList(params): Observable<any> {
-    return this.http.get(`${environment.urlc}/event/administrativeArea/3/eventCategory/${params.eventCategoryCode}/eventState/${params.processState}/queryByPaging/${params.page}/${params.nums}`);
+    return this.http.get(`${environment.urlc}/event/administrativeArea/${params.id}/eventCategory/${params.eventCategoryCode}/eventState/${params.processState}/queryByPaging/${params.page}/${params.nums}`);
   }
 }

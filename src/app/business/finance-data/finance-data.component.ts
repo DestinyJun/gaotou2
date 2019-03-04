@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {DataService} from '../../common/services/data.service';
 import {ConfigModule, WenjunAlertService} from '../../common/wenjun';
 import {FinanceDataService} from '../../common/services/finance-data.service';
@@ -65,9 +65,10 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
   // 地图点
   public mapPoints: any;
     // 省市联动
-  public dataToggle = '贵州省';
+  public dataToggle: string;
   public province: any;
   public city: any;
+  public provinceId: any;
   // 事件类型
   public eventTypes: any;
   public eventConfig: ConfigModule;
@@ -104,6 +105,7 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
   constructor(
     private dataService: DataService,
     private router: Router,
+    private routerInfo: ActivatedRoute,
     private wenJunAlertService: WenjunAlertService,
     private financeDataService: FinanceDataService,
     private localService: LocalStorageService,
@@ -112,27 +114,34 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    // 实时数据
-    this.vehicleAmountCount();
-    this.CarTypes();
-    this.incomeAmountCount();
-    this.IncomeTypes();
-    this.getPerson();
-    // 时间初始化
-    this.esDate = {
-      firstDayOfWeek: 0,
-      dayNames: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
-      dayNamesShort: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
-      dayNamesMin: ['周日', '周一', '周二', '周三', '周四', '周五', '周六'],
-      monthNames: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
-      monthNamesShort: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
-      today: '今天',
-      clear: '清除'
-    };
-    // 发射业态数据名称
-    this.localService.eventBus.next({title: '贵州省高速业态大数据',  flagState: 'finance', flagName: this.dataToggle});
-    // 图表更行
-    this.updataEcharts();
+    // 路由接受参数
+    this.routerInfo.params.subscribe(
+      (params) => {
+        this.dataToggle = params.name;
+        this.provinceId = params.id;
+        // 发射业态数据名称
+        this.localService.eventBus.next({title: params.name + '高速业态大数据',  flagState: 'finance', flagName: this.dataToggle});
+        // 实时数据
+        this.vehicleAmountCount();
+        this.CarTypes();
+        this.incomeAmountCount();
+        this.IncomeTypes();
+        this.getPerson();
+        // 时间初始化
+        this.esDate = {
+          firstDayOfWeek: 0,
+          dayNames: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
+          dayNamesShort: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
+          dayNamesMin: ['周日', '周一', '周二', '周三', '周四', '周五', '周六'],
+          monthNames: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+          monthNamesShort: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+          today: '今天',
+          clear: '清除'
+        };
+        // 图表更行
+        this.updataEcharts();
+      }
+    );
   }
   ngOnDestroy(): void {
     clearInterval(this.vehicleAmountCountClean);
@@ -174,16 +183,16 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
     let total: any;
     let province: any;
     let city: any;
-    this.financeDataService.searchPersonTotal({id: 2}).subscribe(
+    this.financeDataService.searchPersonTotal({id: this.provinceId}).subscribe(
       (totalVal) => {
         if (totalVal.status === '200') {
           total = totalVal.data;
           if (!(total === 0)) {
-            this.financeDataService.searchPersonProvince({id: 2}).subscribe(
+            this.financeDataService.searchPersonProvince({id: this.provinceId}).subscribe(
               (provinceVal) => {
                 if (provinceVal.status === '200') {
                   province = provinceVal.data;
-                  this.financeDataService.searchPersonCity({id: 2}).subscribe(
+                  this.financeDataService.searchPersonCity({id: this.provinceId}).subscribe(
                     (cityVal) => {
                       if (cityVal.status === '200') {
                         city = cityVal.data;
@@ -213,7 +222,7 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
   // 3D柱状图
   public packOption3() {
     // 车流客流人流
-    this.financeDataService.search3DBar({id: 2, parameter: ['revenue', 'passenger', 'vehicle']}).subscribe(
+    this.financeDataService.search3DBar({id: this.provinceId, parameter: ['revenue', 'passenger', 'vehicle']}).subscribe(
       (val) => {
         if (val.status === '200') {
           this.options3d = val.data;
@@ -221,7 +230,7 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
       }
     );
     // 用电量用水量
-    this.financeDataService.search3DBar({id: 2, parameter: ['electric', 'water']}).subscribe(
+    this.financeDataService.search3DBar({id: this.provinceId, parameter: ['electric', 'water']}).subscribe(
       (val) => {
         if (val.status === '200') {
           this.options3dCopy = val.data;
@@ -241,7 +250,7 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
       xType: this.outOptions3d.pie.xType,
       title: `贵州省本年度服务区${this.outOptions3d.alertBarTitle}统计`
     };
-    this.financeDataService.search3DAlertBar({id: 2, types: this.outOptions3d.bar.types}).subscribe(
+    this.financeDataService.search3DAlertBar({id: this.provinceId, types: this.outOptions3d.bar.types}).subscribe(
       (val) => {
         if (val.status === '200') {
           this.options3dBar = {
@@ -253,7 +262,7 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
       }
     );
     // 类型占比扇形图
-    this.financeDataService.search3DAlertPie({id: 2, xType: this.outOptions3d.pie.xType, types: this.outOptions3d.pie.types}).subscribe(
+    this.financeDataService.search3DAlertPie({id: this.provinceId, xType: this.outOptions3d.pie.xType, types: this.outOptions3d.pie.types}).subscribe(
       (val) => {
         if (val.status === '200') {
           this.options3dPie = {
@@ -269,7 +278,7 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
   }
   public onOutOptions3dBar(e): void {
     // 类型占比扇形图
-    this.financeDataService.search3DAlertPie({id: 2, xType: e.xType, types: this.outOptions3d.pie.types}).subscribe(
+    this.financeDataService.search3DAlertPie({id: this.provinceId, xType: e.xType, types: this.outOptions3d.pie.types}).subscribe(
       (val) => {
         if (val.status === '200') {
           this.options3dPie = {
@@ -305,7 +314,7 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
   }
   // 车流监控
   public vehicleAmountCount(): void {
-    this.financeDataService.searchCarTotal({id: 2}).subscribe(
+    this.financeDataService.searchCarTotal({id: this.provinceId}).subscribe(
       (value) => {
         if (value.status === '200') {
           this.vehicleAmount = {
@@ -317,7 +326,7 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
     );
   }
   public CarTypes() {
-    this.financeDataService.searchCarTotalPie({id: 2}).subscribe(
+    this.financeDataService.searchCarTotalPie({id: this.provinceId}).subscribe(
       (value) => {
         if (value.status === '200') {
           this.optionsCarModel = {
@@ -346,13 +355,13 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
     };
     this.carOptionType = e.name;
     // 表格
-    this.financeDataService.searchCarAlertTable({id: 2, type: carTypes[this.carOptionType], page: 1, nums: 10}).subscribe(
+    this.financeDataService.searchCarAlertTable({id: this.provinceId, type: carTypes[this.carOptionType], page: 1, nums: 10}).subscribe(
       (val) => {
         this.carTableData = val.data;
       }
     );
     // 饼状图
-    this.financeDataService.searchCarAlertPie({id: 2, type: carTypes[this.carOptionType]}).subscribe(
+    this.financeDataService.searchCarAlertPie({id: this.provinceId, type: carTypes[this.carOptionType]}).subscribe(
       (value) => {
         const arryCarPie = [];
         value.data.map((val, index) => {
@@ -375,7 +384,7 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
       '客车': 2,
       '货车': 3,
     };
-    this.financeDataService.searchCarAlertTable({id: 2, type: carTypes[this.carOptionType], page: e, nums: 10}).subscribe(
+    this.financeDataService.searchCarAlertTable({id: this.provinceId, type: carTypes[this.carOptionType], page: e, nums: 10}).subscribe(
       (val) => {
         this.carTableData = val.data;
       }
@@ -431,9 +440,11 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
   /*********************************中部*****************************/
   // 中部地图
   public centertMap (): void {
-      this.financeDataService.getServiceNamePoint().subscribe(
+      this.financeDataService.getServiceNamePoint({id: this.provinceId}).subscribe(
         (val) => {
-          this.mapPoints = val.data;
+          if (val.status === '200') {
+            this.mapPoints = val.data;
+          }
         }
       );
   }
@@ -457,7 +468,7 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
     this.financeDataService.searchEventCategory().subscribe(
       (value) => {
         if (value.status === '200') {
-          this.financeDataService.searchEventCategoryCount({id: 2, list: value.data}).subscribe(
+          this.financeDataService.searchEventCategoryCount({id: this.provinceId, list: value.data}).subscribe(
             (item) => {
               if (item.status === '200') {
                 this.eventTypes = item.data;
@@ -529,7 +540,7 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
   /*********************************右边*****************************/
   // 业态经营数据前十排名相关操作
   public backCrosswiseBar(type): void {
-    this.financeDataService.searchTop10Bar({id: 2, type: type}).subscribe(
+    this.financeDataService.searchTop10Bar({id: this.provinceId, type: type}).subscribe(
       (value) => {
         if (value.status === '200') {
           // 这里是排序算法
@@ -571,7 +582,7 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
   }
   // 收入监控
   public incomeAmountCount(): void {
-    this.financeDataService.searchIncomeTotal({id: 2}).subscribe(
+    this.financeDataService.searchIncomeTotal({id: this.provinceId}).subscribe(
       (value) => {
         if (value.status === '200') {
           this.incomeAmount = {
@@ -583,7 +594,7 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
     );
   }
   public IncomeTypes() {
-    this.financeDataService.searchIncomeTotalPie({id: 2}).subscribe(
+    this.financeDataService.searchIncomeTotalPie({id: this.provinceId}).subscribe(
       (value) => {
         if (value.status === '200') {
           this.optionsIncomeModel = {
@@ -608,7 +619,7 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
     };
     this.IncomeOptionType = e.name;
     // 表格
-    this.financeDataService.searchIncomeAlertTable({id: 2, type: incomeType[e.name], page: 1, nums: 10}).subscribe(
+    this.financeDataService.searchIncomeAlertTable({id: this.provinceId, type: incomeType[e.name], page: 1, nums: 10}).subscribe(
       (val) => {
         if (val.status === '200') {
           this.IncomeTableData = val.data;
@@ -616,7 +627,7 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
       }
     );
     // 饼状图
-    this.financeDataService.searchIncomeAlertPie({id: 2, type: incomeType[e.name]}).subscribe(
+    this.financeDataService.searchIncomeAlertPie({id: this.provinceId, type: incomeType[e.name]}).subscribe(
       (value) => {
         if (value.status === '200') {
           this.optionsIncomeTypes = {
@@ -640,7 +651,7 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
       '住宿': 5,
       '汽修': 6,
     };
-    this.financeDataService.searchIncomeAlertTable({id: 2, type: incomeType[this.IncomeOptionType], page: e, nums: 10}).subscribe(
+    this.financeDataService.searchIncomeAlertTable({id: this.provinceId, type: incomeType[this.IncomeOptionType], page: e, nums: 10}).subscribe(
       (val) => {
         this.IncomeTableData = val.data;
       }

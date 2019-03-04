@@ -10,8 +10,8 @@ export class FinanceDataService {
     private http: HttpClient,
   ) { }
   // 获取服务区坐标点
-  public getServiceNamePoint(): Observable<any> {
-    return this.http.get(`${environment.urls}/common/config/getServiceAreaCoordinate/2`);
+  public getServiceNamePoint(params): Observable<any> {
+    return this.http.get(`${environment.urls}/common/config/getServiceAreaCoordinate/${params.id}`);
   }
   // 3D图数据、点击后的柱状图、扇形图
   /*public search3DBar(params): Observable<any> {
