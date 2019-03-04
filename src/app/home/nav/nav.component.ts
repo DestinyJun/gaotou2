@@ -1,32 +1,24 @@
 import {Component, HostListener, OnInit, ViewEncapsulation} from '@angular/core';
 import {Router} from '@angular/router';
 import {LocalStorageService} from '../../common/services/local-storage.service';
-import {TreeNode} from 'primeng/api';
-
-/*export interface MenuItem {
+export interface TreeNode {
+  id?: any;
   label?: string;
-  icon?: string;
-  command?: (event?: any) => void;
-  url?: string;
-  routerLink?: any;
-  queryParams?: {
-    [k: string]: any;
-  };
-  items?: MenuItem[] | MenuItem[][] | MenuItem[][][];
+  data?: any;
+  icon?: any;
+  expandedIcon?: any;
+  collapsedIcon?: any;
+  children?: TreeNode[];
+  leaf?: boolean;
   expanded?: boolean;
-  disabled?: boolean;
-  visible?: boolean;
-  target?: string;
-  routerLinkActiveOptions?: any;
-  separator?: boolean;
-  badge?: string;
-  badgeStyleClass?: string;
-  style?: any;
+  type?: string;
+  parent?: TreeNode;
+  partialSelected?: boolean;
   styleClass?: string;
-  title?: string;
-  id?: string;
-  automationId?: any;
-}*/
+  draggable?: boolean;
+  droppable?: boolean;
+  selectable?: boolean;
+}
 
 
 @Component({
@@ -144,6 +136,7 @@ export class NavComponent implements OnInit {
   }
   // 递归调用重组数据结构
   public tableTreeInitialize(data): any {
+    console.log(data);
     const oneChild: TreeNode[] = [];
     for (let i = 0; i < data.length; i++) {
       const childnode: TreeNode = {};
@@ -157,21 +150,28 @@ export class NavComponent implements OnInit {
         parentId: data[i].parentId,
         pids: data[i].pids,
       };*/
+      childnode.leaf = true;
+      childnode.expandedIcon = 'fa fa-folder-open';
+      childnode.collapsedIcon = 'fa fa-area-chart';
       childnode.label = data[i]['menuName'];
       childnode.data = data[i]['url'];
       childnode.leaf = data[i]['isLeaf'];
-      if (!data[i].menu) {
+      childnode.id = data[i]['id'];
+      childnode.children = [
+        {label: '文君'}
+      ];
+      /*if (!data[i].menu) {
         childnode.children = [];
       } else {
         childnode.children = this.tableTreeInitialize(data[i].menu);
-      }
+      }*/
       oneChild.push(childnode);
     }
-    console.log(oneChild);
     return oneChild;
   }
 
   public nodeSelect(event) {
+    this.router.navigate([`${event.node.data}`, {id: event.node.id, name: event.node.label}]);
     console.log(event);
     // this.messageService.add({severity: 'info', summary: 'Node Selected', detail: event.node.label});
   }

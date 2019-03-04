@@ -43,6 +43,9 @@
 .nav-sidebar .ui-sidebar .ui-tree .ui-treenode-label .ui-corner-all{
    color: red;
  }
+.nav-sidebar .ui-sidebar .ui-tree .ui-tree-container .ui-treenode .ui-treenode-content .ui-treenode-icon{
+   color: deepskyblue;
+ }
 .nav-sidebar .ui-sidebar .ui-tree .ui-tree-container .ui-treenode .ui-treenode-content .ui-treenode-label.ui-state-highlight{
   background-color: transparent;
 }
