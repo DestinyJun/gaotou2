@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {LoginService} from '../common/services/login.service';
@@ -15,17 +15,20 @@ export class LoginComponent implements OnInit {
   public myFromModule: FormGroup;
   public formUsername: any;
   public formPassword: any;
+  public urlString: any[];
+
   constructor(
     private fb: FormBuilder,
     private route: Router,
     private loginService: LoginService,
     private localSessionStorage: LocalStorageService
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
     this.myFromModule = this.fb.group({
       userName: ['', [Validators.required]],
-      password: ['' , [Validators.required]]
+      password: ['', [Validators.required]]
     });
     this.formUsername = this.myFromModule.get('userName');
     this.formPassword = this.myFromModule.get('password');
@@ -36,6 +39,7 @@ export class LoginComponent implements OnInit {
     if (this.myFromModule.valid) {
       this.loginService.getLogin(this.myFromModule.value).subscribe(
         (value) => {
+          console.log(value);
           this.localSessionStorage.loading.next({display: true});
           if (value.status === '200') {
             // 隐藏加载动画
@@ -47,26 +51,23 @@ export class LoginComponent implements OnInit {
                   routerInfo.data.routers.map((item) => {
                     this.urlClass.push(item.split('/')[2]);
                   });
-                  // console.log(routerInfo.data.menuAscxs);
-                  value.data.urlList = routerInfo.data.menuAscxs;
                   value.data.urlClass = this.urlClass;
                   // 本地存储信息
-                  for ( const prop in value.data) {
+                  for (const prop in value.data) {
                     if (value.data.hasOwnProperty(prop)) {
                       this.localSessionStorage.setObject(prop, value.data[prop]);
                     }
                   }
-                  // console.log(value.data);
                   this.route.navigate([value.data.homePageRoute]);
                 } else {
                   window.alert('初始化菜单失败');
                 }
-            });
+              });
           } else {
             this.localSessionStorage.loading.next({display: false});
             window.alert(value.message);
           }
-      });
+        });
     } else {
       window.alert('请输入合法的用户名和密码');
     }
