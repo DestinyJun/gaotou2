@@ -42,7 +42,7 @@
         "devprod": "environments/environment.devprod.ts",
         "dev": "environments/environment.ts",
         "gaotou": "environments/environment.gaotou.ts",
-        "gaoto3": "environments/environment.gaotou3.ts",
+        "gaotou3": "environments/environment.gaotou3.ts",
         "prod": "environments/environment.prod.ts"
       }
     }

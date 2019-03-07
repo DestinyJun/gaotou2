@@ -13,6 +13,7 @@ import {ExampleDataService} from '../../../common/services/example-data.service'
   styleUrls: ['./province-3d.component.less']
 })
 export class Province3dComponent implements OnInit {
+  public dataToggle = '贵州省';
   public esDate: any;  // 时间初始化
   public dataMonthChinese = [
     '一月', '二月', '三月', '四月', '五月', '六月',
