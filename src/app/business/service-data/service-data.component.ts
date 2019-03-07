@@ -165,37 +165,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.cars = [];
-    // 路由接受参数
-    this.routerInfo.params.subscribe(
-      (params) => {
-        this.serviceZoneTitle = params.name;
-        this.serviceZoneID = params.id;
-        this.localService.eventBus.next({title: this.serviceZoneTitle + '业态大数据', flagState: 'serzone', flagName: this.serviceZoneTitle});
-      }
-    );
-    this.serareaService.searchSerAraItem(this.serviceZoneID).subscribe(
-      (value) => {
-        this.serviceInfo = value.data;
-        value.data.commonAttributeValues.map((val, index) => {
-          this.alterCommonAttributeValues.push(this.cloneValue(val));
-        });
-        value.data.upAttributeValues.attributeValues.map((val, index) => {
-          this.alterUpAttributeValues.push(this.cloneValue(val));
-        });
-        value.data.downAttributeValues.attributeValues.map((val, index) => {
-          this.alterDownAttributeValues.push(this.cloneValue(val));
-        });
-      }
-    );
-    // 实时数据
-    this.vehicleAmountCount();
-    this.CarTypes();
-    this.incomeAmountCount();
-    this.IncomeTypes();
-    this.getPerson();
-    this.getIncomeTotalTypes();
-    this.backCenterDate();
-    this.timeDate();
     // 时间初始化
     this.esDate = {
       firstDayOfWeek: 0,
@@ -207,8 +176,39 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       today: '今天',
       clear: '清除'
     };
-    // 数据初始化
-    this.upData();
+    // 路由接受参数
+    this.routerInfo.params.subscribe(
+      (params) => {
+        this.serviceZoneTitle = params.name;
+        this.serviceZoneID = params.id;
+        this.localService.eventBus.next({title: this.serviceZoneTitle + '业态大数据', flagState: 'serzone', flagName: this.serviceZoneTitle});
+        // 实时数据
+        this.serareaService.searchSerAraItem(this.serviceZoneID).subscribe(
+          (value) => {
+            this.serviceInfo = value.data;
+            value.data.commonAttributeValues.map((val, index) => {
+              this.alterCommonAttributeValues.push(this.cloneValue(val));
+            });
+            value.data.upAttributeValues.attributeValues.map((val, index) => {
+              this.alterUpAttributeValues.push(this.cloneValue(val));
+            });
+            value.data.downAttributeValues.attributeValues.map((val, index) => {
+              this.alterDownAttributeValues.push(this.cloneValue(val));
+            });
+          }
+        );
+        this.vehicleAmountCount();
+        this.CarTypes();
+        this.incomeAmountCount();
+        this.IncomeTypes();
+        this.getPerson();
+        this.getIncomeTotalTypes();
+        this.backCenterDate();
+        this.timeDate();
+        // 数据初始化
+        this.upData();
+      }
+    );
   }
 
   ngOnDestroy(): void {
@@ -221,7 +221,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   /*************数据初始化****************/
   public upData() {
     // 查询服务区方向
-    this.serareaService.searchServiceDirection(1).subscribe(
+    this.serareaService.searchServiceDirection(this.serviceZoneID).subscribe(
       (val) => {
         if (val.status === '200') {
           this.incomeManualDirectionSelect = [
@@ -334,6 +334,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     this.serareaService.search3DBar({id: this.serviceZoneID, parameter: ['revenue', 'passenger', 'vehicle']}).subscribe(
       (val) => {
         if (val.status === '200') {
+          console.log(val);
           this.options3d = val.data;
         }
       }
@@ -341,6 +342,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     // 用电量用水量
     this.serareaService.search3DBar({id: this.serviceZoneID, parameter: ['electric', 'water', 'washing_out']}).subscribe(
       (val) => {
+        console.log(val);
         if (val.status === '200') {
           this.options3dCopy = val.data;
         }
@@ -550,10 +552,10 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   /************************中部***************************/
   // 店铺、视频及方向
   public backCenterDate() {
-    this.serareaService.getServiceShopVDate().subscribe(
+    this.serareaService.getServiceShopVDate({id: this.serviceZoneID}).subscribe(
       (value) => {
         if (value.status === '200') {
-          this.serareaService.searchServiceShopIncome().subscribe(
+          this.serareaService.searchServiceShopIncome({id: this.serviceZoneID}).subscribe(
             (val) => {
               if (val.status === '200') {
                 let s = [];
@@ -846,7 +848,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
 
   // 未处理事件统计
   public eventNotPoocess(): void {
-    this.serareaService.searchNotPoocessEventsList({page: 1, nums: 1000}).subscribe(
+    this.serareaService.searchNotPoocessEventsList({id: this.serviceZoneID, page: 1, nums: 1000}).subscribe(
       (value) => {
         if (value.status === '200') {
           this.eventList = value.data.contents;
@@ -859,7 +861,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     document.body.className = 'ui-overflow-hidden';
     this.eventAlertShow = true;
     // 未处理
-    this.serareaService.searchEventsTypeList({eventCategoryCode: item.eventCategoryCode, processState: 2, page: 1, nums: 1000}).subscribe(
+    this.serareaService.searchEventsTypeList({id: this.serviceZoneID, eventCategoryCode: item.eventCategoryCode, processState: 2, page: 1, nums: 1000}).subscribe(
       (value) => {
         if (value.status === '200') {
           this.eventListNoProcess = value.data.contents;
@@ -1147,7 +1149,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     this.getIncomeTypesSingle(1, this.alertIncomeTitle, this.storeList, this.IncomeTimeTypes);
   }
   public getIncomeTotalTypes(): void {
-    this.serareaService.searchIncomeTypes().subscribe(
+    this.serareaService.searchIncomeTypes({id: this.serviceZoneID}).subscribe(
       (value) => {
         if (value.status === '200') {
           this.storeList = value.data;

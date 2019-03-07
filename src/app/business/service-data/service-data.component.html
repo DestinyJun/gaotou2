@@ -154,23 +154,10 @@
                           <tr *ngFor="let item of carTableData?.contents">
                             <td class="text-center" style="vertical-align: middle">{{item?.time}}</td>
                             <td colspan="5">
-                             <!-- <div *ngFor="let props of item?.serviceAreaVehicles" class="income-div">
-                                <span>{{props?.totalVehicle}}</span>
-                                <span>{{props?.coachVehicle}}</span>
-                                <span>{{props?.sedanVehicle}}</span>
-                                <span>{{props?.truckVehicle}}</span>
-                                <span>
-                                  <span *ngIf="props?.source">{{props?.source+'——>'+props?.destination}}</span>
-                                  <span *ngIf="!(props?.source)">方向数据丢失</span>
-                                </span>
-                              </div>-->
                               <table class="table table-bordered" style="background-color: transparent;color: #87ffff;">
                                 <thead>
                                 <tr>
                                   <th>车辆总数</th>
-                                  <!--  <th [ngStyle]="{'background':alertCarTitle === '小车'?'black': ''}">小车总数</th>
-                                    <th [ngStyle]="{'background':alertCarTitle === '客车'?'black': ''}">客车总数</th>
-                                    <th [ngStyle]="{'background':alertCarTitle === '货车'?'black': ''}">货车总数</th>-->
                                   <th>客车车辆</th>
                                   <th>小车车辆</th>
                                   <th>货车车辆</th>
@@ -237,22 +224,22 @@
       <!--服务区商家业态数据及监控-->
        <div class="servicesMap">
         <div class="servicesMap-top">
-          <div class="shop-info text-center" *ngFor="let item of incomeTopData" (click)="openServiceShop(item)" [title]="item.storeName">
+          <div class="shop-info text-center" *ngFor="let item of incomeTopData" (click)="openServiceShop(item)" [title]="item?.storeName">
             <p>
               <i [class]="iconImages[item?.categoryCode - 1]" aria-hidden="true"></i>
-              <span>{{item.storeName}}</span>
+              <span>{{item?.storeName}}</span>
             </p>
             <p>{{item?.revenue}}元</p>
           </div>
         </div>
         <div class="first servicesMap-video">
-          <div class="btn-group" *ngFor="let item of publicTopVideoGroup;let i = index" [ngClass]="{'open':videoTopOpen[i]}" (mouseover)="publicTopVideoGroupOver(item.cameras,i)" (mouseout)="publicTopVideoGroupLeave(i)">
-            <span data-toggle="dropdown">{{item.groupName}}</span>
+          <div class="btn-group" *ngFor="let item of publicTopVideoGroup;let i = index" [ngClass]="{'open':videoTopOpen[i]}" (mouseover)="publicTopVideoGroupOver(item?.cameras,i)" (mouseout)="publicTopVideoGroupLeave(i)">
+            <span data-toggle="dropdown">{{item?.groupName}}</span>
             <ul class="dropdown-menu" style="background-color: rgba(27,29,41,0.8)">
               <li  *ngFor="let item of publicVideoList" (click)="openPublicVideo(item)">
                 <a href="javascript:" style="color: white">
-                  <i [ngClass]="{'icon-Hemispherical-camera': item.cameraType == 2, 'icon--ball-camera': item.cameraType == 1, 'icon-camera-one': item.cameraType == 3}" aria-hidden="true"></i>
-                  {{item.cameraName}}
+                  <i [ngClass]="{'icon-Hemispherical-camera': item?.cameraType == 2, 'icon--ball-camera': item?.cameraType == 1, 'icon-camera-one': item?.cameraType == 3}" aria-hidden="true"></i>
+                  {{item?.cameraName}}
                 </a>
               </li>
             </ul>
@@ -260,19 +247,19 @@
         </div>
         <div class="servicesMap-center text-center">
           <!--上行-->
-          <span>{{serviceInfo?.downAttributeValues.source}}</span>
+          <span>{{serviceInfo?.downAttributeValues?.source}}</span>
           <img src="assets/images/jiantou.png" alt="" style="height: 3vh;width: auto;">
           <!--下行-->
-          <span>{{serviceInfo?.upAttributeValues.source}}</span>
+          <span>{{serviceInfo?.upAttributeValues?.source}}</span>
         </div>
         <div class="second servicesMap-video">
-          <div class="btn-group" *ngFor="let item of publicBottomVideoGroup;let i = index" [ngClass]="{'open':videoBottomOpen[i]}" (mouseover)="publicTopBottomGroupOver(item.cameras,i)" (mouseout)="publicTopBottomGroupLeave(i)">
-            <span data-toggle="dropdown">{{item.groupName}}</span>
+          <div class="btn-group" *ngFor="let item of publicBottomVideoGroup;let i = index" [ngClass]="{'open':videoBottomOpen[i]}" (mouseover)="publicTopBottomGroupOver(item?.cameras,i)" (mouseout)="publicTopBottomGroupLeave(i)">
+            <span data-toggle="dropdown">{{item?.groupName}}</span>
             <ul class="dropdown-menu" style="background-color: rgba(27,29,41,0.5)">
               <li  *ngFor="let item of publicVideoList" (click)="openPublicVideo(item)">
                 <a href="javascript:" style="color: white">
-                  <i [ngClass]="{'icon-Hemispherical-camera': item.cameraType == 2, 'icon--ball-camera': item.cameraType == 1, 'icon-camera-one': item.cameraType == 3}" aria-hidden="true"></i>
-                  {{item.cameraName}}
+                  <i [ngClass]="{'icon-Hemispherical-camera': item?.cameraType == 2, 'icon--ball-camera': item?.cameraType == 1, 'icon-camera-one': item?.cameraType == 3}" aria-hidden="true"></i>
+                  {{item?.cameraName}}
                 </a>
               </li>
             </ul>
@@ -283,11 +270,11 @@
         </div>
         <div class="servicesMap-bottom">
           <div class="shop-info text-center" *ngFor="let item of incomeBottomData" (click)="openServiceShop(item)">
-            <p [title]="item.name">
+            <p [title]="item?.name">
               <i [class]="iconImages[item?.categoryCode - 1]" aria-hidden="true"></i>
-              <span>{{item.storeName}}</span>
+              <span>{{item?.storeName}}</span>
             </p>
-            <p [title]="item.num">{{item?.revenue}}元</p>
+            <p [title]="item?.num">{{item?.revenue}}元</p>
           </div>
         </div>
       </div>
@@ -309,22 +296,22 @@
           </div>
           <p-scrollPanel [style]="{width: '100%', height: '30vh'}" styleClass="service-statistics">
             <div class="event-table-processed-type">
-              <span *ngFor="let item of eventInfoUpTypes" [ngStyle]=" {'float': item.eventCategoryName === '党群工作部'?'right': 'none', 'margin-right': item.eventCategoryName === '党群工作部'?'5vw':'none'}" (click)="eventInfoUpClick(item)">{{item.eventCategoryName}}</span>
+              <span *ngFor="let item of eventInfoUpTypes" [ngStyle]=" {'float': item?.eventCategoryName === '党群工作部'?'right': 'none', 'margin-right': item?.eventCategoryName === '党群工作部'?'5vw':'none'}" (click)="eventInfoUpClick(item)">{{item?.eventCategoryName}}</span>
             </div>
             <div class="event-table-processed-btn">
               <div class="col-lg-6 col-md-6" style="padding-right: 0;">
                 <div class="btn-toilet" (click)="openServersToiletAlert('服务区卫生间使用率')">
                   <p style="font-size: 0.875rem">
-                    {{serviceInfo?.upAttributeValues.source}}-->
-                    {{serviceInfo?.upAttributeValues.destination}}卫生间数据监控
+                    {{serviceInfo?.upAttributeValues?.source}}-->
+                    {{serviceInfo?.upAttributeValues?.destination}}卫生间数据监控
                   </p>
                   <p><span>男厕剩余空位：25/50</span></p>
                   <p><span>女厕剩余空位：45/70</span></p>
                 </div>
                 <div class="btn-carport" (click)="openServersToiletAlert('服务区停车位监控')">
                   <p style="font-size: 0.875rem">
-                    {{serviceInfo?.upAttributeValues.source}}-->
-                    {{serviceInfo?.upAttributeValues.destination}}停车位数据监控
+                    {{serviceInfo?.upAttributeValues?.source}}-->
+                    {{serviceInfo?.upAttributeValues?.destination}}停车位数据监控
                   </p>
                   <p><span>大车剩余车位：11/20</span></p>
                   <p><span>小车剩余车位：15/32</span></p>
@@ -334,16 +321,16 @@
               <div class="col-lg-6 col-md-6" style="margin-bottom: 2vh;padding-right: 0;">
                 <div class="btn-toilet" (click)="openServersToiletAlert('服务区卫生间使用率')">
                  <p style="font-size: 0.875rem">
-                   {{serviceInfo?.downAttributeValues.source}}-->
-                   {{serviceInfo?.downAttributeValues.destination}}卫生间数据监控
+                   {{serviceInfo?.downAttributeValues?.source}}-->
+                   {{serviceInfo?.downAttributeValues?.destination}}卫生间数据监控
                  </p>
                   <p><span>男厕剩余空位：25/50</span></p>
                   <p><span>女厕剩余空位：45/70</span></p>
                 </div>
                 <div class="btn-carport" (click)="openServersToiletAlert('服务区停车位监控')">
                   <p style="font-size: 0.875rem">
-                    {{serviceInfo?.downAttributeValues.source}}-->
-                    {{serviceInfo?.downAttributeValues.destination}}停车位数据监控
+                    {{serviceInfo?.downAttributeValues?.source}}-->
+                    {{serviceInfo?.downAttributeValues?.destination}}停车位数据监控
                   </p>
                   <p><span>大车剩余车位：03/15</span></p>
                   <p><span>小车剩余车位：21/30</span></p>
@@ -373,24 +360,24 @@
             <div class="col-lg-6 col-md-6" *ngFor="let prop of serviceInfo?.commonAttributeValues">
               <div>
                 <p class="clearfix">
-                  <span class="pull-left text-c1" style="color: #4887CA">{{prop.attributeDesc}}：</span>
-                  <span class="pull-right">{{prop.value}}</span>
+                  <span class="pull-left text-c1" style="color: #4887CA">{{prop?.attributeDesc}}：</span>
+                  <span class="pull-right">{{prop?.value}}</span>
                 </p>
               </div>
             </div>
             <!--上行属性-->
             <div class="col-lg-12  col-md-12">
               <div style="width: 100%;height: 3vh;line-height: 3vh;color: #5595D5;">
-                <span>{{serviceInfo?.upAttributeValues.source}}</span>
+                <span>{{serviceInfo?.upAttributeValues?.source}}</span>
                 <span style="vertical-align: middle">—<i class="fa fa-angle-right" aria-hidden="true" style="vertical-align: middle"></i></span>
-                <span style="vertical-align: middle">{{serviceInfo?.upAttributeValues.destination}}</span>
+                <span style="vertical-align: middle">{{serviceInfo?.upAttributeValues?.destination}}</span>
               </div>
             </div>
-            <div class="col-lg-6 col-md-6" *ngFor="let prop of serviceInfo?.upAttributeValues.attributeValues">
+            <div class="col-lg-6 col-md-6" *ngFor="let prop of serviceInfo?.upAttributeValues?.attributeValues">
               <div>
                 <p class="clearfix">
-                  <span class="pull-left text-c1" style="color: #4887CA">{{prop.attributeDesc}}：</span>
-                  <span class="pull-right">{{prop.value}}</span>
+                  <span class="pull-left text-c1" style="color: #4887CA">{{prop?.attributeDesc}}：</span>
+                  <span class="pull-right">{{prop?.value}}</span>
                 </p>
               </div>
             </div>
@@ -399,16 +386,16 @@
             <!--下行属性-->
             <div class="col-lg-12  col-md-12">
               <div style="width: 100%;height: 3vh;line-height: 3vh;color: #5595D5;">
-                <span>{{serviceInfo?.downAttributeValues.source}}</span>
+                <span>{{serviceInfo?.downAttributeValues?.source}}</span>
                 <span style="vertical-align: middle">—<i class="fa fa-angle-right" aria-hidden="true" style="vertical-align: middle"></i></span>
-                <span>{{serviceInfo?.downAttributeValues.destination}}</span>
+                <span>{{serviceInfo?.downAttributeValues?.destination}}</span>
               </div>
             </div>
-            <div class="col-lg-6 col-md-6" *ngFor="let prop of serviceInfo?.downAttributeValues.attributeValues">
+            <div class="col-lg-6 col-md-6" *ngFor="let prop of serviceInfo?.downAttributeValues?.attributeValues">
               <div>
                 <p class="clearfix">
-                  <span class="pull-left text-c1" style="color: #4887CA">{{prop.attributeDesc}}：</span>
-                  <span class="pull-right">{{prop.value}}</span>
+                  <span class="pull-left text-c1" style="color: #4887CA">{{prop?.attributeDesc}}：</span>
+                  <span class="pull-right">{{prop?.value}}</span>
                 </p>
               </div>
             </div>
@@ -918,8 +905,8 @@
     </div>
   </div>
 </div>
-<!--服务区平面图弹窗-->
-<div class="bg-box" [hidden]="!servicesPlan" >
+<!--服务区平面图-->
+<div class="bg-box" *ngIf="servicesPlan">
   <div class="alert-window" style="height:80vh; margin-top: -40vh;">
     <div class="alert-window-header">
       <div class="row">
@@ -934,7 +921,7 @@
     <div class="alert-window-content">
       <div class="row">
         <div class="col-lg-6 col-md-6 text-center">
-           <div class="services-plan"></div>
+          <div class="services-plan"></div>
         </div>
         <div class="col-lg-6 col-md-6 text-center">
           <div style="height:74.5vh" echarts [options]="servicesMap"></div>

@@ -94,14 +94,10 @@ export class HeaderComponent implements OnInit {
     }
   }
   public saerchListClick (e): void {
+    console.log(e);
     this.serviceName = e.name;
-    if (this.serviceName === '久长服务区') {
-      this.router.navigate(['/home/serzone', {id: 1, name: this.serviceName}]);
-      this.serviceSearchListShow = false;
-    } else {
-      window.alert('此服务区暂无数据');
-      this.serviceSearchListShow = false;
-    }
+    this.router.navigate(['/home/serzone', {id: e.id, name: this.serviceName}]);
+    this.serviceSearchListShow = false;
   }
   public searchFocus (e): void {
     if (this.serviceNameArray !== undefined) {

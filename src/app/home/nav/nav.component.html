@@ -26,12 +26,14 @@
   </div>
 </div>
 <div class="nav-sidebar">
-  <p-sidebar [(visible)]="visibleSidebar2" position="right" [baseZIndex]="10000" [showCloseIcon]="false">
+  <p-sidebar [(visible)]="visibleSidebar2" position="right" [baseZIndex]="12000" [showCloseIcon]="false">
+    <p-scrollPanel [style]="{width: '100%', height: '100%'}" styleClass="nav-scroll">
     <h4 style="font-weight:normal;text-align: center">高投集团</h4>
     <p-tree [value]="filesTree2" selectionMode="single" [(selection)]="selectedFile"
             (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="nodeUnselect($event)" (onNodeExpand)="nodeExpand($event)">
 
     </p-tree>
+    </p-scrollPanel>
   </p-sidebar>
 </div>
 

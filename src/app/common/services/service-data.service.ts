@@ -9,8 +9,8 @@ export class ServiceDataService {
   constructor(
     private http: HttpClient,
   ) { }
-  public getServiceShopVDate(): Observable<any> {
-    return this.http.get(`${environment.urls}/common/config/getStoreAndCamera/1`);
+  public getServiceShopVDate(params): Observable<any> {
+    return this.http.get(`${environment.urls}/common/config/getStoreAndCamera/${params.id}`);
   }
   // 3D图数据、点击后的柱状图、折线图
  /* public search3DBar(params): Observable<any> {
@@ -76,11 +76,11 @@ export class ServiceDataService {
   }
   // 未处理事件列表
   public searchNotPoocessEventsList(params): Observable<any> {
-    return this.http.get(`${environment.urlc}/event/serviceArea/1/notPoocess/queryByPaging/${params.page}/${params.nums}`);
+    return this.http.get(`${environment.urlc}/event/serviceArea/${params.id}/notPoocess/queryByPaging/${params.page}/${params.nums}`);
   }
   // 根据事件类型及状态查询事件列表
   public searchEventsTypeList(params): Observable<any> {
-    return this.http.get(`${environment.urlc}/event/serviceArea/1/eventCategory/${params.eventCategoryCode}/eventState/${params.processState}/queryByPaging/${params.page}/${params.nums}`);
+    return this.http.get(`${environment.urlc}/event/serviceArea/${params.id}/eventCategory/${params.eventCategoryCode}/eventState/${params.processState}/queryByPaging/${params.page}/${params.nums}`);
   }
   // 事件分类
   public searchEventCategory(): Observable<any> {
@@ -91,8 +91,8 @@ export class ServiceDataService {
     return this.http.post(`${environment.urlc}/event/serviceArea/reportEvent`, params);
   }
   // 服务区店铺实时收入
-  public  searchServiceShopIncome(): Observable<any> {
-    return this.http.get(`${environment.urlc}/realTime/revenue/serviceArea/storeRevenue2/1`);
+  public  searchServiceShopIncome(params): Observable<any> {
+    return this.http.get(`${environment.urlc}/realTime/revenue/serviceArea/storeRevenue2/${params.id}`);
   }
   // 服务区店铺折线图
  /* public searchServiceShopLine(params): Observable<any> {
@@ -109,8 +109,8 @@ export class ServiceDataService {
     return this.http.get(`${environment.urlc}/storeStatistics/brokenLineCurrentYearByMonth/${id}`);
   }
   // 获取经营类型
-  public searchIncomeTypes(): Observable<any> {
-    return this.http.get(`${environment.urls}/common/config/getStoreByServiceAreaId/1/groupByType`);
+  public searchIncomeTypes(params): Observable<any> {
+    return this.http.get(`${environment.urls}/common/config/getStoreByServiceAreaId/${params.id}/groupByType`);
   }
   // 获取经营分类收入
   public searchIncomeTypesList(params): Observable<any> {
@@ -118,7 +118,7 @@ export class ServiceDataService {
   }
   // 指定经营类型获取店铺收入
   /*public searchIncomeTypesItem(params): Observable<any> {
-    return this.http.post(`${environment.urlc}/hourly/revenue/1/${params.entryCode}/${params.page}/${params.nums}`, params.shopList);
+    return this.http.post(`${environment.urlc}/hourly/revenue/${params.id}/${params.entryCode}/${params.page}/${params.nums}`, params.shopList);
   }*/
   public searchIncomeTypesItem(params): Observable<any> {
     return this.http.get(`${environment.urlc}/serviceArea/revenue/${params.dateType}/${params.id}/${params.entryCode}/${params.page}/${params.nums}`);
