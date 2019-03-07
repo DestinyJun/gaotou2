@@ -94,7 +94,6 @@ export class HeaderComponent implements OnInit {
     }
   }
   public saerchListClick (e): void {
-    console.log(e);
     this.serviceName = e.name;
     this.router.navigate(['/home/serzone', {id: e.id, name: this.serviceName}]);
     this.serviceSearchListShow = false;

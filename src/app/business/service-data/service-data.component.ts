@@ -185,16 +185,20 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
         // 实时数据
         this.serareaService.searchSerAraItem(this.serviceZoneID).subscribe(
           (value) => {
-            this.serviceInfo = value.data;
-            value.data.commonAttributeValues.map((val, index) => {
-              this.alterCommonAttributeValues.push(this.cloneValue(val));
-            });
-            value.data.upAttributeValues.attributeValues.map((val, index) => {
-              this.alterUpAttributeValues.push(this.cloneValue(val));
-            });
-            value.data.downAttributeValues.attributeValues.map((val, index) => {
-              this.alterDownAttributeValues.push(this.cloneValue(val));
-            });
+            this.alterUpAttributeValues = [];
+            this.alterDownAttributeValues = [];
+            if (value.status === '200') {
+              this.serviceInfo = value.data;
+              value.data.commonAttributeValues.map((val, index) => {
+                this.alterCommonAttributeValues.push(this.cloneValue(val));
+              });
+              value.data.upAttributeValues.attributeValues.map((val, index) => {
+                this.alterUpAttributeValues.push(this.cloneValue(val));
+              });
+              value.data.downAttributeValues.attributeValues.map((val, index) => {
+                this.alterDownAttributeValues.push(this.cloneValue(val));
+              });
+            }
           }
         );
         this.vehicleAmountCount();
@@ -334,7 +338,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     this.serareaService.search3DBar({id: this.serviceZoneID, parameter: ['revenue', 'passenger', 'vehicle']}).subscribe(
       (val) => {
         if (val.status === '200') {
-          console.log(val);
           this.options3d = val.data;
         }
       }
@@ -342,7 +345,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     // 用电量用水量
     this.serareaService.search3DBar({id: this.serviceZoneID, parameter: ['electric', 'water', 'washing_out']}).subscribe(
       (val) => {
-        console.log(val);
         if (val.status === '200') {
           this.options3dCopy = val.data;
         }
@@ -596,6 +598,11 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
                     }
                   });
                 }
+              } else {
+                this.incomeTopData = null;
+                this.incomeBottomData = null;
+                this.publicTopVideoGroup = null;
+                this.publicBottomVideoGroup = null;
               }
             }
           );

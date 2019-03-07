@@ -305,17 +305,17 @@
                     {{serviceInfo?.upAttributeValues?.source}}-->
                     {{serviceInfo?.upAttributeValues?.destination}}卫生间数据监控
                   </p>
-                  <p><span>男厕剩余空位：25/50</span></p>
-                  <p><span>女厕剩余空位：45/70</span></p>
+                  <p *ngFor="let item of alterUpAttributeValues?.slice(7)"><span>{{item?.attributeDesc}}：剩余监控暂无/总共：{{item?.value}}</span></p>
+                  <!--<p><span>女厕剩余空位：45/70</span></p>-->
                 </div>
                 <div class="btn-carport" (click)="openServersToiletAlert('服务区停车位监控')">
                   <p style="font-size: 0.875rem">
                     {{serviceInfo?.upAttributeValues?.source}}-->
                     {{serviceInfo?.upAttributeValues?.destination}}停车位数据监控
                   </p>
-                  <p><span>大车剩余车位：11/20</span></p>
-                  <p><span>小车剩余车位：15/32</span></p>
-                  <p><span>客车剩余车位：06/22</span></p>
+                  <p *ngFor="let item of alterUpAttributeValues?.slice(2,5)"><span>{{item?.attributeDesc}}：剩余监控暂无/总共：/{{item?.value}}个</span></p>
+                 <!-- <p><span>小车剩余车位：15/32</span></p>
+                  <p><span>客车剩余车位：06/22</span></p>-->
                 </div>
               </div>
               <div class="col-lg-6 col-md-6" style="margin-bottom: 2vh;padding-right: 0;">
@@ -324,18 +324,17 @@
                    {{serviceInfo?.downAttributeValues?.source}}-->
                    {{serviceInfo?.downAttributeValues?.destination}}卫生间数据监控
                  </p>
-                  <p><span>男厕剩余空位：25/50</span></p>
-                  <p><span>女厕剩余空位：45/70</span></p>
+                  <p *ngFor="let item of alterUpAttributeValues?.slice(7)"><span>{{item?.attributeDesc}}：剩余监控暂无/总共：{{item?.value}}</span></p>
+                  <!--<p><span>女厕剩余空位：45/70</span></p>-->
                 </div>
                 <div class="btn-carport" (click)="openServersToiletAlert('服务区停车位监控')">
                   <p style="font-size: 0.875rem">
                     {{serviceInfo?.downAttributeValues?.source}}-->
                     {{serviceInfo?.downAttributeValues?.destination}}停车位数据监控
                   </p>
-                  <p><span>大车剩余车位：03/15</span></p>
-                  <p><span>小车剩余车位：21/30</span></p>
-                  <p><span>客车剩余车位：18/22</span></p>
-
+                  <p *ngFor="let item of alterDownAttributeValues?.slice(0,3)"><span>{{item?.attributeDesc}}：剩余监控暂无/总共：{{item?.value}}个</span></p>
+                 <!-- <p><span>小车剩余车位：21/30</span></p>
+                  <p><span>客车剩余车位：18/22</span></p>-->
                 </div>
               </div>
             </div>
