@@ -44,13 +44,11 @@ export class LoginComponent implements OnInit {
             this.loginService.getRouter(value.data.authentication.accessToken).subscribe(
               (routerInfo) => {
                 if (routerInfo.status === '200') {
-                  routerInfo.data.menuAscxs.map((item) => {
-                    const aString = item.menuCode;
-                    this.urlClass.push(aString.split(':')[1]);
+                  routerInfo.data.routers.map((item) => {
+                    this.urlClass.push(item.split('/')[2]);
                   });
-                  console.log(routerInfo.data.menuAscxs);
-                  value.data.urlList = routerInfo.data.menuAscxs;
                   value.data.urlClass = this.urlClass;
+                  value.data.urlList =  routerInfo.data.menuAscxs;
                   // 本地存储信息
                   for ( const prop in value.data) {
                     if (value.data.hasOwnProperty(prop)) {

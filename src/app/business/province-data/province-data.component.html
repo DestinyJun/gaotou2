@@ -5,35 +5,17 @@
     <div class="left col-lg-3 col-md-3">
       <!--3d柱状图-->
       <app-province-3d></app-province-3d>
-      <!--移动端手机-->
-     <!-- <div class="income mobile">
-        <p class="text-center">{{this.dataToggle}}服务区实时收入</p>
-        <div class="income-amount">
-          <h3 class="text-center">
-            <span>0</span>
-            <span>0</span>
-            <span>0</span>
-            <span style="margin-right: 10px" *ngFor="let i of incomeAmount">{{i}}</span>
-            <small style="font-size: 14px;color: white;">元</small>
-          </h3>
-          &lt;!&ndash;  <p class="text-center">
-              <span style="margin-right: 10px">前日时间同比</span>
-              <i class="fa fa-long-arrow-up" style="color: #03D095"></i>
-              <span class="">15%</span>
-            </p>&ndash;&gt;
-        </div>
-      </div>-->
       <!--车辆统计-->
       <div class="vehicle">
         <!--日车流量实时统计-->
         <div class="vehicle-amount">
-          <app-title-one [height]="'3vh'" [option]="{title: this.dataToggle + '今日车辆流动数量'}"></app-title-one>
+          <app-title-one [height]="'3vh'" [option]="{title: dataToggle + '今日车辆流动数量'}"></app-title-one>
           <app-number-show [option]="vehicleAmount"></app-number-show>
         </div>
         <!--车型日分布占比-->
         <div class="vehicle-pie">
           <div class="vehicle-pie-title title text-center">
-            <p>{{this.dataToggle}}当日车型分布类型占比</p>
+            <p>{{areaName}}当日车型分布类型占比</p>
           </div>
           <app-echart-pie [option]="optionsCarModel" [height]="'20vh'" (pieClick)="parkClick($event)"></app-echart-pie>
         </div>
@@ -212,7 +194,7 @@
               <div class="alert-window-header">
                 <div class="row">
                   <div class="col-lg-12 col-md-12">
-                    <span>{{this.dataToggle}}服务区办公信息</span>
+                    <span>{{areaName}}服务区办公信息</span>
                     <div class="pull-right" (click)="closeOfficeShow()">
                       <i class="fa fa-window-close " aria-hidden="true"></i>
                     </div>
@@ -244,7 +226,7 @@
               <div class="alert-window-header">
                 <div class="row">
                   <div class="col-lg-12 col-md-12">
-                    <span>{{this.dataToggle}}服务区办公信息</span>
+                    <span>{{areaName}}服务区办公信息</span>
                     <div class="pull-right" (click)="closePersonShow()">
                       <i class="fa fa-window-close " aria-hidden="true"></i>
                     </div>
@@ -267,7 +249,7 @@
     <div class="right col-lg-3 col-md-3">
       <!--业态前十排名柱状图-->
       <div class="crosswise">
-        <app-title-one [height]="'3vh'" [option]="{title: this.dataToggle + '业态数据前十排名'}"></app-title-one>
+        <app-title-one [height]="'3vh'" [option]="{title: areaName + '业态数据前十排名'}"></app-title-one>
         <div class="crosswise-btn text-center" (click)="clickBtn($event)">
           <span [ngStyle]="{'background': barStatus1?'#1F0BC4': '#27375B'}">业态收入/万元</span>
           <span [ngStyle]="{'background': barStatus2?'#1F0BC4': '#3B78B1'}">车流量/辆</span>
@@ -279,13 +261,13 @@
       <div class="income">
         <!--实时收入-->
         <div class="income-amount">
-          <app-title-one [height]="'3vh'" [option]="{title: this.dataToggle + '高速服务区实时收入'}"></app-title-one>
+          <app-title-one [height]="'3vh'" [option]="{title: areaName + '高速服务区实时收入'}"></app-title-one>
           <app-number-show [option]="incomeAmount"></app-number-show>
         </div>
         <!--收入占比-->
         <div class="income-pie">
           <div class="income-pie-title title text-center">
-            <p>{{this.dataToggle}}高速服务区实时收入</p>
+            <p>{{areaName}}高速服务区实时收入</p>
           </div>
           <app-echart-pie [option]="optionsIncomeModel" [height]="'20vh'" (pieClick)="incomeClick($event)"></app-echart-pie>
         </div>

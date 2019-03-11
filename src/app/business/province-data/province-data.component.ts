@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {DataService} from '../../common/services/data.service';
 import {ConfigModule, WenjunAlertService} from '../../common/wenjun';
 import {FinanceDataService} from '../../common/services/finance-data.service';
@@ -9,10 +9,13 @@ import {ExampleDataService} from '../../common/services/example-data.service';
 @Component({
   selector: 'app-finance-data',
   templateUrl: './province-data.component.html',
-  styleUrls: ['./province-data.component.css'],
+  styleUrls: ['./province-data.component.less'],
   encapsulation: ViewEncapsulation.None
 })
 export class ProvinceDataComponent implements OnInit, OnDestroy {
+  // 区域
+  public areaName: any;
+  public areaId: any;
   /***********************基础信息************************/
   public esDate: any;  // 时间初始化
     // 组件销毁后清除时钟任务
@@ -45,12 +48,10 @@ export class ProvinceDataComponent implements OnInit, OnDestroy {
   public alertBarShow = false;
   public alertBarTitle: string;
   public options3dBar = {};
-  public options3dPie = {};
   public options3dLine = {};
   public options3dCityCrosswise: any;
   public options3dServiceCrosswise: any;
   public outOptions3d: any; // 3D图组件传出来的值
-  public bar3dExcelShow = false;  // 3D图统计的表格导出
   public startTime3d: Date; // 时间选择器
   public endTime3d: Date; // 时间选择器
   public bar3DCityBtnData = [
@@ -79,7 +80,6 @@ export class ProvinceDataComponent implements OnInit, OnDestroy {
   // 地图点
   public mapPoints: any;
     // 省市联动
-  public dataToggle = '贵州省';
   public province: any;
   public city: any;
   // 事件类型
@@ -117,6 +117,7 @@ export class ProvinceDataComponent implements OnInit, OnDestroy {
   public incomeEndTime: Date; // 时间选择器
   constructor(
     private dataService: DataService,
+    private routerInfo: ActivatedRoute,
     private router: Router,
     private wenJunAlertService: WenjunAlertService,
     private financeDataService: FinanceDataService,
@@ -126,6 +127,13 @@ export class ProvinceDataComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    // 路由接受参数
+    this.routerInfo.params.subscribe(
+      (params) => {
+        this.areaName = params.name;
+        this.areaId = params.id;
+      }
+    );
     // 实时数据
     this.vehicleAmountCount();
     this.CarTypes();
@@ -144,7 +152,7 @@ export class ProvinceDataComponent implements OnInit, OnDestroy {
       clear: '清除'
     };
     // 发射业态数据名称
-    this.localService.eventBus.next({title: '贵州省高速业态大数据',  flagState: 'finance', flagName: this.dataToggle});
+    this.localService.eventBus.next({title: '贵州省高速业态大数据',  flagState: 'finance', flagName: this.areaName});
     // 图表更行
     this.updataEcharts();
   }
@@ -188,16 +196,16 @@ export class ProvinceDataComponent implements OnInit, OnDestroy {
     let total: any;
     let province: any;
     let city: any;
-    this.financeDataService.searchPersonTotal({id: 2}).subscribe(
+    this.financeDataService.searchPersonTotal({id: this.areaId }).subscribe(
       (totalVal) => {
         if (totalVal.status === '200') {
           total = totalVal.data;
           if (!(total === 0)) {
-            this.financeDataService.searchPersonProvince({id: 2}).subscribe(
+            this.financeDataService.searchPersonProvince({id: this.areaId }).subscribe(
               (provinceVal) => {
                 if (provinceVal.status === '200') {
                   province = provinceVal.data;
-                  this.financeDataService.searchPersonCity({id: 2}).subscribe(
+                  this.financeDataService.searchPersonCity({id: this.areaId }).subscribe(
                     (cityVal) => {
                       if (cityVal.status === '200') {
                         city = cityVal.data;
@@ -227,7 +235,7 @@ export class ProvinceDataComponent implements OnInit, OnDestroy {
   // 3D柱状图
   public packOption3() {
     // 车流客流人流
-    this.financeDataService.search3DBar({id: 2, parameter: ['revenue', 'passenger', 'vehicle']}).subscribe(
+    this.financeDataService.search3DBar({id: this.areaId , parameter: ['revenue', 'passenger', 'vehicle']}).subscribe(
       (val) => {
         if (val.status === '200') {
           this.options3d = val.data;
@@ -235,7 +243,7 @@ export class ProvinceDataComponent implements OnInit, OnDestroy {
       }
     );
     // 用电量用水量
-    this.financeDataService.search3DBar({id: 2, parameter: ['electric', 'water']}).subscribe(
+    this.financeDataService.search3DBar({id: this.areaId , parameter: ['electric', 'water']}).subscribe(
       (val) => {
         if (val.status === '200') {
           this.options3dCopy = val.data;
@@ -510,23 +518,23 @@ export class ProvinceDataComponent implements OnInit, OnDestroy {
           timeType: 'hour',
           data: this.exampleService.getProvinceBarHourData(),
           xType: this.outOptions3d.pie.xType,
-          title: `贵州省${this.selectDataYear.name}${this.selectDataMonth.name}${this.selectDataDay.name}日服务区${this.outOptions3d.alertBarTitle}统计`
+          title: `${this.areaName}${this.selectDataYear.name}${this.selectDataMonth.name}${this.selectDataDay.name}日服务区${this.outOptions3d.alertBarTitle}统计`
         };
         // 折线图
         this.options3dLine = {
-          title: `贵州省${this.selectDataYear.name}${this.selectDataMonth.name}${this.selectDataDay.name}日服务区业态走势图`,
+          title: `${this.areaName}${this.selectDataYear.name}${this.selectDataMonth.name}${this.selectDataDay.name}日服务区业态走势图`,
           data: this.exampleService.getProvinceLineHourData(),
           color: ['#7C7CD4', '#36B9AB', '#6ACD72', '#0A30BF', '#027204', '#E36E57']
         };
         // 地区横向排名柱状图
         this.options3dCityCrosswise = {
-          title: `贵州省${this.selectDataYear.name}${this.selectDataMonth.name}${this.selectDataDay.name}日地区功耗排污前十排名`,
+          title: `${this.areaName}${this.selectDataYear.name}${this.selectDataMonth.name}${this.selectDataDay.name}日地区功耗排污前十排名`,
           data: this.exampleService.getCityCrosswiseBarDayData(),
           color: ['#B3A5DE', '#59B2EE', '#FCB984']
         };
         // 服务区横向排名柱状图
         this.options3dServiceCrosswise = {
-          title: `贵州省${this.selectDataYear.name}${this.selectDataMonth.name}${this.selectDataDay.name}日服务区功耗排污前十排名`,
+          title: `${this.areaName}${this.selectDataYear.name}${this.selectDataMonth.name}${this.selectDataDay.name}日服务区功耗排污前十排名`,
           data: this.exampleService.getServiceCrosswiseBarDayData(),
           color: ['#4DE5B0', '#F01C70', '#FEAC00']
         };
@@ -539,23 +547,23 @@ export class ProvinceDataComponent implements OnInit, OnDestroy {
           timeType: 'day',
           data: this.exampleService.getProvinceBarDayData(),
           xType: this.outOptions3d.pie.xType,
-          title: `贵州省${this.selectDataYear.name}${this.selectDataMonth.name}服务区${this.outOptions3d.alertBarTitle}统计`
+          title: `${this.areaName}${this.selectDataYear.name}${this.selectDataMonth.name}服务区${this.outOptions3d.alertBarTitle}统计`
         };
         // 折线图
         this.options3dLine = {
-          title: `贵州省${this.selectDataYear.name}${this.selectDataMonth.name}服务区业态走势图`,
+          title: `${this.areaName}${this.selectDataYear.name}${this.selectDataMonth.name}服务区业态走势图`,
           data: this.exampleService.getProvinceLineDayData(),
           color: ['#7C7CD4', '#36B9AB', '#6ACD72', '#0A30BF', '#027204', '#E36E57']
         };
         // 地区横向排名柱状图
         this.options3dCityCrosswise = {
-          title: `贵州省${this.selectDataYear.name}${this.selectDataMonth.name}地区功耗排污前十排名`,
+          title: `${this.areaName}${this.selectDataYear.name}${this.selectDataMonth.name}地区功耗排污前十排名`,
           data: this.exampleService.getCityCrosswiseBarMonthData(),
           color: ['#B3A5DE', '#59B2EE', '#FCB984']
         };
         // 服务区横向排名柱状图
         this.options3dServiceCrosswise = {
-          title: `贵州省${this.selectDataYear.name}${this.selectDataMonth.name}服务区功耗排污前十排名`,
+          title: `${this.areaName}${this.selectDataYear.name}${this.selectDataMonth.name}服务区功耗排污前十排名`,
           data: this.exampleService.getServiceCrosswiseBarMonthData(),
           color: ['#4DE5B0', '#F01C70', '#FEAC00']
         };
@@ -568,23 +576,23 @@ export class ProvinceDataComponent implements OnInit, OnDestroy {
           timeType: 'month',
           data: this.exampleService.getProvinceBarMonthData(),
           xType: this.outOptions3d.pie.xType,
-          title: `贵州省${this.selectDataYear.name}服务区${this.outOptions3d.alertBarTitle}统计`
+          title: `${this.areaName}${this.selectDataYear.name}服务区${this.outOptions3d.alertBarTitle}统计`
         };
         // 折线图
         this.options3dLine = {
-          title: `贵州省${this.selectDataYear.name}服务区业态走势图`,
+          title: `${this.areaName}${this.selectDataYear.name}服务区业态走势图`,
           data: this.exampleService.getProvinceLineMonthData(),
           color: ['#7C7CD4', '#36B9AB', '#6ACD72', '#0A30BF', '#027204', '#E36E57']
         };
         // 地区横向排名柱状图
         this.options3dCityCrosswise = {
-          title: `贵州省${this.selectDataYear.name}地区功耗排污前十排名`,
+          title: `${this.areaName}${this.selectDataYear.name}地区功耗排污前十排名`,
           data: this.exampleService.getCityCrosswiseBarMonthData(),
           color: ['#B3A5DE', '#59B2EE', '#FCB984']
         };
         // 服务区横向排名柱状图
         this.options3dServiceCrosswise = {
-          title: `贵州省${this.selectDataYear.name}服务区功耗排污前十排名`,
+          title: `${this.areaName}${this.selectDataYear.name}服务区功耗排污前十排名`,
           data: this.exampleService.getServiceCrosswiseBarMonthData(),
           color: ['#4DE5B0', '#F01C70', '#FEAC00']
         };
@@ -608,7 +616,7 @@ export class ProvinceDataComponent implements OnInit, OnDestroy {
     }
   // 车流监控
   public vehicleAmountCount(): void {
-    this.financeDataService.searchCarTotal({id: 2}).subscribe(
+    this.financeDataService.searchCarTotal({id: this.areaId }).subscribe(
       (value) => {
         if (value.status === '200') {
           this.vehicleAmount = {
@@ -620,7 +628,7 @@ export class ProvinceDataComponent implements OnInit, OnDestroy {
     );
   }
   public CarTypes() {
-    this.financeDataService.searchCarTotalPie({id: 2}).subscribe(
+    this.financeDataService.searchCarTotalPie({id: this.areaId }).subscribe(
       (value) => {
         if (value.status === '200') {
           this.optionsCarModel = {
@@ -649,13 +657,13 @@ export class ProvinceDataComponent implements OnInit, OnDestroy {
     };
     this.carOptionType = e.name;
     // 表格
-    this.financeDataService.searchCarAlertTable({id: 2, type: carTypes[this.carOptionType], page: 1, nums: 10}).subscribe(
+    this.financeDataService.searchCarAlertTable({id: this.areaId, type: carTypes[this.carOptionType], page: 1, nums: 10}).subscribe(
       (val) => {
         this.carTableData = val.data;
       }
     );
     // 饼状图
-    this.financeDataService.searchCarAlertPie({id: 2, type: carTypes[this.carOptionType]}).subscribe(
+    this.financeDataService.searchCarAlertPie({id: this.areaId, type: carTypes[this.carOptionType]}).subscribe(
       (value) => {
         const arryCarPie = [];
         value.data.map((val, index) => {
@@ -664,7 +672,7 @@ export class ProvinceDataComponent implements OnInit, OnDestroy {
         console.log(arryCarPie);
         this.optionsCarType = {
           data: arryCarPie,
-          title: `贵州省各市所有服务区今日${e.name}占比统计`,
+          title: `${this.areaName}各市所有服务区今日${e.name}占比统计`,
           total: '',
           color: ['#CE2D79', '#BDD139', '#78E77D', '#09D4D6', '#3C75B9',
             '#6769B1', '#FF8C9D', '#2796C4', '#E57D0D']
@@ -679,7 +687,7 @@ export class ProvinceDataComponent implements OnInit, OnDestroy {
       '客车': 2,
       '货车': 3,
     };
-    this.financeDataService.searchCarAlertTable({id: 2, type: carTypes[this.carOptionType], page: e, nums: 10}).subscribe(
+    this.financeDataService.searchCarAlertTable({id: this.areaId, type: carTypes[this.carOptionType], page: e, nums: 10}).subscribe(
       (val) => {
         this.carTableData = val.data;
       }
@@ -761,7 +769,7 @@ export class ProvinceDataComponent implements OnInit, OnDestroy {
     this.financeDataService.searchEventCategory().subscribe(
       (value) => {
         if (value.status === '200') {
-          this.financeDataService.searchEventCategoryCount({id: 2, list: value.data}).subscribe(
+          this.financeDataService.searchEventCategoryCount({id: this.areaId, list: value.data}).subscribe(
             (item) => {
               if (item.status === '200') {
                 this.eventTypes = item.data;
@@ -833,7 +841,7 @@ export class ProvinceDataComponent implements OnInit, OnDestroy {
   /*********************************右边*****************************/
   // 业态经营数据前十排名相关操作
   public backCrosswiseBar(type): void {
-    this.financeDataService.searchTop10Bar({id: 2, type: type}).subscribe(
+    this.financeDataService.searchTop10Bar({id: this.areaId, type: type}).subscribe(
       (value) => {
         if (value.status === '200') {
           // 这里是排序算法
@@ -875,7 +883,7 @@ export class ProvinceDataComponent implements OnInit, OnDestroy {
   }
   // 收入监控
   public incomeAmountCount(): void {
-    this.financeDataService.searchIncomeTotal({id: 2}).subscribe(
+    this.financeDataService.searchIncomeTotal({id: this.areaId}).subscribe(
       (value) => {
         if (value.status === '200') {
           this.incomeAmount = {
@@ -887,7 +895,7 @@ export class ProvinceDataComponent implements OnInit, OnDestroy {
     );
   }
   public IncomeTypes() {
-    this.financeDataService.searchIncomeTotalPie({id: 2}).subscribe(
+    this.financeDataService.searchIncomeTotalPie({id: this.areaId}).subscribe(
       (value) => {
         if (value.status === '200') {
           this.optionsIncomeModel = {
@@ -912,7 +920,7 @@ export class ProvinceDataComponent implements OnInit, OnDestroy {
     };
     this.IncomeOptionType = e.name;
     // 表格
-    this.financeDataService.searchIncomeAlertTable({id: 2, type: incomeType[e.name], page: 1, nums: 10}).subscribe(
+    this.financeDataService.searchIncomeAlertTable({id: this.areaId, type: incomeType[e.name], page: 1, nums: 10}).subscribe(
       (val) => {
         if (val.status === '200') {
           this.IncomeTableData = val.data;
@@ -920,12 +928,12 @@ export class ProvinceDataComponent implements OnInit, OnDestroy {
       }
     );
     // 饼状图
-    this.financeDataService.searchIncomeAlertPie({id: 2, type: incomeType[e.name]}).subscribe(
+    this.financeDataService.searchIncomeAlertPie({id: this.areaId, type: incomeType[e.name]}).subscribe(
       (value) => {
         if (value.status === '200') {
           this.optionsIncomeTypes = {
             data: value.data,
-            title: `贵州省各市所有服务区今日${e.name}占比统计`,
+            title: `${this.areaName}各市所有服务区今日${e.name}占比统计`,
             total: '',
             color: ['#CE2D79', '#BDD139', '#78E77D', '#09D4D6', '#3C75B9',
               '#6769B1', '#FF8C9D', '#2796C4', '#E57D0D']
@@ -944,7 +952,7 @@ export class ProvinceDataComponent implements OnInit, OnDestroy {
       '住宿': 5,
       '汽修': 6,
     };
-    this.financeDataService.searchIncomeAlertTable({id: 2, type: incomeType[this.IncomeOptionType], page: e, nums: 10}).subscribe(
+    this.financeDataService.searchIncomeAlertTable({id: this.areaId, type: incomeType[this.IncomeOptionType], page: e, nums: 10}).subscribe(
       (val) => {
         this.IncomeTableData = val.data;
       }

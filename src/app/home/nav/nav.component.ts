@@ -45,7 +45,6 @@ export class NavComponent implements OnInit {
   ngOnInit() {
     this.urlList = this.localSessionStorage.getObject('urlList');
     this.urlClass = this.localSessionStorage.getObject('urlClass');
-    console.log(this.urlList);
   }
   public wholeClick(): void {
     this.router.navigate(['home/whole']);
