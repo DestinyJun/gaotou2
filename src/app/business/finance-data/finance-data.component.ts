@@ -451,15 +451,17 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
   public mapCityClick (param): void {
     if (param.areaName === undefined) {
       if (param.cityName === '贵阳市') {
-        this.router.navigate(['/home/city']);
+        this.router.navigate(['/home/city', {id: 3, name: param.cityName}]);
       } else {
-        window.alert(`很抱歉${param.cityName}暂无数据`);
+        this.router.navigate(['/home/city', {id: 5, name: param.cityName}]);
+        // window.alert(`很抱歉${param.cityName}暂无数据`);
       }
     } else {
       if (param.areaName === '久长服务区') {
         this.router.navigate(['/home/serzone', {id: 1, name: param.areaName}]);
       } else {
-        window.alert('此服务区暂无数据');
+        this.router.navigate(['/home/serzone', {id: 28, name: param.areaName}]);
+        // window.alert('此服务区暂无数据');
       }
     }
   }

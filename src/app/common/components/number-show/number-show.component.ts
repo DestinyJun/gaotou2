@@ -12,7 +12,7 @@ export class NumberShowComponent implements OnInit, OnChanges {
 
   ngOnInit() {}
   ngOnChanges(changes: SimpleChanges): void {
-    if (JSON.stringify(this.option) !== undefined) {
+    if (this.option) {
       this.optionData = {
         number: this.option.number.toString().split(''),
         units: this.option.units

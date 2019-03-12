@@ -46,7 +46,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   public serviceZoneID: string;   // 服务区ID
   /***********************左边************************/
     //  3D柱状图配置
-  public options3d: any;
+  public options3d: any = null;
   public options3dCopy: any;
   public alertBarShow = false;   // 3D柱状图弹窗
   public alertBarTitle: string;
@@ -57,7 +57,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   public startTime3d: Date; // 时间选择器
   public endTime3d: Date; // 时间选择器
   // 车辆监控
-  public vehicleAmount: any;
+  public vehicleAmount: any = null;
   public optionsCarModel: any; // 车辆饼状图
   public alertCarShow = false;
   public carTableData: any;
@@ -118,7 +118,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   /***********************右边************************/
     // 服务区基本信息
   public alertCrosswiseShow = false;
-  public serviceInfo: any;
+  public serviceInfo: any = null;
   public alterCommonAttributeValues = [];
   public alterUpAttributeValues = [];
   public alterDownAttributeValues = [];
@@ -181,6 +181,16 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       (params) => {
         this.serviceZoneTitle = params.name;
         this.serviceZoneID = params.id;
+        this.serviceInfo = null;
+        this.alterCommonAttributeValues = [];
+        this.alterUpAttributeValues = [];
+        this.alterDownAttributeValues = [];
+        this.options3d = null;
+        this.options3dCopy = null;
+        this.vehicleAmount = null;
+        this.optionsCarModel = null;
+        this.incomeAmount = null;
+        this.optionsIncomeModel = null;
         this.localService.eventBus.next({title: this.serviceZoneTitle + '业态大数据', flagState: 'serzone', flagName: this.serviceZoneTitle});
         // 实时数据
         this.serareaService.searchSerAraItem(this.serviceZoneID).subscribe(
@@ -334,6 +344,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   /************************左边***************************/
   // 3D柱状图图表配置及表格导出
   public packOption3() {
+    console.log(this.options3d);
     // 车流客流人流
     this.serareaService.search3DBar({id: this.serviceZoneID, parameter: ['revenue', 'passenger', 'vehicle']}).subscribe(
       (val) => {
@@ -1005,10 +1016,10 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     ).subscribe(
       (data) => {
         if (data.status === '200') {
-          window.alert(data.message);
           this.alterCommonAttributeValues = [];
           this.alterUpAttributeValues = [];
           this.alterDownAttributeValues = [];
+          window.alert(data.message);
           this.serareaService.searchSerAraItem(1).subscribe(
             (value) => {
               this.serviceInfo = value.data;

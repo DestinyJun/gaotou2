@@ -1,4 +1,4 @@
-<div class="accumulation-3Dbar" echarts [options]="options3d" (chartClick)="barClick($event)"></div>
+<div class="accumulation-3Dbar" echarts [options]="options3d" (chartClick)="barClick($event)" [autoResize]="true" (chartInit)="onInit($event)"></div>
 <!--<div class="accumulation-3Dbar" echarts [options]="options3dCopy" (chartClick)="barCopyClick($event)"></div>-->
 <!--3D柱状图弹窗-->
 <!--<div class="bg-box" *ngIf="alertBarShow">

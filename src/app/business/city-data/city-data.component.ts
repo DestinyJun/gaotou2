@@ -427,7 +427,8 @@ export class CityDataComponent implements OnInit, OnDestroy {
       if (param.areaName === '久长服务区') {
         this.router.navigate(['/home/serzone', {id: 1, name: param.areaName}]);
       } else {
-        window.alert('此服务区暂无数据');
+        this.router.navigate(['/home/serzone', {id: 28, name: param.areaName}]);
+        // window.alert('此服务区暂无数据');
       }
     }
   }

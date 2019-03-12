@@ -18,19 +18,17 @@ export class Echart3dComponent implements OnInit, OnChanges {
   @Input() public option: any;
   @Input() public color: [string];
   @Output() public outOptions3d = new EventEmitter<any>();
-  public options3d = {};
+  public options3d: any = {};
+  public upDateOptions3d: any = {};
+  public echartsInstance: any;
   constructor() { }
 
   ngOnInit() {}
   ngOnChanges(changes: SimpleChanges): void {
     if (this.option) {
-      this.initializationData();
+      this.options3dOption();
     }
   }
-  public initializationData(): void {
-   this.options3dOption();
-  }
-
   public options3dOption(): void {
     const that = this;
     const xdata = this.option.xdata;
@@ -149,6 +147,7 @@ export class Echart3dComponent implements OnInit, OnChanges {
         }
       ]
     };
+    this.echartsInstance.resize();
   }
   // 3D柱状图的相关点击事件
   public barClick(e): void {
@@ -168,7 +167,7 @@ export class Echart3dComponent implements OnInit, OnChanges {
       total: e.data.value[3],
     });
   }
-
-
-
+  public onInit (event): void {
+    this.echartsInstance = event;
+  }
 }
