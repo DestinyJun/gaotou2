@@ -15,16 +15,17 @@ export class EchartBmapComponent implements OnInit, OnChanges {
   @Input() public option: Option = new Option();
   @Input() public width: any;
   @Input() public height: any;
-  @Input() public points: any;
+  @Input() public points: any = null;
   @Output() public cityClick = new EventEmitter<any>();
   @Output() public areaClick = new EventEmitter<any>();
   public areaName: any;
   constructor() { }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
   ngOnChanges(changes: SimpleChanges): void {
-    this.mapinitialize();
+     if (this.points) {
+       this.mapinitialize();
+     }
   }
   public mapinitialize() {
     const that = this;
@@ -97,6 +98,7 @@ export class EchartBmapComponent implements OnInit, OnChanges {
     if (this.points) {
       const pointsMarket = [];
       this.points.map((val, index1) => {
+        console.log(val);
         const a = [];
         val.attributeValueList.map((item, index2) => {
           if (item.attributeDesc === '经度') {

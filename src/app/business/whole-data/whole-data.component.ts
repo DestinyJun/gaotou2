@@ -259,9 +259,10 @@ export class WholeDataComponent implements OnInit, OnChanges {
       geoc.getLocation(pt, function (rs) {
         const addComp = rs.addressComponents;
         if (addComp.province === '贵州省') {
-          that.router.navigate(['/home/province', {name: addComp.province}]);
+          that.router.navigate(['/home/province', {id: 2, name: addComp.province}]);
         } else {
-          window.alert(addComp.province + '暂无数据，敬请期待');
+          that.router.navigate(['/home/province', {id: 6, name: addComp.province}]);
+          // window.alert(addComp.province + '暂无数据，敬请期待');
         }
       });
     });

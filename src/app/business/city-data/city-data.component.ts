@@ -418,7 +418,10 @@ export class CityDataComponent implements OnInit, OnDestroy {
   public centerMap (): void {
     this.cityDataService.getServiceNamePoint({id: this.cityId}).subscribe(
       (val) => {
-        this.mapPoints = val.data;
+        if (val.status === '200') {
+          this.mapPoints = val.data;
+          console.log(this.mapPoints);
+        }
       }
     );
   }

@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewEncapsulation} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {DataService} from '../../common/services/data.service';
 import {FormBuilder} from '@angular/forms';
@@ -198,6 +198,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
             this.alterUpAttributeValues = [];
             this.alterDownAttributeValues = [];
             if (value.status === '200') {
+              console.log(value);
               this.serviceInfo = value.data;
               value.data.commonAttributeValues.map((val, index) => {
                 this.alterCommonAttributeValues.push(this.cloneValue(val));
@@ -982,35 +983,36 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     this.alertCrosswiseShow = false;
   }
   public modifySerAraItemClick(): void {
+    if (this.serviceInfo.commonAttributeValues.length !== 0) {}
     this.serareaService.modifySerAraItem(
       {
-        administrativeAreaId: 3,
-        administrativeAreaName: '贵阳市',
+        administrativeAreaId: this.serviceInfo.administrativeAreaId,
+        administrativeAreaName: this.serviceInfo.administrativeAreaName,
         chiefName: null,
         chiefPhone: null,
-        chiefUserId: 1,
+        chiefUserId: this.serviceInfo.chiefUserId,
         commonAttributeValues: this.alterCommonAttributeValues,
-        deptId: 5,
-        deptName: '久长服务区',
+        deptId: this.serviceInfo.deptId,
+        deptName:  this.serviceInfo.deptName,
         downAttributeValues: {
           attributeValues: this.alterDownAttributeValues,
-          destination: '遵义',
-          flag: '3',
-          flagName: '下行',
-          id: 2,
-          source: '贵阳',
+            destination: this.serviceInfo.downAttributeValues.destination,
+            flag: this.serviceInfo.downAttributeValues.flag,
+            flagName: this.serviceInfo.downAttributeValues.flagName,
+            id: this.serviceInfo.downAttributeValues.id,
+            source: this.serviceInfo.downAttributeValues.source,
         },
-        id: 1,
-        organizationId: 1,
-        organizationName: '贵州高投服务管理有限公司',
-        serviceAreaName: '久长服务区',
+        id: this.serviceInfo.id,
+        organizationId: this.serviceInfo.organizationId,
+        organizationName: this.serviceInfo.organizationName,
+        serviceAreaName: this.serviceInfo.serviceAreaName,
         upAttributeValues: {
           attributeValues: this.alterUpAttributeValues,
-          destination: '贵阳',
-          flag: '2',
-          flagName: '上行',
-          id: 1,
-          source: '遵义',
+          destination: this.serviceInfo.upAttributeValues.destination,
+          flag: this.serviceInfo.upAttributeValues.flag,
+          flagName: this.serviceInfo.upAttributeValues.flagName,
+          id: this.serviceInfo.upAttributeValues.id,
+          source: this.serviceInfo.upAttributeValues.source,
         },
       }
     ).subscribe(
@@ -1020,7 +1022,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
           this.alterUpAttributeValues = [];
           this.alterDownAttributeValues = [];
           window.alert(data.message);
-          this.serareaService.searchSerAraItem(1).subscribe(
+          this.serareaService.searchSerAraItem(this.serviceZoneID).subscribe(
             (value) => {
               this.serviceInfo = value.data;
               value.data.commonAttributeValues.map((val, index) => {
