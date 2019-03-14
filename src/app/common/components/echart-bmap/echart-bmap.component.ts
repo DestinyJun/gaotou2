@@ -98,7 +98,6 @@ export class EchartBmapComponent implements OnInit, OnChanges {
     if (this.points) {
       const pointsMarket = [];
       this.points.map((val, index1) => {
-        console.log(val);
         const a = [];
         val.attributeValueList.map((item, index2) => {
           if (item.attributeDesc === '经度') {
