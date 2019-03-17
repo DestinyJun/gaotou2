@@ -291,6 +291,9 @@
   font-size: 0.8rem;
   margin-bottom: 1vh;
 }
+.right .information-info .ui-scrollpanel-content {
+  width: calc(100% + 31px);
+}
 .right .information-info p>span{
   margin-top: 1vh;
 }

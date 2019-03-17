@@ -353,10 +353,28 @@
             </div>
             <!--上行属性-->
             <div class="col-lg-12  col-md-12">
-              <div style="width: 100%;height: 3vh;line-height: 3vh;color: #5595D5;">
+              <div style="
+              width: 100%;
+              height: 3vh;
+              line-height: 3vh;
+              color: #FF832A;
+              position: relative;
+              text-align: center">
+                <div style="
+                width: 32%;
+                top: 60%;
+                left: 0;
+                border-bottom:1px dashed  #FF832A;
+                position: absolute;"></div>
+                <div style="
+                width: 32%;
+                top: 60%;
+                right: 0;
+                border-bottom:1px dashed  #FF832A;
+                position: absolute;"></div>
                 <span>{{serviceInfo?.upAttributeValues?.source}}</span>
                 <span style="vertical-align: middle">—<i class="fa fa-angle-right" aria-hidden="true" style="vertical-align: middle"></i></span>
-                <span style="vertical-align: middle">{{serviceInfo?.upAttributeValues?.destination}}</span>
+                <span style="vertical-align: middle">{{serviceInfo?.upAttributeValues?.destination}}（上行）</span>
               </div>
             </div>
             <div class="col-lg-6 col-md-6" *ngFor="let prop of serviceInfo?.upAttributeValues?.attributeValues">
@@ -367,15 +385,32 @@
                 </p>
               </div>
             </div>
-
-            <hr>
             <!--下行属性-->
             <div class="col-lg-12  col-md-12">
-              <div style="width: 100%;height: 3vh;line-height: 3vh;color: #5595D5;">
-                <span>{{serviceInfo?.downAttributeValues?.source}}</span>
-                <span style="vertical-align: middle">—<i class="fa fa-angle-right" aria-hidden="true" style="vertical-align: middle"></i></span>
-                <span>{{serviceInfo?.downAttributeValues?.destination}}</span>
-              </div>
+              <div style="
+              width: 100%;
+              height: 3vh;
+              color: #FF832A;
+              position: relative;
+              text-align: center;
+              line-height: 3vh;
+          ">
+            <div style="
+            width: 32%;
+            top: 60%;
+            left: 0;
+            border-bottom:1px dashed  #FF832A;
+            position: absolute;"></div>
+            <div style="
+            width: 32%;
+            top: 60%;
+            right: 0;
+            border-bottom:1px dashed  #FF832A;
+            position: absolute;"></div>
+            <span>{{serviceInfo?.downAttributeValues?.source}}</span>
+            <span style="vertical-align: middle">—<i class="fa fa-angle-right" aria-hidden="true" style="vertical-align: middle"></i></span>
+            <span>{{serviceInfo?.downAttributeValues?.destination}}（下行）</span>
+          </div>
             </div>
             <div class="col-lg-6 col-md-6" *ngFor="let prop of serviceInfo?.downAttributeValues?.attributeValues">
               <div>
@@ -608,8 +643,8 @@
             </p>
             <p>今日收入：{{serviceShopInfo?.revenue}}元</p>
             <p>实用面积：{{serviceShopInfo?.usableArea}}</p>
-            <p>用水量：545m³</p>
-            <p>用电量：1425kW·h</p>
+            <p>用水量：0</p>
+            <p>用电量：0kW·h</p>
             <p class="hetong">店铺合同：<span (click)="servicesPactDown()">点击查看合同</span></p>
             <!--<p>水费账户：{{serviceShopInfo?.waterAccount}}</p>-->
             <!--<p>电费账户：{{serviceShopInfo?.electricityAccount}}</p>-->

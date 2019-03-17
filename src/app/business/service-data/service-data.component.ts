@@ -254,22 +254,26 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     this.packOption3();
     // 车流监控
     this.vehicleAmountCountClean = setInterval(() => {
+      // console.log('111');
       this.vehicleAmountCount();
       this.CarTypes();
     }, 3000);
     // 收入监控
     this.incomeAmountCountClean = setInterval(() => {
+      // console.log('222');
       this.incomeAmountCount();
       this.IncomeTypes();
     }, 3000);
     // 实时客流
     this.personAmountCountClean = setInterval(() => {
+      // console.log('333');
       this.getPerson();
     }, 3000);
     // 实时店铺信息
     this.incomeShopInfoClean = setInterval(() => {
+      // console.log('444');
       this.backCenterDate();
-    }, 10000000000);
+    }, 300000000);
     // 事件列表
     this.eventNotPoocess();
     // 事件上报类型
@@ -573,11 +577,10 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
         if (value.status === '200') {
           this.serareaService.searchServiceShopIncome({id: this.serviceZoneID}).subscribe(
             (val) => {
-              console.log(val);
               if (val.status === '200') {
                 let s = [];
                 let x = [];
-                val.data.map((item, index) => {
+                value.data.map((item, index) => {
                   if (item.flag === '2') {
                     item.storeInfoList.map((prop) => {
                       prop.categoryCode = parseInt(prop.categoryCode, 10);
@@ -599,16 +602,16 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
                     x = item.storeInfoList;
                   }
                 });
-                if (s) {
-                  s.map((item, index) => {
-                    if (s[index].id === this.incomeTopData[index].id) {
+                if (s.length !== 0 && this.incomeTopData.length !== 0) {
+                  s.map((item, index, obj) => {
+                    if (s[index]['id'] === this.incomeTopData[index].id) {
                       this.incomeTopData[index].revenue = s[index].revenue;
                     }
                   });
                 }
-                if (x) {
+                if (x.length !== 0 && this.incomeBottomData.length !== 0) {
                   x.map((item, index) => {
-                    if (x[index].id === this.incomeBottomData[index].id) {
+                    if (x[index]['id'] === this.incomeBottomData[index].id) {
                       this.incomeBottomData[index].revenue = x[index].revenue;
                     }
                   });
@@ -636,7 +639,8 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     this.serviceShopInfo = item;
     this.serviceShopShow = true;
     document.body.className = 'ui-overflow-hidden';
-    if (item.cameraList.length > 0) {
+    console.log(item.cameraList);
+    if (item.cameraList !== undefined) {
       this.addShopVideo(this.serviceShopInfo);
     }
     // 折线图
