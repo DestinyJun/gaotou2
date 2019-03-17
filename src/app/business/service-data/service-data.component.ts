@@ -69,7 +69,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     // 商家、视频及方向
   public incomeTopData: any;
   public incomeBottomData: any;
-  // 服务区商家视频弹窗7
+  // 服务区商家视频弹窗
   public cars: SelectVideoItem[];
   public selectedCar2 = {
     value: '请选择视频...',
@@ -198,17 +198,18 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
             this.alterUpAttributeValues = [];
             this.alterDownAttributeValues = [];
             if (value.status === '200') {
-              console.log(value);
-              this.serviceInfo = value.data;
-              value.data.commonAttributeValues.map((val, index) => {
-                this.alterCommonAttributeValues.push(this.cloneValue(val));
-              });
-              value.data.upAttributeValues.attributeValues.map((val, index) => {
-                this.alterUpAttributeValues.push(this.cloneValue(val));
-              });
-              value.data.downAttributeValues.attributeValues.map((val, index) => {
-                this.alterDownAttributeValues.push(this.cloneValue(val));
-              });
+              if (value.data) {
+                this.serviceInfo = value.data;
+                value.data.commonAttributeValues.map((val, index) => {
+                  this.alterCommonAttributeValues.push(this.cloneValue(val));
+                });
+                value.data.upAttributeValues.attributeValues.map((val, index) => {
+                  this.alterUpAttributeValues.push(this.cloneValue(val));
+                });
+                value.data.downAttributeValues.attributeValues.map((val, index) => {
+                  this.alterDownAttributeValues.push(this.cloneValue(val));
+                });
+              }
             }
           }
         );
@@ -239,11 +240,13 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     this.serareaService.searchServiceDirection(this.serviceZoneID).subscribe(
       (val) => {
         if (val.status === '200') {
-          this.incomeManualDirectionSelect = [
-            {name: `请选择服务区方向......`, code: '-1'},
-            {name: `${val.data[0].source}——>${val.data[0].destination}`, code: val.data[0].orientaionId},
-            {name: `${val.data[1].source}——>${val.data[1].destination}`, code: val.data[1].orientaionId}
-          ];
+          if (val.data.length !== 0) {
+            this.incomeManualDirectionSelect = [
+              {name: `请选择服务区方向......`, code: '-1'},
+              {name: `${val.data[0].source}——>${val.data[0].destination}`, code: val.data[0].orientaionId},
+              {name: `${val.data[1].source}——>${val.data[1].destination}`, code: val.data[1].orientaionId}
+            ];
+          }
         }
       }
     );
@@ -266,7 +269,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     // 实时店铺信息
     this.incomeShopInfoClean = setInterval(() => {
       this.backCenterDate();
-    }, 3000);
+    }, 10000000000);
     // 事件列表
     this.eventNotPoocess();
     // 事件上报类型
@@ -345,7 +348,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   /************************左边***************************/
   // 3D柱状图图表配置及表格导出
   public packOption3() {
-    console.log(this.options3d);
     // 车流客流人流
     this.serareaService.search3DBar({id: this.serviceZoneID, parameter: ['revenue', 'passenger', 'vehicle']}).subscribe(
       (val) => {
@@ -571,10 +573,11 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
         if (value.status === '200') {
           this.serareaService.searchServiceShopIncome({id: this.serviceZoneID}).subscribe(
             (val) => {
+              console.log(val);
               if (val.status === '200') {
                 let s = [];
                 let x = [];
-                value.data.map((item, index) => {
+                val.data.map((item, index) => {
                   if (item.flag === '2') {
                     item.storeInfoList.map((prop) => {
                       prop.categoryCode = parseInt(prop.categoryCode, 10);
@@ -598,14 +601,14 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
                 });
                 if (s) {
                   s.map((item, index) => {
-                    if (s[index].id = this.incomeTopData[index].id) {
+                    if (s[index].id === this.incomeTopData[index].id) {
                       this.incomeTopData[index].revenue = s[index].revenue;
                     }
                   });
                 }
                 if (x) {
                   x.map((item, index) => {
-                    if (x[index].id = this.incomeBottomData[index].id) {
+                    if (x[index].id === this.incomeBottomData[index].id) {
                       this.incomeBottomData[index].revenue = x[index].revenue;
                     }
                   });
