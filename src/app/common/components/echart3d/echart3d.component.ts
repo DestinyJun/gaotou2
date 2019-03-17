@@ -25,7 +25,9 @@ export class Echart3dComponent implements OnInit, OnChanges {
 
   ngOnInit() {}
   ngOnChanges(changes: SimpleChanges): void {
+    console.log(this.option);
     if (this.option) {
+      console.log(this.option);
       this.options3dOption();
     }
   }

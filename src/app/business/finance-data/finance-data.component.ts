@@ -224,8 +224,10 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
     // 车流客流人流
     this.financeDataService.search3DBar({id: this.provinceId, parameter: ['revenue', 'passenger', 'vehicle']}).subscribe(
       (val) => {
+        console.log(val);
         if (val.status === '200') {
           this.options3d = val.data;
+          console.log(this.options3d);
         }
       }
     );
@@ -444,7 +446,6 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
         (val) => {
           if (val.status === '200') {
             this.mapPoints = val.data;
-            console.log(this.mapPoints);
           }
         }
       );
