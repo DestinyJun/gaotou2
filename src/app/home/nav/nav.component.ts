@@ -145,10 +145,26 @@ export class NavComponent implements OnInit {
     for (let i = 0; i < data.length; i++) {
       if (data[i]['isData']) {
         for (let j = 0; j < data[i]['dataModels'].length; j++) {
+          console.log(data[i]);
           const childnode: TreeNode = {};
           childnode.leaf = true;
-          childnode.expandedIcon = 'fa fa-folder-open';
-          childnode.collapsedIcon = 'fa fa-area-chart';
+          if (data[i].menuName === '全国大数据业态') {
+            childnode.expandedIcon = 'fa fa-globe';
+            childnode.collapsedIcon = 'fa fa-globe';
+          }
+          if (data[i].menuName === '省大数据业态') {
+            childnode.expandedIcon = 'fa fa-bar-chart';
+            childnode.collapsedIcon = 'fa fa-bar-chart';
+          }
+          if (data[i].menuName === '市大数据业态') {
+            childnode.expandedIcon = 'fa fa-line-chart';
+            childnode.collapsedIcon = 'fa fa-line-chart';
+          }
+          if (data[i].menuName === '服务区大数据业态') {
+            console.log('22222');
+            childnode.expandedIcon = 'fa fa-free-code-camp';
+            childnode.collapsedIcon = 'fa fa-free-code-camp';
+          }
           childnode.label = data[i]['dataModels'][j]['name'];
           childnode.data = data[i]['url'];
           childnode.leaf = data[i]['isLeaf'];
@@ -165,8 +181,14 @@ export class NavComponent implements OnInit {
       } else {
         const childnode: TreeNode = {};
         childnode.leaf = true;
-        childnode.expandedIcon = 'fa fa-folder-open';
-        childnode.collapsedIcon = 'fa fa-area-chart';
+        if (data[i].menuName === '视频监控') {
+          childnode.expandedIcon = 'fa fa-camera-retro';
+          childnode.collapsedIcon = 'fa fa-camera-retro';
+        }
+        if (data[i].menuName === '个人信息') {
+          childnode.expandedIcon = 'fa fa-user-circle-o';
+          childnode.collapsedIcon = 'fa fa-user-circle-o';
+        }
         childnode.label = data[i]['menuName'];
         childnode.data = data[i]['url'];
         childnode.leaf = data[i]['isLeaf'];

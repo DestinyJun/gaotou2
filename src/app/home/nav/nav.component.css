@@ -60,6 +60,12 @@
 .nav-sidebar .ui-sidebar .ui-tree .ui-treenode-content-selected{
   color: red;
 }
+.nav-sidebar .ui-sidebar .ui-tree .ui-tree-container .ui-treenode .ui-treenode-content .ui-tree-toggler {
+  float: right;
+  color: #00BFFF;
+  background: transparent;
+  font-size: 1.35rem;
+}
 .nav-scroll .ui-scrollpanel-wrapper {
   background: transparent;
   border: none; /*控制滚动轴背景色*/
