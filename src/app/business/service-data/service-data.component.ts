@@ -1,4 +1,4 @@
-import {Component, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewEncapsulation} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {DataService} from '../../common/services/data.service';
 import {FormBuilder} from '@angular/forms';
@@ -273,7 +273,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     this.incomeShopInfoClean = setInterval(() => {
       // console.log('444');
       this.backCenterDate();
-    }, 300000000);
+    }, 3000);
     // 事件列表
     this.eventNotPoocess();
     // 事件上报类型
@@ -887,7 +887,8 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     document.body.className = 'ui-overflow-hidden';
     this.eventAlertShow = true;
     // 未处理
-    this.serareaService.searchEventsTypeList({id: this.serviceZoneID, eventCategoryCode: item.eventCategoryCode, processState: 2, page: 1, nums: 1000}).subscribe(
+    this.serareaService.searchEventsTypeList(
+      {id: this.serviceZoneID, eventCategoryCode: item.eventCategoryCode, processState: 2, page: 1, nums: 1000}).subscribe(
       (value) => {
         if (value.status === '200') {
           this.eventListNoProcess = value.data.contents;
