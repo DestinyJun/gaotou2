@@ -490,6 +490,13 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     this.serareaService.searchCarTotalPie({id: this.serviceZoneID}).subscribe(
       (value) => {
         if (value.status === '200') {
+          if (this.serviceZoneTitle === '久长服务区') {
+            value.data.push({id: null, name: '危品车', value: 1});
+            value.data.push({id: null, name: '畜牧车', value: 1});
+          } else {
+            value.data.push({id: null, name: '危品车', value: 0});
+            value.data.push({id: null, name: '畜牧车', value: 0});
+          }
           this.optionsCarModel = {
             data: value.data,
             title: '',

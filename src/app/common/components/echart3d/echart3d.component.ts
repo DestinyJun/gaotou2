@@ -142,7 +142,6 @@ export class Echart3dComponent implements OnInit, OnChanges {
         }
       ]
     };
-    console.log(this.echartsbox.nativeElement);
   }
   ngOnChanges(changes: SimpleChanges): void {
     if (this.option) {

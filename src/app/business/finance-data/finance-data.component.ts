@@ -224,10 +224,8 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
     // 车流客流人流
     this.financeDataService.search3DBar({id: this.provinceId, parameter: ['revenue', 'passenger', 'vehicle']}).subscribe(
       (val) => {
-        console.log(val);
         if (val.status === '200') {
           this.options3d = val.data;
-          console.log(this.options3d);
         }
       }
     );
@@ -331,6 +329,13 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
     this.financeDataService.searchCarTotalPie({id: this.provinceId}).subscribe(
       (value) => {
         if (value.status === '200') {
+          if (this.dataToggle === '贵州省') {
+            value.data.push({id: null, name: '危品车', value: 1});
+            value.data.push({id: null, name: '畜牧车', value: 1});
+          } else {
+            value.data.push({id: null, name: '危品车', value: 0});
+            value.data.push({id: null, name: '畜牧车', value: 0});
+          }
           this.optionsCarModel = {
             data: value.data,
             title: '',

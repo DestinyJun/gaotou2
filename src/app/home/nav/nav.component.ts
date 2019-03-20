@@ -145,7 +145,6 @@ export class NavComponent implements OnInit {
     for (let i = 0; i < data.length; i++) {
       if (data[i]['isData']) {
         for (let j = 0; j < data[i]['dataModels'].length; j++) {
-          console.log(data[i]);
           const childnode: TreeNode = {};
           childnode.leaf = true;
           if (data[i].menuName === '全国大数据业态') {
