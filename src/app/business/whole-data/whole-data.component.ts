@@ -3,56 +3,51 @@ import {LocalStorageService} from '../../common/services/local-storage.service';
 import {HttpClient} from '@angular/common/http';
 import {Router} from '@angular/router';
 import {environment} from '../../../environments/environment';
+import {NgxEchartsService} from 'ngx-echarts';
+
 declare let BMap;
+
 @Component({
   selector: 'app-whole-data',
   templateUrl: './whole-data.component.html',
   styleUrls: ['./whole-data.component.css']
 })
 export class WholeDataComponent implements OnInit, OnChanges {
-  // 实时客流量
-  public persons = [];
   // 全国、省级数据切换
   public dataToggle = '全国';
   // 弹出框的标题及显影控制
   public alertBarTitle: string;
-  // 服务区地图分布
-  public mapName = 'china';
-  public mapCenter = [101.74, 36.56];
-  public mapZoom = 0.8;
-  public mapLeft = '';
-  public mapRight = '';
   // 省市联动数据及状态
-  public selectDate = '全国';
   public province: any;
-  public city: any;
-  public citeDate: string;
-  public provinceShow = false;
-  public cityShow = false;
   public flag: string;
+  // echarts
+  public options: any = {};
 
   constructor(
     private http: HttpClient,
     private router: Router,
-    private localService: LocalStorageService
+    private localService: LocalStorageService,
+    private es: NgxEchartsService,
   ) {
   }
+
   ngOnInit() {
     // 发射实时客流
     this.getPerson();
     // 发射业太数据名称
-    this.localService.eventBus.next({title: this.dataToggle + '高速业态大数据',  flagState: 'whole', flagName: this.dataToggle});
+    this.localService.eventBus.next({title: this.dataToggle + '高速业态大数据', flagState: 'whole', flagName: this.dataToggle});
     this.updataEcharts();
-    // 全屏点击事件
-    /*window.document.addEventListener('click', (e) => {
-      this.flag = e.srcElement.parentElement.className;
-      if ((this.provinceShow || this.cityShow) && !(this.flag === 'location')) {
-        this.provinceShow = false;
-        this.cityShow = false;
-      }
-    });*/
   }
-  ngOnChanges(changes: SimpleChanges): void {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+  }
+
+  // 数据更新
+  public updataEcharts(): void {
+    // this.centerMap2();
+    this.echartsMap();
+  }
+
   // 客流
   public getPerson(): void {
     this.localService.persons.next({
@@ -61,6 +56,7 @@ export class WholeDataComponent implements OnInit, OnChanges {
       city: []
     });
   }
+
   /**********************************图表配置*****************************/
   // 百度地图画省边界外
   public centerMap2() {
@@ -162,13 +158,13 @@ export class WholeDataComponent implements OnInit, OnChanges {
      }*/
 
     // 编写自定义函数,创建标注
-   /* const pointsMarket = [
-      [106.626806, 26.683542, '贵阳服务区', 80],
-      [104.842269, 26.625681, '遵义服务区', 150],
-      [105.293002, 27.301609, '六盘水服务区', 300],
-      [106.93956, 27.760846, '毕节服务区', 781],
-      [106.994752, 26.0953, '安顺服务区', 198]
-    ];*/
+    /* const pointsMarket = [
+       [106.626806, 26.683542, '贵阳服务区', 80],
+       [104.842269, 26.625681, '遵义服务区', 150],
+       [105.293002, 27.301609, '六盘水服务区', 300],
+       [106.93956, 27.760846, '毕节服务区', 781],
+       [106.994752, 26.0953, '安顺服务区', 198]
+     ];*/
 
 
     // 添加5标注
@@ -213,15 +209,18 @@ export class WholeDataComponent implements OnInit, OnChanges {
       '香港特别行政区',
       '澳门特别行政区',
       '台湾省'];
+
     function getBoundary(name) {
       const bdary = new BMap.Boundary();
+
       function randomRgbColor() { // 随机生成RGB颜色
         const r = Math.floor(Math.random() * 256); // 随机生成256以内r值
         const g = Math.floor(Math.random() * 256); // 随机生成256以内g值
         const b = Math.floor(Math.random() * 256); // 随机生成256以内b值
         return `rgb(${r},${g},${b})`; // 返回rgb(r,g,b)格式颜色
       }
-       const colors = randomRgbColor();
+
+      const colors = randomRgbColor();
       bdary.get(name, function (rs) {       // 获取行政区域
         for (let i = 0; i < rs.boundaries.length; i++) {
           const ply = new BMap.Polygon(rs.boundaries[i], {
@@ -267,73 +266,257 @@ export class WholeDataComponent implements OnInit, OnChanges {
       });
     });
   }
-  // 图表更新
-  public updataEcharts(): void {
-    this.centerMap2();
-  }
-  // 省市联动
-  public provinceClick() {
-    this.provinceShow = true;
-    this.http.get('assets/data/province.json').subscribe(
-      (res) => {
-        this.province = res;
+
+  // echarts map
+  public echartsMap(): void {
+    /*获取地图数据*/
+    const geoCoordMap = {};
+    const mapFeatures = this.es.getMap('china').geoJson.features;
+    // const a = this.es.getMap('G60').geoJson.features;
+    // console.log(a);
+    mapFeatures.forEach(function(v) {
+      // 地区名称
+      const name = v.properties.name;
+      // 地区经纬度
+      geoCoordMap[name] = v.properties.cp;
+    });
+    geoCoordMap['台湾'] = [121.058785, 23.82262];
+    const datas = [
+      {name: '北京', value: 177},
+      {name: '天津', value: 42},
+      {name: '河北', value: 102},
+      {name: '山西', value: 81},
+      {name: '内蒙古', value: 47},
+      {name: '辽宁', value: 67},
+      {name: '吉林', value: 82},
+      {name: '黑龙江', value: 66},
+      {name: '上海', value: 50},
+      {name: '江苏', value: 92},
+      {name: '浙江', value: 114},
+      {name: '安徽', value: 109},
+      {name: '福建', value: 116},
+      {name: '江西', value: 91},
+      {name: '山东', value: 119},
+      {name: '河南', value: 137},
+      {name: '湖北', value: 116},
+      {name: '湖南', value: 114},
+      {name: '重庆', value: 91},
+      {name: '四川', value: 125},
+      {name: '贵州', value: 62},
+      {name: '云南', value: 83},
+      {name: '西藏', value: 50},
+      {name: '陕西', value: 80},
+      {name: '甘肃', value: 56},
+      {name: '青海', value: 50},
+      {name: '宁夏', value: 50},
+      {name: '新疆', value: 67},
+      {name: '广东', value: 123},
+      {name: '广西', value: 59},
+      {name: '海南', value: 50},
+      {name: '台湾', value: 50},
+    ];
+    const alirl = [
+      [
+        [121.15, 31.89],
+        [109.781327, 39.608266]
+      ],
+      [
+        [120.38, 37.35],
+        [122.207216, 29.985295]
+      ],
+      [
+        [123.97, 47.33],
+        [120.13, 33.38]
+      ],
+      [
+        [118.87, 42.28],
+        [120.33, 36.07]
+      ],
+      [
+        [121.52, 36.89],
+        [117.93, 40.97]
+      ],
+      [
+        [102.188043, 38.520089],
+        [122.1, 37.5]
+      ],
+      [
+        [118.58, 24.93],
+        [101.718637, 26.582347]
+      ],
+      [
+        [120.53, 36.86],
+        [121.48, 31.22]
+      ],
+      [
+        [119.46, 35.42],
+        [122.05, 37.2]
+      ],
+      [
+        [119.97, 35.88],
+        [116.1, 24.55]
+      ],
+      [
+        [121.05, 32.08],
+        [112.02, 22.93]
+      ],
+      [
+        [91.11, 29.97],
+        [118.1, 24.46]
+      ]
+    ];
+    const convertData = function (data) {
+      const res = [];
+      for (let i = 0; i < data.length; i++) {
+        const geoCoord = geoCoordMap[data[i].name];
+        if (geoCoord) {
+          res.push({
+            name: data[i].name,
+            value: geoCoord.concat(data[i].value)
+          });
+        }
       }
-    );
-  }
-  public provinceMouseEnter(item) {
-    if (item === '全国') {
-      this.cityShow = false;
-      return;
-    } else if (item === '贵州省') {
-      this.cityShow = true;
-      this.http.get('assets/data/guizhoucity.json').subscribe(
-        (res) => {
-          this.city = res[0].children;
-          this.citeDate = res[0].province;
+      return res;
+    };
+    this.options = {
+      title: {
+        text: '全国行政区划3D地图',
+        x: 'center',
+        top: '20',
+        textStyle: {
+          color: '#000',
+          fontSize: 24
         }
-      );
-    } else if (item === '云南省') {
-      this.cityShow = true;
-      this.http.get('assets/data/yunnancity.json').subscribe(
-        (res) => {
-          this.city = res[0].children;
-          this.citeDate = res[0].province;
+      },
+      tooltip: {
+        show: true,
+        formatter: '{b}',
+      },
+      geo3D: {
+        map: 'china',
+        left: 'auto',
+        right: 'auto',
+        top: 'auto',
+        bottom: 'auto',
+        itemStyle: {
+          color: 'rgb(5,101,123)',
+          opacity: 1,
+          borderWidth: 0.8,
+          borderColor: 'rgb(62,215,213)'
+        },
+        label: {
+          show: false,
+          textStyle: {
+            color: '#fff', // 地图初始化区域字体颜色
+            fontSize: 14,
+            opacity: 1,
+            backgroundColor: 'rgba(0,0,0,0)'
+            // backgroundColor: 'rgba(53,171,199,0)'
+          },
+        },
+        emphasis: {
+          // 当鼠标放上去  地区区域是否显示名称
+          label: {
+            show: false,
+            textStyle: {
+              color: '#fff',
+              fontSize: 16,
+              backgroundColor: 'rgba(0,23,11,0)'
+            }
+          },
+          itemStyle: {
+            color: '#071D3B',
+          }
+        },
+        // shading: 'lambert',
+        light: { // 光照阴影
+          main: {
+            color: '#fff', // 光照颜色
+            intensity: 1.2, // 光照强度
+            // shadowQuality: 'high', // 阴影亮度
+            shadow: false, // 是否显示阴影
+            alpha: 55,
+            beta: 10
+          },
+          ambient: {
+            intensity: 0.3
+          }
+        },
+        viewControl: {
+          minDistance: 90,
+          maxDistance: 120,
+          zoomSensitivity: 5
         }
-      );
-    } else {
-      this.cityShow = true;
-      this.city = [{city: '暂未开通'}];
-      this.citeDate = '暂未开通';
-    }
+      },
+      series: [
+        {
+          type: 'map3D',
+          map: 'china',
+          label: {
+            show: false,
+          },
+          itemStyle: {
+            color: 'red',
+            opacity: 1,
+            borderWidth: 0.8,
+            borderColor: 'rgb(62,215,213)'
+          },
+          data: datas,
+          zlevel: 1,
+        },
+        {
+          name: '散点',
+          type: 'scatter3D',
+          coordinateSystem: 'geo3D',
+          data: convertData(datas),
+          symbolSize: function () {
+            return 10;
+          },
+          label: {
+            normal: {
+              formatter: '{b}',
+              position: 'right',
+              show: true
+            },
+            emphasis: {
+              show: true
+            }
+          },
+          itemStyle: {
+            normal: {
+              color: 'red'
+            }
+          },
+          zlevel: 2,
+        },
+        // 画线
+
+        /*{
+          type: 'lines3D',
+
+          coordinateSystem: 'geo3D',
+
+          effect: {
+            show: true,
+            trailWidth: 4,
+            trailOpacity: 0.5,
+            trailLength: 0.3,
+            constantSpeed: 5
+          },
+
+          blendMode: 'lighter',
+
+          lineStyle: {
+            width: 0.2,
+            opacity: 0.05
+          },
+          data: alirl
+        }*/
+      ]
+    };
   }
-  public provinceDataClick(item) {
-    this.selectDate = item.province;
-    if (item.name === '全国') {
-      this.dataToggle = '全国';
-    } else if (item.name === '贵州') {
-      this.dataToggle = '贵州';
-      this.router.navigate(['/home/province']);
-      // this.centerMap1();
-    } else {
-      window.confirm('此地区暂未开通');
-    }
-  }
-  public cityDataClick(item) {
-    if (item.name === 'china') {
-      this.mapName = 'china';
-      this.mapCenter = [117.98561551896913, 31.205000490896193];
-      this.mapZoom = 0.8;
-      this.mapLeft = '5%';
-      this.mapRight = '15%';
-    } else {
-      this.mapName = '贵州';
-      this.mapLeft = '5%';
-      this.mapRight = '0%';
-      this.mapCenter = [106.682234, 26.626655];
-      this.mapZoom = 0.5;
-    }
-    this.selectDate = this.citeDate + item.city;
-    this.provinceShow = false;
-    this.cityShow = false;
+  // map clikc
+  public wholeMapClick (event): void {
+      console.log(event);
   }
 }
