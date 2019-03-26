@@ -427,7 +427,6 @@ export class CityDataComponent implements OnInit, OnDestroy {
       (val) => {
         if (val.status === '200') {
           this.mapPoints = val.data;
-          console.log(this.mapPoints);
         }
       }
     );
