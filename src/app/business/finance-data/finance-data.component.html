@@ -190,7 +190,7 @@
       <div class="map">
         <app-echart-bmap
           [height]="'50vh'"
-          [option]="{minZoom:7,maxZoom:9,center:[106.645779,26.654099],zoom: 8}"
+          [option]="{minZoom:7,maxZoom:9,center:[106.645779,26.654099],zoom: 8, area:dataToggle.substring(0, dataToggle.length - 1)}"
           [points]="mapPoints"
           (cityClick)="mapCityClick($event)"
         ></app-echart-bmap>

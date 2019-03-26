@@ -1,10 +1,12 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
+import {NgxEchartsService} from 'ngx-echarts';
 declare let BMap;
 class Option {
   minZoom = 5; // 地图最小级别
   maxZoom = 19; // 地图最大级别
   center = [116.402288, 40.131121]; // 地图中心点
   zoom = 12; // 地图默认级别
+  area = '贵州'; // 地图默认级别
 }
 @Component({
   selector: 'app-echart-bmap',
@@ -19,12 +21,17 @@ export class EchartBmapComponent implements OnInit, OnChanges {
   @Output() public cityClick = new EventEmitter<any>();
   @Output() public areaClick = new EventEmitter<any>();
   public areaName: any;
-  constructor() { }
+  public options: any;
+  constructor(
+    private es: NgxEchartsService,
+  ) { }
 
   ngOnInit() {}
   ngOnChanges(changes: SimpleChanges): void {
      if (this.points) {
-       this.mapinitialize();
+       // this.mapinitialize();
+       // console.log(this.option.area);
+       this.echartsMapinitialize();
      }
   }
   public mapinitialize() {
@@ -228,6 +235,168 @@ export class EchartBmapComponent implements OnInit, OnChanges {
         });
       }
     });
+  }
+  public echartsMapinitialize() {
+    /*获取地图数据*/
+    const geoCoordMap = {};
+    const datas = [];
+    const mapFeatures = this.es.getMap(this.option.area).geoJson.features;
+    mapFeatures.forEach(function(v) {
+      // 地区名称
+      const name = v.properties.name;
+      // 地区经纬度
+      geoCoordMap[name] = v.properties.cp;
+      datas.push({name: v.properties.name, value: 100});
+    });
+    const convertData = function (data) {
+      const res = [];
+      for (let i = 0; i < data.length; i++) {
+        const geoCoord = geoCoordMap[data[i].name];
+        if (geoCoord) {
+          res.push({
+            name: data[i].name,
+            value: geoCoord.concat(data[i].value)
+          });
+        }
+      }
+      return res;
+    };
+    this.options = {
+     /* title: {
+        text: '全国行政区划3D地图',
+        x: 'center',
+        top: '20',
+        textStyle: {
+          color: 'white',
+          fontSize: 24
+        }
+      },*/
+      tooltip: {
+        show: true,
+        formatter: '{b}',
+      },
+      geo3D: {
+        map: this.option.area,
+        left: 'auto',
+        right: 'auto',
+        top: 'auto',
+        bottom: 'auto',
+        itemStyle: {
+          color: 'rgb(5,101,123)',
+          opacity: 1,
+          borderWidth: 0.8,
+          borderColor: 'rgb(62,215,213)'
+        },
+        label: {
+          show: false,
+          textStyle: {
+            color: '#fff', // 地图初始化区域字体颜色
+            fontSize: 14,
+            opacity: 1,
+            backgroundColor: 'rgba(0,0,0,0)'
+            // backgroundColor: 'rgba(53,171,199,0)'
+          },
+        },
+        emphasis: {
+          // 当鼠标放上去  地区区域是否显示名称
+          label: {
+            show: false,
+            textStyle: {
+              color: '#fff',
+              fontSize: 16,
+              backgroundColor: 'rgba(0,23,11,0)'
+            }
+          },
+          itemStyle: {
+            color: '#071D3B',
+          }
+        },
+        // shading: 'lambert',
+        light: { // 光照阴影
+          main: {
+            color: '#fff', // 光照颜色
+            intensity: 1.2, // 光照强度
+            // shadowQuality: 'high', // 阴影亮度
+            shadow: false, // 是否显示阴影
+            alpha: 55,
+            beta: 10
+          },
+          ambient: {
+            intensity: 0.3
+          }
+        },
+        viewControl: {
+          minDistance: 90,
+          maxDistance: 120,
+          zoomSensitivity: 5
+        }
+      },
+      series: [
+        {
+          type: 'map3D',
+          map: this.option.area,
+          label: {
+            show: false,
+          },
+          itemStyle: {
+            color: 'rgba(0,23,11,0)',
+            opacity: 1,
+            borderWidth: 0.8,
+            borderColor: 'rgb(62,215,213)'
+          },
+          data: datas,
+          zlevel: 1,
+        },
+        {
+          name: '散点',
+          type: 'scatter3D',
+          coordinateSystem: 'geo3D',
+          data: convertData(datas),
+          symbolSize: function () {
+            return 10;
+          },
+          label: {
+            normal: {
+              formatter: '{b}',
+              position: 'right',
+              show: true
+            },
+            emphasis: {
+              show: true
+            }
+          },
+          itemStyle: {
+            normal: {
+              color: 'transparent'
+            }
+          },
+          zlevel: 2,
+        },
+        // 画线
+
+        /*{
+          type: 'lines3D',
+
+          coordinateSystem: 'geo3D',
+
+          effect: {
+            show: true,
+            trailWidth: 4,
+            trailOpacity: 0.5,
+            trailLength: 0.3,
+            constantSpeed: 5
+          },
+
+          blendMode: 'lighter',
+
+          lineStyle: {
+            width: 0.2,
+            opacity: 0.05
+          },
+          data: alirl
+        }*/
+      ]
+    };
   }
 
 }
