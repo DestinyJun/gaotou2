@@ -118,7 +118,6 @@ export class FinanceDataComponent implements OnInit, OnDestroy {
     this.routerInfo.params.subscribe(
       (params) => {
         this.dataToggle = params.name;
-        console.log(this.dataToggle.substring(0, this.dataToggle.length - 1));
         this.provinceId = params.id;
         // 发射业态数据名称
         this.localService.eventBus.next({title: params.name + '高速业态大数据',  flagState: 'finance', flagName: this.dataToggle});

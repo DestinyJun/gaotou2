@@ -69,20 +69,13 @@ export class EchartBmapComponent implements OnInit, OnChanges {
           },
         },
         emphasis: {
-          // 当鼠标放上去  地区区域是否显示名称
           label: {
             show: false,
-            textStyle: {
-              color: '#fff',
-              fontSize: 16,
-              backgroundColor: 'rgba(0,23,11,0)'
-            }
           },
           itemStyle: {
             color: '#071D3B',
           }
         },
-        // shading: 'lambert',
         light: { // 光照阴影
           main: {
             color: '#fff', // 光照颜色
@@ -104,6 +97,10 @@ export class EchartBmapComponent implements OnInit, OnChanges {
       },
       series: [
         {
+          tooltip: {
+            show: false,
+            formatter: '{b}',
+          },
           type: 'map3D',
           map: this.option.area,
           label: {
@@ -114,6 +111,19 @@ export class EchartBmapComponent implements OnInit, OnChanges {
             opacity: 1,
             borderWidth: 0.8,
             borderColor: 'rgb(62,215,213)'
+          },
+          emphasis: {
+            label: {
+              show: false,
+            },
+            itemStyle: {
+              color: '#071D3B',
+            }
+          },
+          viewControl: {
+            minDistance: 90,
+            maxDistance: 120,
+            zoomSensitivity: 5
           },
           data: [],
           zlevel: 1,
@@ -133,12 +143,37 @@ export class EchartBmapComponent implements OnInit, OnChanges {
               show: true
             },
             emphasis: {
-              show: true
+              show: false
             }
           },
           itemStyle: {
             normal: {
               color: 'transparent'
+            }
+          },
+          zlevel: 2,
+        },
+        {
+          name: '服务区',
+          type: 'scatter3D',
+          coordinateSystem: 'geo3D',
+          data: [],
+          symbolSize: function () {
+            return 10;
+          },
+          label: {
+            normal: {
+              formatter: '{b}',
+              position: 'right',
+              show: false
+            },
+            emphasis: {
+              show: false
+            }
+          },
+          itemStyle: {
+            normal: {
+              color: 'red'
             }
           },
           zlevel: 2,
@@ -173,20 +208,91 @@ export class EchartBmapComponent implements OnInit, OnChanges {
        this.echartsMapInitialize();
      }
   }
-  public mapinitialize() {
+  public echartsMapInitialize() {
+    // 服务区点
+    const pointDatas = [];
+    this.points.map((val, index1) => {
+      const a = [];
+      val.attributeValueList.map((item, index2) => {
+        if (item.attributeDesc === '经度') {
+          a.push(item.attributeValue);
+        } else if (item.attributeDesc === '纬度') {
+          a.push(item.attributeValue);
+        }
+      });
+      if (a) {
+        a.push(150);
+        a.push(val.id);
+      }
+      pointDatas.push({name: val.name, value: a});
+    });
+    /*获取地图数据*/
+    const geoCoordMap = {};
+    const datas = [];
+    const mapFeatures = this.es.getMap(this.option.area).geoJson.features;
+    mapFeatures.forEach(function(v) {
+      // 地区名称
+      const name = v.properties.name;
+      // 地区经纬度
+      geoCoordMap[name] = v.properties.cp;
+      datas.push({name: v.properties.name, value: 100, id: 2});
+    });
+    const convertData = function (data) {
+      const res = [];
+      for (let i = 0; i < data.length; i++) {
+        const geoCoord = geoCoordMap[data[i].name];
+        if (geoCoord) {
+          res.push({
+            name: data[i].name,
+            value: geoCoord.concat(data[i].value)
+          });
+        }
+      }
+      return res;
+    };
+    this.updateOptions = {
+      geo3D: {
+        map: this.option.area,
+      },
+      series: [
+        {
+          map: this.option.area,
+          data: datas
+        },
+        {
+          data: convertData(datas),
+        },
+        {
+          data: pointDatas,
+        }
+      ]
+    };
+  }
+  // map clikc
+  public echartMapClick (event): void {
+    if (event.componentSubType === 'scatter3D') {
+      this.router.navigate(['/home/serzone', {id: event.data.value[3], name: event.data.name}]);
+      return;
+    }
+    if (event.componentSubType === 'map3D') {
+      this.router.navigate(['/home/city', {id: event.data.id, name: event.data.name}]);
+      return;
+    }
+  }
+  /*public mapinitialize() {
     const that = this;
     const map = new BMap.Map('bmap', {minZoom: this.option.minZoom, maxZoom: this.option.maxZoom});
     map.setMapStyle({
       styleJson: [
         // 城市名字的颜色
-        /*{
+        /!*{
             "featureType": "city",
             "elementType": "labels.text.fill",
             "stylers": {
                 "color": "#aedce2ff",
                 "visibility": "on"
             }
-        },*/
+        },*!/
         // 地图背景颜色
         {
           'featureType': 'background',
@@ -263,7 +369,7 @@ export class EchartBmapComponent implements OnInit, OnChanges {
           addMarker(points, pointsMarket[i][2]);
         }
       }
-      /*this.financeDataService.getServiceNamePoint().subscribe(
+      /!*this.financeDataService.getServiceNamePoint().subscribe(
         (val) => {
           if (val.status === '200') {
             val.data.map((val1, index1) => {
@@ -287,7 +393,7 @@ export class EchartBmapComponent implements OnInit, OnChanges {
               addMarker(points, pointsMarket[i][2]);
             }
           }
-        });*/
+        });*!/
     }
     function addMarker(point, name) {
       const myIcon = new BMap.Icon('assets/images/s1.png', new BMap.Size(10, 10), {
@@ -374,50 +480,5 @@ export class EchartBmapComponent implements OnInit, OnChanges {
         });
       }
     });
-  }
-  public echartsMapInitialize() {
-    /*获取地图数据*/
-    const geoCoordMap = {};
-    const datas = [];
-    const mapFeatures = this.es.getMap(this.option.area).geoJson.features;
-    console.log(mapFeatures);
-    mapFeatures.forEach(function(v) {
-      // 地区名称
-      const name = v.properties.name;
-      // 地区经纬度
-      geoCoordMap[name] = v.properties.cp;
-      datas.push({name: v.properties.name, value: 100});
-    });
-    const convertData = function (data) {
-    const res = [];
-    for (let i = 0; i < data.length; i++) {
-      const geoCoord = geoCoordMap[data[i].name];
-      if (geoCoord) {
-        res.push({
-          name: data[i].name,
-          value: geoCoord.concat(data[i].value)
-        });
-      }
-    }
-    return res;
-};
-    this.updateOptions = {
-      geo3D: {
-        map: this.option.area,
-      },
-      series: [
-        {
-          map: this.option.area,
-          data: datas
-        },
-        {
-          data: convertData(datas),
-        }
-      ]
-    };
-  }
-  // map clikc
-  public echartMapClick (event): void {
-    this.router.navigate(['/home/city', {id: 2, name: event.name}]);
-  }
+  }*/
 }
