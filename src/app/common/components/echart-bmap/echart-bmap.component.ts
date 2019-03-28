@@ -2,6 +2,7 @@ import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges
 import {NgxEchartsService} from 'ngx-echarts';
 import {HttpClient} from '@angular/common/http';
 import {Router} from '@angular/router';
+import {FinanceDataService} from '../../services/finance-data.service';
 declare let BMap;
 // import * as echarts from 'echarts';
 class Option {
@@ -28,7 +29,8 @@ export class EchartBmapComponent implements OnInit, OnChanges {
   public updateOptions: any = {};
   constructor(
     private es: NgxEchartsService,
-    private router: Router
+    private router: Router,
+    private finaSrv: FinanceDataService
   ) { }
 
   ngOnInit() {
@@ -90,8 +92,9 @@ export class EchartBmapComponent implements OnInit, OnChanges {
           }
         },
         viewControl: {
-          minDistance: 90,
-          maxDistance: 120,
+          distance: 140,
+          minDistance: 50,
+          maxDistance: 300,
           zoomSensitivity: 5
         }
       },
@@ -121,8 +124,9 @@ export class EchartBmapComponent implements OnInit, OnChanges {
             }
           },
           viewControl: {
-            minDistance: 90,
-            maxDistance: 120,
+            distance: 140,
+            minDistance: 50,
+            maxDistance: 300,
             zoomSensitivity: 5
           },
           data: [],
@@ -205,10 +209,16 @@ export class EchartBmapComponent implements OnInit, OnChanges {
   }
   ngOnChanges(changes: SimpleChanges): void {
      if (this.points) {
-       this.echartsMapInitialize();
+       this.finaSrv.searchAreaList({page: 1, nums: 1000}).subscribe(
+         (val) => {
+           if (val.status === '200') {
+             this.echartsMapInitialize(val.data.contents[0].administrativeAreaTree);
+           }
+         }
+       );
      }
   }
-  public echartsMapInitialize() {
+  public echartsMapInitialize(areas) {
     // 服务区点
     const pointDatas = [];
     this.points.map((val, index1) => {
@@ -233,9 +243,13 @@ export class EchartBmapComponent implements OnInit, OnChanges {
     mapFeatures.forEach(function(v) {
       // 地区名称
       const name = v.properties.name;
+      areas.map((val, idx, obj) => {
+        if (val.areaName.substring(0, 2) === name.substring(0, 2)) {
+          datas.push({name: v.properties.name, value: 100, id: val.id});
+        }
+    });
       // 地区经纬度
       geoCoordMap[name] = v.properties.cp;
-      datas.push({name: v.properties.name, value: 100, id: 2});
     });
     const convertData = function (data) {
       const res = [];

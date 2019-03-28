@@ -13,6 +13,11 @@ export class FinanceDataService {
   public getServiceNamePoint(params): Observable<any> {
     return this.http.get(`${environment.urls}/common/config/getServiceAreaCoordinate/${params.id}`);
   }
+  // 获取区域
+  public searchAreaList(num): Observable<any> {
+    return this.http.post(
+      `${environment.urls}/administrativeArea/queryTreeByPaging/${num.page}/${num.nums}`, {});
+  }
   // 3D图数据、点击后的柱状图、扇形图
   /*public search3DBar(params): Observable<any> {
     return this.http.post(`${environment.urlc}/administrativeAreaStatistics/monthly3D/${params.id}`, params.parameter);

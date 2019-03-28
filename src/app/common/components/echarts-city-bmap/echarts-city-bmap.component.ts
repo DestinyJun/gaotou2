@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {NgxEchartsService} from 'ngx-echarts';
 import {HttpClient} from '@angular/common/http';
+import {Router} from '@angular/router';
 class Option {
   area = ''; // 地图默认级别
 }
@@ -33,7 +34,8 @@ export class EchartsCityBmapComponent implements OnInit, OnChanges {
   public updateOptions: any = {};
   constructor(
     private es: NgxEchartsService,
-    private http: HttpClient
+    private http: HttpClient,
+    private router: Router,
   ) { }
 
   ngOnInit() {
@@ -102,8 +104,9 @@ export class EchartsCityBmapComponent implements OnInit, OnChanges {
           }
         },
         viewControl: {
-          minDistance: 90,
-          maxDistance: 120,
+          distance: 155,
+          minDistance: 50,
+          maxDistance: 300,
           zoomSensitivity: 5
         }
       },
@@ -124,6 +127,31 @@ export class EchartsCityBmapComponent implements OnInit, OnChanges {
             },
             emphasis: {
               show: true
+            }
+          },
+          itemStyle: {
+            normal: {
+              color: 'transparent'
+            }
+          },
+          zlevel: 2,
+        },
+        {
+          name: '服务区',
+          type: 'scatter3D',
+          coordinateSystem: 'geo3D',
+          data: [],
+          symbolSize: function () {
+            return 10;
+          },
+          label: {
+            normal: {
+              formatter: '{b}',
+              position: 'right',
+              show: false
+            },
+            emphasis: {
+              show: false
             }
           },
           itemStyle: {
@@ -163,21 +191,44 @@ export class EchartsCityBmapComponent implements OnInit, OnChanges {
       this.echartsCityInitialize();
     }
   }
+  // map clikc
+  public echartMapClick (event): void {
+    if (event.componentSubType === 'scatter3D') {
+      this.router.navigate(['/home/serzone', {id: event.data.value[3], name: event.data.name}]);
+      return;
+    }
+  }
   public echartsCityInitialize() {
     this.http.get(`/assets/data/${this.citys[this.option.area]}.json`)
       .subscribe((geoJson) => {
         this.es.registerMap(this.option.area, geoJson);
+        // 服务区点
+        const pointDatas = [];
+        this.points.map((val, index1) => {
+          const a = [];
+          val.attributeValueList.map((item, index2) => {
+            if (item.attributeDesc === '经度') {
+              a.push(item.attributeValue);
+            } else if (item.attributeDesc === '纬度') {
+              a.push(item.attributeValue);
+            }
+          });
+          if (a) {
+            a.push(150);
+            a.push(val.id);
+          }
+          pointDatas.push({name: val.name, value: a});
+        });
         /*获取地图数据*/
         const geoCoordMap = {};
         const datas = [];
         const mapFeatures = this.es.getMap(this.option.area).geoJson.features;
-        console.log(mapFeatures);
         mapFeatures.forEach(function(v) {
           // 地区名称
           const name = v.properties.name;
           // 地区经纬度
           geoCoordMap[name] = v.properties.centroid;
-          datas.push({name: v.properties.name, value: 100});
+          datas.push({name: v.properties.name, value: 150});
         });
         const convertData = function (data) {
           const res = [];
@@ -190,7 +241,6 @@ export class EchartsCityBmapComponent implements OnInit, OnChanges {
               });
             }
       }
-          console.log(res);
           return res;
         };
         this.updateOptions = {
@@ -200,6 +250,9 @@ export class EchartsCityBmapComponent implements OnInit, OnChanges {
           series: [
             {
               data: convertData(datas),
+            },
+            {
+              data: pointDatas,
             }
           ]
         };

@@ -210,7 +210,7 @@ export class NavComponent implements OnInit {
   }
 
   public nodeUnselect(e) {
-    console.log(e);
+    // console.log(e);
   }
 
   public nodeExpand(event) {
