@@ -8,11 +8,11 @@ import {DatePipe} from '@angular/common';
 import {ExampleDataService} from '../../common/services/example-data.service';
 @Component({
   selector: 'app-finance-data',
-  templateUrl: './finance-data.component.html',
-  styleUrls: ['./finance-data.component.css'],
+  templateUrl: './province-data.component.html',
+  styleUrls: ['./province-data.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class FinanceDataComponent implements OnInit, OnDestroy {
+export class ProvinceDataComponent implements OnInit, OnDestroy {
   /***********************基础信息************************/
   public esDate: any;  // 时间初始化
     // 组件销毁后清除时钟任务

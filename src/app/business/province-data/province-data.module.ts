@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import {CommonModule, DatePipe} from '@angular/common';
 import {SharedModule} from '../../common/shared.module';
-import {FinanceDataRoutingModule} from './finance-data.routing.module';
-import { FinanceDataComponent } from './finance-data.component';
+import {ProvinceDataRoutingModule} from './province-data.routing.module';
+import { ProvinceDataComponent } from './province-data.component';
 import {FormsModule} from '@angular/forms';
 import {EchartsLineBrokenModule, InputDropdownModule, PagingModule, WenjunAlertModule} from '../../common/wenjun';
 import { FinanceDataService } from '../../common/services/finance-data.service';
@@ -14,7 +14,7 @@ import {InputDropdownDayModule} from '../../common/wenjun/input-dropdown-day/inp
   imports: [
     CommonModule,
     FormsModule,
-    FinanceDataRoutingModule,
+    ProvinceDataRoutingModule,
     SharedModule,
     WenjunAlertModule,
     CalendarModule,
@@ -24,8 +24,8 @@ import {InputDropdownDayModule} from '../../common/wenjun/input-dropdown-day/inp
     EchartsLineBrokenModule,
     InputDropdownDayModule
   ],
-  declarations: [FinanceDataComponent],
+  declarations: [ProvinceDataComponent],
   entryComponents: [],
   providers: [FinanceDataService, DataService, DatePipe]
 })
-export class FinanceDataModule { }
+export class ProvinceDataModule { }
