@@ -45,17 +45,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   public serviceZoneTitle: string;  // 服务区名称
   public serviceZoneID: string;   // 服务区ID
   /***********************左边************************/
-    //  3D柱状图配置
-  public options3d: any = null;
-  public options3dCopy: any;
-  public alertBarShow = false;   // 3D柱状图弹窗
-  public alertBarTitle: string;
-  public options3dBar: any;
-  public options3dLine: any;
-  public outOptions3d: any; // 3D图组件传出来的值
-  public bar3dExcelShow = false;
-  public startTime3d: Date; // 时间选择器
-  public endTime3d: Date; // 时间选择器
   // 车辆监控
   public vehicleAmount: any = null;
   public optionsCarModel: any; // 车辆饼状图
@@ -185,8 +174,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
         this.alterCommonAttributeValues = [];
         this.alterUpAttributeValues = [];
         this.alterDownAttributeValues = [];
-        this.options3d = null;
-        this.options3dCopy = null;
         this.vehicleAmount = null;
         this.optionsCarModel = null;
         this.incomeAmount = null;
@@ -250,8 +237,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
         }
       }
     );
-    //  3d图统计
-    this.packOption3();
     // 车流监控
     this.vehicleAmountCountClean = setInterval(() => {
       // console.log('111');
@@ -325,7 +310,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
                   this.serareaService.searchPersonCity({id: this.serviceZoneID}).subscribe(
                     (cityVal) => {
                       if (cityVal.status === '200') {
-                        console.log(cityVal);
                         city = cityVal.data;
                         this.localService.persons.next({
                           total: total.toString().split(''),
@@ -351,127 +335,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   }
 
   /************************左边***************************/
-  // 3D柱状图图表配置及表格导出
-  public packOption3() {
-    // 车流客流人流
-    this.serareaService.search3DBar({id: this.serviceZoneID, parameter: ['revenue', 'passenger', 'vehicle']}).subscribe(
-      (val) => {
-        if (val.status === '200') {
-          this.options3d = val.data;
-        }
-      }
-    );
-    // 用电量用水量
-    this.serareaService.search3DBar({id: this.serviceZoneID, parameter: ['electric', 'water', 'washing_out']}).subscribe(
-      (val) => {
-        if (val.status === '200') {
-          this.options3dCopy = val.data;
-        }
-      }
-    );
-  }
-
-  public onOutOptions3d(e): void {
-    const defaultMonth = new Date().getMonth() + 1;
-    this.outOptions3d = e;
-    document.body.className = 'ui-overflow-hidden';
-    this.alertBarShow = true;
-    this.alertBarTitle = this.outOptions3d.alertBarTitle;
-    // 柱状图
-    this.serareaService.search3DAlertBar({id: this.serviceZoneID, types: this.outOptions3d.bar.types}).subscribe(
-      (val) => {
-       /* if (e.bar.types === 'pollution') {
-          const a = {
-            xData: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
-            coordinate: [22918, 188612, 223787, 225436, 254298, 233201, 124071, 80720, 313150, 80775, 97796, 204784]
-          };
-          this.options3dBar = {
-            data: a,
-            xType: this.outOptions3d.pie.xType,
-            title: `贵州省久长服务区年度${this.outOptions3d.alertBarTitle}统计`
-          };
-          return;
-        }*/
-        if (val.status === '200') {
-          this.options3dBar = {
-            data: val.data,
-            xType: this.outOptions3d.pie.xType,
-            title: `贵州省久长服务区年度${this.outOptions3d.alertBarTitle}统计`
-          };
-        }
-      }
-    );
-   /* if (e.bar.types === 'electric' || e.bar.types === 'water' || e.bar.types === 'pollution') {
-      // 折线图
-      this.serareaService.search3DAlertLineMonth(
-        {id: this.serviceZoneID, month: defaultMonth, types: ['revenue', 'passenger', 'vehicle', 'electric', 'water']}).subscribe(
-        (val) => {
-          if (val.status === '200') {
-            val.data.yData.push({
-              code: 'pollution',
-              data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-              name: '排污量'
-            });
-            this.options3dLine = {
-              title: `贵州省久长服务区${this.options3d.xdata[defaultMonth - 1]}业态走势图`,
-              data: val.data,
-              color: ['#7C7CD4', '#36B9AB', '#6ACD72', '#0A30BF', '#027204', '#E36E57']
-            };
-          }
-        }
-      );
-      return;
-    }*/
-    // 折线图
-    this.serareaService.search3DAlertLineMonth(
-      {
-        id: this.serviceZoneID, month: defaultMonth,
-        types: ['revenue', 'passenger', 'vehicle', 'electric', 'water', 'washing_out']}).subscribe(
-      (val) => {
-        if (val.status === '200') {
-          this.options3dLine = {
-            title: `贵州省久长服务区${this.options3d.xdata[defaultMonth - 1]}业态走势图`,
-            data: val.data,
-            color: ['#7C7CD4', '#36B9AB', '#6ACD72', '#0A30BF', '#027204', '#E36E57']
-          };
-        }
-      }
-    );
-  }
-
-  public onOutOptions3dBar(e): void {
-    // 折线图
-    this.serareaService.search3DAlertLineMonth(
-      {
-        id: this.serviceZoneID, month: e.xType + 1,
-        types: ['revenue', 'passenger', 'vehicle', 'electric', 'water', 'washing_out']}).subscribe(
-      (val) => {
-        if (val.status === '200') {
-          this.options3dLine = {
-            title: `贵州省久长服务区${this.options3d.xdata[e.xType]}业态走势图`,
-            data: val.data,
-            color: ['#7C7CD4', '#36B9AB', '#6ACD72', '#0A30BF', '#027204', '#E36E57']
-          };
-        }
-      }
-    );
-  }
-
-  public closeBarShow() {
-    this.alertBarShow = false;
-    document.body.className = '';
-  }
-
-  public bar3dExportClick() {
-    const startTime = this.datePipe.transform(this.startTime3d, 'yyyyMMdd');
-    const endTime = this.datePipe.transform(this.endTime3d, 'yyyyMMdd');
-    if (this.startTime3d && this.endTime3d) {
-      window.open(`http://120.78.137.182:8888/highway-interactive/report/serviceArea/3d/1/startDate/${startTime}/endDate/${endTime}`);
-    } else {
-      window.alert('请把数据选择全在提交');
-    }
-  }
-
   // 车辆监控及表格导出
   public vehicleAmountCount(): void {
     this.serareaService.searchCarTotal({id: this.serviceZoneID}).subscribe(
@@ -544,29 +407,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     this.alertCarShow = false;
   }
 
-  /*public carBtnClick(e): void {
-    if (e.srcElement.innerText === '小车') {
-      this.alertCarTitle = '小车';
-      this.arryCarPie = [];
-      this.carTableData = [];
-      this.carTableData = this.dataService.getJsonObj(8, 1000, 100, this.alertCarTitle);
-    } else if (e.srcElement.innerText === '总数') {
-      this.alertCarTitle = '总数';
-      this.arryCarPie = [];
-      this.carTableData = [];
-      this.carTableData = this.dataService.getJsonObj(8, 1000, 100, this.alertCarTitle);
-    } else if (e.srcElement.innerText === '客车') {
-      this.alertCarTitle = '客车';
-      this.arryCarPie = [];
-      this.carTableData = [];
-      this.carTableData = this.dataService.getJsonObj(8, 1000, 100, this.alertCarTitle);
-    } else if (e.srcElement.innerText === '货车') {
-      this.alertCarTitle = '货车';
-      this.arryCarPie = [];
-      this.carTableData = [];
-      this.carTableData = this.dataService.getJsonObj(8, 1000, 100, this.alertCarTitle);
-    }
-  }*/
   public carExportClick() {
     const startTime = this.datePipe.transform(this.carStartTime, 'yyyyMMdd');
     const endTime = this.datePipe.transform(this.carEndTime, 'yyyyMMdd');

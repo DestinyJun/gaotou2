@@ -8,6 +8,8 @@ import { CityDataService } from '../../common/services/city-data.service';
 import {CalendarModule, ScrollPanelModule} from 'primeng/primeng';
 import {FormsModule} from '@angular/forms';
 import {DataService} from '../../common/services/data.service';
+import {City3dComponent} from './city-3d/city-3d.component';
+import {CityCarComponent} from './city-car/city-car.component';
 
 @NgModule({
   imports: [
@@ -20,7 +22,11 @@ import {DataService} from '../../common/services/data.service';
     ScrollPanelModule,
     PagingModule
   ],
-  declarations: [CityDataComponent],
+  declarations: [
+    CityDataComponent,
+    City3dComponent,
+    CityCarComponent
+  ],
   providers: [CityDataService, DataService, DatePipe]
 })
 export class CityDataModule { }

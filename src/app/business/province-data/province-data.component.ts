@@ -5,7 +5,6 @@ import {ConfigModule, WenjunAlertService} from '../../common/wenjun';
 import {FinanceDataService} from '../../common/services/finance-data.service';
 import {LocalStorageService} from '../../common/services/local-storage.service';
 import {DatePipe} from '@angular/common';
-import {ExampleDataService} from '../../common/services/example-data.service';
 @Component({
   selector: 'app-finance-data',
   templateUrl: './province-data.component.html',
@@ -19,48 +18,6 @@ export class ProvinceDataComponent implements OnInit, OnDestroy {
   public vehicleAmountCountClean: any;
   public incomeAmountCountClean: any;
   public personAmountCountClean: any;
-  public dataMonthChinese = [
-    '一月', '二月', '三月', '四月', '五月', '六月',
-    '七月', '八月', '九月', '十月', '十一月', '十二月'
-  ];
-  public selectDataYear: any;
-  public selectDataMonth: any;
-  public selectDataDay: any;
-  public dataYear = [
-    {name: '请选择年', code: -1},
-    {name: '2015年', code: 'year'},
-    {name: '2016年', code: 'year'},
-    {name: '2017年', code: 'year'},
-    {name: '2018年', code: 'year'},
-    {name: '2019年', code: 'year'}];
-  public dataMonth = [];
-  public dataDay = [];
-  public monthShow = false;
-  public dayShow = false;
-  /****************************左边***************************/
-    // 3D柱状图配置
-  public options3d: any;
-  public options3dCopy: any;
-  public alertBarShow = false;
-  public alertBarTitle: string;
-  public options3dBar = {};
-  public options3dPie = {};
-  public outOptions3d: any; // 3D图组件传出来的值
-  public bar3dExcelShow = false;  // 3D图统计的表格导出
-  public startTime3d: Date; // 时间选择器
-  public endTime3d: Date; // 时间选择器
-  // 车辆监控
-  public vehicleAmount: any;
-  public optionsCarModel: any; // 车辆饼状图
-  public alertCarShow = false;
-  public alertCarTitle = '总数';
-  public optionsCarType = {};
-  public arryCarPie = [];
-  public carOptionType: any;
-  public carTableData: any;
-  public carExcelShow = false;
-  public carStartTime: Date; // 时间选择器
-  public carEndTime: Date; // 时间选择器
   /*****************************中部**************************/
   // 地图点
   public mapPoints: any;
@@ -110,7 +67,6 @@ export class ProvinceDataComponent implements OnInit, OnDestroy {
     private financeDataService: FinanceDataService,
     private localService: LocalStorageService,
     private datePipe: DatePipe,
-    private exampleService: ExampleDataService
   ) {}
 
   ngOnInit() {
@@ -121,9 +77,6 @@ export class ProvinceDataComponent implements OnInit, OnDestroy {
         this.provinceId = params.id;
         // 发射业态数据名称
         this.localService.eventBus.next({title: params.name + '高速业态大数据',  flagState: 'finance', flagName: this.dataToggle});
-        // 实时数据
-        this.vehicleAmountCount();
-        this.CarTypes();
         this.incomeAmountCount();
         this.IncomeTypes();
         this.getPerson();
@@ -150,8 +103,6 @@ export class ProvinceDataComponent implements OnInit, OnDestroy {
   }
   /*********************************数据初始化*****************************/
   public updataEcharts(): void {
-    // 3D柱状图
-    this.packOption3();
     /**************************中部****************************/
     // 地图数据
     this.centertMap();
@@ -163,11 +114,6 @@ export class ProvinceDataComponent implements OnInit, OnDestroy {
     this.personOfficeTypes = this.dataService.personOfficeTypes;
     // 业态经营数据前十排名
     this.backCrosswiseBar('revenue');
-    // 车流监控
-     this.vehicleAmountCountClean = setInterval(() => {
-       this.vehicleAmountCount();
-       this.CarTypes();
-     }, 3000);
     // 收入监控
     this.incomeAmountCountClean = setInterval(() => {
       this.incomeAmountCount();
@@ -217,232 +163,6 @@ export class ProvinceDataComponent implements OnInit, OnDestroy {
         }
       }
     );
-  }
-  /**********************************左边*****************************/
-  // 3D柱状图
-  public packOption3() {
-    // 车流客流人流
-    this.financeDataService.search3DBar({id: this.provinceId, parameter: ['revenue', 'passenger', 'vehicle']}).subscribe(
-      (val) => {
-        if (val.status === '200') {
-          this.options3d = val.data;
-        }
-      }
-    );
-    // 用电量用水量
-    this.financeDataService.search3DBar({id: this.provinceId, parameter: ['electric', 'water']}).subscribe(
-      (val) => {
-        if (val.status === '200') {
-          this.options3dCopy = val.data;
-        }
-      }
-    );
-  }
-  public onOutOptions3d(e): void {
-    this.outOptions3d = e;
-    document.body.className = 'ui-overflow-hidden';
-    this.alertBarShow = true;
-    this.alertBarTitle = this.outOptions3d.alertBarTitle;
-    // 柱状图
-    this.options3dBar = {
-      timeType: 'month',
-      data: this.exampleService.getProvinceBarMonthData(),
-      xType: this.outOptions3d.pie.xType,
-      title: `贵州省本年度服务区${this.outOptions3d.alertBarTitle}统计`
-    };
-    this.financeDataService.search3DAlertBar({id: this.provinceId, types: this.outOptions3d.bar.types}).subscribe(
-      (val) => {
-        if (val.status === '200') {
-          this.options3dBar = {
-            data: val.data,
-            xType: this.outOptions3d.pie.xType,
-            title: `贵州省所有服务区年度${this.outOptions3d.alertBarTitle}统计`
-          };
-        }
-      }
-    );
-    // 类型占比扇形图
-    this.financeDataService.search3DAlertPie({id: this.provinceId, xType: this.outOptions3d.pie.xType, types: this.outOptions3d.pie.types}).subscribe(
-      (val) => {
-        if (val.status === '200') {
-          this.options3dPie = {
-            data: val.data,
-            title: `贵州省所有服务区年度${this.outOptions3d.alertBarTitle}类型占比统计`,
-            total: this.outOptions3d.total,
-            color: ['#CE2D79', '#BDD139', '#78E77D', '#09D4D6', '#3C75B9',
-              '#6769B1', '#FF8C9D', '#2796C4', '#E57D0D']
-          };
-        }
-      }
-    );
-  }
-  public onOutOptions3dBar(e): void {
-    // 类型占比扇形图
-    this.financeDataService.search3DAlertPie({id: this.provinceId, xType: e.xType, types: this.outOptions3d.pie.types}).subscribe(
-      (val) => {
-        if (val.status === '200') {
-          this.options3dPie = {
-            data: val.data,
-            title: `贵州省所有服务区年度${this.outOptions3d.alertBarTitle}类型占比统计`,
-            total: e.data,
-            color: ['#CE2D79', '#BDD139', '#78E77D', '#09D4D6', '#3C75B9',
-              '#6769B1', '#FF8C9D', '#2796C4', '#E57D0D']
-          };
-        }
-      }
-    );
-  }
-  public onOptions3dPie(e): void {
-    if (e.name === '贵阳市') {
-      this.router.navigate(['/home/city', {name: e.name}]);
-    } else {
-      window.alert (`很抱歉，${e.name}暂无数据`);
-    }
-  }
-  public closeBarShow() {
-    document.body.className = '';
-    this.alertBarShow = false;
-  }
-  public bar3dExportClick() {
-    const startTime = this.datePipe.transform(this.startTime3d, 'yyyyMMdd');
-    const endTime = this.datePipe.transform(this.endTime3d, 'yyyyMMdd');
-    if (this.startTime3d && this.endTime3d) {
-      window.open(`http://120.78.137.182:8888/highway-interactive/report/province/3d/2/startDate/${startTime}/endDate/${endTime}`);
-    } else {
-      window.alert('请把数据选择全在提交');
-    }
-  }
-  // 车流监控
-  public vehicleAmountCount(): void {
-    this.financeDataService.searchCarTotal({id: this.provinceId}).subscribe(
-      (value) => {
-        if (value.status === '200') {
-          this.vehicleAmount = {
-            number: value.data,
-            units: '辆'
-          };
-        }
-      }
-    );
-  }
-  public CarTypes() {
-    this.financeDataService.searchCarTotalPie({id: this.provinceId}).subscribe(
-      (value) => {
-        if (value.status === '200') {
-          if (this.dataToggle === '贵州省') {
-            value.data.push({id: null, name: '危品车', value: 1});
-            value.data.push({id: null, name: '畜牧车', value: 1});
-          } else {
-            value.data.push({id: null, name: '危品车', value: 0});
-            value.data.push({id: null, name: '畜牧车', value: 0});
-          }
-          this.optionsCarModel = {
-            data: value.data,
-            title: '',
-            total: '',
-            color: ['#00CAE2', '#2307EF', '#4791D8']
-          };
-        }
-      }
-    );
-  }
-  public parkClick(e): void {
-    this.alertCarTitle = e.name;
-    this.alertCarShow = true;
-    document.body.className = 'ui-overflow-hidden';
-    this.arryCarPie = [];
-    this.carDistribution(e);
-  }
-  public carDistribution(e): void {
-    const carTypes = {
-      '总数': 'total',
-      '小车': 1,
-      '客车': 2,
-      '货车': 3,
-    };
-    this.carOptionType = e.name;
-    // 表格
-    this.financeDataService.searchCarAlertTable({id: this.provinceId, type: carTypes[this.carOptionType], page: 1, nums: 10}).subscribe(
-      (val) => {
-        this.carTableData = val.data;
-      }
-    );
-    // 饼状图
-    this.financeDataService.searchCarAlertPie({id: this.provinceId, type: carTypes[this.carOptionType]}).subscribe(
-      (value) => {
-        const arryCarPie = [];
-        value.data.map((val, index) => {
-          arryCarPie.push({value: val.value, name: val.name});
-        });
-        this.optionsCarType = {
-          data: arryCarPie,
-          title: `贵州省各市所有服务区今日${e.name}占比统计`,
-          total: '',
-          color: ['#CE2D79', '#BDD139', '#78E77D', '#09D4D6', '#3C75B9',
-            '#6769B1', '#FF8C9D', '#2796C4', '#E57D0D']
-        };
-      }
-    );
-  }
-  public carDistributionPaging(e): void {
-    const carTypes = {
-      '总数': 'total',
-      '小车': 1,
-      '客车': 2,
-      '货车': 3,
-    };
-    this.financeDataService.searchCarAlertTable({id: this.provinceId, type: carTypes[this.carOptionType], page: e, nums: 10}).subscribe(
-      (val) => {
-        this.carTableData = val.data;
-      }
-    );
-  }
-  public closeCarShow(): void {
-    document.body.className = '';
-    this.alertCarShow = false;
-  }
-  public optionsCarPieClick(e) {
-    if (e.name === '贵阳市') {
-      this.router.navigate(['/home/city', {name: e.name}]);
-    } else {
-      window.alert (`很抱歉，${e.name}暂无数据`);
-    }
-  }
-  public carBtnClick(e): void {
-    if (e.srcElement.innerText === '小车') {
-      this.alertCarTitle = '小车';
-      this.arryCarPie = [];
-      this.carTableData = [];
-      this.carDistribution({name: e.srcElement.innerText });
-    }  else if (e.srcElement.innerText === '客车') {
-      this.alertCarTitle = '客车';
-      this.arryCarPie = [];
-      this.carTableData = [];
-      this.carDistribution({name: e.srcElement.innerText });
-    } else if (e.srcElement.innerText === '货车') {
-      this.alertCarTitle = '货车';
-      this.arryCarPie = [];
-      this.carTableData = [];
-      this.carDistribution({name: e.srcElement.innerText });
-    } else if (e.srcElement.innerText === '总数') {
-      this.alertCarTitle = '总数';
-      this.arryCarPie = [];
-      this.carTableData = [];
-      this.carDistribution({name: e.srcElement.innerText });
-    }
-  }
-  public carTableClick(e) {
-    this.router.navigate(['/home/serzone', {name: e}]);
-  }
-  // 车流监控：表格导出
-  public carExportClick() {
-    const startTime = this.datePipe.transform(this.carStartTime, 'yyyyMMdd');
-    const endTime = this.datePipe.transform(this.carEndTime, 'yyyyMMdd');
-    if (this.carStartTime && this.carEndTime) {
-      window.location.assign(`http://120.78.137.182:8888/highway-interactive/report/province/vihicle/2/startDate/${startTime}/endDate/${endTime}`);
-    } else {
-      window.alert('请把数据选择全在提交');
-    }
   }
   /*********************************中部*****************************/
   // 中部地图

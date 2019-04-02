@@ -4,71 +4,7 @@
     <!--左边-->
     <div class="left col-lg-3 col-md-3">
       <!--3d柱状图-->
-      <div class="accumulation">
-        <div class="accumulation-title title text-center">
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <p>{{serviceZoneTitle}}业态数据3D统计</p>
-        </div>
-        <app-echart3d
-          [option]="options3d"
-          [color]="['#9B90D5', '#46E7E2', '#78F991']"
-          (outOptions3d)="onOutOptions3d($event)"
-        ></app-echart3d>
-        <app-echart3d
-          [option]="options3dCopy"
-          [color]="['#D06052', '#E29F39', '#2BB5F0']"
-          (outOptions3d)="onOutOptions3d($event)"
-        ></app-echart3d>
-        <!--3D柱状图弹窗-->
-        <div class="bg-box" *ngIf="alertBarShow">
-          <div class="alert-3D-bar">
-            <div class="alert-3D-bar-header">
-              <span>{{alertBarTitle}}</span>
-              <div class="pull-right" (click)="closeBarShow()">
-                <i class="fa fa-window-close " aria-hidden="true"></i>
-              </div>
-            </div>
-            <div class="row bar3D-charts">
-              <div class="col-ld-6 col-md-6">
-                <app-echart-basicbar [option]="options3dBar" [height]="'55vh'" (outOptions3dBar)="onOutOptions3dBar($event)"></app-echart-basicbar>
-              </div>
-              <div class="col-ld-6 col-md-6">
-                <app-echarts-line-broken [height]="'55vh'" [option]="options3dLine"></app-echarts-line-broken>
-              </div>
-              <p class="toggle-btn-area-table" (click)="bar3dExcelShow = true" style="top: 5.5vh">表格导出</p>
-              <p class="toggle-btn-area-table" (click)="serversToiletAlertShow = true" style="left:58%;top: 5.5vh">详细信息</p>
-            </div>
-            <!--表格导出-->
-            <div class="bg-excel" *ngIf="bar3dExcelShow">
-              <div class="alert-window-excel">
-                <div class="alert-window-excel-header">
-                  <span>收入数据表格导出</span>
-                  <div class="pull-right" (click)="bar3dExcelShow = false">
-                    <i class="fa fa-window-close " aria-hidden="true"></i>
-                  </div>
-                </div>
-                <div class="alert-window-excel-content">
-                  <div class="alert-window-excel-content-list">
-                    <label>请选择开始时间：</label>
-                    <p-calendar placeholder="请点击选择时间......" [locale]="esDate" [(ngModel)]="startTime3d" [monthNavigator]="true" [yearNavigator]="true" dateFormat="yymmdd"  yearRange="2017:2030"></p-calendar>
-                  </div>
-                  <div class="alert-window-excel-content-list">
-                    <label>请选择结束时间：</label>
-                    <p-calendar placeholder="请点击选择时间......" [locale]="esDate" [(ngModel)]="endTime3d" [monthNavigator]="true" [yearNavigator]="true" dateFormat="yymmdd"  yearRange="2017:2030"></p-calendar>
-                  </div>
-                </div>
-                <div class="alert-window-excel-footer text-center">
-                  <span (click)="bar3dExportClick();bar3dExcelShow = false">确认导出</span>
-                  <span (click)="bar3dExcelShow = false">取消导出</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <app-service-3d [esDate]="esDate" [serviceId]="serviceZoneID" [serviceName]="serviceZoneTitle"></app-service-3d>
       <!--车辆统计-->
       <div class="vehicle">
         <!--日车流量实时统计-->

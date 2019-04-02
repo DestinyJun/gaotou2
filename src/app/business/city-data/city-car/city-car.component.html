@@ -1,0 +1,100 @@
+<div class="vehicle">
+  <!--日车流量实时统计-->
+  <div class="vehicle-amount">
+    <app-title-one [height]="'3vh'" [option]="{title: cityIdName + '今日车辆流动数量'}"></app-title-one>
+    <app-number-show [option]="vehicleAmount"></app-number-show>
+  </div>
+  <!--车型日分布占比-->
+  <div class="vehicle-pie">
+    <div class="vehicle-pie-title title text-center">
+      <p>{{cityIdName}}当日车型分布类型占比</p>
+    </div>
+    <app-echart-pie [option]="optionsCarModel" [height]="'20vh'" (pieClick)="parkClick($event)"></app-echart-pie>
+  </div>
+  <!--车辆类型弹窗-->
+  <div class="bg-box" *ngIf="alertCarShow">
+    <div class="alert-window">
+      <div class="alert-window-header">
+        <div class="row">
+          <div class="col-ld-12 col-md-12">
+            <span>{{alertCarTitle}}车辆分布统计</span>
+            <div class="pull-right" (click)="closeCarShow()">
+              <i class="fa fa-window-close " aria-hidden="true"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="alert-window-content">
+        <div class="row">
+          <div class="col-ld-6 col-md-6 echart-btn">
+            <app-echart-pie [option]="optionsCarType" [height]="'55vh'" (pieClick)="optionsCarPieClick($event)"></app-echart-pie>
+          </div>
+          <div class="col-ld-6 col-md-6">
+            <div class="alert-window-content-table">
+              <div class="toggle-btn" (click)="carBtnClick($event)">
+                <button class="btn btn-warning" [ngStyle]="{'background':alertCarTitle === '总数'?'black': ''}">总数</button>
+                <button class="btn btn-info" [ngStyle]="{'background':alertCarTitle === '小车'?'black': ''}">小车</button>
+                <button class="btn btn-primary" [ngStyle]="{'background':alertCarTitle === '客车'?'black': ''}">客车</button>
+                <button class="btn btn-danger" [ngStyle]="{'background':alertCarTitle === '货车'?'black': ''}">货车</button>
+                <div class="toggle-btn-area pull-right" style="">
+                  <span (click)="carExcelShow = true">表格导出</span>
+                </div>
+              </div>
+              <div class="content-table">
+                <p-scrollPanel [style]="{width: '100%', height: '40vh'}" styleClass="finance-statistics">
+                  <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                      <th>{{alertCarTitle}}排名</th>
+                      <th [ngStyle]="{'background':alertCarTitle === '总数'?'black': ''}">车辆总数</th>
+                      <th [ngStyle]="{'background':alertCarTitle === '小车'?'black': ''}">小车总数</th>
+                      <th [ngStyle]="{'background':alertCarTitle === '客车'?'black': ''}">客车总数</th>
+                      <th [ngStyle]="{'background':alertCarTitle === '货车'?'black': ''}">货车总数</th>
+                      <th>服务区</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let item of carTableData?.contents;let i=index">
+                      <td >{{i+1}}</td>
+                      <td [ngStyle]="{'background':alertCarTitle === '总数'?'black': ''}">{{item.map['总数']}}</td>
+                      <td [ngStyle]="{'background':alertCarTitle === '小车'?'black': ''}">{{item.map['小车']}}</td>
+                      <td [ngStyle]="{'background':alertCarTitle === '客车'?'black': ''}">{{item.map['客车']}}</td>
+                      <td [ngStyle]="{'background':alertCarTitle === '货车'?'black': ''}">{{item.map['货车']}}</td>
+                      <td class="content-table-car" (click)="carTableClick(item.serviceArea)">{{item.serviceArea.serviceName}}</td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </p-scrollPanel>
+              </div>
+              <app-paging [option]="{total: carTableData?.totalRecord,row: 10}" (pageClick)="carDistributionPaging($event)"></app-paging>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="bg-excel" *ngIf="carExcelShow">
+        <div class="alert-window-excel">
+          <div class="alert-window-excel-header">
+            <span>车辆数据表格导出</span>
+            <div class="pull-right" (click)="carExcelShow = false">
+              <i class="fa fa-window-close " aria-hidden="true"></i>
+            </div>
+          </div>
+          <div class="alert-window-excel-content">
+            <div class="alert-window-excel-content-list">
+              <label>请选择开始时间：</label>
+              <p-calendar placeholder="请点击选择时间......" [locale]="esDate" [(ngModel)]="carStartTime" [monthNavigator]="true" [yearNavigator]="true" dateFormat="yymmdd"  yearRange="2017:2030"></p-calendar>
+            </div>
+            <div class="alert-window-excel-content-list">
+              <label>请选择结束时间：</label>
+              <p-calendar placeholder="请点击选择时间......" [locale]="esDate" [(ngModel)]="carEndTime" [monthNavigator]="true" [yearNavigator]="true" dateFormat="yymmdd"  yearRange="2017:2030"></p-calendar>
+            </div>
+          </div>
+          <div class="alert-window-excel-footer text-center">
+            <span (click)="carExportClick();carExcelShow = false">确认导出</span>
+            <span (click)="carExcelShow = false">取消导出</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

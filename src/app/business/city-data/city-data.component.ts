@@ -15,33 +15,8 @@ export class CityDataComponent implements OnInit, OnDestroy {
   /***********************基础信息************************/
   public esDate: any;  // 时间初始化
     // 组件销毁后清除时钟任务
-  public vehicleAmountCountClean: any;
   public incomeAmountCountClean: any;
   public personAmountCountClean: any;
-  /****************************左边***************************/
-    // 3D柱状图配置
-  public options3d: any;
-  public options3dCopy: any;
-  public alertBarShow = false;  // 3D柱状图弹窗
-  public alertBarTitle: string;
-  public options3dBar = {};
-  public options3dPie = {};
-  public outOptions3d: any; // 3D图组件传出来的值
-  public bar3dExcelShow = false; // 3D图统计的表格导出
-  public startTime3d: Date; // 时间选择器
-  public endTime3d: Date; // 时间选择器
-  // 车辆监控
-  public vehicleAmount: any;
-  public optionsCarModel = {};
-  public alertCarShow = false;
-  public alertCarTitle = '总数';
-  public optionsCarType = {};
-  public arryCarPie = [];
-  public carOptionType: any;
-  public carTableData: any;
-  public carExcelShow = false;
-  public carStartTime: Date; // 时间选择器
-  public carEndTime: Date; // 时间选择器
   /*****************************中部**************************/
   public mapPoints: any; // 地图点
   // 省市联动
@@ -98,9 +73,6 @@ export class CityDataComponent implements OnInit, OnDestroy {
       (params) => {
         this.dataToggle = params.name;
         this.cityId = params.id;
-        // 实时数据
-        this.vehicleAmountCount();
-        this.CarTypes();
         this.incomeAmountCount();
         this.IncomeTypes();
         this.getPerson();
@@ -123,15 +95,12 @@ export class CityDataComponent implements OnInit, OnDestroy {
     );
   }
   ngOnDestroy(): void {
-    clearInterval(this.vehicleAmountCountClean);
     clearInterval(this.incomeAmountCountClean);
     clearInterval(this.personAmountCountClean);
   }
 
   /*********************************数据初始化*****************************/
   public updataEcharts(): void {
-    // 3D柱状图
-    this.packOption3();
     /**************************中部****************************/
     this.centerMap();
     // 事件
@@ -144,12 +113,6 @@ export class CityDataComponent implements OnInit, OnDestroy {
     // 业态经营数据前十排名
     this.backCrosswiseBar('revenue');
 
-    // 车流监控
-    this.vehicleAmountCountClean = setInterval(() => {
-      this.vehicleAmountCount();
-      this.CarTypes();
-    }, 3000);
-
     // 收入监控
     this.incomeAmountCountClean = setInterval(() => {
       this.incomeAmountCount();
@@ -161,7 +124,7 @@ export class CityDataComponent implements OnInit, OnDestroy {
       this.getPerson();
     }, 3000);
   }
-// 客流
+  // 客流
   public getPerson(): void {
     let total: any;
     let province: any;
@@ -200,225 +163,6 @@ export class CityDataComponent implements OnInit, OnDestroy {
         }
       }
     );
-  }
-  /**********************************左边*****************************/
-  // 3D柱状图图表配置
-  public packOption3() {
-    // 车流客流人流
-    this.cityDataService.search3DBar({id: this.cityId, parameter: ['revenue', 'passenger', 'vehicle']}).subscribe(
-      (val) => {
-        if (val.status === '200') {
-          this.options3d = val.data;
-        }
-      }
-    );
-    // 用电量用水量
-    this.cityDataService.search3DBar({id: this.cityId, parameter: ['electric', 'water']}).subscribe(
-      (val) => {
-        if (val.status === '200') {
-          this.options3dCopy = val.data;
-        }
-      }
-    );
-  }
-  public onOutOptions3d(e): void {
-    this.outOptions3d = e;
-    document.body.className = 'ui-overflow-hidden';
-    this.alertBarShow = true;
-    this.alertBarTitle = this.outOptions3d.alertBarTitle;
-    // 柱状图
-    this.cityDataService.search3DAlertBar({id: this.cityId, types: this.outOptions3d.bar.types}).subscribe(
-      (val) => {
-        if (val.status === '200') {
-          this.options3dBar = {
-            data: val.data,
-            xType: this.outOptions3d.pie.xType,
-            title: `贵阳市所有服务区年度${this.outOptions3d.alertBarTitle}统计`
-          };
-        }
-      }
-    );
-    // 类型占比扇形图
-    this.cityDataService.search3DAlertPie({id: this.cityId, xType: this.outOptions3d.pie.xType, types: this.outOptions3d.pie.types}).subscribe(
-      (val) => {
-        if (val.status === '200') {
-          this.options3dPie = {
-            data: val.data,
-            title: `贵阳市所有服务区年度${this.outOptions3d.alertBarTitle}类型占比统计`,
-            total: this.outOptions3d.total,
-            color: ['#CE2D79', '#BDD139', '#78E77D', '#09D4D6', '#3C75B9',
-              '#6769B1', '#FF8C9D', '#2796C4', '#E57D0D']
-          };
-        }
-      }
-    );
-  }
-  public onOutOptions3dBar(e): void {
-    // 类型占比扇形图
-    this.cityDataService.search3DAlertPie({id: this.cityId, xType: e.xType, types: this.outOptions3d.pie.types}).subscribe(
-      (val) => {
-        if (val.status === '200') {
-          this.options3dPie = {
-            data: val.data,
-            title: `贵州省所有服务区年度${this.outOptions3d.alertBarTitle}类型占比统计`,
-            total: e.data,
-            color: ['#CE2D79', '#BDD139', '#78E77D', '#09D4D6', '#3C75B9',
-              '#6769B1', '#FF8C9D', '#2796C4', '#E57D0D']
-          };
-        }
-      }
-    );
-  }
-  public onOptions3dPie(e): void {
-    if (e.name === '久长服务区') {
-      this.router.navigate(['/home/serzone', {name: e.name}]);
-    } else {
-      window.alert (`很抱歉，${e.name}暂无数据`);
-    }
-  }
-  public closeBarShow() {
-    document.body.className = '';
-    this.alertBarShow = false;
-  }
-  // 表格导出
-  public bar3dExportClick() {
-    const startTime = this.datePipe.transform(this.startTime3d, 'yyyyMMdd');
-    const endTime = this.datePipe.transform(this.endTime3d, 'yyyyMMdd');
-    if (this.startTime3d && this.endTime3d) {
-      window.location.assign(`http://120.78.137.182:8888/highway-interactive/report/city/3d/3/startDate/${startTime}/endDate/${endTime}`);
-    } else {
-      window.alert('请把数据选择全在提交');
-    }
-  }
-  // 车流监控
-  public vehicleAmountCount(): void {
-    this.cityDataService.searchCarTotal({id: this.cityId}).subscribe(
-      (value) => {
-        if (value.status === '200') {
-          this.vehicleAmount = {
-            number: value.data,
-            unitsL: '辆'
-          };
-        }
-      }
-    );
-  }
-  public CarTypes() {
-    this.cityDataService.searchCarTotalPie({id: this.cityId}).subscribe(
-      (value) => {
-        if (this.dataToggle === '贵阳市') {
-          value.data.push({id: null, name: '危品车', value: 1});
-          value.data.push({id: null, name: '畜牧车', value: 1});
-        } else {
-          value.data.push({id: null, name: '危品车', value: 0});
-          value.data.push({id: null, name: '畜牧车', value: 0});
-        }
-        this.optionsCarModel = {
-          data: value.data,
-          title: '',
-          total: '',
-          color: ['#00CAE2', '#2307EF', '#4791D8']
-        };
-      }
-    );
-  }
-  public parkClick(e): void {
-    this.alertCarTitle = e.name;
-    this.alertCarShow = true;
-    document.body.className = 'ui-overflow-hidden';
-    this.arryCarPie = [];
-    this.carDistribution(e);
-  }
-  public carDistribution(e): void {
-    const carTypes = {
-      '总数': 'total',
-      '小车': 1,
-      '客车': 2,
-      '货车': 3,
-    };
-    this.carOptionType = e.name;
-    // 表格
-    this.cityDataService.searchCarAlertTable({id: this.cityId, type: carTypes[e.name], page: 1, nums: 10}).subscribe(
-      (val) => {
-        this.carTableData = val.data;
-      }
-    );
-    // 饼状图
-    this.cityDataService.searchCarAlertPie({id: this.cityId, type: carTypes[e.name]}).subscribe(
-      (value) => {
-        const arryCarPie = [];
-        value.data.map((val, index) => {
-          arryCarPie.push({value: val.value, name: val.name});
-        });
-        this.optionsCarType = {
-          data: arryCarPie,
-          title: `贵阳市各市所有服务区今日${e.name}占比统计`,
-          total: '',
-          color: ['#CE2D79', '#BDD139', '#78E77D', '#09D4D6', '#3C75B9',
-            '#6769B1', '#FF8C9D', '#2796C4', '#E57D0D']
-        };
-      }
-    );
-  }
-  public carDistributionPaging(e): void {
-    const carTypes = {
-      '总数': 'total',
-      '小车': 1,
-      '客车': 2,
-      '货车': 3,
-    };
-    this.cityDataService.searchCarAlertTable({id: this.cityId, type: carTypes[this.carOptionType], page: e, nums: 10}).subscribe(
-      (val) => {
-        this.carTableData = val.data;
-      }
-    );
-  }
-  public closeCarShow(): void {
-    document.body.className = '';
-    this.alertCarShow = false;
-  }
-  public optionsCarPieClick(e) {
-    if (e.name === '久长服务区') {
-      this.router.navigate(['/home/serzone', {name: e.name}]);
-    } else {
-      window.alert (`很抱歉，${e.name}暂无数据`);
-    }
-  }
-  public carBtnClick(e): void {
-    if (e.srcElement.innerText === '小车') {
-      this.alertCarTitle = '小车';
-      this.arryCarPie = [];
-      this.carTableData = [];
-      this.carDistribution({name: e.srcElement.innerText });
-    }  else if (e.srcElement.innerText === '客车') {
-      this.alertCarTitle = '客车';
-      this.arryCarPie = [];
-      this.carTableData = [];
-      this.carDistribution({name: e.srcElement.innerText });
-    } else if (e.srcElement.innerText === '货车') {
-      this.alertCarTitle = '货车';
-      this.arryCarPie = [];
-      this.carTableData = [];
-      this.carDistribution({name: e.srcElement.innerText });
-    } else if (e.srcElement.innerText === '总数') {
-      this.alertCarTitle = '总数';
-      this.arryCarPie = [];
-      this.carTableData = [];
-      this.carDistribution({name: e.srcElement.innerText });
-    }
-  }
-  public carTableClick(e) {
-    this.router.navigate(['/home/serzone', {name: e}]);
-  }
-  // 车流监控：表格导出
-  public carExportClick() {
-    const startTime = this.datePipe.transform(this.carStartTime, 'yyyyMMdd');
-    const endTime = this.datePipe.transform(this.carEndTime, 'yyyyMMdd');
-    if (this.carStartTime && this.carEndTime) {
-      window.location.assign(`http://120.78.137.182:8888/highway-interactive/report/city/vihicle/3/startDate/${startTime}/endDate/${endTime}`);
-    } else {
-      window.alert('请把数据选择全在提交');
-    }
   }
   /*********************************中部*****************************/
   // 中部地图

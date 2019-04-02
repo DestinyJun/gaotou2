@@ -461,6 +461,11 @@ export class WholeDataComponent implements OnInit, OnChanges {
             borderWidth: 0.8,
             borderColor: 'rgb(62,215,213)'
           },
+          viewControl: {
+            minDistance: 90,
+            maxDistance: 120,
+            zoomSensitivity: 5
+          },
           data: datas,
           zlevel: 1,
         },

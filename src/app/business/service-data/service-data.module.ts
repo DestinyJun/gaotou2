@@ -10,6 +10,8 @@ import {DataService} from '../../common/services/data.service';
 import {ButtonModule} from 'primeng/button';
 import {EchartLineAreaModule, EchartsLineBrokenModule, InputDropdownModule, PagingModule} from '../../common/wenjun';
 import {ImageZoomModule} from '../../common/components/image-zoom/image-zoom.module';
+import {Service3dComponent} from './service-3d/service-3d.component';
+import {ServiceCarComponent} from './service-car/service-car.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -27,7 +29,11 @@ import {ImageZoomModule} from '../../common/components/image-zoom/image-zoom.mod
     InputDropdownModule,
     DropdownModule
   ],
-  declarations: [ServiceDataComponent],
+  declarations: [
+    ServiceDataComponent,
+    Service3dComponent,
+    ServiceCarComponent
+  ],
   providers: [ServiceDataService, DataService, DatePipe]
 })
 export class ServiceDataModule { }
