@@ -65,48 +65,6 @@
   top: 2.4vh;
 }
 
-/****************************右边****************************/
-/*市级数据服务区业态前十排名柱状图*/
-.right .crosswise{
-  padding-top: 2vh;
-  height: 50vh;
-  box-shadow: 0 0 10px 2px rgba(255,255,255,0.2) inset;
-  margin-bottom: 1vh;
-  position: relative;
-}
-.right .crosswise-title{}
-.right .crosswise-btn{
-  margin-top: 1vh;
-  height: 4vh;
-}
-.right .crosswise-btn>span{
-  display: inline-block;
-  height: 3vh;
-  padding: 0.2vh 0.5vw;
-  font-size: 0.7rem;
-  line-height: 3vh;
-  margin-right: 0.5vw;
-  border-radius: 3px;
-}
-.right .crosswise-btn>span:hover{
-  cursor: pointer;
-}
-/*收入监控*/
-.right .income{
-  padding-top: 1vh;
-  height: 34vh;
-  box-shadow: 0 0 10px 2px rgba(255,255,255,0.2) inset;
-  margin-bottom: 1vh;
-}
-.right .income-amount{
-  height: 10vh;
-}
-.right .income-pie-title{
-  color: white;
-}
-.right .income-pie-title.title{
-  border: none;
-}
 /****************************弹窗部分****************************/
 /*弹窗基本样式控制*/
 .bg-box{

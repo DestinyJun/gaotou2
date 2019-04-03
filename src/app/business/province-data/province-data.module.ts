@@ -12,9 +12,9 @@ import {InputDropdownDayModule} from '../../common/wenjun/input-dropdown-day/inp
 import { Province3dComponent } from './province-3d/province-3d.component';
 import { ProvinceCarComponent } from './province-car/province-car.component';
 // import { ProvinceMapComponent } from './province-map/province-map.component';
-// import { ProvinceIncomeComponent } from './province-income/province-income.component';
+import { ProvinceIncomeComponent } from './province-income/province-income.component';
 // import { ProvinceEventComponent } from './province-event/province-event.component';
-// import { ProvinceCrosswiseComponent } from './province-crosswise/province-crosswise.component';
+import { ProvinceCrosswiseComponent } from './province-crosswise/province-crosswise.component';
 
 @NgModule({
   imports: [
@@ -35,9 +35,9 @@ import { ProvinceCarComponent } from './province-car/province-car.component';
     Province3dComponent,
     ProvinceCarComponent,
     // ProvinceMapComponent,
-    // ProvinceIncomeComponent,
+    ProvinceIncomeComponent,
     // ProvinceEventComponent,
-    // ProvinceCrosswiseComponent
+    ProvinceCrosswiseComponent
   ],
   entryComponents: [],
   providers: [FinanceDataService, DataService, DatePipe]

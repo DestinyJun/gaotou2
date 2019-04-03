@@ -10,6 +10,8 @@ import {FormsModule} from '@angular/forms';
 import {DataService} from '../../common/services/data.service';
 import {City3dComponent} from './city-3d/city-3d.component';
 import {CityCarComponent} from './city-car/city-car.component';
+import {CityCrosswiseComponent} from './city-crosswise/city-crosswise.component';
+import {CityIncomeComponent} from './city-income/city-income.component';
 
 @NgModule({
   imports: [
@@ -25,7 +27,9 @@ import {CityCarComponent} from './city-car/city-car.component';
   declarations: [
     CityDataComponent,
     City3dComponent,
-    CityCarComponent
+    CityCarComponent,
+    CityCrosswiseComponent,
+    CityIncomeComponent
   ],
   providers: [CityDataService, DataService, DatePipe]
 })

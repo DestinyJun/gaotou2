@@ -12,6 +12,8 @@ import {EchartLineAreaModule, EchartsLineBrokenModule, InputDropdownModule, Pagi
 import {ImageZoomModule} from '../../common/components/image-zoom/image-zoom.module';
 import {Service3dComponent} from './service-3d/service-3d.component';
 import {ServiceCarComponent} from './service-car/service-car.component';
+import {ServiceIncomeComponent} from './service-income/service-income.component';
+import { ServiceInfoComponent } from './service-info/service-info.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -32,7 +34,9 @@ import {ServiceCarComponent} from './service-car/service-car.component';
   declarations: [
     ServiceDataComponent,
     Service3dComponent,
-    ServiceCarComponent
+    ServiceCarComponent,
+    ServiceIncomeComponent,
+    ServiceInfoComponent
   ],
   providers: [ServiceDataService, DataService, DatePipe]
 })

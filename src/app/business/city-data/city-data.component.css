@@ -5,29 +5,6 @@
 .main{
   position: relative;
 }
-/****************************左边****************************/
-/*车辆监控*/
-.left .vehicle{
-  height: 34vh;
-  box-shadow: 0 0 10px 2px rgba(255,255,255,0.2) inset;
-  margin-bottom: 1vh;
-  padding-top: 1vh;
-}
-.left .vehicle-amount{
-  height: 10vh;
-}
-.left .vehicle-amount-title{}
-.left .vehicle-pie-title{
-  color: white;
-}
-.left .vehicle-pie-title.title{
-  border: none;
-}
-/*移动端收入样式*/
-.left .income.mobile{
-  display: none;
-}
-
 /****************************中部****************************/
 /*地图*/
 .center .map {
@@ -90,49 +67,6 @@
   left: 7.5vw;
   top: 2.4vh;
 }
-/****************************右边****************************/
-/*市级数据服务区业态前十排名柱状图*/
-.right .crosswise{
-  padding-top: 2vh;
-  height: 50vh;
-  box-shadow: 0 0 10px 2px rgba(255,255,255,0.2) inset;
-  margin-bottom: 1vh;
-  position: relative;
-}
-.right .crosswise-title{}
-.right .crosswise-btn{
-  margin-top: 1vh;
-  height: 4vh;
-}
-.right .crosswise-btn>span{
-  display: inline-block;
-  height: 3vh;
-  padding: 0.2vh 0.5vw;
-  font-size: 0.7rem;
-  line-height: 3vh;
-  margin-right: 0.5vw;
-  border-radius: 3px;
-}
-.right .crosswise-btn>span:hover{
-  cursor: pointer;
-}
-/*收入监控*/
-.right .income{
-  padding-top: 1vh;
-  height: 34vh;
-  box-shadow: 0 0 10px 2px rgba(255,255,255,0.2) inset;
-  margin-bottom: 1vh;
-}
-.right .income-amount{
-  height: 10vh;
-}
-.right .income-amount-title{}
-.right .income-pie-title{
-  color: white;
-}
-.right .income-pie-title.title{
-  border: none;
-}
 /**************************公共样式***********************/
 /*百度地图*/
 .city-statistics .ui-scrollpanel-wrapper {
@@ -141,7 +75,6 @@
 }
 .city-statistics .ui-scrollpanel-bar {
   background-color: transparent;
-  /*background: none;*/
   opacity: 1;
   transition: background-color .3s;
 }
@@ -307,106 +240,4 @@
 }
 .content-table-income:hover{
   cursor: pointer;
-}
-
-/**************************公共样式***********************/
-/*百度地图*/
-.anchorBL{
-  display:none;
-}
-/*****************************bootstrap样式覆盖****************************/
-p {
-  margin: 0;
-}
-/*分页按钮样式*/
-.bottom-pagination {
-  position: absolute;
-  width: 100%;
-  bottom: 5px;
-  left: 0;
-}
-.pagination > li > a {
-  background-color: #1A2128;
-  margin-right: 1vw;
-  font-size: 0.875rem;
-  color: white;
-  cursor: pointer;
-  border: 1px solid #1A2128;
-}
-.pagination > li > a:hover{
-  background-color: #1A2128;
-  border: 1px solid #1A2128;
-}
-.pagination > li > a > input{
-  width: 5vw;
-}
-/***********************媒体查询***********************/
-@media screen and (max-width: 992px) {
-  .main{
-    margin-bottom: 8vh;
-  }
-  .title{
-    font-size: 16px;
-  }
-  .title>span{
-    display: none;
-  }
-
-  .center .map{
-    display: none;
-  }
-
-  .left .vehicle-amount-number>p>span{
-    width: 10vw;
-    font-size: 16px;
-    margin-right: 1vw;
-  }
-  .left .vehicle-amount-number>p>small{
-    font-size: 16px;
-    color: white;
-  }
-
-  .center .event-table{
-    min-height: 120vh;
-    box-shadow: none;
-    overflow: visible;
-  }
-  .event-table-service,.event-table-office,.event-table-person{
-    padding-top: 1vh;
-    height: 37vh;
-    box-shadow: 0 0 10px 2px rgba(255,255,255,0.2) inset;
-    margin-bottom: 1vh;
-  }
-  .center .event-table .table-body tr{
-    font-size: 12px;
-  }
-
-  .right .crosswise-btn>span{
-    font-size: 16px;
-  }
-  .right .income-amount-number>p>span{
-    width: 10vw;
-    font-size: 16px;
-    margin-right: 1vw;
-  }
-  .right .income-amount-number>p>small{
-    font-size: 16px;
-    color: white;
-  }
-
-  .col-lg-1, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-xs-1, .col-xs-10, .col-xs-11, .col-xs-12, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9 {
-    position: relative;
-    min-height: 1px;
-    padding-right: 3px;
-    padding-left: 3px;
-  }
-}
-@media screen and (max-width: 767px) {
-  .table-responsive {
-    width: 100%;
-    margin-bottom: 15px;
-    overflow-y: hidden;
-    -ms-overflow-style: -ms-autohiding-scrollbar;
-    border: none;
-  }
 }

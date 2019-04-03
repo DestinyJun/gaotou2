@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {DataService} from '../../common/services/data.service';
 import {FormBuilder} from '@angular/forms';
-import {EventListInfo, IncomeManualAddIncome, UploadEventInfoUp} from '../../common/model/service-data.model';
+import {EventListInfo, UploadEventInfoUp} from '../../common/model/service-data.model';
 import {ServiceDataService} from '../../common/services/service-data.service';
 import {LocalStorageService} from '../../common/services/local-storage.service';
 import {DatePipe} from '@angular/common';
@@ -24,13 +24,7 @@ export interface SelectVideoItem {
 export class ServiceDataComponent implements OnInit, OnDestroy {
   /***********************基础信息************************/
   public esDate: any;  // 时间初始化
-  public carTimeSelect = [
-    {name: '时', code: 'hour'},
-    {name: '天', code: 'day'},
-    {name: '周', code: 'week'},
-    {name: '月', code: 'month'},
-    {name: '年', code: 'year'},
-  ];
+  // store time
   public storeInfoSelect = [
     {name: '天', code: 'day'},
     {name: '周', code: 'week'},
@@ -38,26 +32,20 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     {name: '年', code: 'year'},
   ];
   // 组件销毁后清除时钟任务
-  public vehicleAmountCountClean: any;
-  public incomeAmountCountClean: any;
   public personAmountCountClean: any;
   public incomeShopInfoClean: any;
+  // service area
   public serviceZoneTitle: string;  // 服务区名称
   public serviceZoneID: string;   // 服务区ID
-  /***********************左边************************/
-  // 车辆监控
-  public vehicleAmount: any = null;
-  public optionsCarModel: any; // 车辆饼状图
-  public alertCarShow = false;
-  public carTableData: any;
-  public carExcelShow = false;
-  public carStartTime: Date; // 时间选择器
-  public carEndTime: Date; // 时间选择器
-  public carTimeTypes: any;
+  public serviceInfo: any = null;
+  public alterUpAttributeValues = [];
+  public alterDownAttributeValues = [];
   /***********************中部************************/
     // 商家、视频及方向
   public incomeTopData: any;
   public incomeBottomData: any;
+  public shopEchartLine: any;
+  public shopEchartArea: any;
   // 服务区商家视频弹窗
   public cars: SelectVideoItem[];
   public selectedCar2 = {
@@ -103,45 +91,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   // 服务区厕所监控
   public serversToiletAlertShow = false;
   public waitTitle: string;
-
-  /***********************右边************************/
-    // 服务区基本信息
-  public alertCrosswiseShow = false;
-  public serviceInfo: any = null;
-  public alterCommonAttributeValues = [];
-  public alterUpAttributeValues = [];
-  public alterDownAttributeValues = [];
-  public shopEchartLine: any;
-  public shopEchartArea: any;
-  public servicesPlan = false;
-  public servicesMap = {};
-  // 收入监控
-  public incomeAmount: any;
-  public optionsIncomeModel: any;
-  public alertIncomeShow = false;
-  public alertIncomeTypeShow = false;
-  public alertIncomeTypeTitle: string;
-  public alertIncomeTitle = '收入总数';
-  public IncomeTableData: any;
-  public IncomeTimeTypes: any;
-  public storeList: any;
-  public arryIncomePie = [];
-  public IncomeOptionType: any;
-  public incomeExcelShow = false;
-  public incomeManualShow = false;
-  public incomeManualDirectionSelect = [];
-  public incomeManualStoreShow = false;
-  public incomeManualIncomeShow = false;
-  public incomeManualStoreSelect = [
-    {name: '请选择店铺......', code: '-1'}
-  ];
-  public incomeManualTime: Date;
-  public invalidDates = [];
-  public minDate: Date;
-  public maxDate: Date;
-  public incomeManualAddIncome = new IncomeManualAddIncome();
-  public incomeStartTime: Date; // 时间选择器
-  public incomeEndTime: Date; // 时间选择器
   constructor(
     private fb: FormBuilder,
     private routerInfo: ActivatedRoute,
@@ -171,43 +120,27 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
         this.serviceZoneTitle = params.name;
         this.serviceZoneID = params.id;
         this.serviceInfo = null;
-        this.alterCommonAttributeValues = [];
         this.alterUpAttributeValues = [];
         this.alterDownAttributeValues = [];
-        this.vehicleAmount = null;
-        this.optionsCarModel = null;
-        this.incomeAmount = null;
-        this.optionsIncomeModel = null;
-        this.localService.eventBus.next({title: this.serviceZoneTitle + '业态大数据', flagState: 'serzone', flagName: this.serviceZoneTitle});
-        // 实时数据
+        // 服务区信息
         this.serareaService.searchSerAraItem(this.serviceZoneID).subscribe(
           (value) => {
-            this.alterUpAttributeValues = [];
-            this.alterDownAttributeValues = [];
             if (value.status === '200') {
               if (value.data) {
                 this.serviceInfo = value.data;
-                value.data.commonAttributeValues.map((val, index) => {
-                  this.alterCommonAttributeValues.push(this.cloneValue(val));
-                });
-                value.data.upAttributeValues.attributeValues.map((val, index) => {
+                this.serviceInfo.upAttributeValues.attributeValues.map((val, index) => {
                   this.alterUpAttributeValues.push(this.cloneValue(val));
                 });
-                value.data.downAttributeValues.attributeValues.map((val, index) => {
+                this.serviceInfo.downAttributeValues.attributeValues.map((val, index) => {
                   this.alterDownAttributeValues.push(this.cloneValue(val));
                 });
               }
             }
           }
         );
-        this.vehicleAmountCount();
-        this.CarTypes();
-        this.incomeAmountCount();
-        this.IncomeTypes();
+        this.localService.eventBus.next({title: this.serviceZoneTitle + '业态大数据', flagState: 'serzone', flagName: this.serviceZoneTitle});
         this.getPerson();
-        this.getIncomeTotalTypes();
         this.backCenterDate();
-        this.timeDate();
         // 数据初始化
         this.upData();
       }
@@ -215,48 +148,18 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    clearInterval(this.vehicleAmountCountClean);
-    clearInterval(this.incomeAmountCountClean);
     clearInterval(this.personAmountCountClean);
     clearInterval(this.incomeShopInfoClean);
   }
 
   /*************数据初始化****************/
   public upData() {
-    // 查询服务区方向
-    this.serareaService.searchServiceDirection(this.serviceZoneID).subscribe(
-      (val) => {
-        if (val.status === '200') {
-          if (val.data.length !== 0) {
-            this.incomeManualDirectionSelect = [
-              {name: `请选择服务区方向......`, code: '-1'},
-              {name: `${val.data[0].source}——>${val.data[0].destination}`, code: val.data[0].orientaionId},
-              {name: `${val.data[1].source}——>${val.data[1].destination}`, code: val.data[1].orientaionId}
-            ];
-          }
-        }
-      }
-    );
-    // 车流监控
-    this.vehicleAmountCountClean = setInterval(() => {
-      // console.log('111');
-      this.vehicleAmountCount();
-      this.CarTypes();
-    }, 3000);
-    // 收入监控
-    this.incomeAmountCountClean = setInterval(() => {
-      // console.log('222');
-      this.incomeAmountCount();
-      this.IncomeTypes();
-    }, 3000);
     // 实时客流
     this.personAmountCountClean = setInterval(() => {
-      // console.log('333');
       this.getPerson();
     }, 3000);
     // 实时店铺信息
     this.incomeShopInfoClean = setInterval(() => {
-      // console.log('444');
       this.backCenterDate();
     }, 3000);
     // 事件列表
@@ -269,29 +172,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
         }
       }
     );
-  }
-  public timeDate (): void {
-    const today = new Date();
-    const month = today.getMonth();
-    const year = today.getFullYear();
-    const prevMonth = (month === 0) ? 11 : month - 1;
-    const prevYear = (prevMonth === 11) ? year - 1 : year;
-    const nextMonth = (month === 11) ? 0 : month + 1;
-    const nextYear = (nextMonth === 0) ? year + 1 : year;
-    this.minDate = new Date();
-    this.minDate.setMonth(1);
-    this.minDate.setFullYear(prevYear - 3);
-    this.maxDate = new Date();
-    this.maxDate.setMonth(month);
-    this.maxDate.setFullYear(nextYear);
-    const endDay = new Date(year, month + 1, 0).getDate();
-    for (let i = today.getDate(); i <= endDay; i++) {
-      const invalidDate = new Date();
-      invalidDate.setDate(i);
-      this.invalidDates.push(invalidDate);
-    }
-    // console.log(this.invalidDates);
-    // 请你记住，时间的月份是从0月开始算的
   }
   // 客流
   public getPerson(): void {
@@ -333,90 +213,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       }
     );
   }
-
-  /************************左边***************************/
-  // 车辆监控及表格导出
-  public vehicleAmountCount(): void {
-    this.serareaService.searchCarTotal({id: this.serviceZoneID}).subscribe(
-      (value) => {
-        if (value.status === '200') {
-          this.vehicleAmount = {
-            number: value.data,
-            units: '辆'
-          };
-        }
-      }
-    );
-  }
-
-  public CarTypes() {
-    this.serareaService.searchCarTotalPie({id: this.serviceZoneID}).subscribe(
-      (value) => {
-        if (value.status === '200') {
-          if (this.serviceZoneTitle === '久长服务区') {
-            value.data.push({id: null, name: '危品车', value: 1});
-            value.data.push({id: null, name: '畜牧车', value: 1});
-          } else {
-            value.data.push({id: null, name: '危品车', value: 0});
-            value.data.push({id: null, name: '畜牧车', value: 0});
-          }
-          this.optionsCarModel = {
-            data: value.data,
-            title: '',
-            total: '',
-            color: ['#00CAE2', '#2307EF', '#4791D8']
-          };
-        }
-      }
-    );
-  }
-
-  public parkClick(e): void {
-    this.alertCarShow = true;
-    document.body.className = 'ui-overflow-hidden';
-    this.carTimeTypes = 'hour';
-    this.carDistribution(1, this.carTimeTypes);
-  }
-
-  public carSelectTime(event): void {
-    this.carTimeTypes = event.code;
-    // 表格
-    this.carDistribution(1, this.carTimeTypes);
-  }
-
-  public carDistribution(e, time): void {
-    /*const carTypes = {
-      '总数': 'total',
-      '小车': 1,
-      '客车': 2,
-      '货车': 3,
-    };*/
-    // 表格
-    this.serareaService.searchCarAlertTable({dateType: time, id: this.serviceZoneID, page: e, nums: 10}).subscribe(
-      (val) => {
-        if (val.status === '200') {
-          console.log(val.data);
-          this.carTableData = val.data;
-        }
-      }
-    );
-  }
-
-  public closeCarShow(): void {
-    document.body.className = '';
-    this.alertCarShow = false;
-  }
-
-  public carExportClick() {
-    const startTime = this.datePipe.transform(this.carStartTime, 'yyyyMMdd');
-    const endTime = this.datePipe.transform(this.carEndTime, 'yyyyMMdd');
-    if (this.carStartTime && this.carEndTime) {
-      window.open(`http://120.78.137.182:8888/highway-interactive/report/serviceArea/vihicle/1/startDate/${startTime}/endDate/${endTime}`);
-    } else {
-      window.alert('请把数据选择全在提交');
-    }
-  }
-
   /************************中部***************************/
   // 店铺、视频及方向
   public backCenterDate() {
@@ -487,7 +283,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     this.serviceShopInfo = item;
     this.serviceShopShow = true;
     document.body.className = 'ui-overflow-hidden';
-    console.log(item.cameraList);
     if (item.cameraList !== undefined) {
       this.addShopVideo(this.serviceShopInfo);
     }
@@ -818,6 +613,14 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   }
 
   /************************右边***************************/
+  // 服务区合同下载
+  public servicesPactDown(): void {
+    if (this.serviceInfo.contractUrl === null) {
+      window.alert('合同暂未上传');
+      return;
+    }
+    window.open(`${this.serviceInfo.contractUrlPrefix}${this.serviceInfo.contractUrl}`);
+  }
   // 遍历修改后的数据，并把它赋值给car1
   public cloneValue(c: any): any {
     const car = {};
@@ -827,333 +630,5 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       }
     }
     return car;
-  }
-
-  // 服务区信息修改
-  public crosswiseClick(): void {
-    this.alertCrosswiseShow = true;
-    document.body.className = 'ui-overflow-hidden';
-  }
-  public closeCrosswiseShow(): void {
-    document.body.className = '';
-    this.alertCrosswiseShow = false;
-  }
-  public modifySerAraItemClick(): void {
-    if (this.serviceInfo.commonAttributeValues.length !== 0) {}
-    this.serareaService.modifySerAraItem(
-      {
-        administrativeAreaId: this.serviceInfo.administrativeAreaId,
-        administrativeAreaName: this.serviceInfo.administrativeAreaName,
-        chiefName: null,
-        chiefPhone: null,
-        chiefUserId: this.serviceInfo.chiefUserId,
-        commonAttributeValues: this.alterCommonAttributeValues,
-        deptId: this.serviceInfo.deptId,
-        deptName:  this.serviceInfo.deptName,
-        downAttributeValues: {
-          attributeValues: this.alterDownAttributeValues,
-            destination: this.serviceInfo.downAttributeValues.destination,
-            flag: this.serviceInfo.downAttributeValues.flag,
-            flagName: this.serviceInfo.downAttributeValues.flagName,
-            id: this.serviceInfo.downAttributeValues.id,
-            source: this.serviceInfo.downAttributeValues.source,
-        },
-        id: this.serviceInfo.id,
-        organizationId: this.serviceInfo.organizationId,
-        organizationName: this.serviceInfo.organizationName,
-        serviceAreaName: this.serviceInfo.serviceAreaName,
-        upAttributeValues: {
-          attributeValues: this.alterUpAttributeValues,
-          destination: this.serviceInfo.upAttributeValues.destination,
-          flag: this.serviceInfo.upAttributeValues.flag,
-          flagName: this.serviceInfo.upAttributeValues.flagName,
-          id: this.serviceInfo.upAttributeValues.id,
-          source: this.serviceInfo.upAttributeValues.source,
-        },
-      }
-    ).subscribe(
-      (data) => {
-        if (data.status === '200') {
-          this.alterCommonAttributeValues = [];
-          this.alterUpAttributeValues = [];
-          this.alterDownAttributeValues = [];
-          window.alert(data.message);
-          this.serareaService.searchSerAraItem(this.serviceZoneID).subscribe(
-            (value) => {
-              this.serviceInfo = value.data;
-              value.data.commonAttributeValues.map((val, index) => {
-                this.alterCommonAttributeValues.push(this.cloneValue(val));
-              });
-              value.data.upAttributeValues.attributeValues.map((val, index) => {
-                this.alterUpAttributeValues.push(this.cloneValue(val));
-              });
-              value.data.downAttributeValues.attributeValues.map((val, index) => {
-                this.alterDownAttributeValues.push(this.cloneValue(val));
-              });
-            }
-          );
-        }
-      }
-    );
-  }
-
-  // 平面图
-  public openServicesPlan() {
-    document.body.className = 'ui-overflow-hidden';
-    this.servicesPlan = true;
-    // 百度地图
-    this.servicesMap = {
-      bmap: {
-        center: [106.70458, 26.90214],
-        zoom: 20,
-        roam: true,
-        mapStyle: {
-          'styleJson': [
-            {
-              'featureType': 'background',
-              'elementType': 'all',
-              'stylers': {
-                'color': '#273440'
-              }
-            }
-          ]
-        }
-      },
-    };
-  }
-  public closeServicesPlan() {
-    document.body.className = '';
-    this.servicesPlan = false;
-  }
-
-  // 业态输入
-  public openIncomeManual (): void {
-      this.incomeManualShow = true;
-  }
-  public incomeManualDirectionClick (item): void {
-    if (item.code !== '-1') {
-      this.incomeManualStoreSelect = [
-        {name: '请选择店铺......', code: '-1'}
-      ];
-      this.incomeManualStoreShow = true;
-      this.serareaService.searchServiceNoCashShop(item.code).subscribe(
-        (val) => {
-          if (val.status === '200') {
-            val.data.map((prop) => {
-              this.incomeManualStoreSelect.push(
-                {name: `${prop.storeName}`, code: prop}
-              );
-            });
-          }
-        });
-      return;
-    }
-    this.incomeManualStoreShow = false;
-  }
-  public incomeManualShopClick (item): void {
-    console.log();
-    if (item.code !== '-1') {
-      this.incomeManualIncomeShow = true;
-      this.incomeManualAddIncome.storeId = item.code.id;
-      this.incomeManualAddIncome.serviceAreaId = item.code.serviceAreaId;
-      this.incomeManualAddIncome.serviceAreaName = item.code.serviceAreaName;
-      this.incomeManualAddIncome.orientationId = item.code.saOrientationId;
-      this.incomeManualAddIncome.storeName = item.code.storeName;
-      this.incomeManualAddIncome.categoryCode = item.code.categoryCode;
-      this.incomeManualAddIncome.day = this.datePipe.transform(this.incomeManualTime, 'yyyy-MM-dd');
-      return;
-    }
-    this.incomeManualIncomeShow = false;
-  }
-  public incomeManualUpClick (): void {
-    this.serareaService.addNoCashShopIncome(this.incomeManualAddIncome).subscribe(
-      (val) => {
-        if (val.status === '200') {
-          this.incomeManualShow = false;
-          window.alert('上传成功');
-          return;
-        }
-        this.incomeManualShow = false;
-        window.alert('添加失败');
-      }
-    );
-  }
-  // 服务区合同下载
-  public servicesPactDown(): void {
-    if (this.serviceInfo.contractUrl === null) {
-      window.alert('合同暂未上传');
-      return;
-      // console.log(this.serviceInfo.contractUrlPrefix + this.serviceInfo.contractUrl);
-    }
-    window.open(`${this.serviceInfo.contractUrlPrefix}${this.serviceInfo.contractUrl}`);
-  }
-
-  // 收入监控
-  public incomeAmountCount(): void {
-    this.serareaService.searchIncomeTotal({id: this.serviceZoneID}).subscribe(
-      (value) => {
-        if (value.status === '200') {
-          this.incomeAmount = {
-            number: value.data,
-            units: '元'
-          };
-        }
-      }
-    );
-  }
-  public IncomeTypes() {
-    this.serareaService.searchIncomeTotalPie({id: this.serviceZoneID}).subscribe(
-      (value) => {
-        if (value.status === '200') {
-          this.optionsIncomeModel = {
-            data: value.data,
-            title: '',
-            total: '',
-            color: ['#00CAE2', '#2307EF', '#4791D8', '#F86110', '#0096A4', '#F0B801']
-          };
-        }
-      }
-    );
-  }
-  public incomeClick(e): void {
-    this.alertIncomeTypeShow = true;
-    this.alertIncomeShow = true;
-    document.body.className = 'ui-overflow-hidden';
-    this.alertIncomeTitle = e.name;
-    this.alertIncomeTypeTitle = e.name;
-    this.IncomeTimeTypes = 'hour';
-    this.getIncomeTypesSingle(1, this.alertIncomeTitle, this.storeList, this.IncomeTimeTypes);
-  }
-  public getIncomeTotalTypes(): void {
-    this.serareaService.searchIncomeTypes({id: this.serviceZoneID}).subscribe(
-      (value) => {
-        if (value.status === '200') {
-          this.storeList = value.data;
-        }
-      }
-    );
-  }
-  public getIncomeTotal(time, pageNums): void {
-    this.serareaService.searchIncomeTypesList({dateType: time, id: this.serviceZoneID, page: pageNums, nums: 15}).subscribe(
-      (incomeVal) => {
-        if (incomeVal.status === '200') {
-          this.IncomeTableData = incomeVal.data;
-        }
-      }
-    );
-  }
-  public getIncomeTypesSingle(pageNums, item, storeList, time): void {
-    const shopType = {
-      '小吃': {
-        'sequence': 1,
-        'entryCode': '1'
-      },
-      '中式快餐': {
-        'sequence': 2,
-        'entryCode': '2',
-      },
-      '西式快餐': {
-        'sequence': 3,
-        'entryCode': '3',
-      },
-      '商超': {
-        'sequence': 4,
-        'entryCode': '4',
-      },
-      '住宿': {
-        'sequence': 5,
-        'entryCode': '5',
-      },
-      '汽修': {
-        'sequence': 6,
-        'entryCode': '6',
-      },
-    };
-    this.IncomeOptionType = item;
-    const shopList = storeList.filter((prop, index) => {
-      return prop.entryCode === shopType[this.IncomeOptionType].entryCode;
-    });
-    if (shopList) {
-      this.serareaService.searchIncomeTypesItem(
-        {dateType: time, id: this.serviceZoneID, entryCode: shopType[this.IncomeOptionType].entryCode, page: pageNums, nums: 10}).subscribe(
-        (value) => {
-          if (value.status === '200') {
-            this.IncomeTableData = value.data;
-          }
-        }
-      );
-    }
-  }
-  public IncomeSelectTime(event): void {
-    this.IncomeTimeTypes = event.code;
-    if (!this.alertIncomeTypeShow) {
-      this.getIncomeTotal(this.IncomeTimeTypes, 1);
-      return;
-    }
-    this.getIncomeTypesSingle(1, this.alertIncomeTitle, this.storeList, this.IncomeTimeTypes);
-  }
-  public getIncomeTypesSinglePaging(page, item, storeList, time): void {
-    if (!this.alertIncomeTypeShow) {
-      this.getIncomeTotal(time, page);
-      return;
-    }
-    this.getIncomeTypesSingle(page, item, storeList, time);
-  }
-  public closeIncomeShow(): void {
-    document.body.className = '';
-    this.alertIncomeShow = false;
-  }
-  public IncomeBtnClick(e): void {
-    if (e.srcElement.innerText === '收入总数') {
-      this.alertIncomeTitle = '收入总数';
-      this.alertIncomeTypeShow = false;
-      this.arryIncomePie = [];
-      this.getIncomeTotal(this.IncomeTimeTypes, 1);
-    } else if (e.srcElement.innerText === '小吃') {
-      this.alertIncomeTitle = '小吃';
-      this.alertIncomeTypeTitle = '小吃';
-      this.alertIncomeTypeShow = true;
-      this.arryIncomePie = [];
-      this.getIncomeTypesSingle(1, e.srcElement.innerText, this.storeList, this.IncomeTimeTypes);
-    } else if (e.srcElement.innerText === '中式快餐') {
-      this.alertIncomeTitle = '中式快餐';
-      this.alertIncomeTypeTitle = '中式快餐';
-      this.alertIncomeTypeShow = true;
-      this.arryIncomePie = [];
-      this.getIncomeTypesSingle(1, e.srcElement.innerText, this.storeList, this.IncomeTimeTypes);
-    } else if (e.srcElement.innerText === '西式快餐') {
-      this.alertIncomeTitle = '西式快餐';
-      this.alertIncomeTypeTitle = '西式快餐';
-      this.alertIncomeTypeShow = true;
-      this.arryIncomePie = [];
-      this.getIncomeTypesSingle(1, e.srcElement.innerText, this.storeList, this.IncomeTimeTypes);
-    } else if (e.srcElement.innerText === '商超') {
-      this.alertIncomeTitle = '商超';
-      this.alertIncomeTypeTitle = '商超';
-      this.alertIncomeTypeShow = true;
-      this.arryIncomePie = [];
-      this.getIncomeTypesSingle(1, e.srcElement.innerText, this.storeList, this.IncomeTimeTypes);
-    } else if (e.srcElement.innerText === '住宿') {
-      this.alertIncomeTitle = '住宿';
-      this.alertIncomeTypeTitle = '住宿';
-      this.alertIncomeTypeShow = true;
-      this.arryIncomePie = [];
-      this.getIncomeTypesSingle(1, e.srcElement.innerText, this.storeList, this.IncomeTimeTypes);
-    } else if (e.srcElement.innerText === '汽修') {
-      this.alertIncomeTitle = '汽修';
-      this.alertIncomeTypeTitle = '汽修';
-      this.alertIncomeTypeShow = true;
-      this.arryIncomePie = [];
-      this.getIncomeTypesSingle(1, e.srcElement.innerText, this.storeList, this.IncomeTimeTypes);
-    }
-  }
-  public incomeExportClick() {
-    const startTime = this.datePipe.transform(this.incomeStartTime, 'yyyyMMdd');
-    const endTime = this.datePipe.transform(this.incomeEndTime, 'yyyyMMdd');
-    if (this.incomeStartTime && this.incomeEndTime) {
-      window.open(`http://120.78.137.182:8888/highway-interactive/report/serviceArea/revenue/1/startDate/${startTime}/endDate/${endTime}`);
-    } else {
-      window.alert('请把数据选择全在提交');
-    }
   }
 }
