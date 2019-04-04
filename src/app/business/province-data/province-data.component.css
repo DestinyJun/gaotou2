@@ -20,22 +20,6 @@
   overflow: hidden;
   padding: 1vh 0.5vw;
 }
-/*事件监控*/
-.center .event-table-service{
-  padding-right: 0;
-  padding-left: 0;
-}
-.center .event-table-service-title{
-  margin-bottom: 1vh;
-}
-.center .event-table-service-title.title>span:nth-child(3){
-  left: 3.5vw;
-  top: -0.5vh;
-}
-.center .event-table-service-title.title>span:nth-child(4){
-  left: 3.5vw;
-  top: 2.4vh;
-}
 /*办公事件监控*/
 .center .event-table-office-title{
   margin-bottom: 1vh;
