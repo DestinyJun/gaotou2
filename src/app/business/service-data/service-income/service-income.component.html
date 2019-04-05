@@ -1,18 +1,12 @@
-<div class="income">
+<div class="service-income">
   <!--实时收入-->
-  <div class="income-amount">
-    <div class="income-amount-title title text-center">
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-      <p>{{serviceName}}高速服务区实时收入</p>
-    </div>
+  <div class="service-income-amount">
+    <app-title-one [height]="'3vh'" [option]="{title: serviceName + '高速服务区实时收入'}"></app-title-one>
     <app-number-show [option]="incomeAmount"></app-number-show>
   </div>
   <!--收入占比-->
-  <div class="income-pie">
-    <div class="income-pie-title title text-center">
+  <div class="service-income-pie">
+    <div class="service-income-pie-title title text-center">
       <p>{{serviceName}}当日收入类型占比分析</p>
     </div>
     <app-echart-pie [option]="optionsIncomeModel" [height]="'20vh'" (pieClick)="incomeClick($event)"></app-echart-pie>

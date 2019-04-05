@@ -1,7 +1,6 @@
 import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {DataService} from '../../common/services/data.service';
-import {ConfigModule, WenjunAlertService} from '../../common/wenjun';
 import {CityDataService} from '../../common/services/city-data.service';
 import {LocalStorageService} from '../../common/services/local-storage.service';
 @Component({
@@ -20,24 +19,10 @@ export class CityDataComponent implements OnInit, OnDestroy {
   // 省市联动
   public dataToggle: string;
   public cityId: any;
-  // 事件类数据
-  public eventTypes: any;
-  public eventConfig: ConfigModule;
-  public eventAlertListShow = true;
-  public eventListNoProcess: any;
-  public eventListProcess: any;
-  public eventListInfo: any;
-  // 办公类事件
-  public officeTypes: any;
-  public alertOfficeShow = false;
-  // 个人类事件
-  public personOfficeTypes: any;
-  public alertPersonShow = false;
   constructor(
     private dataService: DataService,
     private router: Router,
     private routerInfo: ActivatedRoute,
-    private wenJunAlertService: WenjunAlertService,
     private cityDataService: CityDataService,
     private localService: LocalStorageService,
   ) {
@@ -76,12 +61,6 @@ export class CityDataComponent implements OnInit, OnDestroy {
   public updataEcharts(): void {
     /**************************中部****************************/
     this.centerMap();
-    // 事件
-    this.initialize();
-    // 办公
-    this.officeTypes = this.dataService.officeTypes;
-    // 个人
-    this.personOfficeTypes = this.dataService.personOfficeTypes;
     // 实时客流
     this.personAmountCountClean = setInterval(() => {
       this.getPerson();
@@ -147,78 +126,5 @@ export class CityDataComponent implements OnInit, OnDestroy {
         // window.alert('此服务区暂无数据');
       }
     }
-  }
-  // 事件类型统计
-  public initialize(): void {
-    this.cityDataService.searchEventCategory().subscribe(
-      (value) => {
-        if (value.status === '200') {
-          this.cityDataService.searchEventCategoryCount({id: this.cityId, list: value.data}).subscribe(
-            (item) => {
-              if (item.status === '200') {
-                this.eventTypes = item.data;
-              }
-            }
-          );
-        }
-      }
-    );
-  }
-  public tableEventClick(item): void {
-    this.eventConfig = {
-      alertTitle: item.eventCategoryName,
-      width: 80,
-      height: 60,
-    };
-    if (item.eventCategoryName === '经营类') {
-      this.wenJunAlertService.openAlertShow();
-    } else {
-      this.alertOfficeShow = true;
-    }
-    this.getEventsTypeList(item);
-  }
-  public getEventsTypeList (item): void {
-    // 未处理
-    this.cityDataService.searchEventsTypeList(
-      {id: this.cityId, eventCategoryCode: item.categoryCode, processState: 2, page: 1, nums: 1000}).subscribe(
-      (val) => {
-        if (val.status === '200') {
-          this.eventListNoProcess = val.data.contents;
-        }
-      }
-    );
-    // 已处理
-    this.cityDataService.searchEventsTypeList(
-      {id: this.cityId, eventCategoryCode: item.categoryCode, processState: 1, page: 1, nums: 1000}).subscribe(
-      (value) => {
-        if (value.status === '200') {
-          this.eventListProcess = value.data.contents;
-        }
-      }
-    );
-  }
-  public eventAlertListCtrlw(): void {
-    this.eventAlertListShow = true;
-  }
-  public eventAlertListCtrly(): void {
-    this.eventAlertListShow = false;
-  }
-  public eventListInfoClick(item): void {
-    this.eventListInfo = item;
-  }
-  // 办公室信息处理函数
-  public tableOfficeClick(e): void {
-    this.alertOfficeShow = true;
-  }
-  public closeOfficeShow() {
-    this.alertOfficeShow = false;
-  }
-
-  // 个人信息处理
-  public tablePersonClick(e) {
-    this.alertPersonShow = true;
-  }
-  public closePersonShow() {
-    this.alertPersonShow = false;
   }
 }

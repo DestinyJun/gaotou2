@@ -1,12 +1,12 @@
-<div class="vehicle">
+<div class="province-vehicle">
   <!--日车流量实时统计-->
-  <div class="vehicle-amount">
+  <div class="province-vehicle-amount">
     <app-title-one [height]="'3vh'" [option]="{title: provinceName + '今日车辆流动数量'}"></app-title-one>
     <app-number-show [option]="vehicleAmount"></app-number-show>
   </div>
   <!--车型日分布占比-->
-  <div class="vehicle-pie">
-    <div class="vehicle-pie-title title text-center">
+  <div class="province-vehicle-pie">
+    <div class="province-vehicle-pie-title text-center">
       <p>{{provinceName}}当日车型分布类型占比</p>
     </div>
     <app-echart-pie [option]="optionsCarModel" [height]="'20vh'" (pieClick)="parkClick($event)"></app-echart-pie>

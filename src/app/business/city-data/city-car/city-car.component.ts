@@ -6,7 +6,7 @@ import {DatePipe} from '@angular/common';
 @Component({
   selector: 'app-city-car',
   templateUrl: './city-car.component.html',
-  styleUrls: ['./city-car.component.less']
+  styleUrls: ['./city-car.component.less'],
 })
 export class CityCarComponent implements OnInit, OnChanges, OnDestroy {
   @Input() public cityId: any;

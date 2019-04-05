@@ -16,6 +16,8 @@ import { ProvinceIncomeComponent } from './province-income/province-income.compo
 // import { ProvinceEventComponent } from './province-event/province-event.component';
 import { ProvinceCrosswiseComponent } from './province-crosswise/province-crosswise.component';
 import { ProvinceEvnstatComponent } from './province-evnstat/province-evnstat.component';
+import { ProvinceEvnofficeComponent } from './province-evnoffice/province-evnoffice.component';
+import { ProvinceEvnpersonComponent } from './province-evnperson/province-evnperson.component';
 
 @NgModule({
   imports: [
@@ -39,7 +41,9 @@ import { ProvinceEvnstatComponent } from './province-evnstat/province-evnstat.co
     ProvinceIncomeComponent,
     // ProvinceEventComponent,
     ProvinceCrosswiseComponent,
-    ProvinceEvnstatComponent
+    ProvinceEvnstatComponent,
+    ProvinceEvnofficeComponent,
+    ProvinceEvnpersonComponent
   ],
   entryComponents: [],
   providers: [FinanceDataService, DataService, DatePipe]

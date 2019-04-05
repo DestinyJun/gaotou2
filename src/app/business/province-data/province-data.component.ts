@@ -21,12 +21,6 @@ export class ProvinceDataComponent implements OnInit, OnDestroy {
   public province: any;
   public city: any;
   public provinceId: any;
-  // 办公类事件
-  public officeTypes: any;
-  public alertOfficeShow = false;
-  // 个人类事件
-  public personOfficeTypes: any;
-  public alertPersonShow = false;
   constructor(
     private dataService: DataService,
     private router: Router,
@@ -68,10 +62,6 @@ export class ProvinceDataComponent implements OnInit, OnDestroy {
     /**************************中部****************************/
     // 地图数据
     this.centertMap();
-    // 办公
-    this.officeTypes = this.dataService.officeTypes;
-    // 个人
-    this.personOfficeTypes = this.dataService.personOfficeTypes;
     // 实时客流
     this.personAmountCountClean = setInterval(() => {
       this.getPerson();
@@ -144,20 +134,5 @@ export class ProvinceDataComponent implements OnInit, OnDestroy {
         // window.alert('此服务区暂无数据');
       }
     }
-  }
-  // 办公室信息处理函数
-  public tableOfficeClick(e): void {
-    this.alertOfficeShow = true;
-  }
-  public closeOfficeShow() {
-    this.alertOfficeShow = false;
-  }
-
-  // 个人信息处理
-  public tablePersonClick(e) {
-    this.alertPersonShow = true;
-  }
-  public closePersonShow() {
-    this.alertPersonShow = false;
   }
 }

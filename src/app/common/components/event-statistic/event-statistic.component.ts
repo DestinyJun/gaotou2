@@ -1,8 +1,4 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewEncapsulation} from '@angular/core';
-interface Car {
-  type;
-  status;
-}
 @Component({
   selector: 'app-event-statistic',
   templateUrl: './event-statistic.component.html',

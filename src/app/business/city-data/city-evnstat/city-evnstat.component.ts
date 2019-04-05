@@ -1,20 +1,20 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {FinanceDataService} from '../../../common/services/finance-data.service';
+import {CityDataService} from '../../../common/services/city-data.service';
 
 @Component({
-  selector: 'app-province-evnstat',
-  templateUrl: './province-evnstat.component.html',
-  styleUrls: ['./province-evnstat.component.less']
+  selector: 'app-city-evnstat',
+  templateUrl: './city-evnstat.component.html',
+  styleUrls: ['./city-evnstat.component.less']
 })
-export class ProvinceEvnstatComponent implements OnInit, OnChanges {
-  @Input() provinceId: any;
-  @Input() provinceName: any;
+export class CityEvnstatComponent implements OnInit, OnChanges {
+  @Input() cityId: any;
+  @Input() cityName: any;
   // 事件类型
   public eventTypes: any;
   public eventTypesTitle: any;
   public eventTypesShow = false;
   constructor(
-    private provinceSrv: FinanceDataService,
+    private citySrv: CityDataService,
   ) { }
 
   ngOnInit() {
@@ -25,10 +25,10 @@ export class ProvinceEvnstatComponent implements OnInit, OnChanges {
   }
   // 事件类型统计
   public initialize(): void {
-    this.provinceSrv.searchEventCategory().subscribe(
+    this.citySrv.searchEventCategory().subscribe(
       (value) => {
         if (value.status === '200') {
-          this.provinceSrv.searchEventCategoryCount({id: this.provinceId, list: value.data}).subscribe(
+          this.citySrv.searchEventCategoryCount({id: this.cityId, list: value.data}).subscribe(
             (item) => {
               if (item.status === '200') {
                 this.eventTypes = item.data;

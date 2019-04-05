@@ -2,7 +2,7 @@
   <!--*****************大数据可视化***********************-->
   <div class="row">
     <!--左边-->
-    <div class="left col-lg-3 col-md-3">
+    <div class="col-lg-3 col-md-3">
      <app-city-3d [esDate]="esDate" [cityId]="cityId" [cityName]="dataToggle"></app-city-3d>
       <!--车辆统计-->
      <app-city-car [esDate]="esDate" [cityId]="cityId" [cityName]="dataToggle"></app-city-car>
@@ -21,103 +21,18 @@
       <!--事件监控-->
       <div class="event-table">
         <div class="col-lg-2 col-md-2 event-table-service">
-          <div class="event-table-service-title title text-center">
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            <p>事件监控</p>
-          </div>
-          <app-event-statistic [option]="eventTypes" [width]="'100%'" [height]="'30vh'" (eventStatisticClick)="tableEventClick($event)"></app-event-statistic>
-          <!--事件监控弹窗-->
-          <app-wenjun-alert [config]="eventConfig">
-            <div class="row">
-              <div class="col-lg-12 col-md-12">
-                <div>
-                  <button class="btn" [ngStyle]="{'color':!eventAlertListShow?'black': 'white'}" [ngClass]="{'btn-primary': eventAlertListShow}" (click)="eventAlertListCtrlw()">未处理事件</button>
-                  <button class="btn" [ngStyle]="{'color':eventAlertListShow?'black': 'white'}" [ngClass]="{'btn-primary': !eventAlertListShow}" (click)="eventAlertListCtrly()">已处理事件</button>
-                </div>
-              </div>
-              <div class="col-lg-8 col-md-8" *ngIf="eventAlertListShow">
-                <app-event-list [option]="eventListNoProcess" [width]="'100%'" [height]="'45vh'" (eventListClick)="eventListInfoClick($event)"></app-event-list>
-              </div>
-              <div class="col-lg-8 col-md-8" *ngIf="!eventAlertListShow">
-                <app-event-list [option]="eventListProcess" [width]="'100%'" [height]="'45vh'" (eventListClick)="eventListInfoClick($event)"></app-event-list>
-              </div>
-              <div class="col-lg-4 col-md-4">
-                <app-event-list-info [option]="eventListInfo" [width]="'100%'" [height]="'45vh'"></app-event-list-info>
-              </div>
-            </div>
-          </app-wenjun-alert>
+          <app-city-evnstat [cityId]="cityId" [cityName]="dataToggle"></app-city-evnstat>
         </div>
         <div class="col-lg-7 col-md-7 event-table-office">
-          <div class="event-table-office-title title text-center">
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            <p>服务区办公信息</p>
-          </div>
-          <app-event-office [option]="officeTypes" [width]="'100%'" [height]="'30vh'" (eventOfficeClick)="tableOfficeClick($event)"></app-event-office>
-          <!--办公信息处理-->
-          <div class="bg-box" *ngIf="alertOfficeShow">
-            <div class="alert-window">
-              <div class="alert-window-header">
-                <div class="row">
-                  <div class="col-lg-12 col-md-12">
-                    <span>{{this.dataToggle}}服务区办公信息</span>
-                    <div class="pull-right" (click)="closeOfficeShow()">
-                      <i class="fa fa-window-close " aria-hidden="true"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="alert-window-content">
-                <div class="row">
-                  <div class="col-ld-12 col-md-12">
-                    <h1 class="text-center">待开发中......</h1>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+         <app-city-evnoffice [cityId]="cityId" [cityName]="dataToggle"></app-city-evnoffice>
         </div>
         <div class="col-lg-3 col-md-3 event-table-person">
-          <div class="event-table-person-title title text-center">
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            <p>个人信息处理</p>
-          </div>
-          <app-event-person [option]="personOfficeTypes" [width]="'100%'" [height]="'30vh'" (eventPersonClick)="tablePersonClick($event)"></app-event-person>
-          <!--个人信息办公处处理-->
-          <div class="bg-box" *ngIf="alertPersonShow">
-            <div class="alert-window">
-              <div class="alert-window-header">
-                <div class="row">
-                  <div class="col-lg-12 col-md-12">
-                    <span>{{this.dataToggle}}服务区办公信息</span>
-                    <div class="pull-right" (click)="closePersonShow()">
-                      <i class="fa fa-window-close " aria-hidden="true"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="alert-window-content">
-                <div class="row">
-                  <div class="col-ld-12 col-md-12">
-                    <h1 class="text-center">待开发中......</h1>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <app-city-evnperson [cityId]="cityId" [cityName]="dataToggle"></app-city-evnperson>
         </div>
       </div>
     </div>
     <!--右边-->
-    <div class="right col-lg-3 col-md-3">
+    <div class="col-lg-3 col-md-3">
       <!--业态前十排名柱状图-->
       <app-province-crosswise [cityId]="cityId" [cityName]="dataToggle"></app-province-crosswise>
       <!--收入统计-->

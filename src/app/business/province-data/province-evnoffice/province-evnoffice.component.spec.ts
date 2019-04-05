@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ProvinceEvnstatComponent } from './province-evnstat.component';
+import { ProvinceEvnofficeComponent } from './province-evnoffice.component';
 
-describe('CityEvnstatComponent', () => {
-  let component: ProvinceEvnstatComponent;
-  let fixture: ComponentFixture<ProvinceEvnstatComponent>;
+describe('CityEvnofficeComponent', () => {
+  let component: ProvinceEvnofficeComponent;
+  let fixture: ComponentFixture<ProvinceEvnofficeComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ProvinceEvnstatComponent ]
+      declarations: [ ProvinceEvnofficeComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ProvinceEvnstatComponent);
+    fixture = TestBed.createComponent(ProvinceEvnofficeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -12,6 +12,9 @@ import {City3dComponent} from './city-3d/city-3d.component';
 import {CityCarComponent} from './city-car/city-car.component';
 import {CityCrosswiseComponent} from './city-crosswise/city-crosswise.component';
 import {CityIncomeComponent} from './city-income/city-income.component';
+import {CityEvnstatComponent} from './city-evnstat/city-evnstat.component';
+import {CityEvnofficeComponent} from './city-evnoffice/city-evnoffice.component';
+import {CityEvnpersonComponent} from './city-evnperson/city-evnperson.component';
 
 @NgModule({
   imports: [
@@ -29,7 +32,10 @@ import {CityIncomeComponent} from './city-income/city-income.component';
     City3dComponent,
     CityCarComponent,
     CityCrosswiseComponent,
-    CityIncomeComponent
+    CityIncomeComponent,
+    CityEvnstatComponent,
+    CityEvnofficeComponent,
+    CityEvnpersonComponent
   ],
   providers: [CityDataService, DataService, DatePipe]
 })

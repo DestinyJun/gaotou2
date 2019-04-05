@@ -28,59 +28,6 @@
   padding-right: 0;
   padding-left: 0;
 }
-.center .event-table-service-title{
-  margin-bottom: 1vh;
-}
-.center .event-table-service-title.title>span:nth-child(3){
-  left: 3.5vw;
-  top: -0.5vh;
-}
-.center .event-table-service-title.title>span:nth-child(4){
-  left: 3.5vw;
-  top: 2.4vh;
-}
-/*办公事件监控*/
-.center .event-table-office-title{
-  margin-bottom: 1vh;
-}
-.center .event-table-office-title.title>span:nth-child(3){
-  left: 21.5vw;
-  top: -0.5vh;
-}
-.center .event-table-office-title.title>span:nth-child(4){
-  left: 21.5vw;
-  top: 2.4vh;
-}
-/*个人事件监控*/
-.center .event-table-person{
-  padding-right: 0;
-  padding-left: 0;
-}
-.center .event-table-person-title{
-  margin-bottom: 1vh;
-}
-.center .event-table-person-title.title>span:nth-child(3){
-  left: 7.5vw;
-  top: -0.5vh;
-}
-.center .event-table-person-title.title>span:nth-child(4){
-  left: 7.5vw;
-  top: 2.4vh;
-}
-/**************************公共样式***********************/
-/*百度地图*/
-.city-statistics .ui-scrollpanel-wrapper {
-  background: transparent;
-  border: none; /*控制滚动轴背景色*/
-}
-.city-statistics .ui-scrollpanel-bar {
-  background-color: transparent;
-  opacity: 1;
-  transition: background-color .3s;
-}
-.city-statistics .ui-scrollpanel-bar:hover {
-  background-color: #135ba1;
-}
 /****************************弹窗部分****************************/
 /*弹窗基本样式控制*/
 .bg-box{
@@ -224,20 +171,4 @@
 }
 .alert-window-excel-footer>span:nth-child(1){
   margin-right: 1.2vw;
-}
-/*弹窗表格公共样式*/
-.content-table-car:hover{
-  cursor: pointer;
-}
-.content-table{
-  height: auto;
-  padding-top: 1vh;
-  color: #87FFFF;
-  font-size: 0.875rem;
-}
-.content-table table{
-  padding-right: 5px;
-}
-.content-table-income:hover{
-  cursor: pointer;
 }
