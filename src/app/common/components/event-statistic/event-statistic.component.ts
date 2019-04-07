@@ -3,7 +3,6 @@ import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges
   selector: 'app-event-statistic',
   templateUrl: './event-statistic.component.html',
   styleUrls: ['./event-statistic.component.css'],
-  encapsulation: ViewEncapsulation.None
 })
 export class EventStatisticComponent implements OnInit, OnChanges {
   @Input() public option: any;

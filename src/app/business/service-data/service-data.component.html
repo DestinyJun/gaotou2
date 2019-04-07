@@ -1,8 +1,7 @@
 <div class="main">
-  <!--*****************大数据可视化***********************-->
   <div class="row">
     <!--左边-->
-    <div class="left col-lg-3 col-md-3">
+    <div class="col-lg-3 col-md-3">
       <!--3d柱状图-->
       <app-service-3d [esDate]="esDate" [serviceId]="serviceZoneID" [serviceName]="serviceZoneTitle"></app-service-3d>
       <!--车辆统计-->
@@ -12,386 +11,49 @@
     <div class="center col-lg-6 col-md-6">
       <!--服务区商家业态数据及监控-->
        <div class="servicesMap">
-        <div class="servicesMap-top">
-          <div class="shop-info text-center" *ngFor="let item of incomeTopData" (click)="openServiceShop(item)" [title]="item?.storeName">
-            <p>
-              <i [class]="iconImages[item?.categoryCode - 1]" aria-hidden="true"></i>
-              <span>{{item?.storeName}}</span>
-            </p>
-            <p>{{item?.revenue}}元</p>
-          </div>
-        </div>
-        <div class="first servicesMap-video">
-          <div class="btn-group" *ngFor="let item of publicTopVideoGroup;let i = index" [ngClass]="{'open':videoTopOpen[i]}" (mouseover)="publicTopVideoGroupOver(item?.cameras,i)" (mouseout)="publicTopVideoGroupLeave(i)">
-            <span data-toggle="dropdown">{{item?.groupName}}</span>
-            <ul class="dropdown-menu" style="background-color: rgba(27,29,41,0.8)">
-              <li  *ngFor="let item of publicVideoList" (click)="openPublicVideo(item)">
-                <a href="javascript:" style="color: white">
-                  <i [ngClass]="{'icon-Hemispherical-camera': item?.cameraType == 2, 'icon--ball-camera': item?.cameraType == 1, 'icon-camera-one': item?.cameraType == 3}" aria-hidden="true"></i>
-                  {{item?.cameraName}}
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="servicesMap-center text-center">
+         <app-service-upattr
+           [esDate]="esDate"
+           [serviceInfo]="serviceInfo"
+           [incomeTopData]="incomeTopData"
+           [publicTopVideoGroup]="publicTopVideoGroup"></app-service-upattr>
+         <div class="servicesMap-center text-center">
           <!--上行-->
           <span>{{serviceInfo?.downAttributeValues?.source}}</span>
           <img src="assets/images/jiantou.png" alt="" style="height: 3vh;width: auto;">
           <!--下行-->
           <span>{{serviceInfo?.upAttributeValues?.source}}</span>
         </div>
-        <div class="second servicesMap-video">
-          <div class="btn-group" *ngFor="let item of publicBottomVideoGroup;let i = index" [ngClass]="{'open':videoBottomOpen[i]}" (mouseover)="publicTopBottomGroupOver(item?.cameras,i)" (mouseout)="publicTopBottomGroupLeave(i)">
-            <span data-toggle="dropdown">{{item?.groupName}}</span>
-            <ul class="dropdown-menu" style="background-color: rgba(27,29,41,0.5)">
-              <li  *ngFor="let item of publicVideoList" (click)="openPublicVideo(item)">
-                <a href="javascript:" style="color: white">
-                  <i [ngClass]="{'icon-Hemispherical-camera': item?.cameraType == 2, 'icon--ball-camera': item?.cameraType == 1, 'icon-camera-one': item?.cameraType == 3}" aria-hidden="true"></i>
-                  {{item?.cameraName}}
-                </a>
-              </li>
-            </ul>
-          </div>
-         <!--  <span *ngFor="let item of publicBottomVideoList">
-            {{item.groupName}}
-          </span>-->
-        </div>
-        <div class="servicesMap-bottom">
-          <div class="shop-info text-center" *ngFor="let item of incomeBottomData" (click)="openServiceShop(item)">
-            <p [title]="item?.name">
-              <i [class]="iconImages[item?.categoryCode - 1]" aria-hidden="true"></i>
-              <span>{{item?.storeName}}</span>
-            </p>
-            <p [title]="item?.num">{{item?.revenue}}元</p>
-          </div>
-        </div>
+         <app-service-downattr
+           [esDate]="esDate"
+           [serviceInfo]="serviceInfo"
+           [incomeBottomData]="incomeBottomData"
+           [publicBottomVideoGroup]="publicBottomVideoGroup"
+         ></app-service-downattr>
       </div>
       <!--事件监控-->
       <div class="event-table">
-        <!--未处理-->
+        <!--未处理事件-->
         <div class="col-lg-6 col-md-6 event-table-untreated">
-          <div class="event-table-untreated-title title text-center">
-            <span></span><span></span><span></span><span></span>
-            <p>未处理事件</p>
-          </div>
-          <app-event-list [option]="eventList" [width]="'100%'" [height]="'30vh'" (eventListClick)="openEventAlert($event)"></app-event-list>
+         <app-service-evn-deal [serviceId]="serviceZoneID"></app-service-evn-deal>
         </div>
-        <!--事件上报/卫生间/停车位-->
+        <!--事件上报--> <!--卫生间/停车位-->
         <div class="col-lg-6 col-md-6 event-table-processed">
-          <div class="event-table-processed-title title text-center">
-            <span></span><span></span><span></span><span></span>
+          <div class="event-table-processed-title text-center">
             <p>事件上报</p>
           </div>
-          <p-scrollPanel [style]="{width: '100%', height: '30vh'}" styleClass="service-statistics">
-            <div class="event-table-processed-type">
-              <span *ngFor="let item of eventInfoUpTypes" [ngStyle]=" {'float': item?.eventCategoryName === '党群工作部'?'right': 'none', 'margin-right': item?.eventCategoryName === '党群工作部'?'5vw':'none'}" (click)="eventInfoUpClick(item)">{{item?.eventCategoryName}}</span>
-            </div>
-            <div class="event-table-processed-btn">
-              <div class="col-lg-6 col-md-6" style="padding-right: 0;">
-                <div class="btn-toilet" (click)="openServersToiletAlert('服务区卫生间使用率')">
-                  <p style="font-size: 0.875rem">
-                    {{serviceInfo?.upAttributeValues?.source}}-->
-                    {{serviceInfo?.upAttributeValues?.destination}}卫生间数据监控
-                  </p>
-                  <p *ngFor="let item of alterUpAttributeValues?.slice(7)"><span>{{item?.attributeDesc}}：剩余监控暂无/总共：{{item?.value}}</span></p>
-                  <!--<p><span>女厕剩余空位：45/70</span></p>-->
-                </div>
-                <div class="btn-carport" (click)="openServersToiletAlert('服务区停车位监控')">
-                  <p style="font-size: 0.875rem">
-                    {{serviceInfo?.upAttributeValues?.source}}-->
-                    {{serviceInfo?.upAttributeValues?.destination}}停车位数据监控
-                  </p>
-                  <p *ngFor="let item of alterUpAttributeValues?.slice(2,5)"><span>{{item?.attributeDesc}}：剩余监控暂无/总共：/{{item?.value}}个</span></p>
-                 <!-- <p><span>小车剩余车位：15/32</span></p>
-                  <p><span>客车剩余车位：06/22</span></p>-->
-                </div>
-              </div>
-              <div class="col-lg-6 col-md-6" style="margin-bottom: 2vh;padding-right: 0;">
-                <div class="btn-toilet" (click)="openServersToiletAlert('服务区卫生间使用率')">
-                 <p style="font-size: 0.875rem">
-                   {{serviceInfo?.downAttributeValues?.source}}-->
-                   {{serviceInfo?.downAttributeValues?.destination}}卫生间数据监控
-                 </p>
-                  <p *ngFor="let item of alterUpAttributeValues?.slice(7)"><span>{{item?.attributeDesc}}：剩余监控暂无/总共：{{item?.value}}</span></p>
-                  <!--<p><span>女厕剩余空位：45/70</span></p>-->
-                </div>
-                <div class="btn-carport" (click)="openServersToiletAlert('服务区停车位监控')">
-                  <p style="font-size: 0.875rem">
-                    {{serviceInfo?.downAttributeValues?.source}}-->
-                    {{serviceInfo?.downAttributeValues?.destination}}停车位数据监控
-                  </p>
-                  <p *ngFor="let item of alterDownAttributeValues?.slice(0,3)"><span>{{item?.attributeDesc}}：剩余监控暂无/总共：{{item?.value}}个</span></p>
-                 <!-- <p><span>小车剩余车位：21/30</span></p>
-                  <p><span>客车剩余车位：18/22</span></p>-->
-                </div>
-              </div>
-            </div>
+          <p-scrollPanel [style]="{width: '100%', height: '30vh'}" styleClass="event-table-processed-scroll">
+            <app-service-evn-report></app-service-evn-report>
+            <app-service-toilet [serviceInfo]="serviceInfo"></app-service-toilet>
           </p-scrollPanel>
         </div>
       </div>
     </div>
     <!--右边-->
-    <div class="right col-lg-3 col-md-3">
+    <div class="col-lg-3 col-md-3">
       <!--服务区基本信息-->
       <app-service-info [esDate]="esDate" [serviceId]="serviceZoneID" [serviceName]="serviceZoneTitle" [serviceInfo]="serviceInfo"></app-service-info>
       <!--收入统计-->
       <app-service-income [esDate]="esDate" [serviceId]="serviceZoneID" [serviceName]="serviceZoneTitle"></app-service-income>
-    </div>
-  </div>
-</div>
-<!--*************************弹窗部分**************************-->
-<!--服务区店铺信息/视频弹窗-->
-<div class="bg-box" *ngIf="serviceShopShow" >
-  <div class="alert-window" style="height:80vh;width:80vw;margin-top: -40vh;margin-left:-40vw;">
-    <div class="alert-window-header">
-      <div class="row">
-        <div class="col-lg-12 col-md-12">
-          <span>{{serviceShopInfo?.storeName}}店铺基础信息</span>
-          <div class="pull-right" (click)="closeServiceShop()">
-            <i class="fa fa-window-close " aria-hidden="true"></i>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="alert-window-content" style="padding-left: 15px">
-      <div class="row">
-        <div class="col-ld-2 col-md-2">
-          <div class="shop-msg-title">
-            <span>店铺基本信息</span>
-          </div>
-          <div class="shop-msg-content">
-            <p>
-              店铺名称：{{serviceShopInfo?.storeName}}
-            </p>
-            <p>
-              行业名称：{{serviceShopInfo?.industryName}}
-            </p>
-            <p>
-              店铺责任人：{{serviceShopInfo?.principal}}
-            </p>
-            <p>
-              责任人电话：{{serviceShopInfo?.principalMobile}}
-            </p>
-            <p>今日收入：{{serviceShopInfo?.revenue}}元</p>
-            <p>实用面积：{{serviceShopInfo?.usableArea}}</p>
-            <p>用水量：0</p>
-            <p>用电量：0kW·h</p>
-            <p class="hetong">店铺合同：<span (click)="servicesPactDown()">点击查看合同</span></p>
-            <!--<p>水费账户：{{serviceShopInfo?.waterAccount}}</p>-->
-            <!--<p>电费账户：{{serviceShopInfo?.electricityAccount}}</p>-->
-            <p>店铺摄像头布局图：{{!serviceShopInfo.cameraDistributionGraph?'该商家暂无摄像头布局图':''}}</p>
-            <app-image-zoom
-              *ngIf="serviceShopInfo.cameraDistributionGraph"
-              [option]="{url: serviceShopInfo.graphPrefix + serviceShopInfo.cameraDistributionGraph}"
-              [height]="'22vh'"
-              [zoom]="true"
-              (eventClick)="shopImageZoom($event)"
-            ></app-image-zoom>
-          </div>
-        </div>
-        <div class="col-ld-6 col-md-6">
-          <div class="shop-video-title">
-            <span>店铺实时监控</span>
-          </div>
-          <div class="shop-video-content" id="shopVideo"></div>
-          <div class="shop-video-list">
-            <span data-toggle="dropdown">商家监控视频列表：</span>
-            <span *ngIf="!(videoShopList.length>0)">视频暂无</span>
-            <!--<span *ngFor="let item of videoShopList" (click)="openMerchantVideo(item)">
-                {{item.cameraName}}
-            </span>-->
-            <p-dropdown [options]="cars" [(ngModel)]="selectedCar2" [style]="{'min-width':'200px', 'max-height':'100px'}" (onChange)="openMerchantVideo($event)">
-              <ng-template let-item pTemplate="selectedItem">
-                <span style="vertical-align:middle; margin-left: .5em">{{item.label}}</span>
-              </ng-template>
-              <ng-template let-car pTemplate="item">
-                <div class="ui-helper-clearfix" style="position: relative;height: 25px;">
-                  <div style="font-size:14px;float:right;margin-top:4px">{{car.label}}</div>
-                </div>
-              </ng-template>
-            </p-dropdown>
-          </div>
-        </div>
-        <div class="col-ld-4 col-md-4">
-          <div class="shop-echart-title">
-            <span>店家业态数据统计</span>
-            <span class="table-export" style="margin-right: 6vw;">
-               <app-input-dropdown
-                 [option]="storeInfoSelect"
-                 [height]="'3vh'"
-                 [background]="'#1a2128'"
-                 [dropdownBackground]="'rgba(26,33,40,0.8)'"
-                 [hover]="'#5595D5'"
-                 (dropdownClick)="storeSelectTime($event)"></app-input-dropdown>
-            </span>
-            <span class="table-export" (click)="serviceShopShowExport=true; cancelserviceShopVideo()">
-              表格导出
-            </span>
-
-          </div>
-          <div class="shop-echart-content">
-            <app-echarts-line-broken [height]="'34vh'" [option]="shopEchartLine"></app-echarts-line-broken>
-            <app-echart-line-area [option]="shopEchartArea" [height]="'34vh'"></app-echart-line-area>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="bg-excel" *ngIf="serviceShopShowExport">
-      <div class="alert-window-excel">
-        <div class="alert-window-excel-header">
-          <span>收入数据表格导出</span>
-          <div class="pull-right">
-            <i class="fa fa-window-close " aria-hidden="true" (click)="serviceShopShowExport=false;addShopVideo(this.serviceShopInfo)"></i>
-          </div>
-        </div>
-        <div class="alert-window-excel-content">
-          <div class="alert-window-excel-content-list">
-            <label>请选择开始时间：</label>
-            <p-calendar placeholder="请点击选择时间......" [locale]="esDate" [(ngModel)]="shopStartTime" [monthNavigator]="true" [yearNavigator]="true" dateFormat="yymmdd"  yearRange="2017:2030"></p-calendar>
-          </div>
-          <div class="alert-window-excel-content-list">
-            <label>请选择结束时间：</label>
-            <p-calendar placeholder="请点击选择时间......" [locale]="esDate" [(ngModel)]="shopEndTime" [monthNavigator]="true" [yearNavigator]="true" dateFormat="yymmdd"  yearRange="2017:2030"></p-calendar>
-          </div>
-        </div>
-        <div class="alert-window-excel-footer text-center">
-          <span (click)="shopExportClick();serviceShopShowExport=false;addShopVideo(this.serviceShopInfo)">确认导出</span>
-          <span (click)="serviceShopShowExport=false;addShopVideo(this.serviceShopInfo)">取消导出</span>
-        </div>
-      </div>
-      <iframe src="" frameborder="0" style="position: absolute;top: 0;left: 0; height: 100vh;width:100vw;z-index: -1;"></iframe>
-    </div>
-  </div>
-</div>
-<!--服务区公共视频监控弹窗-->
-<div class="bg-box" *ngIf="videoPublicShow" >
-  <div class="alert-window" style="height:70vh; margin-top: -35vh;width:60vw; margin-left:-30vw">
-    <div class="alert-window-header">
-      <div class="row">
-        <div class="col-lg-12 col-md-12">
-          <span>{{publicVideoTitle}}</span>
-          <div class="pull-right" (click)="closePublicVideo()">
-            <i class="fa fa-window-close " aria-hidden="true"></i>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="alert-window-content">
-      <div class="row">
-        <div class="col-ld-12 col-md-12">
-          <div class="video-play" [ngStyle]="{'height': '65vh'}" id="publicVideo"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-<!--事件弹窗-->
-<div class="bg-box" *ngIf="eventAlertShow" >
-  <div class="alert-window" style="height:80vh; margin-top: -40vh;">
-    <div class="alert-window-header" >
-      <div class="row">
-        <div class="col-lg-12 col-md-12">
-          <span>服务区事件处理</span>
-          <div class="pull-right" (click)="closeEventAlert()">
-            <i class="fa fa-window-close " aria-hidden="true"></i>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="alert-window-content" style="padding: 10px 10px 0 10px;">
-      <div class="row">
-        <div class="col-lg-12 col-md-12">
-          <div>
-            <button class="btn" [ngStyle]="{'color':!eventAlertListShow?'black': 'white'}" [ngClass]="{'btn-primary': eventAlertListShow}" (click)="eventAlertListCtrlw()">未处理事件</button>
-            <button class="btn" [ngStyle]="{'color':eventAlertListShow?'black': 'white'}" [ngClass]="{'btn-primary': !eventAlertListShow}" (click)="eventAlertListCtrly()">已处理事件</button>
-          </div>
-        </div>
-        <div class="col-lg-8 col-md-8" *ngIf="eventAlertListShow">
-          <app-event-list [option]="eventListNoProcess" [width]="'100%'" [height]="'65vh'" (eventListClick)="eventListInfosClick($event)"></app-event-list>
-        </div>
-        <div class="col-lg-8 col-md-8" *ngIf="!eventAlertListShow">
-          <app-event-list [option]="eventListProcess" [width]="'100%'" [height]="'65vh'" (eventListClick)="eventListInfosClick($event)"></app-event-list>
-        </div>
-        <div class="col-lg-4 col-md-4">
-          <app-event-list-info [option]="eventListInfo" [width]="'100%'" [height]="'45vh'"></app-event-list-info>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-<!--上报信息 弹窗弹窗-->
-<div class="bg-box" *ngIf="eventAlertInfoUp" >
-  <div class="alert-window" style="height:80vh; margin-top: -40vh;">
-    <div class="alert-window-header" >
-      <div class="row">
-        <div class="col-lg-12 col-md-12">
-          <span>{{eventAlertInfoUpTitle}}事件上报</span>
-          <div class="pull-right" (click)="closeEventInfoUpClick()">
-            <i class="fa fa-window-close " aria-hidden="true"></i>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="alert-window-content" style="padding: 10px 10px 0 10px;">
-      <div class="row">
-        <div class="col-ld-12 col-md-12">
-          <form class="form-horizontal">
-            <div class="form-group">
-              <label for="eventName" class="col-sm-2 control-label" disabled="">事件名称：</label>
-              <div class="col-sm-4">
-                <input type="text" class="form-control" id="eventName" name="type" [(ngModel)]="uploadEventInfoUp.eventName">
-              </div>
-              <label class="col-sm-2 control-label" disabled="">责任人</label>
-              <div class="col-sm-4">
-                <input type="text" class="form-control" name="type" [(ngModel)]="uploadEventInfoUp.principal">
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="eventSubject" class="col-sm-2 control-label" disabled="">事件发生主体：</label>
-              <div class="col-sm-4">
-                <input type="text" class="form-control" id="eventSubject" name="type" [(ngModel)]="uploadEventInfoUp.eventSubject">
-              </div>
-              <label for="occurTime" class="col-sm-2 control-label" disabled="">事件发生时间</label>
-              <div class="col-sm-4">
-                <input type="text" class="form-control" id="occurTime" name="type" [(ngModel)]="uploadEventInfoUp.occurTime">
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="description" class="col-sm-2 control-label">事件描述</label>
-              <div class="col-sm-10">
-                <textarea type="text" class="form-control" id="description" name="description" [(ngModel)]="uploadEventInfoUp.eventDescripte"></textarea>
-              </div>
-            </div>
-            <div class="form-group text-center style-border">
-              <button class="btn btn-success" type="button" (click)="serviceInfoUpAlertClick()">上报</button>
-              <button class="btn btn-danger" type="button" (click)="closeEventInfoUpClick()">取消</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-<!--(待开发)服务洗手间信息监控-->
-<div class="bg-box" *ngIf="serversToiletAlertShow">
-  <div class="alert-window">
-    <div class="alert-window-header">
-      <div class="row">
-        <div class="col-lg-12 col-md-12">
-          <span>{{waitTitle}}</span>
-          <div class="pull-right" (click)="closeServersToiletAlert()">
-            <i class="fa fa-window-close " aria-hidden="true"></i>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="alert-window-content">
-      <div class="row">
-        <div class="col-ld-12 col-md-12">
-          <h1 class="text-center">待开发中......</h1>
-        </div>
-      </div>
     </div>
   </div>
 </div>

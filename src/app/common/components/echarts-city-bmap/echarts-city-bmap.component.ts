@@ -53,12 +53,15 @@ export class EchartsCityBmapComponent implements OnInit, OnChanges {
         show: true,
         formatter: '{b}',
       },
-      geo3D: {
+      geo: {
         map: this.option.area,
-        left: 'auto',
-        right: 'auto',
-        top: 'auto',
-        bottom: 'auto',
+        width: '90%',
+        roam: true,
+        zoom: 0.4,
+        scaleLimit: {
+          min: 0.1,
+          max: 2
+        },
         itemStyle: {
           color: 'rgb(5,101,123)',
           opacity: 1,
@@ -89,45 +92,21 @@ export class EchartsCityBmapComponent implements OnInit, OnChanges {
             color: '#071D3B',
           }
         },
-        // shading: 'lambert',
-        light: { // 光照阴影
-          main: {
-            color: '#fff', // 光照颜色
-            intensity: 1.2, // 光照强度
-            // shadowQuality: 'high', // 阴影亮度
-            shadow: false, // 是否显示阴影
-            alpha: 55,
-            beta: 10
-          },
-          ambient: {
-            intensity: 0.3
-          }
-        },
-        viewControl: {
-          distance: 155,
-          minDistance: 50,
-          maxDistance: 300,
-          zoomSensitivity: 5
-        }
       },
       series: [
         {
-          name: '散点',
-          type: 'scatter3D',
-          coordinateSystem: 'geo3D',
+          name: '区域名称',
+          type: 'scatter',
+          coordinateSystem: 'geo',
           data: [],
           symbolSize: function () {
-            return 10;
+            return 3;
           },
           label: {
-            normal: {
-              formatter: '{b}',
-              position: 'left',
-              show: true
-            },
-            emphasis: {
-              show: true
-            }
+            formatter: '{b}',
+            position: 'left',
+            show: true,
+            color: '#FFDD00',
           },
           itemStyle: {
             normal: {
@@ -138,25 +117,20 @@ export class EchartsCityBmapComponent implements OnInit, OnChanges {
         },
         {
           name: '服务区',
-          type: 'scatter3D',
-          coordinateSystem: 'geo3D',
+          type: 'scatter',
+          coordinateSystem: 'geo',
           data: [],
           symbolSize: function () {
             return 10;
           },
           label: {
-            normal: {
-              formatter: '{b}',
-              position: 'right',
-              show: false
-            },
-            emphasis: {
-              show: false
-            }
+            formatter: '{b}',
+            position: 'right',
+            show: false
           },
           itemStyle: {
             normal: {
-              color: 'red'
+              color: '#15E178'
             }
           },
           zlevel: 2,
@@ -193,7 +167,7 @@ export class EchartsCityBmapComponent implements OnInit, OnChanges {
   }
   // map clikc
   public echartMapClick (event): void {
-    if (event.componentSubType === 'scatter3D') {
+    if (event.componentSubType === 'scatter') {
       this.router.navigate(['/home/serzone', {id: event.data.value[3], name: event.data.name}]);
       return;
     }
@@ -244,9 +218,6 @@ export class EchartsCityBmapComponent implements OnInit, OnChanges {
           return res;
         };
         this.updateOptions = {
-          geo3D: {
-            map: this.option.area,
-          },
           series: [
             {
               data: convertData(datas),

@@ -6,7 +6,6 @@ import {TreeNode} from '../../common/model/video-window.model';
   selector: 'app-video-window',
   templateUrl: './video-window.component.html',
   styleUrls: ['./video-window.component.css'],
-  encapsulation: ViewEncapsulation.None
 })
 export class VideoWindowComponent implements OnInit, OnDestroy {
   // 实时客流量

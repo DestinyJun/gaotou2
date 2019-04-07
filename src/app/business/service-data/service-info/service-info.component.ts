@@ -7,7 +7,6 @@ import {DatePipe} from '@angular/common';
   selector: 'app-service-info',
   templateUrl: './service-info.component.html',
   styleUrls: ['./service-info.component.less'],
-  encapsulation: ViewEncapsulation.None
 })
 export class ServiceInfoComponent implements OnInit, OnChanges {
   @Input() serviceId: any;

@@ -1,11 +1,9 @@
-import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {DataService} from '../../common/services/data.service';
 import {FormBuilder} from '@angular/forms';
-import {EventListInfo, UploadEventInfoUp} from '../../common/model/service-data.model';
-import {ServiceDataService} from '../../common/services/service-data.service';
 import {LocalStorageService} from '../../common/services/local-storage.service';
-import {DatePipe} from '@angular/common';
+import {ServiceDataService} from '../../common/services/service-data.service';
 export interface SelectVideoItem {
   label?: string;
   value: any;
@@ -18,19 +16,11 @@ export interface SelectVideoItem {
 @Component({
   selector: 'app-service-data',
   templateUrl: './service-data.component.html',
-  styleUrls: ['./service-data.component.css'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./service-data.component.less'],
 })
 export class ServiceDataComponent implements OnInit, OnDestroy {
   /***********************基础信息************************/
   public esDate: any;  // 时间初始化
-  // store time
-  public storeInfoSelect = [
-    {name: '天', code: 'day'},
-    {name: '周', code: 'week'},
-    {name: '月', code: 'month'},
-    {name: '年', code: 'year'},
-  ];
   // 组件销毁后清除时钟任务
   public personAmountCountClean: any;
   public incomeShopInfoClean: any;
@@ -44,65 +34,17 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     // 商家、视频及方向
   public incomeTopData: any;
   public incomeBottomData: any;
-  public shopEchartLine: any;
-  public shopEchartArea: any;
-  // 服务区商家视频弹窗
-  public cars: SelectVideoItem[];
-  public selectedCar2 = {
-    value: '请选择视频...',
-    id: null,
-    outUrl: null
-  };
-  public videoShopList = [];
-  public videoBottomShopUrl: string;
-  // 服务区商家信息弹窗
-  public iconImages = [
-    'icon-Chinese-food',
-    'icon-Chinese-restaurant-',
-    'icon-fast-food',
-    'icon-shop-one',
-    'fa fa-bed',
-    'fa fa-car'];
-  public serviceShopShow = false;
-  public serviceShopShowExport = false;
-  public serviceShopInfo: any;
-  public shopStartTime: Date; // 时间选择器
-  public shopEndTime: Date; // 时间选择器
-  // 公共视频弹窗
-  public videoPublicShow = false;
-  public publicVideoTitle: string;
-  public publicVideoList = [];
   public publicTopVideoGroup = [];
   public publicBottomVideoGroup = [];
-  public videoTopOpen = [];
-  public videoBottomOpen = [];
-  // 事件弹窗
-  public eventList: EventListInfo[];
-  public eventListInfo: EventListInfo;
-  public eventListProcess: EventListInfo[];
-  public eventListNoProcess: EventListInfo[];
-  public eventInfoUpTypes = [];
-  public uploadEventInfoUp: UploadEventInfoUp = new UploadEventInfoUp();
-  // public eventListInfoChildern: EventListInfo[];
-  public eventAlertShow = false;
-  public eventAlertListShow = true;
-  public eventAlertInfoUp = false;
-  public eventAlertInfoUpTitle: string;
-  // 服务区厕所监控
-  public serversToiletAlertShow = false;
-  public waitTitle: string;
   constructor(
     private fb: FormBuilder,
     private routerInfo: ActivatedRoute,
     private dataService: DataService,
     private serareaService: ServiceDataService,
     private localService: LocalStorageService,
-    private datePipe: DatePipe
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
-    this.cars = [];
     // 时间初始化
     this.esDate = {
       firstDayOfWeek: 0,
@@ -119,7 +61,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       (params) => {
         this.serviceZoneTitle = params.name;
         this.serviceZoneID = params.id;
-        this.serviceInfo = null;
+        this.publicBottomVideoGroup = null;
         this.alterUpAttributeValues = [];
         this.alterDownAttributeValues = [];
         // 服务区信息
@@ -154,24 +96,14 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
 
   /*************数据初始化****************/
   public upData() {
-    // 实时客流
+   /* // 实时客流
     this.personAmountCountClean = setInterval(() => {
       this.getPerson();
-    }, 3000);
+    }, 3000000000);
     // 实时店铺信息
     this.incomeShopInfoClean = setInterval(() => {
       this.backCenterDate();
-    }, 3000);
-    // 事件列表
-    this.eventNotPoocess();
-    // 事件上报类型
-    this.serareaService.searchEventCategory().subscribe(
-      (value) => {
-        if (value.status === '200') {
-          this.eventInfoUpTypes = value.data;
-        }
-      }
-    );
+    }, 30000000000);*/
   }
   // 客流
   public getPerson(): void {
@@ -216,9 +148,11 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   /************************中部***************************/
   // 店铺、视频及方向
   public backCenterDate() {
+    console.log('1111');
     this.serareaService.getServiceShopVDate({id: this.serviceZoneID}).subscribe(
       (value) => {
         if (value.status === '200') {
+          console.log(value);
           this.serareaService.searchServiceShopIncome({id: this.serviceZoneID}).subscribe(
             (val) => {
               if (val.status === '200') {
@@ -271,355 +205,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
         }
       }
     );
-  }
-  public closeServiceShop(): void {
-    document.body.className = '';
-    this.serviceShopShow = false;
-  }
-  // 服务区商家
-  public openServiceShop(item): void {
-    this.videoShopList = [];
-    this.cars = [];
-    this.serviceShopInfo = item;
-    this.serviceShopShow = true;
-    document.body.className = 'ui-overflow-hidden';
-    if (item.cameraList !== undefined) {
-      this.addShopVideo(this.serviceShopInfo);
-    }
-    // 折线图
-    this.serareaService.searchServiceShopLine({
-      id: item.id,
-      yIndex: ['revenue', 'passenger', 'electric', 'water', 'washing_out']}).subscribe(
-      (val) => {
-        if (val.status === '200') {
-        /*  val.data.yData.push({
-            code: 'pollution',
-            data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            name: '排污量'
-          });*/
-          this.shopEchartLine = {
-            data: val.data,
-            title: `${item.storeName}今日业态数据走势分析`,
-            color: ['#36B9AB', '#6ACD72', '#0A30BF', '#027204', '#E36E57']
-          };
-        }
-      }
-    );
-    // 面积图
-    this.serareaService.searchServiceShopArea(item.id).subscribe(
-      (val) => {
-        if (val.status === '200') {
-          this.shopEchartArea = {
-            data: val.data,
-            title: `${item.storeName}业态数据面积图分析`,
-          };
-        }
-      }
-    );
-  }
-  public openMerchantVideo(): void {
-    console.log(this.selectedCar2);
-    this.videoBottomShopUrl = `
-       <object classid="clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921"
-            id="vlc${this.selectedCar2.id}" codebase="" width="100%" height="100%" events="True">
-        <param name="mrl" value=""/>
-        <param name="src" value=""/>
-        <param name="controls" value="false"/>
-        <param name="ShowDisplay" value="true"/>
-        <param name="AutoLoop" value="false"/>
-        <param name="autoplay" value="true"/>
-        <param name="Time" value="True"/>
-        <param name='volume' value='30'/>
-        <param value="transparent" name="wmode">
-        <embed pluginspage="http://www.videolan.org"
-               type="application/x-vlc-plugin"
-               version="VideoLAN.VLCPlugin.2"
-               width="100%"
-               height="100%"
-               text="Waiting for video"
-               name="vlc${this.selectedCar2.id}"
-        />
-    </object>
-      `;
-    setTimeout(() => {
-      document.getElementById('shopVideo').innerHTML = this.videoBottomShopUrl;
-      setTimeout(() => {
-        const vlc = window.document[`vlc${this.selectedCar2.id}`];
-        const mrl = this.selectedCar2.outUrl;
-        const options = ['rtsp-tcp=true', ' network-caching=500'];
-        const itemId = vlc['playlist'].add(mrl, 'asd', options);
-        vlc['playlist'].playItem(itemId);
-      }, 100);
-    }, 100);
-  }
-  public storeSelectTime (event): void {
-      console.log(event);
-  }
-
-  public shopExportClick() {
-    const startTime = this.datePipe.transform(this.shopStartTime, 'yyyyMMdd');
-    const endTime = this.datePipe.transform(this.shopEndTime, 'yyyyMMdd');
-    if (this.shopStartTime && this.shopEndTime) {
-      window.open(`http://120.78.137.182:8888/highway-interactive/report/serviceArea/store/1/startDate/${startTime}/endDate/${endTime}`);
-    } else {
-      window.alert('请把数据选择全在提交');
-    }
-  }
-
-  public shopImageZoom(e): void {
-    if (e) {
-      document.getElementById('shopVideo').innerHTML = ``;
-    } else {
-      this.addShopVideo(this.serviceShopInfo);
-    }
-  }
-
-  public addShopVideo(item) {
-    this.videoShopList = [];
-    // 视频监控
-    if (!item.cameraList.length) {
-      setTimeout(() => {
-        document.getElementById('shopVideo').innerHTML = `<p class="text-center" style="font-size: 1rem">此处暂无摄像头</p>`;
-      }, 100);
-    } else {
-      this.videoShopList = item.cameraList;
-      this.cars.unshift({label: '请选择视频...', value: null, outUrl: null});
-      this.videoShopList.map((val) => {
-        this.cars.push({label: val.cameraName, value: {outUrl: val.outUrl, id: val.id}, outUrl: val.outUrl});
-      });
-      this.videoBottomShopUrl = `
-        <object classid="clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921"
-            id="vlc${this.videoShopList[0].id}" codebase="" width="100%" height="100%" events="True">
-        <param name="mrl" value=""/>
-        <param name="src" value=""/>
-        <param name="controls" value="false"/>
-        <param name="ShowDisplay" value="true"/>
-        <param name="AutoLoop" value="false"/>
-        <param name="autoplay" value="true"/>
-        <param name="Time" value="True"/>
-        <param name='volume' value='30'/>
-        <param value="transparent" name="wmode">
-        <embed pluginspage="http://www.videolan.org"
-               type="application/x-vlc-plugin"
-               version="VideoLAN.VLCPlugin.2"
-               width="100%"
-               height="100%"
-               text="Waiting for video"
-               name="vlc${this.videoShopList[0].id}"
-               wmode="opaque"
-        />
-    </object>
-      `;
-      setTimeout(() => {
-        document.getElementById('shopVideo').innerHTML = this.videoBottomShopUrl;
-        setTimeout(() => {
-          const vlc = window.document[`vlc${this.videoShopList[0].id}`];
-          const mrl = this.videoShopList[0].outUrl;
-          const options = ['rtsp-tcp=true', ' network-caching=500'];
-          const itemId = vlc['playlist'].add(mrl, 'asd', options);
-          vlc['playlist'].playItem(itemId);
-        }, 100);
-      }, 100);
-    }
-  }
-
-  public cancelserviceShopVideo(): void {
-    this.videoBottomShopUrl = ``;
-    setTimeout(() => {
-      document.getElementById('shopVideo').innerHTML = this.videoBottomShopUrl;
-    }, 100);
-  }
-
-  // 公共视频监控
-  public openPublicVideo(e) {
-    this.videoShopList = e;
-    let videoUrlHtml = '';
-    document.body.className = 'ui-overflow-hidden';
-    this.videoPublicShow = true;
-    this.publicVideoTitle = e.cameraName;
-    videoUrlHtml = videoUrlHtml + `
-        <object classid="clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921"
-            id="vlc${e.id}" codebase="" width="100%" height="100%" events="True">
-        <param name="mrl" value=""/>
-        <param name="src" value=""/>
-        <param name="controls" value="false"/>
-        <param name="ShowDisplay" value="true"/>
-        <param name="AutoLoop" value="false"/>
-        <param name="autoplay" value="true"/>
-        <param name="Time" value="True"/>
-        <param name='volume' value='30'/>
-        <param value="transparent" name="wmode">
-        <embed pluginspage="http://www.videolan.org"
-               type="application/x-vlc-plugin"
-               version="VideoLAN.VLCPlugin.2"
-               width="100%"
-               height="100%"
-               text="Waiting for video"
-               name="vlc${e.id}"
-        />
-    </object>
-    `;
-    setTimeout(() => {
-      if (e.outUrl === '' || e.outUrl === null || e.outUrl === undefined) {
-        document.getElementById('publicVideo').innerHTML = `<p class="text-center" style="font-size: 1rem">此商店暂无摄像头</p>`;
-        return;
-      }
-      document.getElementById('publicVideo').innerHTML = videoUrlHtml;
-      setTimeout(() => {
-        const vlc = window.document[`vlc${e.id}`];
-        const mrl = e.outUrl;
-        console.log(mrl);
-        const options = ['rtsp-tcp=true', ' network-caching=500'];
-        const itemId = vlc['playlist'].add(mrl, 'asd', options);
-        vlc['playlist'].playItem(itemId);
-      }, 100);
-    }, 100);
-  }
-
-  public closePublicVideo() {
-    document.body.className = '';
-    this.videoPublicShow = false;
-  }
-
-  public publicTopVideoGroupOver(videoList, i): void {
-    videoList.map(() => {
-      this.videoTopOpen.push(false);
-    });
-    this.videoTopOpen[i] = true;
-    if (videoList.length === 0) {
-      this.publicVideoList = [];
-      this.publicVideoList.push({cameraName: '该处暂无摄像头'});
-    } else {
-      this.publicVideoList = videoList;
-    }
-  }
-
-  public publicTopVideoGroupLeave(i): void {
-    this.videoTopOpen[i] = false;
-  }
-
-  public publicTopBottomGroupOver(videoList, i): void {
-    videoList.map(() => {
-      this.videoBottomOpen.push(false);
-    });
-    this.videoBottomOpen[i] = true;
-    if (videoList.length === 0) {
-      this.publicVideoList = [];
-      this.publicVideoList.push({cameraName: '该处暂无摄像头'});
-    } else {
-      this.publicVideoList = videoList;
-    }
-  }
-
-  public publicTopBottomGroupLeave(i): void {
-    this.videoBottomOpen[i] = false;
-  }
-
-  // 未处理事件统计
-  public eventNotPoocess(): void {
-    this.serareaService.searchNotPoocessEventsList({id: this.serviceZoneID, page: 1, nums: 1000}).subscribe(
-      (value) => {
-        if (value.status === '200') {
-          this.eventList = value.data.contents;
-        }
-      }
-    );
-  }
-
-  public openEventAlert(item): void {
-    document.body.className = 'ui-overflow-hidden';
-    this.eventAlertShow = true;
-    // 未处理
-    this.serareaService.searchEventsTypeList(
-      {id: this.serviceZoneID, eventCategoryCode: item.eventCategoryCode, processState: 2, page: 1, nums: 1000}).subscribe(
-      (value) => {
-        if (value.status === '200') {
-          this.eventListNoProcess = value.data.contents;
-        }
-      }
-    );
-    // 已处理
-    this.serareaService.searchEventsTypeList({eventCategoryCode: item.eventCategoryCode, processState: 1, page: 1, nums: 1000}).subscribe(
-      (value) => {
-        if (value.status === '200') {
-          this.eventListProcess = value.data.contents;
-        }
-      }
-    );
-  }
-
-  public closeEventAlert() {
-    document.body.className = '';
-    this.eventAlertShow = false;
-  }
-
-  public eventAlertListCtrlw(): void {
-    this.eventAlertListShow = true;
-  }
-
-  public eventAlertListCtrly(): void {
-    this.eventAlertListShow = false;
-  }
-
-  public eventListInfosClick(item): void {
-    console.log(item);
-    this.eventListInfo = item;
-  }
-
-  // 事件上报
-  public eventInfoUpClick(e): void {
-    if (e.eventCategoryName !== '经营类') {
-      this.waitTitle = e.eventCategoryName;
-      this.serversToiletAlertShow = true;
-    } else {
-      this.uploadEventInfoUp.eventCategoryCode = e.categoryCode;
-      this.uploadEventInfoUp.eventCategoryName = e.eventCategoryName;
-      this.eventAlertInfoUpTitle = e.eventCategoryName;
-      this.eventAlertInfoUp = true;
-    }
-  }
-
-  public closeEventInfoUpClick(): void {
-    // document.body.className = '';
-    this.eventAlertInfoUp = false;
-  }
-
-  public serviceInfoUpAlertClick() {
-    document.body.className = '';
-    this.eventAlertInfoUp = false;
-    this.uploadEventInfoUp.administrativeAreaId = 2;
-    this.uploadEventInfoUp.serviceAreaId = 1;
-    this.uploadEventInfoUp.reportUserId = this.localService.getObject('userDTO').id;
-    this.uploadEventInfoUp.reportUserName = this.localService.getObject('userDTO').realName;
-    this.serareaService.searchEventsReported(this.uploadEventInfoUp).subscribe(
-      (value) => {
-        if (value === '200') {
-          window.alert(value.message);
-        }
-      }
-    );
-  }
-
-  // 卫生间及停车位弹窗
-  public openServersToiletAlert(e) {
-    document.body.className = 'ui-overflow-hidden';
-    this.waitTitle = e;
-    this.serversToiletAlertShow = true;
-  }
-
-  public closeServersToiletAlert() {
-    document.body.className = '';
-    this.serversToiletAlertShow = false;
-  }
-
-  /************************右边***************************/
-  // 服务区合同下载
-  public servicesPactDown(): void {
-    if (this.serviceInfo.contractUrl === null) {
-      window.alert('合同暂未上传');
-      return;
-    }
-    window.open(`${this.serviceInfo.contractUrlPrefix}${this.serviceInfo.contractUrl}`);
   }
   // 遍历修改后的数据，并把它赋值给car1
   public cloneValue(c: any): any {

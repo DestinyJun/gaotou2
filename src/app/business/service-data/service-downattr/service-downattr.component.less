@@ -1,0 +1,140 @@
+/*下部分*/
+.servicesMap-bottom{
+  height: 18vh;
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap-reverse;
+  align-items: flex-start;
+}
+.servicesMap-bottom .shop-info{
+  height: 6vh;
+  background: rgba(56,109,166,0.1);
+  line-height: 2vh;
+  border-right: 1px solid #1E2F39 ;
+  border-bottom: 1px solid #1E2F39 ;
+  font-size: 0.875rem;
+  padding-left: 1vw;
+  padding-right: 1vw;
+  padding-top: 1vh;
+}
+.servicesMap-bottom .shop-info:last-child{
+  border-right: none;
+}
+.servicesMap-bottom .shop-info:hover {
+  background: rgba(152,77,80,0.5);
+  cursor: pointer;
+}
+.servicesMap-video{
+  position: relative;
+  height: 4vh;
+  display: flex;
+}
+.servicesMap-video span{
+  display: inline-block;
+  height: 4vh;
+  line-height: 4vh;
+  padding: 0 1vw;
+  margin-right: 0.5vw;
+  border-radius: 3px;
+  font-size: 1rem;
+}
+.servicesMap-video span:hover{
+  cursor: pointer;
+}
+.second.servicesMap-video>span{
+  margin-right: 0;
+  margin-left: 0.5vw;
+}
+.servicesMap-video>.btn-group:nth-child(odd)>span{
+  background: #376EA6;
+}
+.servicesMap-video>.btn-group:nth-child(even)>span{
+  background: #376EA6;
+}
+.servicesMap-video>.btn-group>.dropdown-menu>li>a:hover{
+  background: rgba(255,255,255,0.3);
+}
+/*商家视频*/
+.vide-list{
+  height: 64.8vh;
+  border: 1px solid rgba(235,244,254, 0.5);
+}
+/*服务区店铺信息弹窗*/
+.shop-msg-title,.shop-video-title,.shop-echart-title{
+  height: 4vh;
+  margin-top: 1vh;
+  line-height: 4vh;
+  font-size: 1rem;
+}
+.shop-msg-content>.hetong>span{
+  display: inline-block;
+  width: 5vw;
+  padding: 0.3vh 0;
+  background: #30A7AD;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 0.5rem;
+  text-align: center;
+}
+.shop-echart-title>.table-export{
+  display: inline-block;
+  padding: 0 1vw;
+  font-size: 0.875rem;
+  position: absolute;
+  border-radius: 3px;
+  background: #1a2128;
+  right: 2vw;
+  line-height: 3vh;
+  cursor: pointer;
+}
+.shop-msg-content>p{
+  margin-bottom: 2vh;
+}
+.shop-video-content{
+  position: relative;
+  height: 48vh;
+}
+.shop-video-list{
+  height: 4vh;
+  line-height: 4vh;
+  font-size: 1rem;
+}
+.shop-video-list>span:nth-child(1){
+  font-weight: bold;
+}
+.shop-video-list>span:nth-child(1) ~ span{
+  display: inline-block;
+  padding: 0.3vh 1vw;
+  background: #1A2128;
+  margin-right: 0.5vw;
+  cursor: pointer;
+}
+/*视频下拉菜单样式覆盖*/
+.servicesMap-video .dropdown-menu{
+  top:95%;
+}
+/***********************************primeng样式覆盖*****************************/
+:host ::ng-deep .ui-dropdown{
+  background: rgba(26,33,40,0.8);
+  border: none;
+}
+:host ::ng-deep .ui-dropdown-panel {
+  border: none;
+  background-color: rgba(26,33,40,0.8);
+  min-width: 200px;
+}
+:host ::ng-deep .ui-dropdown-panel .ui-dropdown-items .ui-dropdown-item{
+  color: white
+}
+:host ::ng-deep .ui-inputtext{
+  background: rgba(26,33,40,0.8);
+  color: white;
+  padding-bottom: 0;
+  padding-top: 0;
+}
+:host ::ng-deep .ui-dropdown-panel .ui-dropdown-items-wrapper {
+  max-height: 150px !important;
+}
+:host ::ng-deep .ui-dropdown .ui-dropdown-trigger{
+  background: rgba(26,33,40,0.8);
+}

@@ -4,7 +4,6 @@ import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges
   selector: 'app-event-list',
   templateUrl: './event-list.component.html',
   styleUrls: ['./event-list.component.css'],
-  encapsulation: ViewEncapsulation.None
 })
 export class EventListComponent implements OnInit, OnChanges {
   @Input() public option: any;

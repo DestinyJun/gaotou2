@@ -7,7 +7,6 @@ import {LocalStorageService} from '../../common/services/local-storage.service';
   selector: 'app-city-data',
   templateUrl: './city-data.component.html',
   styleUrls: ['./city-data.component.css'],
-  encapsulation: ViewEncapsulation.None
 })
 export class CityDataComponent implements OnInit, OnDestroy {
   /***********************基础信息************************/

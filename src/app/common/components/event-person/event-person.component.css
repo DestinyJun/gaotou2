@@ -16,16 +16,19 @@
 .event-person>.table>tbody>tr>td{
   border: none;
 }
-.event-person .ui-scrollpanel-wrapper {
+:host ::ng-deep.ui-scrollpanel-wrapper {
   background: transparent;
   border: none; /*控制滚动轴背景色*/
 }
-.event-person .ui-scrollpanel-bar {
+:host ::ng-deep .ui-scrollpanel-bar {
   background-color: transparent;
   opacity: 1;
   transition: background-color .3s;
 }
-.event-person .ui-scrollpanel-bar:hover {
+:host ::ng-deep .ui-scrollpanel-content {
+  padding: 0 0 18px 0;
+}
+:host ::ng-deep .ui-scrollpanel-bar:hover {
   background-color: #135ba1;
 }
 

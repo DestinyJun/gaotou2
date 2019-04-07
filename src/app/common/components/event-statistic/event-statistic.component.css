@@ -35,18 +35,14 @@
   line-height: 20px;
 }
 /***********************************primeng虚拟滚动*****************************/
-.event-statistic .ui-scrollpanel-wrapper {
+:host ::ng-deep .ui-scrollpanel-wrapper {
   border: none; /*控制滚动轴背景色*/
 }
-.event-statistic .ui-scrollpanel-bar {
+:host ::ng-deep .ui-scrollpanel-bar {
   background-color: transparent;
   opacity: 1;
   transition: background-color .3s;
 }
-.event-statistic:hover .ui-scrollpanel-bar {
-  /*background-color: red;*/
-}
-.event-statistic .ui-scrollpanel-content {
+:host ::ng-deep .ui-scrollpanel-content {
   padding: 0 0 18px 0;
-  /*width: calc(100% + 36px);*/
 }

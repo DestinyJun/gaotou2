@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {DataService} from '../../common/services/data.service';
 import {FinanceDataService} from '../../common/services/finance-data.service';
@@ -7,7 +7,6 @@ import {LocalStorageService} from '../../common/services/local-storage.service';
   selector: 'app-finance-data',
   templateUrl: './province-data.component.html',
   styleUrls: ['./province-data.component.css'],
-  encapsulation: ViewEncapsulation.None
 })
 export class ProvinceDataComponent implements OnInit, OnDestroy {
   /***********************基础信息************************/

@@ -1,10 +1,9 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewEncapsulation} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 
 @Component({
   selector: 'app-event-office',
   templateUrl: './event-office.component.html',
   styleUrls: ['./event-office.component.css'],
-  encapsulation: ViewEncapsulation.None
 })
 export class EventOfficeComponent implements OnInit, OnChanges {
   @Input() public option: any;

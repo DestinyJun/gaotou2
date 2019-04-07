@@ -1,9 +1,7 @@
 /******************************头部****************************/
 .header{
   height: 10vh;
-  /*overflow: hidden;*/
 }
-
 .header-logo{
   width: 26.3vw;
   height: 8vh;
@@ -107,87 +105,6 @@
   font-weight: 500;
   letter-spacing: 0.1vw;
 }
-
-/****************************弹窗部分****************************/
-/*弹窗基本样式控制*/
-.bg-box{
-  width: 100vw;
-  height: 100vh;
-  position: fixed;
-  top: 0;
-  left: 0;
-  background: #091118;
-  background: rgba(9,17,24,0.5);
-  z-index: 9999;
-}
-.alert-window{
-  position: absolute;
-  width: 80vw;
-  height:60vh;
-  left: 50%;
-  margin-left: -40vw;
-  top: 50%;
-  margin-top: -30vh;
-  background: rgba(39,52,64,0.8);
-  z-index: 1;
-}
-.alert-window-header{
-  height: 5vh;
-  line-height: 5vh;
-  background: #1a2128;
-  text-align: center;
-}
-.alert-window-header span{
-  margin-left: 10px;
-  font-size: 1.625rem;
-}
-.alert-window-header .pull-right{
-  height: 5vh;
-  width: 5vh;
-  cursor: pointer;
-  text-align: center;
-}
-.alert-window-header .pull-right:hover{
-  background: red;
-}
-.alert-window-content{
-  height: 75vh;
-  font-size: 1rem;
-}
-.alert-window-content-table{
-  position: relative;
-  height: 55vh;
-}
-.alert-window-content-table .toggle-btn{
-  height: 5vh;
-  line-height: 5vh;
-}
-.alert-window-content-table .toggle-btn>button{
-  margin-right: 10px;
-}
-.alert-window-content-table .toggle-btn .toggle-btn-area{
-  height: 5vh;
-  line-height: 5vh;
-  padding-right: 10px;
-}
-.alert-window-content-table .toggle-btn .toggle-btn-area>span{
-  margin-left: 10px;
-  display: inline-block;
-  /*padding: 0.5vh 1vw;*/
-  height: 3vh;
-  line-height: 3vh;
-  padding: 0 1.5vw;
-  font-size: 0.875rem;
-  border-radius: 3px;
-  background: #1a2128;
-}
-.alert-window-content-table .toggle-btn .toggle-btn-area>span:hover{
-  cursor: pointer;
-}
-.alert-window-content-table .content-table{
-  height: 50vh;
-}
-
 /*服务区客流弹窗*/
 .vehicle-amount{
   padding-top: 1vh;
@@ -246,7 +163,6 @@
 }
 .saerch-list{
   position: absolute;
-  /*background: rgba(1,1,1,0.8);*/
   background: rgb(25,49,77);
   top:6.5vh;
   left:0;
@@ -268,46 +184,4 @@
 .saerch-list-li:hover{
   background: #87FFFF;
   color: black;
-}
-
-/***********************************primeng虚拟滚动*****************************/
-.search-scroll .ui-scrollpanel-wrapper {
-  background: transparent;
-  border: none; /*控制滚动轴背景色*/
-}
-.search-scroll .ui-scrollpanel-bar {
-  background-color: transparent;
-  opacity: 1;
-  transition: background-color .3s;
-}
-.search-scroll .ui-scrollpanel-content {
-  padding: 0 0 18px 0;
-}
-
-/***********************适配手机及平板***********************/
-@media (max-width: 992px) {
-  .header-logo,.header-admin-flow,.header-admin-time{
-  display: none;
-}
-  .header{
-    height: 5vh;
-  }
-  .header-title{
-    height: 5vh;
-    line-height: 5vh;
-    margin-top: 0;
-  }
-  .header-title>span{
-    font-size: 15px;
-  }
-  .header-admin{
-    height: 5vh;
-    line-height: 5vh;
-    float: right;
-  }
-  .header-admin-img{
-    width: 4vh;
-    height: 4vh;
-    right: 6vw;
-  }
 }

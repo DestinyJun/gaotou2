@@ -1,10 +1,7 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {NgxEchartsService} from 'ngx-echarts';
-import {HttpClient} from '@angular/common/http';
 import {Router} from '@angular/router';
 import {FinanceDataService} from '../../services/finance-data.service';
-declare let BMap;
-// import * as echarts from 'echarts';
 class Option {
   minZoom = 5; // 地图最小级别
   maxZoom = 19; // 地图最大级别
@@ -48,12 +45,16 @@ export class EchartBmapComponent implements OnInit, OnChanges {
         show: true,
         formatter: '{b}',
       },
-      geo3D: {
+      geo: {
+        show: true,
         map: this.option.area,
-        left: 'auto',
-        right: 'auto',
-        top: 'auto',
-        bottom: 'auto',
+        roam: true,
+        width: '90%',
+        zoom: 0.5,
+        scaleLimit: {
+          min: 0.3,
+          max: 2
+        },
         itemStyle: {
           color: 'rgb(5,101,123)',
           opacity: 1,
@@ -78,77 +79,29 @@ export class EchartBmapComponent implements OnInit, OnChanges {
             color: '#071D3B',
           }
         },
-        light: { // 光照阴影
-          main: {
-            color: '#fff', // 光照颜色
-            intensity: 1.2, // 光照强度
-            // shadowQuality: 'high', // 阴影亮度
-            shadow: false, // 是否显示阴影
-            alpha: 55,
-            beta: 10
-          },
-          ambient: {
-            intensity: 0.3
-          }
-        },
-        viewControl: {
-          distance: 140,
-          minDistance: 50,
-          maxDistance: 300,
-          zoomSensitivity: 5
-        }
       },
       series: [
         {
-          tooltip: {
-            show: false,
-            formatter: '{b}',
-          },
-          type: 'map3D',
+          type: 'map',
           map: this.option.area,
-          label: {
-            show: false,
-          },
-          itemStyle: {
-            color: 'rgba(0,23,11,0)',
-            opacity: 1,
-            borderWidth: 0.8,
-            borderColor: 'rgb(62,215,213)'
-          },
-          emphasis: {
-            label: {
-              show: false,
-            },
-            itemStyle: {
-              color: '#071D3B',
-            }
-          },
-          viewControl: {
-            distance: 140,
-            minDistance: 50,
-            maxDistance: 300,
-            zoomSensitivity: 5
-          },
+          roam: true,
+          geoIndex: 0,
           data: [],
           zlevel: 1,
         },
         {
-          name: '散点',
-          type: 'scatter3D',
-          coordinateSystem: 'geo3D',
+          name: '区域名称',
+          type: 'scatter',
+          coordinateSystem: 'geo',
           data: [],
           symbolSize: function () {
-            return 10;
+            return 3;
           },
           label: {
-            normal: {
-              formatter: '{b}',
-              position: 'right',
-              show: true
-            },
-            emphasis: {
-              show: false
-            }
+            formatter: '{b}',
+            position: 'left',
+            show: true,
+            color: '#FFDD00',
           },
           itemStyle: {
             normal: {
@@ -159,30 +112,24 @@ export class EchartBmapComponent implements OnInit, OnChanges {
         },
         {
           name: '服务区',
-          type: 'scatter3D',
-          coordinateSystem: 'geo3D',
+          type: 'scatter',
+          coordinateSystem: 'geo',
           data: [],
           symbolSize: function () {
             return 10;
           },
           label: {
-            normal: {
-              formatter: '{b}',
-              position: 'right',
-              show: false
-            },
-            emphasis: {
-              show: false
-            }
+            formatter: '{b}',
+            position: 'right',
+            show: false
           },
           itemStyle: {
             normal: {
-              color: 'red'
+              color: '#15E178'
             }
           },
           zlevel: 2,
         },
-        // 画线
         /*{
           type: 'lines3D',
 
@@ -265,7 +212,7 @@ export class EchartBmapComponent implements OnInit, OnChanges {
       return res;
     };
     this.updateOptions = {
-      geo3D: {
+      geo: {
         map: this.option.area,
       },
       series: [
@@ -284,11 +231,11 @@ export class EchartBmapComponent implements OnInit, OnChanges {
   }
   // map clikc
   public echartMapClick (event): void {
-    if (event.componentSubType === 'scatter3D') {
+    if (event.componentSubType === 'scatter') {
       this.router.navigate(['/home/serzone', {id: event.data.value[3], name: event.data.name}]);
       return;
     }
-    if (event.componentSubType === 'map3D') {
+    if (event.componentSubType === 'map') {
       this.router.navigate(['/home/city', {id: event.data.id, name: event.data.name}]);
       return;
     }

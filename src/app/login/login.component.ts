@@ -38,7 +38,6 @@ export class LoginComponent implements OnInit {
     if (this.myFromModule.valid) {
       this.loginService.getLogin(this.myFromModule.value).subscribe(
         (value) => {
-          console.log(value);
           this.localSessionStorage.loading.next({display: true});
           if (value.status === '200') {
             // 隐藏加载动画
@@ -47,7 +46,6 @@ export class LoginComponent implements OnInit {
             this.loginService.getRouter(value.data.authentication.accessToken).subscribe(
               (routerInfo) => {
                 if (routerInfo.status === '200') {
-                  console.log(routerInfo);
                   routerInfo.data.routers.map((item) => {
                     this.urlClass.push(item.split('/')[2]);
                   });
@@ -59,7 +57,6 @@ export class LoginComponent implements OnInit {
                       this.localSessionStorage.setObject(prop, value.data[prop]);
                     }
                   }
-                  console.log(this.localSessionStorage);
                   this.route.navigate([value.data.homePageRoute]);
                 } else {
                   window.alert('初始化菜单失败');

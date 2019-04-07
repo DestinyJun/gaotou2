@@ -13,7 +13,6 @@ import {EchartNationaPersonModule, EchartProvincePersonModule} from '../common/w
 import {ScrollPanelModule} from 'primeng/primeng';
 import {SidebarModule} from 'primeng/sidebar';
 import {TreeModule} from 'primeng/tree';
-import {SidebarComponent} from './sidebar/sidebar.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -34,7 +33,6 @@ import {SidebarComponent} from './sidebar/sidebar.component';
     NavComponent,
     FooterComponent,
     MessageWindowComponent,
-    SidebarComponent
   ],
   providers: [],
   entryComponents: [NavComponent]

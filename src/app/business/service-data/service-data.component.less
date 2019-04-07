@@ -1,0 +1,57 @@
+/**
+ * Created by wangwenjun on 2018/2/22.
+ * project name ...
+ */
+.main{
+  position: relative;
+  .center{
+    .event-table{
+      padding-top: 1vh;
+      height: 34vh;
+      box-shadow: 0 0 10px 2px rgba(255,255,255,0.2) inset;
+      overflow: hidden;
+      padding-bottom: 5vh;
+      font-size: 1rem;
+      .event-table-untreated{
+        padding-right: -15px;
+      }
+      .event-table-processed{
+        padding-left: -15px;
+      }
+    }
+    .servicesMap{
+      height: 50vh;
+      box-shadow: 0 0 10px 2px rgba(170,170,170,0.2) inset;
+      margin-bottom: 1vh;
+      color: white;
+      .servicesMap-center{
+        height: 6vh;
+        line-height: 6vh;
+        font-size: 1.2rem;
+        font-weight: 500;
+        span{
+          &:nth-child(1){
+            margin-right: 3vw;
+          }
+          &:nth-child(3){
+            margin-left: 3vw;
+          }
+        }
+      }
+    }
+  }
+}
+:host ::ng-deep .ui-scrollpanel-content {
+  width: calc(100% + 31px);
+}
+:host ::ng-deep .ui-scrollpanel-wrapper{
+  z-index: unset;
+  border: none; /*控制滚动轴背景色*/
+}
+:host ::ng-deep .ui-scrollpanel-bar {
+  background-color: transparent;
+  opacity: 1;
+  transition: background-color .3s;
+}
+
+

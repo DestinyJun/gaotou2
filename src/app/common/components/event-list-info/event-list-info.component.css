@@ -1,15 +1,15 @@
 body .event-info>p{
   line-height: 4vh;
 }
-.event-list-info .ui-scrollpanel-wrapper {
+/*.ui-scrollpanel-wrapper {
   background: transparent;
-  border: none; /*控制滚动轴背景色*/
+  border: none; !*控制滚动轴背景色*!
 }
-.event-list-info .ui-scrollpanel-bar {
+.ui-scrollpanel-bar {
   background-color: transparent;
   opacity: 1;
   transition: background-color .3s;
 }
-.event-list-info .ui-scrollpanel-bar:hover {
+.ui-scrollpanel-bar:hover {
   background-color: #135ba1;
-}
+}*/
