@@ -218,6 +218,9 @@ export class EchartsCityBmapComponent implements OnInit, OnChanges {
           return res;
         };
         this.updateOptions = {
+          geo: {
+            map: this.option.area,
+          },
           series: [
             {
               data: convertData(datas),

@@ -2,7 +2,7 @@
   <div class="event-person-title">
     <span>个人信息处理</span>
   </div>
-  <app-event-person [option]="personOfficeTypes" [width]="'100%'" [height]="'30vh'" (eventPersonClick)="tablePersonClick($event)"></app-event-person>
+  <app-event-person [option]="personOfficeTypes" [width]="'100%'" [height]="'30vh'" (eventPersonClick)="tablePersonClick()"></app-event-person>
   <!--个人信息办公处处理-->
   <div class="bg-box" *ngIf="eventPersonShow">
     <div class="alert-window">

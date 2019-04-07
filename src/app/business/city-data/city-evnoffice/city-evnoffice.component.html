@@ -3,7 +3,7 @@
     <span>服务区办公信息</span>
   </div>
 </div>
-<app-event-office [option]="officeTypes" [width]="'100%'" [height]="'30vh'" (eventOfficeClick)="tableOfficeClick($event)"></app-event-office>
+<app-event-office [option]="officeTypes" [width]="'100%'" [height]="'30vh'" (eventOfficeClick)="tableOfficeClick()"></app-event-office>
 <!--办公信息处理-->
 <div class="bg-box" *ngIf="eventOfficeShow">
   <div class="alert-window">
