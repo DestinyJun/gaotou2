@@ -3,7 +3,7 @@ import {NgxEchartsService} from 'ngx-echarts';
 import {HttpClient} from '@angular/common/http';
 import {Router} from '@angular/router';
 class Option {
-  area = ''; // 地图默认级别
+  area = ''; // 区域名称
 }
 @Component({
   selector: 'app-echarts-city-bmap',
@@ -161,7 +161,13 @@ export class EchartsCityBmapComponent implements OnInit, OnChanges {
     };
   }
   ngOnChanges(changes: SimpleChanges): void {
-    if (this.points) {
+    if (this.points && this.option.area) {
+      if (this.option.area === '毕节地区') {
+        this.option.area = '毕节市';
+      }
+      if (this.option.area === '铜仁地区') {
+        this.option.area = '铜仁市';
+      }
       this.echartsCityInitialize();
     }
   }
@@ -173,7 +179,8 @@ export class EchartsCityBmapComponent implements OnInit, OnChanges {
     }
   }
   public echartsCityInitialize() {
-    this.http.get(`/assets/data/${this.citys[this.option.area]}.json`)
+    console.log();
+    this.http.get(`assets/data/${this.citys[this.option.area]}.json`)
       .subscribe((geoJson) => {
         this.es.registerMap(this.option.area, geoJson);
         // 服务区点
