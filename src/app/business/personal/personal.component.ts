@@ -28,6 +28,7 @@ export class PersonalComponent implements OnInit {
   ngOnInit() {
     this.personalService.getUsers(this.localSessionStorage.getObject('authentication').accessToken).subscribe(
       (value) => {
+        console.log(value);
         if (value.status === '200') {
           this.userInfo = value.data.userDTO;
         }
@@ -82,7 +83,7 @@ export class PersonalComponent implements OnInit {
   }
   public updatePasswordClick() {
     if (this.confirmPassword === this.updatePassword.newPassword) {
-      this.updatePassword.userName = this.localSessionStorage.userSessionStorage.userName;
+      this.updatePassword.userName = JSON.parse(this.localSessionStorage.userSessionStorage.userDTO).userName;
       this.personalService.updatePassword(this.updatePassword).subscribe(
         (value) => {
           if (value.status === '500') {
