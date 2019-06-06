@@ -5,13 +5,15 @@ import {ScrollPanelModule} from 'primeng/primeng';
 import {WholeDataComponent} from './whole-data.component';
 import {WholeDataRoutingModule} from './whole-data.routing.module';
 import {EchartsBarTemModule} from '../../common/components/echarts-bar-tem/echarts-bar-tem.module';
+import {EchartLineBarAreaAModule} from '../../common/components/echart-line-bar-area-a/echart-line-bar-area-a.module';
 @NgModule({
   imports: [
     CommonModule,
     WholeDataRoutingModule,
     SharedModule,
     ScrollPanelModule,
-    EchartsBarTemModule
+    EchartsBarTemModule,
+    EchartLineBarAreaAModule
   ],
   declarations: [WholeDataComponent],
   providers: [],
