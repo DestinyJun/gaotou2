@@ -31,6 +31,7 @@ export class CityDataComponent implements OnInit, OnDestroy {
     // 路由接受参数
     this.routerInfo.params.subscribe(
       (params) => {
+        clearInterval(this.personAmountCountClean);
         this.dataToggle = params.name;
         this.cityId = params.id;
         this.getPerson();
@@ -49,6 +50,10 @@ export class CityDataComponent implements OnInit, OnDestroy {
         this.localService.eventBus.next({title: this.dataToggle + '高速业态大数据', flagState: 'city', flagName: this.dataToggle});
         // 图表更行
         this.updataEcharts();
+        // 实时数据
+        this.personAmountCountClean = setInterval(() => {
+          this.getPerson();
+        }, 3000);
       }
     );
   }
@@ -60,10 +65,6 @@ export class CityDataComponent implements OnInit, OnDestroy {
   public updataEcharts(): void {
     /**************************中部****************************/
     this.centerMap();
-    // 实时客流
-    this.personAmountCountClean = setInterval(() => {
-      this.getPerson();
-    }, 3000);
   }
   // 客流
   public getPerson(): void {

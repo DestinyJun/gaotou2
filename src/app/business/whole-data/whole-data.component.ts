@@ -24,8 +24,7 @@ export class WholeDataComponent implements OnInit, OnChanges {
     private router: Router,
     private localService: LocalStorageService,
     private es: NgxEchartsService,
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
     // 发射实时客流
