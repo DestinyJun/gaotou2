@@ -59,6 +59,8 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     // 路由接受参数
     this.routerInfo.params.subscribe(
       (params) => {
+        clearInterval(this.personAmountCountClean);
+        clearInterval(this.incomeShopInfoClean);
         this.serviceZoneTitle = params.name;
         this.serviceZoneID = params.id;
         this.publicBottomVideoGroup = null;
@@ -96,14 +98,14 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
 
   /*************数据初始化****************/
   public upData() {
-   /* // 实时客流
+    // 实时客流
     this.personAmountCountClean = setInterval(() => {
       this.getPerson();
-    }, 3000000000);
+    }, 3000);
     // 实时店铺信息
     this.incomeShopInfoClean = setInterval(() => {
       this.backCenterDate();
-    }, 30000000000);*/
+    }, 3000);
   }
   // 客流
   public getPerson(): void {
@@ -148,7 +150,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   /************************中部***************************/
   // 店铺、视频及方向
   public backCenterDate() {
-    console.log('1111');
     this.serareaService.getServiceShopVDate({id: this.serviceZoneID}).subscribe(
       (value) => {
         if (value.status === '200') {

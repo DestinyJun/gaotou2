@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 import {LocalStorageService} from '../../common/services/local-storage.service';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
@@ -57,20 +57,8 @@ export class HeaderComponent implements OnInit {
     });
     // 客流
     this.localService.persons.subscribe((value) => {
+      console.log(value);
       this.persons = value;
-      // console.log(this.persons.total);
-     /* this.persons.map((val, index) => {
-        this.personNum.push({number: val});
-      });*/
-     /* if (value.totalDistribute.length !== 0) {
-        value.totalDistribute.map((item, i) => {
-          if (item.flag === '2') {
-            this.personsTop = item;
-          } else {
-            this.personsBottom = item;
-          }
-        });
-      }*/
     });
   }
   public serviceSearchChange(e): void {

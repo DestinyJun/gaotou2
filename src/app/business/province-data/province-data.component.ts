@@ -32,6 +32,7 @@ export class ProvinceDataComponent implements OnInit, OnDestroy {
     // 路由接受参数
     this.routerInfo.params.subscribe(
       (params) => {
+        clearInterval(this.personAmountCountClean);
         this.dataToggle = params.name;
         this.provinceId = params.id;
         // 发射业态数据名称
@@ -50,21 +51,20 @@ export class ProvinceDataComponent implements OnInit, OnDestroy {
         };
         // 图表更行
         this.updataEcharts();
+        // 实时刷新数据
+        // 实时客流
+        this.personAmountCountClean = setInterval(() => {
+          this.getPerson();
+        }, 3000);
       }
     );
   }
   ngOnDestroy(): void {
     clearInterval(this.personAmountCountClean);
   }
-  /*********************************数据初始化*****************************/
   public updataEcharts(): void {
-    /**************************中部****************************/
     // 地图数据
     this.centertMap();
-    // 实时客流
-    this.personAmountCountClean = setInterval(() => {
-      this.getPerson();
-    }, 3000);
   }
   // 客流
   public getPerson(): void {

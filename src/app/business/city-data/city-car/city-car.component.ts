@@ -136,7 +136,7 @@ export class CityCarComponent implements OnInit, OnChanges, OnDestroy {
     this.alertCarShow = false;
   }
   public optionsCarPieClick(e) {
-    this.router.navigate(['/home/city', {id: e.data.id, name: e.name}]);
+    this.router.navigate(['/home/serzone', {id: e.data.id, name: e.name}]);
   }
   public carBtnClick(e): void {
     if (e.srcElement.innerText === '小车') {
