@@ -6,7 +6,7 @@ import {LocalStorageService} from '../../common/services/local-storage.service';
 @Component({
   selector: 'app-finance-data',
   templateUrl: './province-data.component.html',
-  styleUrls: ['./province-data.component.css'],
+  styleUrls: ['./province-data.component.less'],
 })
 export class ProvinceDataComponent implements OnInit, OnDestroy {
   /***********************基础信息************************/

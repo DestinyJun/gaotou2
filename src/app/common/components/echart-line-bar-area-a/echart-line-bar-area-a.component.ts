@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {graphic} from 'echarts';
+
 // declare const echarts: any;
 
 @Component({
@@ -16,34 +17,37 @@ export class EchartLineBarAreaAComponent implements OnInit {
   ngOnInit() {
     this.lineBarAReaA = {
       title: {
-        text: '全国客流趋势图',
+        text: '全国高速客流趋势图',
         textStyle: {
           color: '#ffffff',
           fontSize: 14
         },
         left: 'center'
       },
-      tooltip : {
+      tooltip: {
+        show: true,
         trigger: 'axis',
-        axisPointer : {
-          type : 'shadow'
-        }
+        formatter: '{b}年：{c}（万人/次）',
+        axisPointer: {
+          type: 'shadow'
+        },
       },
       grid: {
-        left: '1%',
-        top: '6%',
-        right: '1%',
+        left: '8%',
+        top: '10%',
+        right: '3%',
         bottom: '7%',
       },
       xAxis: [{
         type: 'category',
-        boundaryGap: true,
+        boundaryGap: false,
         axisLine: { // 坐标轴轴线相关设置。数学上的x轴
           show: true,
           lineStyle: {
             color: 'rgba(255,255,255,0.4)'
           },
         },
+        min: 0,
         axisLabel: { // 坐标轴刻度标签的相关设置
           textStyle: {
             color: '#d1e6eb',
@@ -55,33 +59,39 @@ export class EchartLineBarAreaAComponent implements OnInit {
         },
         data: ['2014', '2015', '2016', '2017', '2018', '2019'],
       }],
-      yAxis: [{
-        type: 'value',
-        min: 0,
-        // max: 140,
-        splitNumber: 4,
-        splitLine: {
+      yAxis: [
+        {
           show: true,
-          lineStyle: {
-            color: 'rgba(255,255,255,0.1)'
-          }
-        },
-        axisLine: {
-          show: false,
-        },
-        axisLabel: {
-          show: false,
-          margin: 20,
-          textStyle: {
+          type: 'value',
+          name: '万人/次',
+          nameTextStyle: {
             color: '#d1e6eb',
-
+            padding: [0, 0, 0, -16],
           },
-        },
-        axisTick: {
-          show: false,
-        },
-      }],
-      series: [{
+          splitNumber: 4,
+          splitLine: {
+            show: true,
+            lineStyle: {
+              color: 'rgba(255,255,255,0.1)'
+            }
+          },
+          axisLine: {
+            show: true,
+          },
+          axisLabel: {
+            show: true,
+            margin: 6,
+            textStyle: {
+              color: '#d1e6eb',
+
+            },
+          },
+          axisTick: {
+            show: false,
+          },
+        }],
+      series: [
+        {
         name: '注册总量',
         type: 'line',
         // smooth: true, //是否平滑曲线显示
@@ -106,9 +116,6 @@ export class EchartLineBarAreaAComponent implements OnInit {
           normal: {
             color: 'rgba(255,255,255,1)',
           }
-        },
-        tooltip: {
-          show: false
         },
         areaStyle: { // 区域填充样式
           normal: {

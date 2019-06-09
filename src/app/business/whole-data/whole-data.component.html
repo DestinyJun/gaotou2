@@ -7,7 +7,8 @@
           <!--<p class="text-center" style="color: #87FFFF;line-height: 40vh;">暂无全国数据，敬请期待...</p>-->
         </div>
         <div class="accumulation">
-          <p class="text-center" style="color: #87FFFF;line-height: 40vh">暂无全国数据，敬请期待...</p>
+          <!--<p class="text-center" style="color: #87FFFF;line-height: 40vh">暂无全国数据，敬请期待...</p>-->
+          <app-echarts-scatter-a></app-echarts-scatter-a>
         </div>
       </div>
       <!--中部分-->
@@ -22,8 +23,14 @@
           <app-echarts-bar-tem></app-echarts-bar-tem>
           <!--<p class="text-center" style="color: #87FFFF;line-height: 40vh;">暂无全国数据，敬请期待...</p>-->
         </div>
-        <div class="today-income">
-          <p class="text-center" style="color: #87FFFF;line-height: 40vh;">暂无全国数据，敬请期待...</p>
+        <div class="main-car">
+          <app-echarts-scatter-a
+            [visualMapColor]="carScatterMapColor"
+            [titleText]="carScatterTitleText"
+            [yAxisName]="carScatterYAxisName"
+            [tooltipY]="carScatterTooltipY"
+          ></app-echarts-scatter-a>
+          <!--<p class="text-center" style="color: #87FFFF;line-height: 40vh;">暂无全国数据，敬请期待...</p>-->
         </div>
       </div>
     </div>

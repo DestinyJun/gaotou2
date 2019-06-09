@@ -6,6 +6,7 @@ import {WholeDataComponent} from './whole-data.component';
 import {WholeDataRoutingModule} from './whole-data.routing.module';
 import {EchartsBarTemModule} from '../../common/components/echarts-bar-tem/echarts-bar-tem.module';
 import {EchartLineBarAreaAModule} from '../../common/components/echart-line-bar-area-a/echart-line-bar-area-a.module';
+import {EchartsScatterAModule} from '../../common/components/echarts-scatter-a/echarts-scatter-a.module';
 @NgModule({
   imports: [
     CommonModule,
@@ -13,7 +14,8 @@ import {EchartLineBarAreaAModule} from '../../common/components/echart-line-bar-
     SharedModule,
     ScrollPanelModule,
     EchartsBarTemModule,
-    EchartLineBarAreaAModule
+    EchartLineBarAreaAModule,
+    EchartsScatterAModule
   ],
   declarations: [WholeDataComponent],
   providers: [],

@@ -11,13 +11,12 @@ import {NgxEchartsService} from 'ngx-echarts';
 export class WholeDataComponent implements OnInit, OnChanges {
   // 全国、省级数据切换
   public dataToggle = '全国';
-  // 弹出框的标题及显影控制
-  public alertBarTitle: string;
-  // 省市联动数据及状态
-  public province: any;
-  public flag: string;
   // echarts
   public options: any = {};
+  public carScatterMapColor = ['#FFC38B', '#4BA0D0', '#5CC3B4', '#FF745F', '#7A0087'];
+  public carScatterTitleText: any = '全国省级车流/能耗对比分析（2019年）';
+  public carScatterYAxisName: any = '客流：单位(人/次)';
+  public carScatterTooltipY: any = '客流总数';
 
   constructor(
     private http: HttpClient,
@@ -100,56 +99,6 @@ export class WholeDataComponent implements OnInit, OnChanges {
       {name: '广西', value: 59},
       {name: '海南', value: 50},
       {name: '台湾', value: 50},
-    ];
-    const alirl = [
-      [
-        [121.15, 31.89],
-        [109.781327, 39.608266]
-      ],
-      [
-        [120.38, 37.35],
-        [122.207216, 29.985295]
-      ],
-      [
-        [123.97, 47.33],
-        [120.13, 33.38]
-      ],
-      [
-        [118.87, 42.28],
-        [120.33, 36.07]
-      ],
-      [
-        [121.52, 36.89],
-        [117.93, 40.97]
-      ],
-      [
-        [102.188043, 38.520089],
-        [122.1, 37.5]
-      ],
-      [
-        [118.58, 24.93],
-        [101.718637, 26.582347]
-      ],
-      [
-        [120.53, 36.86],
-        [121.48, 31.22]
-      ],
-      [
-        [119.46, 35.42],
-        [122.05, 37.2]
-      ],
-      [
-        [119.97, 35.88],
-        [116.1, 24.55]
-      ],
-      [
-        [121.05, 32.08],
-        [112.02, 22.93]
-      ],
-      [
-        [91.11, 29.97],
-        [118.1, 24.46]
-      ]
     ];
     const convertData = function (data) {
       const res = [];
