@@ -4,7 +4,7 @@ import {SharedModule} from '../../common/shared.module';
 import {ProvinceDataRoutingModule} from './province-data.routing.module';
 import { ProvinceDataComponent } from './province-data.component';
 import {FormsModule} from '@angular/forms';
-import {EchartsLineBrokenModule, InputDropdownModule, PagingModule, WenjunAlertModule} from '../../common/wenjun';
+import {InputDropdownModule, PagingModule} from '../../common/wenjun';
 import { FinanceDataService } from '../../common/services/finance-data.service';
 import {CalendarModule, ScrollPanelModule} from 'primeng/primeng';
 import {DataService} from '../../common/services/data.service';
@@ -29,12 +29,10 @@ import {EchartsScatterAModule} from '../../common/components/echarts-scatter-a/e
     FormsModule,
     ProvinceDataRoutingModule,
     SharedModule,
-    WenjunAlertModule,
     CalendarModule,
     ScrollPanelModule,
     PagingModule,
     InputDropdownModule,
-    EchartsLineBrokenModule,
     InputDropdownDayModule,
     EchartsBarDoubleModule,
     EchartPieCircleAModule,

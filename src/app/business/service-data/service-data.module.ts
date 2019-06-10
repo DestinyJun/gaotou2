@@ -8,7 +8,7 @@ import {CalendarModule, ScrollPanelModule, DropdownModule} from 'primeng/primeng
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {DataService} from '../../common/services/data.service';
 import {ButtonModule} from 'primeng/button';
-import {EchartLineAreaModule, EchartsLineBrokenModule, InputDropdownModule, PagingModule} from '../../common/wenjun';
+import {EchartLineAreaModule, InputDropdownModule, PagingModule} from '../../common/wenjun';
 import {ImageZoomModule} from '../../common/components/image-zoom/image-zoom.module';
 import {Service3dComponent} from './service-3d/service-3d.component';
 import {ServiceCarComponent} from './service-car/service-car.component';
@@ -19,6 +19,7 @@ import { ServiceToiletComponent } from './service-toilet/service-toilet.componen
 import { ServiceEvnDealComponent } from './service-evn-deal/service-evn-deal.component';
 import { ServiceUpattrComponent } from './service-upattr/service-upattr.component';
 import { ServiceDownattrComponent } from './service-downattr/service-downattr.component';
+import {EchartsLineBrokenModule} from '../../common/components/echarts-line-broken/echarts-line-broken.module';
 @NgModule({
   imports: [
     CommonModule,

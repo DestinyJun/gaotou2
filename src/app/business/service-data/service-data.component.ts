@@ -153,7 +153,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     this.serareaService.getServiceShopVDate({id: this.serviceZoneID}).subscribe(
       (value) => {
         if (value.status === '200') {
-          console.log(value);
           this.serareaService.searchServiceShopIncome({id: this.serviceZoneID}).subscribe(
             (val) => {
               if (val.status === '200') {
