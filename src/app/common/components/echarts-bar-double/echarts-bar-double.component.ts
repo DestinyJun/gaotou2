@@ -24,122 +24,125 @@ export class EchartsBarDoubleComponent implements OnInit {
       tooltip: {
         trigger: 'axis',
         axisPointer: {
-          type: 'cross',
-          crossStyle: {
-            color: '#384757'
-          }
-        }
+          type: 'shadow',
+        },
+        position: 'top'
       },
       legend: {
         data: [
           {
-            name: '待处理',
+            name: '收入',
             icon: 'circle',
             textStyle: {
-              color: '#7d838b'
+              color: '#ffffff'
             }
           },
           {
-            name: '已处理',
+            name: '客流',
             icon: 'circle',
             textStyle: {
-              color: '#7d838b'
-            }
-          },
-          {
-            name: '完成率',
-            icon: 'circle',
-            textStyle: {
-              color: '#7d838b'
+              color: '#ffffff'
             }
           }
         ],
-        top: '10%',
+        top: '6%',
         textStyle: {
           color: '#fff'
         }
       },
       xAxis: [
         {
-          'type': 'category',
-          'data': [
-            '1街',
-            '2街',
-            '3街',
-            '4街',
-            '5街',
-            '6街'
-          ],
-          'axisPointer': {
-            'type': 'shadow'
+          type: 'category',
+          data: ['1街', '2街', '3街', '4街', '5街', '6街'],
+          axisPointer: {
+            type: 'shadow'
           },
-          'axisLabel': {
-            'show': true,
-            'textStyle': {
-              'color': '#7d838b'
+          axisLabel: {
+            show: true,
+            textStyle: {
+              color: '#ffffff'
             }
-          }
+          },
+          axisLine: {
+            show: true,
+            lineStyle: {
+              color: '#ffffff'
+            }
+          },
         }
       ],
       yAxis: [
         {
-          'type': 'value',
-          'name': '不文明现象',
-          'nameTextStyle': {
-            'color': '#7d838b'
+          type: 'value',
+          name: '收入（万元）',
+          nameTextStyle: {
+            padding: [0, 0, 0, 30],
+            color: '#ffffff'
           },
-          'min': 0,
-          'max': 50,
-          'interval': 10,
-          'axisLabel': {
-            'show': true,
-            'textStyle': {
-              'color': '#7d838b'
+          min: 0,
+          interval: 10,
+          axisLabel: {
+            show: true,
+            textStyle: {
+              color: '#ffffff'
             }
           },
-          'axisLine': {
-            'show': true
+          axisLine: {
+            show: true,
+            lineStyle: {
+              color: '#ffffff'
+            }
           },
-          'splitLine': {
-            'lineStyle': {
-              'color': '#7d838b'
+          splitLine: {
+            show: true,
+            lineStyle: {
+              color: 'rgba(255,255,255,0.3)'
             }
           }
         },
         {
-          'type': 'value',
-          'name': '完成率',
-          'show': true,
-          'axisLabel': {
-            'show': true,
-            'textStyle': {
-              'color': '#7d838b'
+          type: 'value',
+          name: '客流（人次）',
+          nameTextStyle: {
+            padding: [0, 30, 0, 0],
+            color: '#ffffff'
+          },
+          show: true,
+          axisLabel: {
+            show: true,
+            textStyle: {
+              color: '#ffffff'
+            }
+          },
+          axisLine: {
+            show: true,
+            lineStyle: {
+              color: '#ffffff'
+            }
+          },
+          splitLine: {
+            show: false,
+            lineStyle: {
+              color: '#ffffff'
             }
           }
         }
       ],
       grid: {
         left: '6%',
-        top: '10%',
+        top: '15%',
         right: '6%',
-        bottom: '30%',
+        bottom: '9%',
       },
       series: [
         {
-          'name': '待处理',
-          'type': 'bar',
-          'data': [
-            4,
-            6,
-            36,
-            6,
-            8,
-            6
-          ],
-          'barWidth': 'auto',
-          'itemStyle': {
-            'normal': {
-              'color': {
+          name: '收入',
+          type: 'bar',
+          data: [4, 6, 36, 6, 8, 6],
+          barWidth: 'auto',
+          itemStyle: {
+            normal: {
+              color: {
                 'type': 'linear',
                 'x': 0,
                 'y': 0,
@@ -165,8 +168,9 @@ export class EchartsBarDoubleComponent implements OnInit {
           }
         },
         {
-          'name': '已处理',
+          'name': '客流',
           'type': 'bar',
+          'yAxisIndex': 1,
           'data': [
             4,
             2,
@@ -204,25 +208,6 @@ export class EchartsBarDoubleComponent implements OnInit {
           },
           'barGap': '0'
         },
-        {
-          'name': '完成率',
-          'type': 'line',
-          'yAxisIndex': 1,
-          'data': [
-            100,
-            33,
-            100,
-            100,
-            100,
-            100
-          ],
-          'itemStyle': {
-            'normal': {
-              'color': '#ffaa00'
-            }
-          },
-          'smooth': true
-        }
       ]
     };
   }

@@ -15,6 +15,12 @@ export class ProvinceCrosswiseComponent implements OnInit, OnChanges {
   public barStatus2 = false;
   public barStatus3 = false;
   public dataStatus = '业态收入/万元';
+  public crosswiseTitleDialog = false;
+  // scatter
+  public crosswiseScatterMapColor = ['#FFC38B', '#4BA0D0', '#5CC3B4', '#FF745F', '#7A0087'];
+  public crosswiseScatterTitleText: any = '省级服务区收入综合能耗关系统计';
+  public crosswiseScatterYAxisName: any = '客流：单位(人/次)';
+  public crosswiseScatterTooltipY: any = '客流总数';
   constructor(
     private provinceSrv: FinanceDataService,
   ) { }
@@ -65,5 +71,12 @@ export class ProvinceCrosswiseComponent implements OnInit, OnChanges {
       this.barStatus3 = true;
       this.backCrosswiseBar(types[2]);
     }
+  }
+  // title click
+  public crosswiseTitleClick(event): void {
+    this.crosswiseTitleDialog = true;
+  }
+  public crosswiseTitleDialogClose(event): void {
+    this.crosswiseTitleDialog = false;
   }
 }
