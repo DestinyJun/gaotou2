@@ -2,7 +2,7 @@ import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core'
 import {CityDataService} from '../../../common/services/city-data.service';
 
 @Component({
-  selector: 'app-province-crosswise',
+  selector: 'app-city-crosswise',
   templateUrl: './city-crosswise.component.html',
   styleUrls: ['./city-crosswise.component.less']
 })
@@ -15,6 +15,12 @@ export class CityCrosswiseComponent implements OnInit, OnChanges {
   public barStatus2 = false;
   public barStatus3 = false;
   public dataStatus = '业态收入/万元';
+  public cityDialogShow = false;
+  // scatter
+  public crosswiseScatterMapColor = ['#FFC38B', '#4BA0D0', '#5CC3B4', '#FF745F', '#7A0087'];
+  public crosswiseScatterTitleText: any = '市级服务区收入综合能耗关系统计';
+  public crosswiseScatterYAxisName: any = '客流：单位(人/次)';
+  public crosswiseScatterTooltipY: any = '客流总数';
   constructor(
     private citySrv: CityDataService,
   ) { }
@@ -65,5 +71,12 @@ export class CityCrosswiseComponent implements OnInit, OnChanges {
       this.barStatus3 = true;
       this.backCrosswiseBar(types[2]);
     }
+  }
+  // title click
+  public cityDialogOpen(event): void {
+    this.cityDialogShow = true;
+  }
+  public cityDialogClose(event): void {
+    this.cityDialogShow = false;
   }
 }

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-echarts-bar-double',
@@ -7,14 +7,14 @@ import {Component, OnInit} from '@angular/core';
 })
 export class EchartsBarDoubleComponent implements OnInit {
   public barDouble: any = {};
-
+  @Input() title = '速公路/客流统计';
   constructor() {
   }
 
   ngOnInit() {
     this.barDouble = {
       title: {
-        text: '全省高速公路/客流统计',
+        text: this.title,
         textStyle: {
           color: '#ffffff',
           fontSize: 14
@@ -53,7 +53,7 @@ export class EchartsBarDoubleComponent implements OnInit {
       xAxis: [
         {
           type: 'category',
-          data: ['1街', '2街', '3街', '4街', '5街', '6街'],
+          data: ['一月', '二月', '三月', '四月', '五月', '六月'],
           axisPointer: {
             type: 'shadow'
           },

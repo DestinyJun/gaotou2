@@ -1,6 +1,6 @@
 <div class="crosswise">
   <app-title-one
-    (click)="crosswiseTitleClick($event)"
+    (click)="provinceDialogOpen($event)"
     [height]="'3vh'"
     [option]="{title: provinceName + '业态数据前十排名'}">
   </app-title-one>
@@ -13,7 +13,7 @@
   <app-gt-dialog-a
     [title]="crosswiseScatterTitleText"
     *ngIf="crosswiseTitleDialog"
-    (closeClick)="crosswiseTitleDialogClose($event)">
+    (closeClick)="provinceDialogClose($event)">
     <app-echarts-scatter-a
       [visualMapColor]="crosswiseScatterMapColor"
       [titleText]="''"

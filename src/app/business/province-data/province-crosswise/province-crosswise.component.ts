@@ -73,10 +73,10 @@ export class ProvinceCrosswiseComponent implements OnInit, OnChanges {
     }
   }
   // title click
-  public crosswiseTitleClick(event): void {
+  public provinceDialogOpen(event): void {
     this.crosswiseTitleDialog = true;
   }
-  public crosswiseTitleDialogClose(event): void {
+  public provinceDialogClose(event): void {
     this.crosswiseTitleDialog = false;
   }
 }

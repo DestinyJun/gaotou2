@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-echart-pie-circle-a',
@@ -7,7 +7,7 @@ import {Component, OnInit} from '@angular/core';
 })
 export class EchartPieCircleAComponent implements OnInit {
   public pieCircleA: any = {};
-
+  @Input() title = '突发事件处理概况';
   constructor() {
   }
 
@@ -16,7 +16,7 @@ export class EchartPieCircleAComponent implements OnInit {
       color: ['#22c2f0', '#28f19b', '#fcfa3c', '#f44061'],
       title: [
         {
-          text: '全省高速突发事件处理概况',
+          text: this.title,
           textStyle: {
             color: '#f2f2f2',
             fontSize: 15,
