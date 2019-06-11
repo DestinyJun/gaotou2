@@ -12,7 +12,7 @@
     <app-echart-pie [option]="optionsCarModel" [height]="'20vh'" (pieClick)="parkClick($event)"></app-echart-pie>
   </div>
   <!--车辆类型弹窗-->
-  <div class="bg-box" *ngIf="alertCarShow">
+  <div class="bg-box" *ngIf="true">
     <div class="alert-window">
       <div class="alert-window-header">
         <div class="row">
@@ -24,19 +24,20 @@
           </div>
         </div>
       </div>
-      <div class="alert-window-content">
-        <div class="row">
+      <div class="alert-window-content" style="height: 55vh">
+        <app-echart-bar-double-a></app-echart-bar-double-a>
+        <!--<div class="row">
           <div class="col-ld-12 col-md-12">
             <div class="alert-window-content-table">
               <div class="toggle-btn">
                 <div class="toggle-btn-area text-center" style="">
-                  <app-input-dropdown
+                  &lt;!&ndash;<app-input-dropdown
                     [option]="carTimeSelect"
                     [height]="'3vh'"
                     [background]="'#1a2128'"
                     [dropdownBackground]="'rgba(26,33,40,0.8)'"
                     [hover]="'#5595D5'"
-                    (dropdownClick)="carSelectTime($event)"></app-input-dropdown>
+                    (dropdownClick)="carSelectTime($event)"></app-input-dropdown>&ndash;&gt;
                   <span (click)="carExcelShow = true">表格导出</span>
                 </div>
               </div>
@@ -85,7 +86,7 @@
               <app-paging [option]="{total: carTableData?.totalRecord,row: 10}" (pageClick)="carDistribution($event,carTimeTypes)"></app-paging>
             </div>
           </div>
-        </div>
+        </div>-->
       </div>
       <div class="bg-excel" *ngIf="carExcelShow">
         <div class="alert-window-excel">

@@ -18,7 +18,7 @@ import { ProvinceCrosswiseComponent } from './province-crosswise/province-crossw
 import { ProvinceEvnstatComponent } from './province-evnstat/province-evnstat.component';
 import { ProvinceEvnofficeComponent } from './province-evnoffice/province-evnoffice.component';
 import { ProvinceEvnpersonComponent } from './province-evnperson/province-evnperson.component';
-import {EchartsBarDoubleModule} from '../../common/components/echarts-bar-double/echarts-bar-double.module';
+import {EchartsBarDoubleModule} from '../../common/components/echart-bar-double/echarts-bar-double.module';
 import {EchartPieCircleAModule} from '../../common/components/echart-pie-circle-a/echart-pie-circle-a.module';
 import {GtDialogAModule} from '../../common/components/gt-dialog-a/gt-dialog-a.module';
 import {EchartsScatterAModule} from '../../common/components/echarts-scatter-a/echarts-scatter-a.module';

@@ -16,7 +16,7 @@ import { EventListInfoComponent } from './components/event-list-info/event-list-
 import { EventOfficeComponent } from './components/event-office/event-office.component';
 import { EventPersonComponent } from './components/event-person/event-person.component';
 import { EchartBmapComponent } from './components/echart-bmap/echart-bmap.component';
-import { EchartsCityBmapComponent } from './components/echarts-city-bmap/echarts-city-bmap.component';
+import { EchartsCityBmapComponent } from './components/echart-city-bmap/echarts-city-bmap.component';
 @NgModule({
   declarations: [
     Echart3dComponent,

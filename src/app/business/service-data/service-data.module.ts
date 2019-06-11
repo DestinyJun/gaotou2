@@ -19,11 +19,12 @@ import { ServiceToiletComponent } from './service-toilet/service-toilet.componen
 import { ServiceEvnDealComponent } from './service-evn-deal/service-evn-deal.component';
 import { ServiceUpattrComponent } from './service-upattr/service-upattr.component';
 import { ServiceDownattrComponent } from './service-downattr/service-downattr.component';
-import {EchartsLineBrokenModule} from '../../common/components/echarts-line-broken/echarts-line-broken.module';
+import {EchartsLineBrokenModule} from '../../common/components/echart-line-broken/echarts-line-broken.module';
 import {EchartPieCircleAModule} from '../../common/components/echart-pie-circle-a/echart-pie-circle-a.module';
 import {EchartsScatterAModule} from '../../common/components/echarts-scatter-a/echarts-scatter-a.module';
 import {GtDialogAModule} from '../../common/components/gt-dialog-a/gt-dialog-a.module';
-import {EchartsBarDoubleModule} from '../../common/components/echarts-bar-double/echarts-bar-double.module';
+import {EchartsBarDoubleModule} from '../../common/components/echart-bar-double/echarts-bar-double.module';
+import {EchartBarDoubleAModule} from '../../common/components/echart-bar-double-a/echart-bar-double-a.module';
 @NgModule({
   imports: [
     CommonModule,
@@ -44,6 +45,7 @@ import {EchartsBarDoubleModule} from '../../common/components/echarts-bar-double
     EchartPieCircleAModule,
     EchartsScatterAModule,
     GtDialogAModule,
+    EchartBarDoubleAModule
   ],
   declarations: [
     ServiceDataComponent,
