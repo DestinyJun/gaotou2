@@ -35,6 +35,201 @@ export class ServiceIncomeComponent implements OnInit, OnChanges, OnDestroy {
   public incomeExcelShow = false;
   public incomeStartTime: Date; // 时间选择器
   public incomeEndTime: Date; // 时间选择器
+  public circleData = [
+    {
+      name: '住宿',
+      value: 80
+    },
+    {
+      name: '汽修',
+      value: 120
+    },
+    {
+      name: '小吃',
+      value: 180
+    },
+    {
+      name: '中式快餐',
+      value: 220
+    },
+    {
+      name: '西式快餐',
+      value: 25
+    },
+    {
+      name: '商超',
+      value: 255
+    }];
+  public barData = [
+    {
+      name: '商超',
+      type: 'bar',
+      stack: '上行',
+      data: [
+        {name: '上行', value: 120},
+        {name: '上行', value: 132},
+        {name: '上行', value: 101},
+        {name: '上行', value: 134},
+        {name: '上行', value: 90},
+        {name: '上行', value: 230},
+        {name: '上行', value: 210},
+      ]
+    },
+    {
+      name: '中式快餐',
+      type: 'bar',
+      stack: '上行',
+      data: [
+        {name: '上行', value: 220},
+        {name: '上行', value: 182},
+        {name: '上行', value: 191},
+        {name: '上行', value: 234},
+        {name: '上行', value: 290},
+        {name: '上行', value: 330},
+        {name: '上行', value: 310},
+      ]
+    },
+    {
+      name: '西式快餐',
+      type: 'bar',
+      stack: '上行',
+      data: [
+        {name: '上行', value: 150},
+        {name: '上行', value: 232},
+        {name: '上行', value: 201},
+        {name: '上行', value: 154},
+        {name: '上行', value: 190},
+        {name: '上行', value: 330},
+        {name: '上行', value: 410},
+      ]
+    },
+    {
+      name: '小吃',
+      type: 'bar',
+      stack: '上行',
+      data: [
+        {name: '上行', value: 150},
+        {name: '上行', value: 232},
+        {name: '上行', value: 201},
+        {name: '上行', value: 154},
+        {name: '上行', value: 190},
+        {name: '上行', value: 330},
+        {name: '上行', value: 410},
+      ]
+    },
+    {
+      name: '住宿',
+      type: 'bar',
+      stack: '上行',
+      data: [
+        {name: '上行', value: 150},
+        {name: '上行', value: 232},
+        {name: '上行', value: 201},
+        {name: '上行', value: 154},
+        {name: '上行', value: 190},
+        {name: '上行', value: 330},
+        {name: '上行', value: 410},
+      ]
+    },
+    {
+      name: '汽修',
+      type: 'bar',
+      stack: '上行',
+      data: [
+        {name: '上行', value: 150},
+        {name: '上行', value: 232},
+        {name: '上行', value: 201},
+        {name: '上行', value: 154},
+        {name: '上行', value: 190},
+        {name: '上行', value: 330},
+        {name: '上行', value: 410},
+      ]
+    },
+    {
+      name: '商超',
+      type: 'bar',
+      stack: '下行',
+      data: [
+        {name: '下行', value: 120},
+        {name: '下行', value: 132},
+        {name: '下行', value: 101},
+        {name: '下行', value: 134},
+        {name: '下行', value: 90},
+        {name: '下行', value: 230},
+        {name: '下行', value: 210},
+      ]
+    },
+    {
+      name: '中式快餐',
+      type: 'bar',
+      stack: '下行',
+      data: [
+        {name: '下行', value: 220},
+        {name: '下行', value: 182},
+        {name: '下行', value: 191},
+        {name: '下行', value: 234},
+        {name: '下行', value: 290},
+        {name: '下行', value: 330},
+        {name: '下行', value: 310},
+      ]
+    },
+    {
+      name: '西式快餐',
+      type: 'bar',
+      stack: '下行',
+      data: [
+        {name: '下行', value: 150},
+        {name: '下行', value: 232},
+        {name: '下行', value: 201},
+        {name: '下行', value: 154},
+        {name: '下行', value: 190},
+        {name: '下行', value: 330},
+        {name: '下行', value: 410},
+      ]
+    },
+    {
+      name: '小吃',
+      type: 'bar',
+      stack: '下行',
+      data: [
+        {name: '下行', value: 150},
+        {name: '下行', value: 232},
+        {name: '下行', value: 201},
+        {name: '下行', value: 154},
+        {name: '下行', value: 190},
+        {name: '下行', value: 330},
+        {name: '下行', value: 410},
+      ]
+    },
+    {
+      name: '住宿',
+      type: 'bar',
+      stack: '下行',
+      data: [
+        {name: '下行', value: 150},
+        {name: '下行', value: 232},
+        {name: '下行', value: 201},
+        {name: '下行', value: 154},
+        {name: '下行', value: 190},
+        {name: '下行', value: 330},
+        {name: '下行', value: 410},
+      ]
+    },
+    {
+      name: '汽修',
+      type: 'bar',
+      stack: '下行',
+      data: [
+        {name: '下行', value: 150},
+        {name: '下行', value: 232},
+        {name: '下行', value: 201},
+        {name: '下行', value: 154},
+        {name: '下行', value: 190},
+        {name: '下行', value: 330},
+        {name: '下行', value: 410},
+      ]
+    },
+  ];
   constructor(
     private serviceSrv: ServiceDataService,
     private router: Router,

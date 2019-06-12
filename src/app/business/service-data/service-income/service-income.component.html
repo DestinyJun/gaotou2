@@ -13,7 +13,7 @@
   </div>
   <!--收入类型弹窗-->
   <div class="bg-box" *ngIf="alertIncomeShow">
-    <div class="alert-window" style=" width: 96vw; margin-left: -48vw;height: 90vh;margin-top: -45vh">
+    <div class="alert-window">
       <div class="alert-window-header">
         <div class="row">
           <div class="col-lg-12 col-md-12">
@@ -25,112 +25,14 @@
         </div>
       </div>
       <div class="alert-window-content">
-        <div class="row">
-          <div class="col-ld-12 col-md-12">
-            <div class="alert-window-content-table" style="height: 85vh">
-              <div class="toggle-btn" (click)="IncomeBtnClick($event)">
-                <button class="btn btn-info" [ngStyle]="{'background':alertIncomeTitle === '收入总数'?'black': '','margin-left': '10px'}">收入总数</button>
-                <button class="btn btn-danger" [ngStyle]="{'background':alertIncomeTitle === '小吃'?'black': ''}">小吃</button>
-                <button class="btn btn-primary" [ngStyle]="{'background':alertIncomeTitle === '中式快餐'?'black': ''}">中式快餐</button>
-                <button class="btn btn-success" [ngStyle]="{'background':alertIncomeTitle === '西式快餐'?'black': ''}">西式快餐</button>
-                <button class="btn btn-info" [ngStyle]="{'background':alertIncomeTitle === '商超'?'black': ''}">商超</button>
-                <button class="btn btn-warning" [ngStyle]="{'background':alertIncomeTitle === '住宿'?'black': ''}">住宿</button>
-                <button class="btn btn-primary" [ngStyle]="{'background':alertIncomeTitle === '汽修'?'black': ''}">汽修</button>
-                <div class="toggle-btn-area pull-right">
-                  <app-input-dropdown
-                    [option]="carTimeSelect"
-                    [height]="'3vh'"
-                    [background]="'#1a2128'"
-                    [dropdownBackground]="'rgba(26,33,40,0.8)'"
-                    [hover]="'#5595D5'"
-                    (dropdownClick)="IncomeSelectTime($event)"></app-input-dropdown>
-                  <span (click)="incomeExcelShow=true">表格导出</span>
-                </div>
-              </div>
-              <div class="content-table" style="margin-bottom: 1vh;height: 75vh">
-                <p-scrollPanel [style]="{width: '100%', height: '70vh'}">
-                  <table class="table table-bordered" *ngIf="!alertIncomeTypeShow" style="color: #87ffff;">
-                    <thead>
-                    <tr>
-                      <th class="text-center">时间段</th>
-                      <th class="text-center">收入详情</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr *ngFor="let item of IncomeTableData?.contents">
-                      <td class="text-center" style="vertical-align: middle">{{item?.time}}</td>
-                      <td>
-                        <table class="table table-bordered" style="background-color: transparent;color: #87ffff;">
-                          <thead>
-                          <tr>
-                            <th>收入总数</th>
-                            <th>小吃</th>
-                            <th>中式快餐</th>
-                            <th>西式快餐</th>
-                            <th>商超</th>
-                            <th>住宿</th>
-                            <th>汽修</th>
-                            <th>服务区方向</th>
-                          </tr>
-                          </thead>
-                          <tbody>
-                          <tr *ngFor="let prop of item?.orientationRevenues;">
-                            <td [ngStyle]="{'background':alertIncomeTitle === '收入总数'?'black': ''}">{{prop?.typeRevenue.total}}</td>
-                            <td [ngStyle]="{'background':alertIncomeTitle === '小吃'?'black': ''}">{{prop.typeRevenue[1]}}</td>
-                            <td [ngStyle]="{'background':alertIncomeTitle === '中式快餐'?'black': ''}">{{prop.typeRevenue[2]}}</td>
-                            <td [ngStyle]="{'background':alertIncomeTitle === '西式快餐'?'black': ''}">{{prop.typeRevenue[3]}}</td>
-                            <td [ngStyle]="{'background':alertIncomeTitle === '商超'?'black': ''}">{{prop.typeRevenue[4]}}</td>
-                            <td [ngStyle]="{'background':alertIncomeTitle === '住宿'?'black': ''}">{{prop.typeRevenue[5]}}</td>
-                            <td [ngStyle]="{'background':alertIncomeTitle === '汽修'?'black': ''}">{{prop.typeRevenue[6]}}</td>
-                            <td>
-                              <span *ngIf="prop?.source">{{prop?.source+'——>'+prop?.destination}}</span>
-                              <span *ngIf="!(prop?.source)">方向数据丢失</span>
-                            </td>
-                          </tr>
-                          </tbody>
-                        </table>
-                      </td>
-                    </tr>
-                    </tbody>
-                  </table>
-                  <table class="table table-bordered" *ngIf="alertIncomeTypeShow" style="color: #87ffff;">
-                    <thead>
-                    <tr>
-                      <th class="text-center">时间段</th>
-                      <th class="text-center">{{alertIncomeTypeTitle}}（元）</th>
-                      <th class="text-center">方向店铺详情</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr *ngFor="let item of IncomeTableData?.contents;let i = index">
-                      <td class="text-center" style="vertical-align: middle">{{item?.time}}</td>
-                      <td class="text-center" style="vertical-align: middle">{{item?.totalRevenue}}</td>
-                      <td colspan="3">
-                        <table class="table table-bordered" style="background-color: transparent;color: #87ffff;">
-                          <thead>
-                          <tr>
-                            <th>店铺名称</th>
-                            <th>店铺收入</th>
-                            <th>服务区方向</th>
-                          </tr>
-                          </thead>
-                          <tbody>
-                          <tr *ngFor="let prop of item?.hStoreRevenueList;">
-                            <td>{{prop?.storeName}}</td>
-                            <td>{{prop?.revenue}}</td>
-                            <td>{{prop?.orientationSource}}—>{{prop?.orientationDestination}}</td>
-                          </tr>
-                          </tbody>
-                        </table>
-                      </td>
-                    </tr>
-                    </tbody>
-                  </table>
-                </p-scrollPanel>
-              </div>
-              <app-paging *ngIf="alertIncomeTypeShow" [option]="{total: IncomeTableData?.totalRecord,row: 10}" (pageClick)="getIncomeTypesSinglePaging($event,alertIncomeTitle,storeList,IncomeTimeTypes)"></app-paging>
-              <app-paging *ngIf="!alertIncomeTypeShow" [option]="{total: IncomeTableData?.totalRecord,row: 15}" (pageClick)="getIncomeTypesSinglePaging($event,alertIncomeTitle,storeList,IncomeTimeTypes)"></app-paging>
-            </div>
+        <div class="col-ld-6 col-md-6">
+          <div style="height: 54vh">
+            <app-echart-bar-double-a [yAxisName]="'收入（元）'" [data]="barData"></app-echart-bar-double-a>
+          </div>
+        </div>
+        <div class="col-ld-6 col-md-6">
+          <div style="height: 54vh">
+            <app-echart-pie-circle-b [data]="circleData" [unit]="'元'"></app-echart-pie-circle-b>
           </div>
         </div>
       </div>
