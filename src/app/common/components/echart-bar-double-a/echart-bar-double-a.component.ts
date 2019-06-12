@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-echart-bar-double-a',
@@ -7,7 +7,7 @@ import {Component, OnInit} from '@angular/core';
 })
 export class EchartBarDoubleAComponent implements OnInit {
   public barDoubleA: any = {};
-
+  @Input() yAxisName: any = '车辆（单位/辆）';
   constructor() {
   }
 
@@ -17,26 +17,46 @@ export class EchartBarDoubleAComponent implements OnInit {
         trigger: 'axis',
         axisPointer: {            // 坐标轴指示器，坐标轴触发有效
           type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+        },
+        formatter: function (param) {
+          const paramLength = param.length;
+          const sArray = param.slice(0, (paramLength / 2));
+          const xArray = param.slice(paramLength / 2);
+          let sHtml = ``;
+          let xHtml = ``;
+          sArray.map((val) => {
+            sHtml = sHtml +  `<p style="text-indent: 1em;height: 16px;line-height: 16px">
+<span style="background-color: ${val.color};display:inline-block;width: 10px;height: 10px;border-radius: 50%"></span>
+${val.seriesName}：${val.value}（辆）</p>`;
+          });
+          xArray.map((val) => {
+            xHtml = xHtml +  `<p style="text-indent: 1em;height: 16px;line-height: 16px">
+<span style="background-color: ${val.color};display:inline-block;width: 10px;height: 10px;border-radius: 50%"></span>
+${val.seriesName}：${val.value}（辆）</p>`;
+          });
+          return `
+                  <p style="text-align: center">${param[0].axisValue}</p>
+                  <p>${sArray[0].name}</p>
+                  ${sHtml}
+                  <p>${xArray[0].name}</p>
+                   ${xHtml}
+          `;
         }
       },
       legend: {
-        data: ['直接访问', '邮件营销', '联盟广告', '视频广告', '搜索引擎', '百度', '谷歌', '必应', '其他'],
+        data: ['小车', '客车', '货车', '危品车', '畜牧车'],
         textStyle: {
           color: '#ffffff'
         }
       },
       grid: {
-        left: '3%',
-        right: '4%',
+        left: '1%',
+        right: '1%',
         bottom: '3%',
         containLabel: true
       },
       xAxis: [
         {
-          name: '时间',
-          nameTextStyle: {
-            color: '#ffffff'
-          },
           type: 'category',
           data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
           axisLabel: {
@@ -52,7 +72,7 @@ export class EchartBarDoubleAComponent implements OnInit {
       yAxis: [
         {
           type: 'value',
-          name: '车辆（单位/辆）',
+          name: this.yAxisName,
           nameTextStyle: {
             color: '#ffffff'
           },
@@ -69,70 +89,148 @@ export class EchartBarDoubleAComponent implements OnInit {
           }
         }
       ],
+      color: ['#37A2DA', '#FFDB5C', '#32C5E9', '#FF9F7F', '#E7BCF3'],
       series: [
         {
-          name: '直接访问',
+          name: '小车',
           type: 'bar',
-          data: [320, 332, 301, 334, 390, 330, 320]
+          stack: '上行',
+          data: [
+            {name: '上行', value: 120},
+            {name: '上行', value: 132},
+            {name: '上行', value: 101},
+            {name: '上行', value: 134},
+            {name: '上行', value: 90},
+            {name: '上行', value: 230},
+            {name: '上行', value: 210},
+          ]
         },
         {
-          name: '邮件营销',
+          name: '客车',
           type: 'bar',
-          stack: '广告',
-          data: [120, 132, 101, 134, 90, 230, 210]
+          stack: '上行',
+          data: [
+            {name: '上行', value: 220},
+            {name: '上行', value: 182},
+            {name: '上行', value: 191},
+            {name: '上行', value: 234},
+            {name: '上行', value: 290},
+            {name: '上行', value: 330},
+            {name: '上行', value: 310},
+          ]
         },
         {
-          name: '联盟广告',
+          name: '货车',
           type: 'bar',
-          stack: '广告',
-          data: [220, 182, 191, 234, 290, 330, 310]
+          stack: '上行',
+          data: [
+            {name: '上行', value: 150},
+            {name: '上行', value: 232},
+            {name: '上行', value: 201},
+            {name: '上行', value: 154},
+            {name: '上行', value: 190},
+            {name: '上行', value: 330},
+            {name: '上行', value: 410},
+          ]
         },
         {
-          name: '视频广告',
+          name: '危品车',
           type: 'bar',
-          stack: '广告',
-          data: [150, 232, 201, 154, 190, 330, 410]
+          stack: '上行',
+          data: [
+            {name: '上行', value: 150},
+            {name: '上行', value: 232},
+            {name: '上行', value: 201},
+            {name: '上行', value: 154},
+            {name: '上行', value: 190},
+            {name: '上行', value: 330},
+            {name: '上行', value: 410},
+          ]
         },
         {
-          name: '搜索引擎',
+          name: '畜牧车',
           type: 'bar',
-          data: [862, 1018, 964, 1026, 1679, 1600, 1570],
-          markLine: {
-            lineStyle: {
-              normal: {
-                type: 'dashed'
-              }
-            },
-            data: [
-              [{type: 'min'}, {type: 'max'}]
-            ]
-          }
+          stack: '上行',
+          data: [
+            {name: '上行', value: 150},
+            {name: '上行', value: 232},
+            {name: '上行', value: 201},
+            {name: '上行', value: 154},
+            {name: '上行', value: 190},
+            {name: '上行', value: 330},
+            {name: '上行', value: 410},
+          ]
         },
         {
-          name: '百度',
+          name: '小车',
           type: 'bar',
-          barWidth: 5,
-          stack: '搜索引擎',
-          data: [620, 732, 701, 734, 1090, 1130, 1120]
+          stack: '下行',
+          data: [
+            {name: '下行', value: 120},
+            {name: '下行', value: 132},
+            {name: '下行', value: 101},
+            {name: '下行', value: 134},
+            {name: '下行', value: 90},
+            {name: '下行', value: 230},
+            {name: '下行', value: 210},
+          ]
         },
         {
-          name: '谷歌',
+          name: '客车',
           type: 'bar',
-          stack: '搜索引擎',
-          data: [120, 132, 101, 134, 290, 230, 220]
+          stack: '下行',
+          data: [
+            {name: '下行', value: 220},
+            {name: '下行', value: 182},
+            {name: '下行', value: 191},
+            {name: '下行', value: 234},
+            {name: '下行', value: 290},
+            {name: '下行', value: 330},
+            {name: '下行', value: 310},
+          ]
         },
         {
-          name: '必应',
+          name: '货车',
           type: 'bar',
-          stack: '搜索引擎',
-          data: [60, 72, 71, 74, 190, 130, 110]
+          stack: '下行',
+          data: [
+            {name: '下行', value: 150},
+            {name: '下行', value: 232},
+            {name: '下行', value: 201},
+            {name: '下行', value: 154},
+            {name: '下行', value: 190},
+            {name: '下行', value: 330},
+            {name: '下行', value: 410},
+          ]
         },
         {
-          name: '其他',
+          name: '危品车',
           type: 'bar',
-          stack: '搜索引擎',
-          data: [62, 82, 91, 84, 109, 110, 120]
-        }
+          stack: '下行',
+          data: [
+            {name: '下行', value: 150},
+            {name: '下行', value: 232},
+            {name: '下行', value: 201},
+            {name: '下行', value: 154},
+            {name: '下行', value: 190},
+            {name: '下行', value: 330},
+            {name: '下行', value: 410},
+          ]
+        },
+        {
+          name: '畜牧车',
+          type: 'bar',
+          stack: '下行',
+          data: [
+            {name: '下行', value: 150},
+            {name: '下行', value: 232},
+            {name: '下行', value: 201},
+            {name: '下行', value: 154},
+            {name: '下行', value: 190},
+            {name: '下行', value: 330},
+            {name: '下行', value: 410},
+          ]
+        },
       ]
     };
   }

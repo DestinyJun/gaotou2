@@ -12,7 +12,7 @@
     <app-echart-pie [option]="optionsCarModel" [height]="'20vh'" (pieClick)="parkClick($event)"></app-echart-pie>
   </div>
   <!--车辆类型弹窗-->
-  <div class="bg-box" *ngIf="true">
+  <div class="bg-box" *ngIf="alertCarShow">
     <div class="alert-window">
       <div class="alert-window-header">
         <div class="row">
@@ -25,68 +25,17 @@
         </div>
       </div>
       <div class="alert-window-content" style="height: 55vh">
-        <app-echart-bar-double-a></app-echart-bar-double-a>
-        <!--<div class="row">
-          <div class="col-ld-12 col-md-12">
-            <div class="alert-window-content-table">
-              <div class="toggle-btn">
-                <div class="toggle-btn-area text-center" style="">
-                  &lt;!&ndash;<app-input-dropdown
-                    [option]="carTimeSelect"
-                    [height]="'3vh'"
-                    [background]="'#1a2128'"
-                    [dropdownBackground]="'rgba(26,33,40,0.8)'"
-                    [hover]="'#5595D5'"
-                    (dropdownClick)="carSelectTime($event)"></app-input-dropdown>&ndash;&gt;
-                  <span (click)="carExcelShow = true">表格导出</span>
-                </div>
-              </div>
-              <div class="content-table">
-                <p-scrollPanel [style]="{width: '100%', height: '40vh'}">
-                  <table class="table table-bordered" style="color: #87ffff;">
-                    <thead>
-                    <tr>
-                      <th class="text-center">时间段</th>
-                      <th class="text-center">服务区车辆分段统计</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr *ngFor="let item of carTableData?.contents">
-                      <td class="text-center" style="vertical-align: middle">{{item?.time}}</td>
-                      <td colspan="5">
-                        <table class="table table-bordered" style="background-color: transparent;color: #87ffff;">
-                          <thead>
-                          <tr>
-                            <th>车辆总数</th>
-                            <th>客车车辆</th>
-                            <th>小车车辆</th>
-                            <th>货车车辆</th>
-                            <th>服务区方向</th>
-                          </tr>
-                          </thead>
-                          <tbody>
-                          <tr *ngFor="let props of item?.serviceAreaVehicles">
-                            <td>{{props?.totalVehicle}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                            <td>{{props?.coachVehicle}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                            <td>{{props?.sedanVehicle}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                            <td>{{props?.truckVehicle}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                            <td>
-                              <span *ngIf="props?.source">{{props?.source+'——>'+props?.destination}}</span>
-                              <span *ngIf="!(props?.source)">方向数据丢失</span>
-                            </td>
-                          </tr>
-                          </tbody>
-                        </table>
-                      </td>
-                    </tr>
-                    </tbody>
-                  </table>
-                </p-scrollPanel>
-              </div>
-              <app-paging [option]="{total: carTableData?.totalRecord,row: 10}" (pageClick)="carDistribution($event,carTimeTypes)"></app-paging>
-            </div>
+        <div class="col-ld-6 col-md-6">
+          <div style="height: 54vh">
+            <app-echart-bar-double-a></app-echart-bar-double-a>
           </div>
-        </div>-->
+        </div>
+
+        <div class="col-ld-6 col-md-6">
+          <div style="height: 54vh">
+            <app-echart-pie-circle-b></app-echart-pie-circle-b>
+          </div>
+        </div>
       </div>
       <div class="bg-excel" *ngIf="carExcelShow">
         <div class="alert-window-excel">

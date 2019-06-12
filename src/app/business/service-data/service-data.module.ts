@@ -25,6 +25,7 @@ import {EchartsScatterAModule} from '../../common/components/echarts-scatter-a/e
 import {GtDialogAModule} from '../../common/components/gt-dialog-a/gt-dialog-a.module';
 import {EchartsBarDoubleModule} from '../../common/components/echart-bar-double/echarts-bar-double.module';
 import {EchartBarDoubleAModule} from '../../common/components/echart-bar-double-a/echart-bar-double-a.module';
+import {EchartPieCircleBModule} from '../../common/components/echart-pie-circle-b/echart-pie-circle-b.module';
 @NgModule({
   imports: [
     CommonModule,
@@ -45,7 +46,8 @@ import {EchartBarDoubleAModule} from '../../common/components/echart-bar-double-
     EchartPieCircleAModule,
     EchartsScatterAModule,
     GtDialogAModule,
-    EchartBarDoubleAModule
+    EchartBarDoubleAModule,
+    EchartPieCircleBModule
   ],
   declarations: [
     ServiceDataComponent,

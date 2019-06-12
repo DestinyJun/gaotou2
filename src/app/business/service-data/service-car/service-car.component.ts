@@ -14,13 +14,6 @@ export class ServiceCarComponent implements OnInit, OnChanges, OnDestroy {
   @Input() public esDate: any;  // 时间初始化
   /***********************基础信息************************/
   public vehicleAmountCountClean: any;
-  public carTimeSelect = [
-    {name: '时', code: 'hour'},
-    {name: '天', code: 'day'},
-    {name: '周', code: 'week'},
-    {name: '月', code: 'month'},
-    {name: '年', code: 'year'},
-  ];
   // 车辆监控
   public vehicleAmount: any = null;
   public optionsCarModel: any; // 车辆饼状图
@@ -38,9 +31,10 @@ export class ServiceCarComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnInit() {}
   ngOnChanges(changes: SimpleChanges): void {
+    this.vehicleAmountCount();
+    this.CarTypes();
     // 车流监控
     this.vehicleAmountCountClean = setInterval(() => {
-      // console.log('111');
       this.vehicleAmountCount();
       this.CarTypes();
     }, 3000);
@@ -98,7 +92,6 @@ export class ServiceCarComponent implements OnInit, OnChanges, OnDestroy {
     this.serviceSrv.searchCarAlertTable({dateType: time, id: this.serviceId, page: e, nums: 10}).subscribe(
       (val) => {
         if (val.status === '200') {
-          console.log(val.data);
           this.carTableData = val.data;
         }
       }
