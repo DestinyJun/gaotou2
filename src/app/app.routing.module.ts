@@ -10,7 +10,7 @@ const routes: Routes = [
   {
     path: 'home',
     loadChildren: 'app/home/home.module#HomeModule',
-    canActivate: [LoginGuard]
+    // canActivate: [LoginGuard]
   },
   {path: '**', component: LoginComponent}
 ];

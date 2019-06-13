@@ -11,6 +11,7 @@ const routes: Routes = [
       {path: 'province', loadChildren: 'app/business/province-data/province-data.module#ProvinceDataModule',  canActivate: [LoginGuard]},
       {path: 'city', loadChildren: 'app/business/city-data/city-data.module#CityDataModule',  canActivate: [LoginGuard]},
       {path: 'serzone', loadChildren: 'app/business/service-data/service-data.module#ServiceDataModule',  canActivate: [LoginGuard]},
+      {path: 'sermanger', loadChildren: 'app/business/service-manger//service-manger.module#ServiceMangerModule'},
       {path: 'camera', loadChildren: 'app/business/video-window/video-window.module#VideoWindowModule',  canActivate: [LoginGuard]},
       {path: 'personal', loadChildren: 'app/business/personal/personal.module#PersonalModule', canActivate: [LoginGuard]},
     ]
