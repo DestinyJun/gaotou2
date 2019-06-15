@@ -28,7 +28,6 @@ export class PersonalComponent implements OnInit {
   ngOnInit() {
     this.personalService.getUsers(this.localSessionStorage.getObject('authentication').accessToken).subscribe(
       (value) => {
-        console.log(value);
         if (value.status === '200') {
           this.userInfo = value.data.userDTO;
         }

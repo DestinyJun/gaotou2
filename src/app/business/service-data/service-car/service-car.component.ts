@@ -38,9 +38,10 @@ export class ServiceCarComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnInit() {}
   ngOnChanges(changes: SimpleChanges): void {
+    this.vehicleAmountCount();
+    this.CarTypes();
     // 车流监控
     this.vehicleAmountCountClean = setInterval(() => {
-      // console.log('111');
       this.vehicleAmountCount();
       this.CarTypes();
     }, 3000);
@@ -98,7 +99,6 @@ export class ServiceCarComponent implements OnInit, OnChanges, OnDestroy {
     this.serviceSrv.searchCarAlertTable({dateType: time, id: this.serviceId, page: e, nums: 10}).subscribe(
       (val) => {
         if (val.status === '200') {
-          console.log(val.data);
           this.carTableData = val.data;
         }
       }

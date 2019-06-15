@@ -57,7 +57,6 @@ export class HeaderComponent implements OnInit {
     });
     // 客流
     this.localService.persons.subscribe((value) => {
-      console.log(value);
       this.persons = value;
     });
   }

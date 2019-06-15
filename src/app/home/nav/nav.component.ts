@@ -160,7 +160,6 @@ export class NavComponent implements OnInit {
             childnode.collapsedIcon = 'fa fa-line-chart';
           }
           if (data[i].menuName === '服务区大数据业态') {
-            console.log('22222');
             childnode.expandedIcon = 'fa fa-free-code-camp';
             childnode.collapsedIcon = 'fa fa-free-code-camp';
           }
