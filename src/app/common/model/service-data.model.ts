@@ -1,5 +1,3 @@
-import {number} from 'ng4-validators/src/app/number/validator';
-
 export class EventListInfo {
   eventCategoryCode: string; // 事件分类编码
   eventCategoryName: string; // 事件分类名称
@@ -13,7 +11,6 @@ export class EventListInfo {
   processState: number; // 处理状态
   serviceAreaId: string; // 服务区ID
 }
-
 export class UploadEventInfoUp {
   administrativeAreaId?: number;
   serviceAreaId?: number;
@@ -27,15 +24,6 @@ export class UploadEventInfoUp {
   eventSubject?: string;
   occurTime?: string;
 }
-
-export class AttributeValue {
-  attributeDesc: '经度';
-  attributeId: 15;
-  attributeName: 'longitude';
-  id: 479;
-  value: '106.705393';
-}
-
 export class IncomeManualAddIncome {
   storeId: any;
   serviceAreaId: any;
@@ -45,4 +33,13 @@ export class IncomeManualAddIncome {
   categoryCode: any;
   revenue: any;
   day: string;
+}
+export interface SelectVideoItem {
+  label?: string;
+  value: any;
+  styleClass?: string;
+  icon?: string;
+  title?: string;
+  disabled?: boolean;
+  outUrl?: string;
 }

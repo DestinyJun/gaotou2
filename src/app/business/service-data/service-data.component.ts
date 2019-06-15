@@ -4,15 +4,6 @@ import {DataService} from '../../common/services/data.service';
 import {FormBuilder} from '@angular/forms';
 import {LocalStorageService} from '../../common/services/local-storage.service';
 import {ServiceDataService} from '../../common/services/service-data.service';
-export interface SelectVideoItem {
-  label?: string;
-  value: any;
-  styleClass?: string;
-  icon?: string;
-  title?: string;
-  disabled?: boolean;
-  outUrl?: string;
-}
 @Component({
   selector: 'app-service-data',
   templateUrl: './service-data.component.html',

@@ -62,7 +62,7 @@ export class EchartPieCircleAComponent implements OnInit {
         {
           name: '',
           type: 'gauge',
-          radius: '45%',
+          radius: '50%',
           startAngle: 0,
           endAngle: 359.9,
           splitNumber: 70,
@@ -98,7 +98,7 @@ export class EchartPieCircleAComponent implements OnInit {
         {
           name: '处理来源',
           type: 'pie',
-          radius: ['40%', '45%'],
+          radius: ['40%', '50%'],
           silent: true,
           center: ['50%', '50%'],
           z: 0,

@@ -10,23 +10,33 @@
     <div class="service-leader-center">
       <div class="col-lg-6 col-md-6">
         <div class="video">
-          <div class="video-list-top"></div>
-          <div class="video-list-window">
-            <div class="camera" style="background-color: red;"></div>
-            <div class="camera" style="background-color: orange;"></div>
-            <div class="camera" style="background-color: yellowgreen;margin-top: 1vh;"></div>
-            <div class="camera" style="background-color: fuchsia;margin-top: 1vh;"></div>
+          <div class="video-list-top">
+            <app-service-manger-upattr
+              [publicTopVideoGroup]="publicTopVideoGroup">
+            </app-service-manger-upattr>
           </div>
-          <div class="video-list-bottom"></div>
+          <div class="video-list-window">
+            <app-service-manger-video [videoList]="videoList"></app-service-manger-video>
+          </div>
+          <div class="video-list-bottom">
+            <app-service-manger-upattr
+              [publicTopVideoGroup]="publicBottomVideoGroup">
+            </app-service-manger-upattr>
+          </div>
         </div>
         <div class="echart">
           <div class="col-lg-6 col-md-6">
-            <div class="echart-bar">
+            <div class="echart-circle">
+              <div class="echart-circle-a" style="height: 30vh">
+                <app-echart-pie-circle-a [title]="'服务区突发事件处理概况'"></app-echart-pie-circle-a>
+              </div>
+              <div class="echart-circle-b" style="height: 4vh;text-align: center">
+                <button pButton type="button" label="点击查看服务区大数据画像" class="ui-button-danger"></button>
+              </div>
             </div>
           </div>
           <div class="col-lg-6 col-md-6">
-            <div class="echart-circle">
-            </div>
+            <div class="echart-dashboard"></div>
           </div>
         </div>
       </div>

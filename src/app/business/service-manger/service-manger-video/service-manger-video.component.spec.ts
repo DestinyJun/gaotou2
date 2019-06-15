@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ServiceUpattrComponent } from './service-upattr.component';
+import { ServiceMangerVideoComponent } from './service-manger-video.component';
 
-describe('ServiceMangerUpattrComponent', () => {
-  let component: ServiceUpattrComponent;
-  let fixture: ComponentFixture<ServiceUpattrComponent>;
+describe('ServiceMangerVideoComponent', () => {
+  let component: ServiceMangerVideoComponent;
+  let fixture: ComponentFixture<ServiceMangerVideoComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ServiceUpattrComponent ]
+      declarations: [ ServiceMangerVideoComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ServiceUpattrComponent);
+    fixture = TestBed.createComponent(ServiceMangerVideoComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

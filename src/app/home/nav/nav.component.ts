@@ -66,11 +66,10 @@ export class NavComponent implements OnInit {
   ngOnInit() {
     this.urlList = this.localSessionStorage.getObject('urlList');
     this.urlClass = this.localSessionStorage.getObject('urlClass');
-    console.log(this.urlList);
     const a = {
       dataLevel: null,
       dataModels: [],
-      id: 14,
+      id: 1,
       isData: false,
       isLeaf: true,
       isRoot: true,
@@ -78,7 +77,7 @@ export class NavComponent implements OnInit {
       isSelected: null,
       level: 1,
       menuCode: 'business:sermanger',
-      menuName: '服务区管理',
+      menuName: '久长服务区',
       menus: [],
       permissionCode: 'business:sermanger:show',
       pid: 0,

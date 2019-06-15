@@ -1,0 +1,21 @@
+<div class="first up-video-list">
+  <div class="btn-group"
+       *ngFor="let item of publicTopVideoGroup;let i = index"
+       [ngClass]="{'open':videoTopOpen[i]}"
+       (mouseover)="publicTopVideoGroupOver(item?.cameras,i)"
+       (mouseout)="publicTopVideoGroupLeave(i)">
+    <span data-toggle="dropdown">{{item?.groupName}}</span>
+    <ul class="dropdown-menu" style="background-color: rgba(27,29,41,0.8)">
+      <li  *ngFor="let item of publicVideoList" (click)="openPublicVideo(item)">
+        <a href="javascript:" style="color: white">
+          <i
+            [ngClass]="{'icon-Hemispherical-camera': item?.cameraType == 2,
+             'icon--ball-camera': item?.cameraType == 1,
+              'icon-camera-one': item?.cameraType == 3}" aria-hidden="true">
+          </i>
+          {{item?.cameraName}}
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>

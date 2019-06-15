@@ -1,0 +1,37 @@
+.up-video-list{
+  justify-content: flex-end;
+  .btn-group{
+    &:nth-child(odd){
+      span{
+        background: #376EA6;
+      }
+    }
+    &:nth-child(even){
+      span{
+        background: #376EA6;
+      }
+    }
+    span{
+      display: inline-block;
+      height: 4vh;
+      line-height: 4vh;
+      padding: 0 1vw;
+      margin-right: 0.5vw;
+      border-radius: 3px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    .dropdown-menu{
+      top:95%;
+      li{
+        a:hover{
+          background: rgba(255,255,255,0.3);
+        }
+      }
+    }
+  }
+}
+.second.up-video-list>span{
+  margin-right: 0;
+  margin-left: 0.5vw;
+}
