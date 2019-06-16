@@ -77,7 +77,7 @@ export class NavComponent implements OnInit {
       isSelected: null,
       level: 1,
       menuCode: 'business:sermanger',
-      menuName: '久长服务区',
+      menuName: '服务区管理监控',
       menus: [],
       permissionCode: 'business:sermanger:show',
       pid: 0,
@@ -136,7 +136,7 @@ export class NavComponent implements OnInit {
           childnode.expandedIcon = 'fa fa-user-circle-o';
           childnode.collapsedIcon = 'fa fa-user-circle-o';
         }
-        if (data[i].menuName === '服务区管理') {
+        if (data[i].menuName === '服务区管理监控') {
           childnode.expandedIcon = 'fa fa-user-circle-o';
           childnode.collapsedIcon = 'fa fa-user-circle-o';
         }

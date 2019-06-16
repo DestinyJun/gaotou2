@@ -34,7 +34,7 @@
     }
     .echart{
       height: 34vh;
-      .echart-bar,.echart-circle{
+     .echart-circle, .echart-dashboard{
         height: 34vh;
         box-shadow: 0 0 10px 2px rgba(255,255,255,0.2) inset;
         margin-bottom: 1vh;
@@ -47,20 +47,31 @@
       .echart-dashboard{
         margin-left: -10px;
         margin-right: -15px;
+        display: flex;
+        flex-wrap: wrap;
+        .gauge-a,.gauge-b{
+          width: 50%;
+          height: 17vh;
+        }
+        .gauge-c{
+          width: 100%;
+          height: 17vh;
+        }
       }
     }
   }
   .service-leader-right{
-    .income{
-      height: 42vh;
+    .income-btn-vehicle{
+      height: 85vh;
       box-shadow: 0 0 10px 2px rgba(255,255,255,0.2) inset;
-      padding-top: 1vh;
-      margin-bottom: 1vh;
-    }
-    .vehicle{
-      height: 42vh;
-      box-shadow: 0 0 10px 2px rgba(255,255,255,0.2) inset;
-      padding-top: 1vh;
+      .income,.vehicle{
+        height: 40vh;
+      }
+      .btn{
+        height: 5vh;
+        display: flex;
+        justify-content: space-around;
+      }
     }
   }
 }

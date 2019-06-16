@@ -9,6 +9,14 @@ import {DataService} from '../../common/services/data.service';
 import { ServiceMangerVideoComponent } from './service-manger-video/service-manger-video.component';
 import {EchartPieCircleAModule} from '../../common/components/echart-pie-circle-a/echart-pie-circle-a.module';
 import {ButtonModule} from 'primeng/button';
+import {EchartGaugeAModule} from '../../common/components/echart-gauge-a/echart-gauge-a.module';
+import {EchartGaugeBModule} from '../../common/components/echart-gauge-b/echart-gauge-b.module';
+import {ServiceMangerIncomeComponent} from './service-manger-income/service-manger-income.component';
+import {SharedModule} from '../../common/shared.module';
+import {EchartBarDoubleAModule} from '../../common/components/echart-bar-double-a/echart-bar-double-a.module';
+import {EchartPieCircleBModule} from '../../common/components/echart-pie-circle-b/echart-pie-circle-b.module';
+import {CalendarModule} from 'primeng/primeng';
+import {ServiceMangerCarComponent} from './service-manger-car/service-manger-car.component';
 
 @NgModule({
   imports: [
@@ -16,12 +24,20 @@ import {ButtonModule} from 'primeng/button';
     ServiceMangerRoutingModule,
     WarningEventListModule,
     EchartPieCircleAModule,
-    ButtonModule
+    ButtonModule,
+    EchartGaugeAModule,
+    EchartGaugeBModule,
+    SharedModule,
+    EchartBarDoubleAModule,
+    EchartPieCircleBModule,
+    CalendarModule,
   ],
   declarations: [
     ServiceMangerComponent,
     ServiceMangerUpattrComponent,
     ServiceMangerVideoComponent,
+    ServiceMangerIncomeComponent,
+    ServiceMangerCarComponent
   ],
   providers: [ServiceDataService, DataService, DatePipe]
 })

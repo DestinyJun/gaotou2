@@ -36,15 +36,44 @@
             </div>
           </div>
           <div class="col-lg-6 col-md-6">
-            <div class="echart-dashboard"></div>
+            <div class="echart-dashboard">
+              <div class="gauge-a">
+                <app-echart-gauge-a></app-echart-gauge-a>
+              </div>
+              <div class="gauge-b">
+                <app-echart-gauge-a [amount]="80" [total]="100" [classify]="'女厕所'"></app-echart-gauge-a>
+              </div>
+              <div class="gauge-c">
+                <app-echart-gauge-b></app-echart-gauge-b>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
     <div class="service-leader-right">
       <div class="col-lg-3 col-md-3">
-        <div class="income"></div>
-        <div class="vehicle"></div>
+        <div class="income-btn-vehicle">
+          <div class="income">
+            <app-service-manger-income
+              [esDate]="esDate"
+              [serviceId]="serviceZoneID"
+              [serviceName]="serviceZoneTitle">
+            </app-service-manger-income>
+          </div>
+          <div class="btn">
+            <button pButton type="button" label="服务区信息修改" class="ui-button-danger"></button>
+            <button pButton type="button" label="业态数据手动输入" class="ui-button-danger" style="background: #17A2B8;border-color: #17A2B8"></button>
+          </div>
+          <div class="vehicle">
+            <!--车辆统计-->
+            <app-service-manger-car
+              [esDate]="esDate"
+              [serviceId]="serviceZoneID"
+              [serviceName]="serviceZoneTitle">
+            </app-service-manger-car>
+          </div>
+        </div>
       </div>
     </div>
   </div>

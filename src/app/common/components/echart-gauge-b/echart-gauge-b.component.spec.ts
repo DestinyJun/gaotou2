@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ProvinceCarComponent } from './province-car.component';
+import { EchartGaugeBComponent } from './echart-gauge-b.component';
 
-describe('ServiceMangerCarComponent', () => {
-  let component: ProvinceCarComponent;
-  let fixture: ComponentFixture<ProvinceCarComponent>;
+describe('EchartGaugeBComponent', () => {
+  let component: EchartGaugeBComponent;
+  let fixture: ComponentFixture<EchartGaugeBComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ProvinceCarComponent ]
+      declarations: [ EchartGaugeBComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ProvinceCarComponent);
+    fixture = TestBed.createComponent(EchartGaugeBComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,30 +1,33 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {ServiceDataService} from '../../common/services/service-data.service';
+import {LocalStorageService} from '../../common/services/local-storage.service';
 
 @Component({
   selector: 'app-service-manger',
   templateUrl: './service-manger.component.html',
   styleUrls: ['./service-manger.component.less']
 })
-export class ServiceMangerComponent implements OnInit {
+export class ServiceMangerComponent implements OnInit, OnDestroy {
   public esDate: any;  // 时间初始化
   public serviceInfo: any = null;
+  public personAmountCountClean: any;
   // service area data
   public serviceZoneTitle: string;  // 服务区名称
   public serviceZoneID: string;   // 服务区ID
   // public video list
   public videoList = [
-    /*{url: 'rtsp://admin:Hik12345+@117.187.60.138:578/cam/realmonitor?channel=1&subtype=0', location: 1},
+    {url: 'rtsp://admin:Hik12345+@117.187.60.138:578/cam/realmonitor?channel=1&subtype=0', location: 1},
     {url: 'rtsp://admin:Hik12345+@117.187.60.138:558/Streaming/Channels/101?transportmode=multicast', location: 2},
     {url: 'rtsp://admin:Hik12345+@117.187.60.146:558/Streaming/Channels/101?transportmode=multicast', location: 3},
-    {url: 'rtsp://admin:Hik12345+@117.187.60.146:572/Streaming/Channels/103?transportmode=multicast', location: 4},*/
+    {url: 'rtsp://admin:Hik12345+@117.187.60.146:572/Streaming/Channels/103?transportmode=multicast', location: 4},
   ];
   public publicTopVideoGroup = [];
   public publicBottomVideoGroup = [];
   constructor(
     private routerInfo: ActivatedRoute,
     private serareaService: ServiceDataService,
+    private localService: LocalStorageService,
   ) { }
 
   ngOnInit() {
@@ -42,6 +45,7 @@ export class ServiceMangerComponent implements OnInit {
     // 路由接受参数
     this.routerInfo.params.subscribe(
       (params) => {
+        clearInterval(this.personAmountCountClean);
         this.serviceZoneTitle = params.name;
         this.serviceZoneID = params.id;
         this.publicBottomVideoGroup = null;
@@ -55,7 +59,53 @@ export class ServiceMangerComponent implements OnInit {
             }
           }
         );
+        this.localService.eventBus.next({title: this.serviceZoneTitle, flagState: 'serzone', flagName: this.serviceZoneTitle});
         this.getPublicVideoList();
+        this.getPerson();
+        // 实时客流
+        this.personAmountCountClean = setInterval(() => {
+          this.getPerson();
+        }, 3000);
+      }
+    );
+  }
+  // 客流
+  public getPerson(): void {
+    let total: any;
+    let province: any;
+    let city: any;
+    this.serareaService.searchPersonTotal({id: this.serviceZoneID}).subscribe(
+      (totalVal) => {
+        if (totalVal.status === '200') {
+          total = totalVal.data;
+          if (!(total === 0)) {
+            this.serareaService.searchPersonProvince({id: this.serviceZoneID}).subscribe(
+              (provinceVal) => {
+                if (provinceVal.status === '200') {
+                  province = provinceVal.data;
+                  this.serareaService.searchPersonCity({id: this.serviceZoneID}).subscribe(
+                    (cityVal) => {
+                      if (cityVal.status === '200') {
+                        city = cityVal.data;
+                        this.localService.persons.next({
+                          total: total.toString().split(''),
+                          province: province,
+                          city: city
+                        });
+                      }
+                    }
+                  );
+                }
+              }
+            );
+          } else {
+            this.localService.persons.next({
+              total: [],
+              province: [],
+              city: []
+            });
+          }
+        }
       }
     );
   }
@@ -75,7 +125,6 @@ export class ServiceMangerComponent implements OnInit {
                       prop.categoryCode = parseInt(prop.categoryCode, 10);
                     });
                     this.publicTopVideoGroup = item.cameraGroupList;
-                    console.log(this.publicTopVideoGroup);
                   } else if (item.flag === '3') {
                     item.storeInfoList.map((prop) => {
                       prop.categoryCode = parseInt(prop.categoryCode, 10);
@@ -99,5 +148,9 @@ export class ServiceMangerComponent implements OnInit {
         }
       }
     );
+  }
+  // destroy
+  ngOnDestroy(): void {
+    clearInterval(this.personAmountCountClean);
   }
 }

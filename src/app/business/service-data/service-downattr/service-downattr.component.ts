@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {DatePipe} from '@angular/common';
-import {SelectVideoItem} from '../service-data.component';
 import {ServiceDataService} from '../../../common/services/service-data.service';
+import {SelectVideoItem} from '../../../common/model/service-data.model';
 
 @Component({
   selector: 'app-service-downattr',
