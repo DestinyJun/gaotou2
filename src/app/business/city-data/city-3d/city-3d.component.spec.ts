@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { City3dComponent } from './city-3d.component';
 
-describe('Service3dComponent', () => {
+describe('ServiceOwner3dComponent', () => {
   let component: City3dComponent;
   let fixture: ComponentFixture<City3dComponent>;
 

@@ -84,7 +84,26 @@ export class NavComponent implements OnInit {
       priority: 450,
       url: '/home/sermanger',
     };
+    const b = {
+      dataLevel: null,
+      dataModels: [],
+      id: 1,
+      isData: false,
+      isLeaf: true,
+      isRoot: true,
+      isSHow: true,
+      isSelected: null,
+      level: 1,
+      menuCode: 'business:serowner',
+      menuName: '服务区业主级监控',
+      menus: [],
+      permissionCode: 'business:serowner:show',
+      pid: 0,
+      priority: 450,
+      url: '/home/serowner',
+    };
     this.urlList.push(a);
+    this.urlList.push(b);
     this.filesTree2 = this.tableTreeInitialize(this.urlList);
   }
 
@@ -137,6 +156,10 @@ export class NavComponent implements OnInit {
           childnode.collapsedIcon = 'fa fa-user-circle-o';
         }
         if (data[i].menuName === '服务区管理监控') {
+          childnode.expandedIcon = 'fa fa-user-circle-o';
+          childnode.collapsedIcon = 'fa fa-user-circle-o';
+        }
+        if (data[i].menuName === '服务区业主级监控') {
           childnode.expandedIcon = 'fa fa-user-circle-o';
           childnode.collapsedIcon = 'fa fa-user-circle-o';
         }

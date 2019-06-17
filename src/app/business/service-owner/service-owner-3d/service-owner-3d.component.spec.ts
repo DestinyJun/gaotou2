@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ServiceDownattrComponent } from './service-downattr.component';
+import { ServiceOwner3dComponent } from './service-owner-3d.component';
 
-describe('ServiceOwnerDownattrComponent', () => {
-  let component: ServiceDownattrComponent;
-  let fixture: ComponentFixture<ServiceDownattrComponent>;
+describe('ServiceOwner3dComponent', () => {
+  let component: ServiceOwner3dComponent;
+  let fixture: ComponentFixture<ServiceOwner3dComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ServiceDownattrComponent ]
+      declarations: [ ServiceOwner3dComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ServiceDownattrComponent);
+    fixture = TestBed.createComponent(ServiceOwner3dComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

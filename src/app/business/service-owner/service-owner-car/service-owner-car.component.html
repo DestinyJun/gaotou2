@@ -1,0 +1,65 @@
+<div class="service-vehicle">
+  <!--日车流量实时统计-->
+  <div class="service-vehicle-amount">
+    <app-title-one [height]="'3vh'" [option]="{title: serviceName + '今日车流量'}"></app-title-one>
+    <app-number-show [option]="vehicleAmount"></app-number-show>
+  </div>
+  <!--车型日分布占比-->
+  <div class="service-vehicle-pie">
+    <div class="service-vehicle-pie-title text-center">
+      <p>{{serviceName}}当日车型日分布类型占比分析</p>
+    </div>
+    <app-echart-pie [option]="optionsCarModel" [height]="'20vh'" (pieClick)="parkClick($event)"></app-echart-pie>
+  </div>
+  <!--车辆类型弹窗-->
+  <div class="bg-box" *ngIf="alertCarShow">
+    <div class="alert-window">
+      <div class="alert-window-header">
+        <div class="row">
+          <div class="col-ld-12 col-md-12">
+            <span>{{serviceName}}</span>
+            <div class="pull-right" (click)="closeCarShow()">
+              <i class="fa fa-window-close " aria-hidden="true"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="alert-window-content" style="height: 55vh">
+        <div class="col-ld-6 col-md-6">
+          <div style="height: 54vh">
+            <app-echart-bar-double-a></app-echart-bar-double-a>
+          </div>
+        </div>
+        <div class="col-ld-6 col-md-6">
+          <div style="height: 54vh">
+            <app-echart-pie-circle-b></app-echart-pie-circle-b>
+          </div>
+        </div>
+      </div>
+      <div class="bg-excel" *ngIf="carExcelShow">
+        <div class="alert-window-excel">
+          <div class="alert-window-excel-header">
+            <span>车辆数据表格导出</span>
+            <div class="pull-right" (click)="carExcelShow = false">
+              <i class="fa fa-window-close " aria-hidden="true"></i>
+            </div>
+          </div>
+          <div class="alert-window-excel-content">
+            <div class="alert-window-excel-content-list">
+              <label>请选择开始时间：</label>
+              <p-calendar placeholder="请点击选择时间......" [locale]="esDate" [(ngModel)]="carStartTime" [monthNavigator]="true" [yearNavigator]="true" dateFormat="yymmdd"  yearRange="2017:2030"></p-calendar>
+            </div>
+            <div class="alert-window-excel-content-list">
+              <label>请选择结束时间：</label>
+              <p-calendar placeholder="请点击选择时间......" [locale]="esDate" [(ngModel)]="carEndTime" [monthNavigator]="true" [yearNavigator]="true" dateFormat="yymmdd"  yearRange="2017:2030"></p-calendar>
+            </div>
+          </div>
+          <div class="alert-window-excel-footer text-center">
+            <span (click)="carExportClick();carExcelShow = false">确认导出</span>
+            <span (click)="carExcelShow = false">取消导出</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

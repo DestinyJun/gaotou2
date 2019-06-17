@@ -1,0 +1,165 @@
+<!--上行-->
+<div class="servicesMap-top">
+  <div class="shop-info text-center" *ngFor="let item of incomeTopData" (click)="openServiceShop(item)" [title]="item?.storeName">
+    <p>
+      <i [class]="iconImages[item?.categoryCode - 1]" aria-hidden="true"></i>
+      <span>{{item?.storeName}}</span>
+    </p>
+    <p>{{item?.revenue}}元</p>
+  </div>
+</div>
+<div class="first servicesMap-video">
+  <div class="btn-group" *ngFor="let item of publicTopVideoGroup;let i = index" [ngClass]="{'open':videoTopOpen[i]}" (mouseover)="publicTopVideoGroupOver(item?.cameras,i)" (mouseout)="publicTopVideoGroupLeave(i)">
+    <span data-toggle="dropdown">{{item?.groupName}}</span>
+    <ul class="dropdown-menu" style="background-color: rgba(27,29,41,0.8)">
+      <li  *ngFor="let item of publicVideoList" (click)="openPublicVideo(item)">
+        <a href="javascript:" style="color: white">
+          <i [ngClass]="{'icon-Hemispherical-camera': item?.cameraType == 2, 'icon--ball-camera': item?.cameraType == 1, 'icon-camera-one': item?.cameraType == 3}" aria-hidden="true"></i>
+          {{item?.cameraName}}
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+<!--服务区店铺信息/视频弹窗-->
+<div class="bg-box" *ngIf="serviceShopShow" >
+  <div class="alert-window" style="height:80vh;width:80vw;margin-top: -40vh;margin-left:-40vw;">
+    <div class="alert-window-header">
+      <div class="row">
+        <div class="col-lg-12 col-md-12">
+          <span>{{serviceShopInfo?.storeName}}店铺基础信息</span>
+          <div class="pull-right" (click)="closeServiceShop()">
+            <i class="fa fa-window-close " aria-hidden="true"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="alert-window-content" style="padding-left: 15px">
+      <div class="row">
+        <div class="col-ld-2 col-md-2">
+          <div class="shop-msg-title">
+            <span>店铺基本信息</span>
+          </div>
+          <div class="shop-msg-content">
+            <p>
+              店铺名称：{{serviceShopInfo?.storeName}}
+            </p>
+            <p>
+              行业名称：{{serviceShopInfo?.industryName}}
+            </p>
+            <p>
+              店铺责任人：{{serviceShopInfo?.principal}}
+            </p>
+            <p>
+              责任人电话：{{serviceShopInfo?.principalMobile}}
+            </p>
+            <p>今日收入：{{serviceShopInfo?.revenue}}元</p>
+            <p>实用面积：{{serviceShopInfo?.usableArea}}</p>
+            <p>用水量：0</p>
+            <p>用电量：0kW·h</p>
+            <p class="hetong">店铺合同：<span (click)="servicesPactDown()">点击查看合同</span></p>
+            <!--<p>水费账户：{{serviceShopInfo?.waterAccount}}</p>-->
+            <!--<p>电费账户：{{serviceShopInfo?.electricityAccount}}</p>-->
+            <p>店铺摄像头布局图：{{!serviceShopInfo.cameraDistributionGraph?'该商家暂无摄像头布局图':''}}</p>
+            <app-image-zoom
+              *ngIf="serviceShopInfo.cameraDistributionGraph"
+              [option]="{url: serviceShopInfo.graphPrefix + serviceShopInfo.cameraDistributionGraph}"
+              [height]="'22vh'"
+              [zoom]="true"
+              (eventClick)="shopImageZoom($event)"
+            ></app-image-zoom>
+          </div>
+        </div>
+        <div class="col-ld-6 col-md-6">
+          <div class="shop-video-title">
+            <span>店铺实时监控</span>
+          </div>
+          <div class="shop-video-content" id="shopVideo"></div>
+          <div class="shop-video-list">
+            <span data-toggle="dropdown">商家监控视频列表：</span>
+            <span *ngIf="!(videoShopList.length>0)">视频暂无</span>
+            <p-dropdown [options]="cars" [(ngModel)]="selectedCar2" [style]="{'min-width':'200px', 'max-height':'100px'}" (onChange)="openMerchantVideo($event)">
+              <ng-template let-item pTemplate="selectedItem">
+                <span style="vertical-align:middle; margin-left: .5em">{{item.label}}</span>
+              </ng-template>
+              <ng-template let-car pTemplate="item">
+                <div class="ui-helper-clearfix" style="position: relative;height: 25px;">
+                  <div style="font-size:14px;float:right;margin-top:4px">{{car.label}}</div>
+                </div>
+              </ng-template>
+            </p-dropdown>
+          </div>
+        </div>
+        <div class="col-ld-4 col-md-4">
+          <div class="shop-echart-title">
+            <span>店家业态数据统计</span>
+            <span class="table-export" style="margin-right: 6vw;">
+               <app-input-dropdown
+                 [option]="storeInfoSelect"
+                 [height]="'3vh'"
+                 [background]="'#1a2128'"
+                 [dropdownBackground]="'rgba(26,33,40,0.8)'"
+                 [hover]="'#5595D5'"
+                 (dropdownClick)="storeSelectTime($event)"></app-input-dropdown>
+            </span>
+            <span class="table-export" (click)="serviceShopShowExport=true; cancelserviceShopVideo()">
+              表格导出
+            </span>
+
+          </div>
+          <div class="shop-echart-content">
+            <app-echarts-line-broken [height]="'34vh'" [option]="shopEchartLine"></app-echarts-line-broken>
+            <app-echart-line-area [option]="shopEchartArea" [height]="'34vh'"></app-echart-line-area>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="bg-excel" *ngIf="serviceShopShowExport">
+      <div class="alert-window-excel">
+        <div class="alert-window-excel-header">
+          <span>收入数据表格导出</span>
+          <div class="pull-right">
+            <i class="fa fa-window-close " aria-hidden="true" (click)="serviceShopShowExport=false;addShopVideo(this.serviceShopInfo)"></i>
+          </div>
+        </div>
+        <div class="alert-window-excel-content">
+          <div class="alert-window-excel-content-list">
+            <label>请选择开始时间：</label>
+            <p-calendar placeholder="请点击选择时间......" [locale]="esDate" [(ngModel)]="shopStartTime" [monthNavigator]="true" [yearNavigator]="true" dateFormat="yymmdd"  yearRange="2017:2030"></p-calendar>
+          </div>
+          <div class="alert-window-excel-content-list">
+            <label>请选择结束时间：</label>
+            <p-calendar placeholder="请点击选择时间......" [locale]="esDate" [(ngModel)]="shopEndTime" [monthNavigator]="true" [yearNavigator]="true" dateFormat="yymmdd"  yearRange="2017:2030"></p-calendar>
+          </div>
+        </div>
+        <div class="alert-window-excel-footer text-center">
+          <span (click)="shopExportClick();serviceShopShowExport=false;addShopVideo(this.serviceShopInfo)">确认导出</span>
+          <span (click)="serviceShopShowExport=false;addShopVideo(this.serviceShopInfo)">取消导出</span>
+        </div>
+      </div>
+      <iframe src="" frameborder="0" style="position: absolute;top: 0;left: 0; height: 100vh;width:100vw;z-index: -1;"></iframe>
+    </div>
+  </div>
+</div>
+<!--服务区公共视频监控弹窗-->
+<div class="bg-box" *ngIf="videoPublicShow" >
+  <div class="alert-window" style="height:70vh; margin-top: -35vh;width:60vw; margin-left:-30vw">
+    <div class="alert-window-header">
+      <div class="row">
+        <div class="col-lg-12 col-md-12">
+          <span>{{publicVideoTitle}}</span>
+          <div class="pull-right" (click)="closePublicVideo()">
+            <i class="fa fa-window-close " aria-hidden="true"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="alert-window-content">
+      <div class="row">
+        <div class="col-ld-12 col-md-12">
+          <div class="video-play" [ngStyle]="{'height': '65vh'}" id="publicVideo"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

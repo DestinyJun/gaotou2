@@ -1,0 +1,74 @@
+<div class="service-owner">
+  <div class="row">
+    <div class="service-owner-left">
+      <div class="col-lg-3 col-md-3">
+        <!--3d柱状图-->
+        <app-service-owner-3d
+          [esDate]="esDate"
+          [serviceId]="serviceZoneID"
+          [serviceName]="serviceZoneTitle">
+        </app-service-owner-3d>
+        <!--车辆统计-->
+        <app-service-owner-car
+          [esDate]="esDate"
+          [serviceId]="serviceZoneID"
+          [serviceName]="serviceZoneTitle">
+        </app-service-owner-car>
+      </div>
+    </div>
+    <div class="service-owner-center">
+      <div class="col-lg-6 col-md-6">
+        <div class="video-shop">
+          <app-service-owner-upattr
+            [esDate]="esDate"
+            [serviceInfo]="serviceInfo"
+            [incomeTopData]="incomeTopData"
+            [publicTopVideoGroup]="publicTopVideoGroup">
+          </app-service-owner-upattr>
+          <div class="video-shop-center text-center">
+            <!--上行-->
+            <span>{{serviceInfo?.downAttributeValues?.source}}</span>
+            <img src="assets/images/jiantou.png" alt="" style="height: 3vh;width: auto;">
+            <!--下行-->
+            <span>{{serviceInfo?.upAttributeValues?.source}}</span>
+          </div>
+          <app-service-owner-downattr
+            [esDate]="esDate"
+            [serviceInfo]="serviceInfo"
+            [incomeBottomData]="incomeBottomData"
+            [publicBottomVideoGroup]="publicBottomVideoGroup"
+          ></app-service-owner-downattr>
+        </div>
+        <div class="echart">
+          <div class="col-lg-3-6 col-md-6">
+            <div class="echart-bar">
+              <app-echarts-bar-double [title]="'服务区业主及监控公路/客流统计'"></app-echarts-bar-double>
+            </div>
+          </div>
+          <div class="col-lg-3-6 col-md-6">
+            <div class="echart-circle">
+              <app-echart-pie-circle-a [title]="'服务区业主及监控突发事件处理概况'"></app-echart-pie-circle-a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="service-owner-right">
+      <div class="col-lg-3 col-md-3">
+        <!--服务区基本信息-->
+        <app-service-owner-info
+          [esDate]="esDate"
+          [serviceId]="serviceZoneID"
+          [serviceName]="serviceZoneTitle"
+          [serviceInfo]="serviceInfo">
+        </app-service-owner-info>
+        <!--收入统计-->
+        <app-service-owner-income
+          [esDate]="esDate"
+          [serviceId]="serviceZoneID"
+          [serviceName]="serviceZoneTitle">
+        </app-service-owner-income>
+      </div>
+    </div>
+  </div>
+</div>

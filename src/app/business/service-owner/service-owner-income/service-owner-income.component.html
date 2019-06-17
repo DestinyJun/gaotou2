@@ -1,0 +1,65 @@
+<div class="service-income">
+  <!--实时收入-->
+  <div class="service-income-amount">
+    <app-title-one [height]="'3vh'" [option]="{title: serviceName + '高速服务区实时收入'}"></app-title-one>
+    <app-number-show [option]="incomeAmount"></app-number-show>
+  </div>
+  <!--收入占比-->
+  <div class="service-income-pie">
+    <div class="service-income-pie-title title text-center">
+      <p>{{serviceName}}当日收入类型占比分析</p>
+    </div>
+    <app-echart-pie [option]="optionsIncomeModel" [height]="'20vh'" (pieClick)="incomeClick($event)"></app-echart-pie>
+  </div>
+  <!--收入类型弹窗-->
+  <div class="bg-box" *ngIf="alertIncomeShow">
+    <div class="alert-window">
+      <div class="alert-window-header">
+        <div class="row">
+          <div class="col-lg-12 col-md-12">
+            <span>{{serviceName}}</span>
+            <div class="pull-right" (click)="closeIncomeShow()">
+              <i class="fa fa-window-close " aria-hidden="true"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="alert-window-content">
+        <div class="col-ld-6 col-md-6">
+          <div style="height: 54vh">
+            <app-echart-bar-double-a [yAxisName]="'收入（元）'" [data]="barData"></app-echart-bar-double-a>
+          </div>
+        </div>
+        <div class="col-ld-6 col-md-6">
+          <div style="height: 54vh">
+            <app-echart-pie-circle-b [data]="circleData" [unit]="'元'"></app-echart-pie-circle-b>
+          </div>
+        </div>
+      </div>
+      <div class="bg-excel" *ngIf="incomeExcelShow">
+        <div class="alert-window-excel">
+          <div class="alert-window-excel-header">
+            <span>收入数据表格导出</span>
+            <div class="pull-right" (click)="incomeExcelShow=false">
+              <i class="fa fa-window-close " aria-hidden="true"></i>
+            </div>
+          </div>
+          <div class="alert-window-excel-content">
+            <div class="alert-window-excel-content-list">
+              <label>请选择开始时间：</label>
+              <p-calendar placeholder="请点击选择时间......" [locale]="esDate" [(ngModel)]="incomeStartTime" [monthNavigator]="true" [yearNavigator]="true" dateFormat="yymmdd"  yearRange="2017:2030"></p-calendar>
+            </div>
+            <div class="alert-window-excel-content-list">
+              <label>请选择结束时间：</label>
+              <p-calendar placeholder="请点击选择时间......" [locale]="esDate" [(ngModel)]="incomeEndTime" [monthNavigator]="true" [yearNavigator]="true" dateFormat="yymmdd"  yearRange="2017:2030"></p-calendar>
+            </div>
+          </div>
+          <div class="alert-window-excel-footer text-center">
+            <span (click)="incomeExportClick();incomeExcelShow=false">确认导出</span>
+            <span (click)="incomeExcelShow=false">取消导出</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
