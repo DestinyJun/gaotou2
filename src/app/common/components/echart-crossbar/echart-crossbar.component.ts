@@ -12,6 +12,7 @@ export class EchartCrossbarComponent implements OnInit, OnChanges {
   @Input() public width = 'auto';
   public crosswiseBar = {};
   public serviceZoneId = [];
+  public setServiceAreaId: any; // 获取争取服务区id，路由传输
   constructor(
     private router: Router
   ) { }
@@ -27,7 +28,9 @@ export class EchartCrossbarComponent implements OnInit, OnChanges {
     const barData = [];
     const barArea = [];
     this.option.data.yAxis.map((val, index) => {
-      this.serviceZoneId.push(val.serviceAreaId);
+      console.log(val.serviceAreaId);
+      // if ()
+      this.serviceZoneId.push(val);
       barArea.push(val.serviceName);
     });
     // console.log(this.serviceZoneId);
@@ -102,6 +105,13 @@ export class EchartCrossbarComponent implements OnInit, OnChanges {
   public rankingClick(e) {
    /* console.log(this.serviceZoneId[e.dataIndex]);
     console.log(e.name);*/
-    this.router.navigate(['/home/serzone', {id: this.serviceZoneId[e.dataIndex], name: e.name}]);
+   this.serviceZoneId.forEach( v => {
+     // console.log(v);
+     if (e.name === v.serviceName) {
+       this.setServiceAreaId = v.serviceAreaId;
+     }
+   });
+   // console.log(this.serviceAreaId);
+    this.router.navigate(['/home/serzone', {id: this.setServiceAreaId, name: e.name}]);
   }
 }

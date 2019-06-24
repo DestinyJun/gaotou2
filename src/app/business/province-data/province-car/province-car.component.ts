@@ -50,6 +50,7 @@ export class ProvinceCarComponent implements OnInit, OnChanges, OnDestroy {
   public vehicleAmountCount(): void {
     this.provinceSrv.searchCarTotal({id: this.provinceId}).subscribe(
       (value) => {
+        // console.log(value);
         if (value.status === '200') {
           this.vehicleAmount = {
             number: value.data,
