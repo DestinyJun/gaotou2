@@ -75,7 +75,7 @@
                           </thead>
                           <tbody>
                           <tr *ngFor="let prop of item?.orientationRevenues;">
-                            <td [ngStyle]="{'background':alertIncomeTitle === '收入总数'?'black': ''}">{{prop?.typeRevenue.total}}</td>
+                            <td [ngStyle]="{'background':alertIncomeTitle === '收入总数'?'black': ''}">{{prop?.typeRevenue.total | number: '1.2-2'}}</td>
                             <td [ngStyle]="{'background':alertIncomeTitle === '小吃'?'black': ''}">{{prop.typeRevenue[1]}}</td>
                             <td [ngStyle]="{'background':alertIncomeTitle === '中式快餐'?'black': ''}">{{prop.typeRevenue[2]}}</td>
                             <td [ngStyle]="{'background':alertIncomeTitle === '西式快餐'?'black': ''}">{{prop.typeRevenue[3]}}</td>
