@@ -58,6 +58,7 @@ export class ServiceDownattrComponent implements OnInit {
 
   public addShopVideo(item) {
     this.videoShopList = [];
+    console.log(item);
     // 视频监控
     if (!item.cameraList.length) {
       setTimeout(() => {
