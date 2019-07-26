@@ -6,7 +6,10 @@
 export const environment = {
   production: true,
   env: '演示——测试数据',
-  urls: 'http://123.249.28.108:8082/highway-management', // 管理端
+ /* urls: 'http://123.249.28.108:8082/highway-management', // 管理端
   urlc: 'http://123.249.28.108:8082/highway-interactive', // 客户端
-  urla: 'http://123.249.28.108:8889/highway-authentication', // 独立认证端
+  urla: 'http://123.249.28.108:8889/highway-authentication', // 独立认证端*/
+  urls: 'http://120.77.171.73:8888/highway-management', // 管理端
+  urlc: 'http://139.9.153.27:8080/highway-interactive', // 客户端
+  urla: 'http://139.9.225.98:8081/highway-authentication', // 独立认证端
 };
