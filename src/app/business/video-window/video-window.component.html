@@ -73,6 +73,10 @@
                     [(selection)]="areaTree"
                     selectionMode="single"
                     (onNodeSelect)="nodeSelect($event)"></p-tree>
+            <div class="vlc" style="color: #87FFFF;padding-left: 24px;cursor: pointer" (click)="vlcDownload()">
+              <i class="fa fa-download" aria-hidden="true" style="color: #848484;font-size: 0.7rem;margin-right: 10px"></i>
+              VLC插件支持（点击下载）
+            </div>
           </p-scrollPanel>
         </div>
       </div>
