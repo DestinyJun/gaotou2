@@ -4,11 +4,10 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start-dev-prod": "ng serve --open --env=devprod --host 0.0.0.0 --port 3030 --proxy-config proxy.conf.json",
-    "start-dev": "ng serve --open --env=dev --host 0.0.0.0 --port 3030 --proxy-config proxy.conf.json",
-    "build-gaotou": "ng build --target production --environment gaotou --base-href /gt/",
-    "build-gaotou2": "ng build --target production --environment gaotou --base-href /gt2/",
-    "build-gaotou3": "ng build --env=gaotou3 --base-href /gtdev/",
+    "start-dev": "ng serve --open --env=dev --host 0.0.0.0 --port 3030",
+    "start-prod": "ng serve --open --env=devprod --host 0.0.0.0 --port 3030",
+    "build": "ng build --prod --base-href /gt2/",
+    "build-dev": "ng build --base-href /gt2dev/",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
