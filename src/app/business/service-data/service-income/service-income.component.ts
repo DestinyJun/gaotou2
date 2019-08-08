@@ -2,6 +2,7 @@ import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@an
 import {Router} from '@angular/router';
 import {DatePipe} from '@angular/common';
 import {ServiceDataService} from '../../../common/services/service-data.service';
+import {environment} from '../../../../environments/environment';
 
 @Component({
   selector: 'app-service-income',
@@ -219,7 +220,7 @@ export class ServiceIncomeComponent implements OnInit, OnChanges, OnDestroy {
     const startTime = this.datePipe.transform(this.incomeStartTime, 'yyyyMMdd');
     const endTime = this.datePipe.transform(this.incomeEndTime, 'yyyyMMdd');
     if (this.incomeStartTime && this.incomeEndTime) {
-      window.open(`http://120.78.137.182:8888/highway-interactive/report/serviceArea/revenue/1/startDate/${startTime}/endDate/${endTime}`);
+      window.open(`${environment.urlc}/report/serviceArea/revenue/1/startDate/${startTime}/endDate/${endTime}`);
     } else {
       window.alert('请把数据选择全在提交');
     }

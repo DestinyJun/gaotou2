@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {DataService} from '../../common/services/data.service';
 import {CityDataService} from '../../common/services/city-data.service';
@@ -6,7 +6,7 @@ import {LocalStorageService} from '../../common/services/local-storage.service';
 @Component({
   selector: 'app-city-data',
   templateUrl: './city-data.component.html',
-  styleUrls: ['./city-data.component.css'],
+  styleUrls: ['./city-data.component.less'],
 })
 export class CityDataComponent implements OnInit, OnDestroy {
   /***********************基础信息************************/

@@ -11,13 +11,16 @@ import {DataService} from '../../common/services/data.service';
 import {InputDropdownDayModule} from '../../common/wenjun/input-dropdown-day/input-dropdown-day.module';
 import { Province3dComponent } from './province-3d/province-3d.component';
 import { ProvinceCarComponent } from './province-car/province-car.component';
-// import { ProvinceMapComponent } from './province-map/province-map.component';
 import { ProvinceIncomeComponent } from './province-income/province-income.component';
-// import { ProvinceEventComponent } from './province-event/province-event.component';
 import { ProvinceCrosswiseComponent } from './province-crosswise/province-crosswise.component';
 import { ProvinceEvnstatComponent } from './province-evnstat/province-evnstat.component';
 import { ProvinceEvnofficeComponent } from './province-evnoffice/province-evnoffice.component';
 import { ProvinceEvnpersonComponent } from './province-evnperson/province-evnperson.component';
+import {EchartsBarDoubleModule} from '../../common/components/echart-bar-double/echarts-bar-double.module';
+import {EchartBarDoubleAModule} from '../../common/components/echart-bar-double-a/echart-bar-double-a.module';
+import {EchartPieCircleAModule} from '../../common/components/echart-pie-circle-a/echart-pie-circle-a.module';
+import {EchartsScatterAModule} from 'app/common/components/echarts-scatter-a/echarts-scatter-a.module';
+import {GtDialogAModule} from '../../common/components/gt-dialog-a/gt-dialog-a.module';
 
 @NgModule({
   imports: [
@@ -31,15 +34,18 @@ import { ProvinceEvnpersonComponent } from './province-evnperson/province-evnper
     PagingModule,
     InputDropdownModule,
     EchartsLineBrokenModule,
-    InputDropdownDayModule
+    InputDropdownDayModule,
+    EchartsBarDoubleModule,
+    EchartBarDoubleAModule,
+    EchartPieCircleAModule,
+    EchartsScatterAModule,
+    GtDialogAModule
   ],
   declarations: [
     ProvinceDataComponent,
     Province3dComponent,
     ProvinceCarComponent,
-    // ProvinceMapComponent,
     ProvinceIncomeComponent,
-    // ProvinceEventComponent,
     ProvinceCrosswiseComponent,
     ProvinceEvnstatComponent,
     ProvinceEvnofficeComponent,

@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {DatePipe} from '@angular/common';
 import {SelectVideoItem} from '../service-data.component';
 import {ServiceDataService} from '../../../common/services/service-data.service';
+import {environment} from '../../../../environments/environment';
 
 @Component({
   selector: 'app-service-downattr',
@@ -173,7 +174,7 @@ export class ServiceDownattrComponent implements OnInit {
     const startTime = this.datePipe.transform(this.shopStartTime, 'yyyyMMdd');
     const endTime = this.datePipe.transform(this.shopEndTime, 'yyyyMMdd');
     if (this.shopStartTime && this.shopEndTime) {
-      window.open(`http://120.78.137.182:8888/highway-interactive/report/serviceArea/store/1/startDate/${startTime}/endDate/${endTime}`);
+      window.open(`${environment.urlc}/report/serviceArea/store/1/startDate/${startTime}/endDate/${endTime}`);
     } else {
       window.alert('请把数据选择全在提交');
     }

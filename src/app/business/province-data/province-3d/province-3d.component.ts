@@ -4,6 +4,7 @@ import {FinanceDataService} from '../../../common/services/finance-data.service'
 import {LocalStorageService} from '../../../common/services/local-storage.service';
 import {DatePipe} from '@angular/common';
 import {ExampleDataService} from '../../../common/services/example-data.service';
+import {environment} from '../../../../environments/environment';
 
 @Component({
   selector: 'app-province-3d',
@@ -81,7 +82,10 @@ export class Province3dComponent implements OnInit, OnChanges {
       }
     );
     // 类型占比扇形图
-    this.financeDataService.search3DAlertPie({id: this.provinceId, xType: this.outOptions3d.pie.xType, types: this.outOptions3d.pie.types}).subscribe(
+    this.financeDataService.search3DAlertPie({
+      id: this.provinceId,
+      xType: this.outOptions3d.pie.xType,
+      types: this.outOptions3d.pie.types}).subscribe(
       (val) => {
         if (val.status === '200') {
           this.options3dPie = {
@@ -122,7 +126,7 @@ export class Province3dComponent implements OnInit, OnChanges {
     const startTime = this.datePipe.transform(this.startTime3d, 'yyyyMMdd');
     const endTime = this.datePipe.transform(this.endTime3d, 'yyyyMMdd');
     if (this.startTime3d && this.endTime3d) {
-      window.open(`http://120.78.137.182:8888/highway-interactive/report/province/3d/2/startDate/${startTime}/endDate/${endTime}`);
+      window.open(`${environment.urlc}/report/province/3d/2/startDate/${startTime}/endDate/${endTime}`);
     } else {
       window.alert('请把数据选择全在提交');
     }

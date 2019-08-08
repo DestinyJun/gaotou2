@@ -19,6 +19,9 @@ import { ServiceToiletComponent } from './service-toilet/service-toilet.componen
 import { ServiceEvnDealComponent } from './service-evn-deal/service-evn-deal.component';
 import { ServiceUpattrComponent } from './service-upattr/service-upattr.component';
 import { ServiceDownattrComponent } from './service-downattr/service-downattr.component';
+import {EchartsBarDoubleModule} from '../../common/components/echart-bar-double/echarts-bar-double.module';
+import {EchartPieCircleAModule} from 'app/common/components/echart-pie-circle-a/echart-pie-circle-a.module';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -34,7 +37,9 @@ import { ServiceDownattrComponent } from './service-downattr/service-downattr.co
     ImageZoomModule,
     PagingModule,
     InputDropdownModule,
-    DropdownModule
+    DropdownModule,
+    EchartsBarDoubleModule,
+    EchartPieCircleAModule
   ],
   declarations: [
     ServiceDataComponent,

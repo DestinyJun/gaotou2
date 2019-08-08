@@ -1,43 +1,50 @@
-<div class="main">
+<div class="province">
   <!--*****************大数据可视化***********************-->
   <div class="row">
     <!--左边-->
-    <div class="col-lg-3 col-md-3">
-      <!--3d柱状图-->
-     <app-province-3d [esDate]="esDate" [provinceId]="provinceId" [provinceName]="dataToggle"></app-province-3d>
-      <!--车辆统计-->
-      <app-province-car [esDate]="esDate" [provinceId]="provinceId" [provinceName]="dataToggle"></app-province-car>
+    <div class="province-left">
+      <div class="col-lg-3 col-md-3">
+        <!--3d柱状图-->
+        <app-province-3d [esDate]="esDate" [provinceId]="provinceId" [provinceName]="dataToggle"></app-province-3d>
+        <!--车辆统计-->
+        <app-province-car [esDate]="esDate" [provinceId]="provinceId" [provinceName]="dataToggle"></app-province-car>
+      </div>
     </div>
     <!--中间-->
-    <div class="center col-lg-6 col-md-6">
-      <!--百度地图-->
-      <div class="map">
-        <app-echart-bmap
-          [height]="'50vh'"
-          [option]="{minZoom:7,maxZoom:9,center:[106.645779,26.654099],zoom: 8, area:dataToggle.substring(0, dataToggle.length - 1)}"
-          [points]="mapPoints"
-          (cityClick)="mapCityClick($event)"
-        ></app-echart-bmap>
-      </div>
-      <!--事件监控-->
-      <div class="event-table">
-        <div class="col-lg-2 col-md-2 event-table-service">
-          <app-province-evnstat [provinceId]="provinceId" [provinceName]="dataToggle"></app-province-evnstat>
+    <div class="province-center">
+      <div class=" col-lg-6 col-md-6">
+        <!--百度地图-->
+        <div class="province-center-map">
+          <app-echart-bmap
+            [height]="'50vh'"
+            [option]="{minZoom:7,maxZoom:9,center:[106.645779,26.654099],zoom: 8, area:dataToggle.substring(0, dataToggle.length - 1)}"
+            [points]="mapPoints"
+            (cityClick)="mapCityClick($event)"
+          ></app-echart-bmap>
         </div>
-        <div class="col-lg-7 col-md-7 event-table-office">
-          <app-province-evnoffice [provinceId]="provinceId" [provinceName]="dataToggle"></app-province-evnoffice>
-        </div>
-        <div class="col-lg-3 col-md-3 event-table-person">
-          <app-province-evnperson [provinceId]="provinceId" [provinceName]="dataToggle"></app-province-evnperson>
+        <!--事件监控-->
+        <div class="province-center-echarts">
+          <div class="col-lg-6 col-md-6">
+            <div class="echart-bar">
+              <app-echarts-bar-double [title]="'省级速公路/客流统计'"></app-echarts-bar-double>
+            </div>
+          </div>
+          <div class="col-lg-6 col-md-6">
+            <div class="echart-circle">
+              <app-echart-pie-circle-a [title]="'省级突发事件处理概况'"></app-echart-pie-circle-a>
+            </div>
+          </div>
         </div>
       </div>
     </div>
     <!--右边-->
-    <div class="col-lg-3 col-md-3">
-      <!--业态前十排名柱状图-->
-      <app-province-crosswise [provinceId]="provinceId" [provinceName]="dataToggle"></app-province-crosswise>
-      <!--收入统计-->
-      <app-province-income [esDate]="esDate" [provinceId]="provinceId" [provinceName]="dataToggle"></app-province-income>
+    <div class="province-right">
+      <div class="col-lg-3 col-md-3">
+        <!--业态前十排名柱状图-->
+        <app-province-crosswise [provinceId]="provinceId" [provinceName]="dataToggle"></app-province-crosswise>
+        <!--收入统计-->
+        <app-province-income [esDate]="esDate" [provinceId]="provinceId" [provinceName]="dataToggle"></app-province-income>
+      </div>
     </div>
   </div>
 </div>

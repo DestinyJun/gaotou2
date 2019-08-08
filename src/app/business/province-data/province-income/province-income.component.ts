@@ -2,6 +2,7 @@ import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@an
 import {FinanceDataService} from '../../../common/services/finance-data.service';
 import {Router} from '@angular/router';
 import {DatePipe} from '@angular/common';
+import {environment} from '../../../../environments/environment';
 
 @Component({
   selector: 'app-province-income',
@@ -178,7 +179,7 @@ export class ProvinceIncomeComponent implements OnInit, OnChanges, OnDestroy {
     const endTime = this.datePipe.transform(this.incomeEndTime, 'yyyyMMdd');
     if (this.incomeStartTime && this.incomeEndTime) {
       window.open(
-        `http://120.78.137.182:8888/highway-interactive/report/province/revenue/2/startDate/${startTime}/endDate/${endTime}`
+        `${environment.urlc}/report/province/revenue/2/startDate/${startTime}/endDate/${endTime}`
       );
     } else {
       window.alert('请把数据选择全在提交');

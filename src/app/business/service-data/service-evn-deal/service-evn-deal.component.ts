@@ -69,7 +69,6 @@ export class ServiceEvnDealComponent implements OnInit, OnChanges {
     this.eventAlertListShow = false;
   }
   public eventListInfosClick(item): void {
-    console.log(item);
     this.eventListInfo = item;
   }
 

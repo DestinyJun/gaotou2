@@ -1,9 +1,23 @@
 <div class="crosswise">
-  <app-title-one [height]="'3vh'" [option]="{title: cityName + '业态数据前十排名'}"></app-title-one>
+  <app-title-one
+    (click)="cityDialogOpen($event)"
+    [height]="'3vh'"
+    [option]="{title: cityName + '业态数据前十排名'}"></app-title-one>
   <div class="crosswise-btn text-center" (click)="clickBtn($event)">
     <span [ngStyle]="{'background': barStatus1?'#1F0BC4': '#27375B'}">业态收入/万元</span>
     <span [ngStyle]="{'background': barStatus2?'#1F0BC4': '#3B78B1'}">车流量/辆</span>
     <span [ngStyle]="{'background': barStatus3?'#1F0BC4': '#04A6BB'}">客流量/人次</span>
   </div>
   <app-echart-crossbar [option]="crosswiseBar" [height]="'40vh'"></app-echart-crossbar>
+  <app-gt-dialog-a
+    [title]="crosswiseScatterTitleText"
+    *ngIf="cityDialogShow"
+    (closeClick)="cityDialogClose($event)">
+    <app-echarts-scatter-a
+      [visualMapColor]="crosswiseScatterMapColor"
+      [titleText]="''"
+      [yAxisName]="crosswiseScatterYAxisName"
+      [tooltipY]="crosswiseScatterTooltipY"
+    ></app-echarts-scatter-a>
+  </app-gt-dialog-a>
 </div>

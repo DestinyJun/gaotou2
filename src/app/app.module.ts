@@ -9,10 +9,9 @@ import {LoginService} from './common/services/login.service';
 import {LoginComponent} from './login/login.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+import {HttpClientModule} from '@angular/common/http';
 import {ProgressSpinnerModule} from 'primeng/primeng';
 import { LoginRemindComponent } from './login-remind/login-remind.component';
-import { InterceptorService } from './common/services/interceptor.service';
 import {ExampleDataService} from './common/services/example-data.service';
 
 
@@ -37,7 +36,6 @@ import {ExampleDataService} from './common/services/example-data.service';
     LoginGuard,
     ExampleDataService,
     {provide: LocationStrategy, useClass: HashLocationStrategy},
-    /*{provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true}*/
   ],
   bootstrap: [AppComponent]
 })

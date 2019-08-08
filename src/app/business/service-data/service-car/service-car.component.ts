@@ -2,6 +2,7 @@ import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@an
 import {Router} from '@angular/router';
 import {DatePipe} from '@angular/common';
 import {ServiceDataService} from '../../../common/services/service-data.service';
+import {environment} from '../../../../environments/environment';
 
 @Component({
   selector: 'app-service-car',
@@ -113,7 +114,7 @@ export class ServiceCarComponent implements OnInit, OnChanges, OnDestroy {
     const endTime = this.datePipe.transform(this.carEndTime, 'yyyyMMdd');
     if (this.carStartTime && this.carEndTime) {
       window.open(
-        `http://120.78.137.182:8888/highway-interactive/report/serviceArea/vihicle/1/startDate/${startTime}/endDate/${endTime}`
+        `${environment.urlc}/report/serviceArea/vihicle/1/startDate/${startTime}/endDate/${endTime}`
       );
     } else {
       window.alert('请把数据选择全在提交');

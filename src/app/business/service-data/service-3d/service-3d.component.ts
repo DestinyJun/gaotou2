@@ -3,6 +3,7 @@ import {Router} from '@angular/router';
 import {LocalStorageService} from '../../../common/services/local-storage.service';
 import {DatePipe} from '@angular/common';
 import {ServiceDataService} from '../../../common/services/service-data.service';
+import {environment} from '../../../../environments/environment';
 
 @Component({
   selector: 'app-service-3d',
@@ -116,7 +117,7 @@ export class Service3dComponent implements OnInit, OnChanges {
     const startTime = this.datePipe.transform(this.startTime3d, 'yyyyMMdd');
     const endTime = this.datePipe.transform(this.endTime3d, 'yyyyMMdd');
     if (this.startTime3d && this.endTime3d) {
-      window.open(`http://120.78.137.182:8888/highway-interactive/report/serviceArea/3d/1/startDate/${startTime}/endDate/${endTime}`);
+      window.open(`${environment.urlc}/report/serviceArea/3d/1/startDate/${startTime}/endDate/${endTime}`);
     } else {
       window.alert('请把数据选择全在提交');
     }

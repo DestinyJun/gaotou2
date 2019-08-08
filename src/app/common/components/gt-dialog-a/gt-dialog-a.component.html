@@ -1,0 +1,18 @@
+<!--弹窗-->
+<div class="gt-dialog-a">
+  <div class="gt-dialog-a-window">
+    <div class="window-header">
+      <div class="row">
+        <div class="col-lg-12 col-md-12">
+          <span>{{title}}</span>
+          <div class="pull-right" (click)="iconCloseClick()">
+            <i class="fa fa-window-close " aria-hidden="true"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="window-content">
+      <ng-content></ng-content>
+    </div>
+  </div>
+</div>

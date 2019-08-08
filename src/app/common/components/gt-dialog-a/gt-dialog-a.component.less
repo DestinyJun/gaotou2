@@ -1,0 +1,46 @@
+.gt-dialog-a{
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: #091118;
+  background: rgba(9,17,24,0.5);
+  z-index: 2;
+  .gt-dialog-a-window{
+    position: absolute;
+    width: 50vw;
+    height:50vh;
+    left: 50%;
+    margin-left: -25vw;
+    top: 50%;
+    margin-top: -25vh;
+    background: rgba(39,52,64,0.8);
+    z-index: 1;
+    .window-header{
+      height: 5vh;
+      line-height: 5vh;
+      background: #1a2128;
+      text-align: center;
+      span{
+        margin-left: 10px;
+        font-size: 1.2rem;
+      }
+      .pull-right{
+        height: 5vh;
+        width: 5vh;
+        cursor: pointer;
+        text-align: center;
+      }
+      .pull-right:hover{
+        background: red;
+      }
+    }
+    .window-content{
+      height:45vh;
+      h1{
+        margin: 0;
+      }
+    }
+  }
+}

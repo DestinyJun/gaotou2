@@ -3,7 +3,7 @@ import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core'
 @Component({
   selector: 'app-title-one',
   templateUrl: './title-one.component.html',
-  styleUrls: ['./title-one.component.css']
+  styleUrls: ['./title-one.component.less'],
 })
 export class TitleOneComponent implements OnInit, OnChanges {
   @Input() public option = {

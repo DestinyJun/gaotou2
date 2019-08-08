@@ -2,6 +2,7 @@ import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@an
 import {Router} from '@angular/router';
 import {CityDataService} from '../../../common/services/city-data.service';
 import {DatePipe} from '@angular/common';
+import {environment} from '../../../../environments/environment';
 
 @Component({
   selector: 'app-city-car',
@@ -170,7 +171,7 @@ export class CityCarComponent implements OnInit, OnChanges, OnDestroy {
     const endTime = this.datePipe.transform(this.carEndTime, 'yyyyMMdd');
     if (this.carStartTime && this.carEndTime) {
       window.location.assign(
-        `http://120.78.137.182:8888/highway-interactive/report/city/vihicle/3/startDate/${startTime}/endDate/${endTime}`
+        `${environment.urlc}/report/city/vihicle/3/startDate/${startTime}/endDate/${endTime}`
       );
     } else {
       window.alert('请把数据选择全在提交');
