@@ -342,4 +342,8 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
     }
     return oneChild;
   }
+  // 插件下载
+  public vlcDownload() {
+    window.open('http://139.9.155.62/plc/vlc-3.0.4-win32.exe');
+  }
 }

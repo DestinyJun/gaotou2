@@ -71,4 +71,8 @@ export class LoginComponent implements OnInit {
       window.alert('请输入合法的用户名和密码');
     }
   }
+  // 插件下载
+  public vlcDownload() {
+    window.open('http://139.9.155.62/plc/vlc-3.0.4-win32.exe');
+  }
 }
