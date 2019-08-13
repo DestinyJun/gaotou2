@@ -1,7 +1,8 @@
-import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {VideoWindowService} from '../../common/services/video-window.service';
 import {LocalStorageService} from '../../common/services/local-storage.service';
 import {TreeNode} from '../../common/model/video-window.model';
+import {in_ips} from '../../common/tools/in_ips';
 @Component({
   selector: 'app-video-window',
   templateUrl: './video-window.component.html',
@@ -20,6 +21,7 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
   public videoLocation2: any;
   public videoLocation3: any;
   public videoLocation4: any;
+  public clientIP: string = null;
   /************** 区域树************/
   public areas = [];
   public trees: TreeNode[];
@@ -37,6 +39,8 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.clientIP = this.localService.getObject('clientIP');
+    console.log(in_ips(this.clientIP));
     this.videoWindowService.getVideosUrl(this.localService.getObject('userDTO').id).subscribe(
       (val) => {
         if (val.data) {
@@ -63,9 +67,7 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
         }
       });
   }
-  ngOnDestroy(): void {
-    // console.log(this.videoRecord);
-  }
+  ngOnDestroy(): void {}
   // 客流
   public getPerson(): void {
     this.localService.persons.next({
@@ -136,7 +138,6 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
   }
   public nodeSelect(event): void {
     if (event.node.level === 6) {
-      console.log(event.node);
       this.videoInfo = event.node;
       this.videoLocation(event.node.outUrl, event.node.label, event.node.showLocation);
       if (event.node.showLocation === 1) {
@@ -179,22 +180,39 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
   }
   // 视频初始化
   public videoInitialize (item): void {
+    console.log(item);
     for (let i = 0; i < item.length; i++) {
       if (item[i].showLocation === 1) {
         this.videoRecord[0] = item[i].id;
-        this.videoLocation(item[i].outUrl, item[i].cameraName, item[i].showLocation);
+        if (in_ips(this.clientIP)){
+          this.videoLocation(item[i].innerUrl, item[i].cameraName, item[i].showLocation);
+        } else {
+          this.videoLocation(item[i].outUrl, item[i].cameraName, item[i].showLocation);
+        }
       }
       if (item[i].showLocation === 2) {
         this.videoRecord[1] = item[i].id;
-        this.videoLocation(item[i].outUrl, item[i].cameraName, item[i].showLocation);
+        if (in_ips(this.clientIP)){
+          this.videoLocation(item[i].innerUrl, item[i].cameraName, item[i].showLocation);
+        } else {
+          this.videoLocation(item[i].outUrl, item[i].cameraName, item[i].showLocation);
+        }
       }
       if (item[i].showLocation === 3) {
         this.videoRecord[2] = item[i].id;
-        this.videoLocation(item[i].outUrl, item[i].cameraName, item[i].showLocation);
+        if (in_ips(this.clientIP)){
+          this.videoLocation(item[i].innerUrl, item[i].cameraName, item[i].showLocation);
+        } else {
+          this.videoLocation(item[i].outUrl, item[i].cameraName, item[i].showLocation);
+        }
       }
       if (item[i].showLocation === 4) {
         this.videoRecord[3] = item[i].id;
-        this.videoLocation(item[i].outUrl, item[i].cameraName, item[i].showLocation);
+        if (in_ips(this.clientIP)){
+          this.videoLocation(item[i].innerUrl, item[i].cameraName, item[i].showLocation);
+        } else {
+          this.videoLocation(item[i].outUrl, item[i].cameraName, item[i].showLocation);
+        }
       }
     }
   }

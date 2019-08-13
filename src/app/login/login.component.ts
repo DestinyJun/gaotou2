@@ -11,6 +11,7 @@ import {LocalStorageService} from '../common/services/local-storage.service';
 })
 export class LoginComponent implements OnInit {
   public urlClass = [];
+  public loginLoading = false;
   // 表单
   public myFromModule: FormGroup;
   public formUsername: any;
@@ -35,13 +36,12 @@ export class LoginComponent implements OnInit {
 
 //  登陆
   public onSubmit() {
+    this.loginLoading = true;
     if (this.myFromModule.valid) {
       this.loginService.getLogin(this.myFromModule.value).subscribe(
         (value) => {
-          this.localSessionStorage.loading.next({display: true});
           if (value.status === '200') {
-            // 隐藏加载动画
-            this.localSessionStorage.loading.next({display: false});
+            this.localSessionStorage.setObject('clientIP', value.message);
             // 初始化路由信息
             this.loginService.getRouter(value.data.authentication.accessToken).subscribe(
               (routerInfo) => {
@@ -57,12 +57,14 @@ export class LoginComponent implements OnInit {
                       this.localSessionStorage.setObject(prop, value.data[prop]);
                     }
                   }
+                  this.loginLoading = false;
                   this.route.navigate([value.data.homePageRoute]);
                 } else {
                   window.alert('初始化菜单失败');
                 }
               });
-          } else {
+          }
+          else {
             this.localSessionStorage.loading.next({display: false});
             window.alert(value.message);
           }

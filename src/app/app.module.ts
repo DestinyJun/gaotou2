@@ -10,9 +10,9 @@ import {LoginComponent} from './login/login.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
-import {ProgressSpinnerModule} from 'primeng/primeng';
 import { LoginRemindComponent } from './login-remind/login-remind.component';
 import {ExampleDataService} from './common/services/example-data.service';
+import {GtLoadingModule} from './common/components/gt-loading/gt-loading.module';
 
 
 @NgModule({
@@ -28,7 +28,7 @@ import {ExampleDataService} from './common/services/example-data.service';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    ProgressSpinnerModule
+    GtLoadingModule
   ],
   providers: [
     LoginService,
