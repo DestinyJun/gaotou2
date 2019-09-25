@@ -83,6 +83,7 @@ export class City3dComponent implements OnInit, OnChanges {
     this.cityDataSrv.search3DAlertPie({id: this.cityId, xType: this.outOptions3d.pie.xType, types: this.outOptions3d.pie.types}).subscribe(
       (val) => {
         if (val.status === '200') {
+          console.log(val.data);
           this.options3dPie = {
             data: val.data,
             title: `贵州省所有服务区年度${this.outOptions3d.alertBarTitle}类型占比统计`,
