@@ -15,6 +15,7 @@ export class EchartPieComponent implements OnInit, OnChanges {
   ngOnInit() {}
   ngOnChanges(changes: SimpleChanges): void {
     if (this.option) {
+      console.log(this.option);
       this.optionsPie();
     }
   }
