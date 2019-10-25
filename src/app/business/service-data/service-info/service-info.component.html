@@ -1,93 +1,20 @@
 <div class="information">
-  <app-title-one [height]="'3vh'" [option]="{title: serviceName + '基本信息'}"></app-title-one>
-  <div class="information-info" >
-    <p-scrollPanel [style]="{width: '100%', height: '40vh'}" styleClass="information-info-scroll">
-      <!--公共属性-->
-      <div class="col-lg-6 col-md-6" *ngFor="let prop of serviceInfo?.commonAttributeValues">
-        <div>
-          <p class="clearfix">
-            <span class="pull-left text-c1" style="color: #4887CA">{{prop?.attributeDesc}}：</span>
-            <span class="pull-right">{{prop?.value}}</span>
-          </p>
-        </div>
-      </div>
-      <!--上行属性-->
-      <div class="col-lg-12  col-md-12">
-        <div style="
-              width: 100%;
-              height: 3vh;
-              line-height: 3vh;
-              color: #FF832A;
-              position: relative;
-              text-align: center">
-          <div style="
-                width: 32%;
-                top: 60%;
-                left: 0;
-                border-bottom:1px dashed  #FF832A;
-                position: absolute;"></div>
-          <div style="
-                width: 32%;
-                top: 60%;
-                right: 0;
-                border-bottom:1px dashed  #FF832A;
-                position: absolute;"></div>
-          <span>{{serviceInfo?.upAttributeValues?.source}}</span>
-          <span style="vertical-align: middle">—<i class="fa fa-angle-right" aria-hidden="true" style="vertical-align: middle"></i></span>
-          <span style="vertical-align: middle">{{serviceInfo?.upAttributeValues?.destination}}（上行）</span>
-        </div>
-      </div>
-      <div class="col-lg-6 col-md-6" *ngFor="let prop of serviceInfo?.upAttributeValues?.attributeValues">
-        <div>
-          <p class="clearfix">
-            <span class="pull-left text-c1" style="color: #4887CA">{{prop?.attributeDesc}}：</span>
-            <span class="pull-right">{{prop?.value}}</span>
-          </p>
-        </div>
-      </div>
-      <!--下行属性-->
-      <div class="col-lg-12  col-md-12">
-        <div style="
-              width: 100%;
-              height: 3vh;
-              color: #FF832A;
-              position: relative;
-              text-align: center;
-              line-height: 3vh;
-          ">
-          <div style="
-            width: 32%;
-            top: 60%;
-            left: 0;
-            border-bottom:1px dashed  #FF832A;
-            position: absolute;"></div>
-          <div style="
-            width: 32%;
-            top: 60%;
-            right: 0;
-            border-bottom:1px dashed  #FF832A;
-            position: absolute;"></div>
-          <span>{{serviceInfo?.downAttributeValues?.source}}</span>
-          <span style="vertical-align: middle">—<i class="fa fa-angle-right" aria-hidden="true" style="vertical-align: middle"></i></span>
-          <span>{{serviceInfo?.downAttributeValues?.destination}}（下行）</span>
-        </div>
-      </div>
-      <div class="col-lg-6 col-md-6" *ngFor="let prop of serviceInfo?.downAttributeValues?.attributeValues">
-        <div>
-          <p class="clearfix">
-            <span class="pull-left text-c1" style="color: #4887CA">{{prop?.attributeDesc}}：</span>
-            <span class="pull-right">{{prop?.value}}</span>
-          </p>
-        </div>
-      </div>
-    </p-scrollPanel>
+  <app-title-one [height]="'3vh'" [option]="{title: serviceName + '多媒体信息'}"></app-title-one>
+  <div class="information-video">
+    <div id="infoVideo1"></div>
+    <div id="infoVideo2"></div>
   </div>
   <div class="information-btn text-center">
-    <span (click)="crosswiseClick()">信息修改</span>
-    <span (click)="openServicesPlan()">服务区平面图</span>
-    <span (click)="openIncomeManual()">业态输入</span>
+    <div style="margin-bottom: 1vh">
+      <span (click)="crosswiseClick()" style="background: #28A745">信息修改</span>
+      <span (click)="openServicesPlan()" style="background: #DC3545">服务区平面图</span>
+      <span (click)="openIncomeManual()" style="background: #FFC107;">业态输入</span>
+    </div>
+    <div>
+      <span (click)="openServiceInfo()">服务区信息详情</span>
+    </div>
   </div>
-  <!--服务器信息修改弹窗-->
+  <!--服务区信息修改弹窗-->
   <div class="bg-box" *ngIf="alertCrosswiseShow">
     <div class="alert-window">
       <div class="alert-window-header">
@@ -176,13 +103,13 @@
     </div>
   </div>
   <!--业态手动输入框-->
-  <div class="bg-box" *ngIf="incomeManualShow" >
+  <div class="bg-box" *ngIf="incomeManualShow">
     <div class="alert-window" style="height:40vh; margin-top: -20vh;width: 40vw;margin-left: -20vw">
-      <div class="alert-window-header" >
+      <div class="alert-window-header">
         <div class="row">
           <div class="col-lg-12 col-md-12">
             <span>服务区手动业态输入</span>
-            <div class="pull-right" (click)="incomeManualShow = false">
+            <div class="pull-right" (click)="incomeManualShow = false;this.openInfoVideo();">
               <i class="fa fa-window-close " aria-hidden="true"></i>
             </div>
           </div>
@@ -195,7 +122,10 @@
               <div class="form-group">
                 <label class="col-sm-3 control-label" disabled="">请选择时间：</label>
                 <div class="col-sm-9 income-manual-time">
-                  <p-calendar placeholder="请点击选择时间......" [disabledDates]="invalidDates" tabindex="0" [locale]="esDate" [minDate]="minDate" [maxDate]="maxDate" [(ngModel)]="incomeManualTime" name="incomeManualTime" [monthNavigator]="true" [yearNavigator]="true" dateFormat="yy-mm-dd"  yearRange="2017:2030" [readonlyInput]="true"></p-calendar>
+                  <p-calendar placeholder="请点击选择时间......" [disabledDates]="invalidDates" tabindex="0" [locale]="esDate"
+                              [minDate]="minDate" [maxDate]="maxDate" [(ngModel)]="incomeManualTime"
+                              name="incomeManualTime" [monthNavigator]="true" [yearNavigator]="true"
+                              dateFormat="yy-mm-dd" yearRange="2017:2030" [readonlyInput]="true"></p-calendar>
                 </div>
               </div>
               <div class="form-group">
@@ -211,7 +141,7 @@
                     (dropdownClick)="incomeManualDirectionClick($event)"></app-input-dropdown>
                 </div>
               </div>
-              <div class="form-group"  [hidden]='!incomeManualStoreShow'>
+              <div class="form-group" [hidden]='!incomeManualStoreShow'>
                 <label class="col-sm-3 control-label" disabled="">请选择店铺名称：</label>
                 <div class="col-sm-9">
                   <app-input-dropdown
@@ -224,18 +154,121 @@
                     (dropdownClick)="incomeManualShopClick($event)"></app-input-dropdown>
                 </div>
               </div>
-              <div class="form-group"  *ngIf='incomeManualIncomeShow'>
+              <div class="form-group" *ngIf='incomeManualIncomeShow'>
                 <label class="col-sm-3 control-label" disabled="">请输入业态收入：</label>
                 <div class="col-sm-9">
                   <input type="number" class="form-control" name="type" [(ngModel)]="incomeManualAddIncome.revenue">
                 </div>
               </div>
               <div class="form-group text-center style-border">
-                <button class="btn btn-success" *ngIf='incomeManualIncomeShow' type="button" (click)="incomeManualUpClick()">上传</button>
+                <button class="btn btn-success" *ngIf='incomeManualIncomeShow' type="button"
+                        (click)="incomeManualUpClick()">上传
+                </button>
                 <button class="btn btn-danger" type="button" (click)="incomeManualShow = false">取消</button>
               </div>
             </form>
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--服务区信息弹窗-->
+  <div class="bg-box" *ngIf="alterServiceInfo">
+    <div class="alert-window">
+      <div class="alert-window-header">
+        <div class="row">
+          <div class="col-lg-12 col-md-12">
+            <span>服务区信息详情</span>
+            <div class="pull-right" (click)="this.alterServiceInfo=false;this.openInfoVideo();">
+              <i class="fa fa-window-close " aria-hidden="true"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="alert-window-content">
+        <div class="information-info">
+          <p-scrollPanel [style]="{width: '100%', height: '54vh'}" styleClass="information-info-scroll">
+            <!--公共属性-->
+            <div class="col-lg-6 col-md-6" *ngFor="let prop of serviceInfo?.commonAttributeValues">
+              <div>
+                <p class="clearfix">
+                  <span class="pull-left text-c1" style="color: #4887CA">{{prop?.attributeDesc}}：</span>
+                  <span class="pull-right">{{prop?.value}}</span>
+                </p>
+              </div>
+            </div>
+            <!--上行属性-->
+            <div class="col-lg-12  col-md-12">
+              <div style="
+              width: 100%;
+              height: 3vh;
+              line-height: 3vh;
+              color: #FF832A;
+              position: relative;
+              text-align: center">
+                <div style="
+                width: 32%;
+                top: 60%;
+                left: 0;
+                border-bottom:1px dashed  #FF832A;
+                position: absolute;"></div>
+                <div style="
+                width: 32%;
+                top: 60%;
+                right: 0;
+                border-bottom:1px dashed  #FF832A;
+                position: absolute;"></div>
+                <span>{{serviceInfo?.upAttributeValues?.source}}</span>
+                <span style="vertical-align: middle">—<i class="fa fa-angle-right" aria-hidden="true"
+                                                         style="vertical-align: middle"></i></span>
+                <span style="vertical-align: middle">{{serviceInfo?.upAttributeValues?.destination}}（上行）</span>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-6" *ngFor="let prop of serviceInfo?.upAttributeValues?.attributeValues">
+              <div>
+                <p class="clearfix">
+                  <span class="pull-left text-c1" style="color: #4887CA">{{prop?.attributeDesc}}：</span>
+                  <span class="pull-right">{{prop?.value}}</span>
+                </p>
+              </div>
+            </div>
+            <!--下行属性-->
+            <div class="col-lg-12  col-md-12">
+              <div style="
+              width: 100%;
+              height: 3vh;
+              color: #FF832A;
+              position: relative;
+              text-align: center;
+              line-height: 3vh;
+          ">
+                <div style="
+            width: 32%;
+            top: 60%;
+            left: 0;
+            border-bottom:1px dashed  #FF832A;
+            position: absolute;"></div>
+                <div style="
+            width: 32%;
+            top: 60%;
+            right: 0;
+            border-bottom:1px dashed  #FF832A;
+            position: absolute;"></div>
+                <span>{{serviceInfo?.downAttributeValues?.source}}</span>
+                <span style="vertical-align: middle">—<i class="fa fa-angle-right" aria-hidden="true"
+                                                         style="vertical-align: middle"></i></span>
+                <span>{{serviceInfo?.downAttributeValues?.destination}}（下行）</span>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-6" *ngFor="let prop of serviceInfo?.downAttributeValues?.attributeValues">
+              <div>
+                <p class="clearfix">
+                  <span class="pull-left text-c1" style="color: #4887CA">{{prop?.attributeDesc}}：</span>
+                  <span class="pull-right">{{prop?.value}}</span>
+                </p>
+              </div>
+            </div>
+          </p-scrollPanel>
         </div>
       </div>
     </div>

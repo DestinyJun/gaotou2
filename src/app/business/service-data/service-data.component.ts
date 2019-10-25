@@ -24,6 +24,8 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   // 组件销毁后清除时钟任务
   public personAmountCountClean: any;
   public incomeShopInfoClean: any;
+  // 通讯
+  public windowAlertStatus: boolean;
   // service area
   public serviceZoneTitle: string;  // 服务区名称
   public serviceZoneID: string;   // 服务区ID
@@ -45,6 +47,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this.windowAlertStatus = true;
     // 时间初始化
     this.esDate = {
       firstDayOfWeek: 0,
@@ -146,6 +149,10 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
         }
       }
     );
+  }
+  // 组件通讯
+  public windowChanges(event) {
+    this.windowAlertStatus = event;
   }
   /************************中部***************************/
   // 店铺、视频及方向

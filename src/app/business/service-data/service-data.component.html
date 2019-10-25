@@ -3,9 +3,17 @@
     <div class="service-leader-left">
       <div class="col-lg-3 col-md-3">
         <!--3d柱状图-->
-        <app-service-3d [esDate]="esDate" [serviceId]="serviceZoneID" [serviceName]="serviceZoneTitle"></app-service-3d>
+        <app-service-3d
+          [esDate]="esDate" [serviceId]="serviceZoneID"
+          [serviceName]="serviceZoneTitle"
+          (windowChange)="windowChanges($event)"
+        ></app-service-3d>
         <!--车辆统计-->
-        <app-service-car [esDate]="esDate" [serviceId]="serviceZoneID" [serviceName]="serviceZoneTitle"></app-service-car>
+        <app-service-car
+          [esDate]="esDate" [serviceId]="serviceZoneID"
+          [serviceName]="serviceZoneTitle"
+          (windowChange)="windowChanges($event)"
+        ></app-service-car>
       </div>
     </div>
     <div class="service-leader-center">
@@ -15,8 +23,9 @@
             [esDate]="esDate"
             [serviceInfo]="serviceInfo"
             [incomeTopData]="incomeTopData"
-            [publicTopVideoGroup]="publicTopVideoGroup">
-          </app-service-upattr>
+            (windowChange)="windowChanges($event)"
+            [publicTopVideoGroup]="publicTopVideoGroup"
+          ></app-service-upattr>
           <div class="video-shop-center text-center">
             <!--上行-->
             <span>{{serviceInfo?.downAttributeValues?.source}}</span>
@@ -29,6 +38,7 @@
             [serviceInfo]="serviceInfo"
             [incomeBottomData]="incomeBottomData"
             [publicBottomVideoGroup]="publicBottomVideoGroup"
+            (windowChange)="windowChanges($event)"
           ></app-service-downattr>
         </div>
         <div class="echart">
@@ -48,9 +58,18 @@
     <div class="service-leader-right">
       <div class="col-lg-3 col-md-3">
         <!--服务区基本信息-->
-        <app-service-info [esDate]="esDate" [serviceId]="serviceZoneID" [serviceName]="serviceZoneTitle" [serviceInfo]="serviceInfo"></app-service-info>
+        <app-service-info
+          [esDate]="esDate" [serviceId]="serviceZoneID"
+          [serviceName]="serviceZoneTitle"
+          [serviceInfo]="serviceInfo"
+          [windowAlert]="windowAlertStatus"
+        ></app-service-info>
         <!--收入统计-->
-        <app-service-income [esDate]="esDate" [serviceId]="serviceZoneID" [serviceName]="serviceZoneTitle"></app-service-income>
+        <app-service-income
+          [esDate]="esDate" [serviceId]="serviceZoneID"
+          [serviceName]="serviceZoneTitle"
+          (windowChange)="windowChanges($event)"
+        ></app-service-income>
       </div>
     </div>
   </div>

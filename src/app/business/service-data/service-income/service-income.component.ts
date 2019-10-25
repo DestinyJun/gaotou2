@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges} from '@angular/core';
 import {Router} from '@angular/router';
 import {DatePipe} from '@angular/common';
 import {ServiceDataService} from '../../../common/services/service-data.service';
@@ -13,6 +13,7 @@ export class ServiceIncomeComponent implements OnInit, OnChanges, OnDestroy {
   @Input() serviceId: any;
   @Input() serviceName: any;
   @Input() esDate: any;
+  @Output() public windowChange = new EventEmitter();
   public carTimeSelect = [
     {name: '时', code: 'hour'},
     {name: '天', code: 'day'},
@@ -87,6 +88,7 @@ export class ServiceIncomeComponent implements OnInit, OnChanges, OnDestroy {
   public incomeClick(e): void {
     this.alertIncomeTypeShow = true;
     this.alertIncomeShow = true;
+    this.windowChange.emit(false);
     document.body.className = 'ui-overflow-hidden';
     this.alertIncomeTitle = e.name;
     this.alertIncomeTypeTitle = e.name;
@@ -171,6 +173,7 @@ export class ServiceIncomeComponent implements OnInit, OnChanges, OnDestroy {
   public closeIncomeShow(): void {
     document.body.className = '';
     this.alertIncomeShow = false;
+    this.windowChange.emit(true);
   }
   public IncomeBtnClick(e): void {
     if (e.srcElement.innerText === '收入总数') {

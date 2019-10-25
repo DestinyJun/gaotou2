@@ -4,7 +4,7 @@
   </div>
   <app-event-list [option]="eventList" [width]="'100%'" [height]="'30vh'" (eventListClick)="openEventAlert($event)"></app-event-list>
   <!--事件弹窗-->
-  <div class="bg-box" *ngIf="eventAlertShow" >
+  <div class="bg-box" *ngIf="eventAlertShow" id="windowAlter">
     <div class="alert-window" style="height:80vh; margin-top: -40vh;">
       <div class="alert-window-header" >
         <div class="row">

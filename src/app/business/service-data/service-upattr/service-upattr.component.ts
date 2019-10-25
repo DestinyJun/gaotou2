@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {SelectVideoItem} from '../service-data.component';
 import {ServiceDataService} from '../../../common/services/service-data.service';
 import {DatePipe} from '@angular/common';
@@ -14,6 +14,7 @@ export class ServiceUpattrComponent implements OnInit {
   @Input() public publicTopVideoGroup = [];
   @Input() public serviceInfo: any = null;
   @Input() public esDate: any;
+  @Output() public windowChange = new EventEmitter();
   public serviceShopShowExport = false;
   public selectedCar2 = {
     value: '请选择视频...',
@@ -62,6 +63,7 @@ export class ServiceUpattrComponent implements OnInit {
     this.cars = [];
     this.serviceShopInfo = item;
     this.serviceShopShow = true;
+    this.windowChange.emit(false);
     document.body.className = 'ui-overflow-hidden';
     if (item.cameraList !== undefined) {
       this.addShopVideo(this.serviceShopInfo);
@@ -103,6 +105,7 @@ export class ServiceUpattrComponent implements OnInit {
     let videoUrlHtml = '';
     document.body.className = 'ui-overflow-hidden';
     this.videoPublicShow = true;
+    this.windowChange.emit(false);
     this.publicVideoTitle = e.cameraName;
     videoUrlHtml = videoUrlHtml + `
         <object classid="clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921"
@@ -135,7 +138,6 @@ export class ServiceUpattrComponent implements OnInit {
       setTimeout(() => {
         const vlc = window.document[`vlc${e.id}`];
         const mrl = e.outUrl;
-        console.log(mrl);
         const options = ['rtsp-tcp=true', ' network-caching=500'];
         const itemId = vlc['playlist'].add(mrl, 'asd', options);
         vlc['playlist'].playItem(itemId);
@@ -210,6 +212,7 @@ export class ServiceUpattrComponent implements OnInit {
   public closeServiceShop(): void {
     document.body.className = '';
     this.serviceShopShow = false;
+    this.windowChange.emit(true);
   }
   // 服务区合同下载
   public servicesPactDown(): void {
@@ -282,5 +285,6 @@ export class ServiceUpattrComponent implements OnInit {
   public closePublicVideo() {
     document.body.className = '';
     this.videoPublicShow = false;
+    this.windowChange.emit(true);
   }
 }

@@ -5,27 +5,15 @@
   box-shadow: 0 0 10px 2px rgba(255,255,255,0.2) inset;
   margin-bottom: 1vh;
   position: relative;
-  .information-info{
-    margin-top: 1vh;
-    height: 40vh;
-    overflow: hidden;
-    font-size: 0.8rem;
-    margin-bottom: 1vh;
-    p{
-      span{
-        margin-top: 1vh;
-      }
-    }
-  }
   .information-btn{
-    height: 3vh;
+    height: 8vh;
     position: absolute;
-    bottom: 1vh;
     width: 100%;
+    bottom: 5px;
     span{
       display: inline-block;
-      width: 5vw;
-      padding: 0.5vh 0;
+      min-width: 5vw;
+      padding: 0.5vh 0.5vh;
       background: #30A7AD;
       border-radius: 3px;
       cursor: pointer;
@@ -34,6 +22,18 @@
         margin-right: 1vw;
         margin-left: 1vw;
       }
+    }
+  }
+  .information-video{
+    padding-top: 1vh;
+    width: 100%;
+    height: 36vh;
+    #infoVideo1{
+      height: 50%;
+    }
+    #infoVideo2{
+      margin-top: 1vh;
+      height: 50%;
     }
   }
   .bg-box{
@@ -90,7 +90,7 @@
   }
 }
 :host ::ng-deep .information-info-scroll .ui-scrollpanel-content {
-  width: 110%;
+  width: 102%;
 }
 :host ::ng-deep .information-info-scroll .ui-scrollpanel-wrapper{
   z-index: unset;
@@ -183,4 +183,17 @@
   -o-transform:rotate(135deg);
   -moz-transform:rotate(135deg);
   -webkit-transform:rotate(135deg);
+}
+// 服务区信息弹窗
+.information-info{
+  margin-top: 1vh;
+  height: 54vh;
+  overflow: hidden;
+  font-size: 0.8rem;
+  margin-bottom: 1vh;
+  p{
+    span{
+      margin-top: 1vh;
+    }
+  }
 }

@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {LocalStorageService} from '../../common/services/local-storage.service';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
@@ -102,10 +102,12 @@ export class HeaderComponent implements OnInit {
     }*/
     this.cityPersonAlert = true;
     this.localService.videoShow.next(this.cityPersonAlert);
+    this.localService.windowVideoShow.next(false);
   }
   public closePersonAlert() {
       this.serviceZonePersonAlert = false;
       this.cityPersonAlert = false;
+    this.localService.windowVideoShow.next(true);
       this.localService.videoShow.next(this.cityPersonAlert);
   }
 }

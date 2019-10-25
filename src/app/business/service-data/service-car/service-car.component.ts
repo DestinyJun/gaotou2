@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges} from '@angular/core';
 import {Router} from '@angular/router';
 import {DatePipe} from '@angular/common';
 import {ServiceDataService} from '../../../common/services/service-data.service';
@@ -13,6 +13,7 @@ export class ServiceCarComponent implements OnInit, OnChanges, OnDestroy {
   @Input() public serviceId: any;
   @Input() public serviceName: any;
   @Input() public esDate: any;  // 时间初始化
+  @Output() public windowChange = new EventEmitter();
   /***********************基础信息************************/
   public vehicleAmountCountClean: any;
   public carTimeSelect = [
@@ -86,6 +87,7 @@ export class ServiceCarComponent implements OnInit, OnChanges, OnDestroy {
   }
   public parkClick(e): void {
     this.alertCarShow = true;
+    this.windowChange.emit(false);
     document.body.className = 'ui-overflow-hidden';
     this.carTimeTypes = 'hour';
     this.carDistribution(1, this.carTimeTypes);
@@ -108,6 +110,7 @@ export class ServiceCarComponent implements OnInit, OnChanges, OnDestroy {
   public closeCarShow(): void {
     document.body.className = '';
     this.alertCarShow = false;
+    this.windowChange.emit(true);
   }
   public carExportClick() {
     const startTime = this.datePipe.transform(this.carStartTime, 'yyyyMMdd');

@@ -1,9 +1,10 @@
 /******************************主容器****************************/
 .container-fluid{
   color: white;
-  background: #151A30;
+  background: #215968;
   min-height: 100vh;
-  background-image: url(/assets/images/bg3.jpg);
+  /*background-image: url(/assets/images/bg3.jpg);*/
+  /*background-image: linear-gradient(to right,#0E3A83,#356DAA,#4A8BC1,#295F9F);*/
   background-repeat: no-repeat;
   -webkit-background-size: 100% 100%;
   background-size: 100% 100%;
