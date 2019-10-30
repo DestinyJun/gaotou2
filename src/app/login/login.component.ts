@@ -65,11 +65,13 @@ export class LoginComponent implements OnInit {
               });
           }
           else {
+            this.loginLoading = false;
             this.localSessionStorage.loading.next({display: false});
             window.alert(value.message);
           }
         });
     } else {
+      this.loginLoading = false;
       window.alert('请输入合法的用户名和密码');
     }
   }

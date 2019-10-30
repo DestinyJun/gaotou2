@@ -3,6 +3,7 @@ import {Router} from '@angular/router';
 import {DatePipe} from '@angular/common';
 import {ServiceDataService} from '../../../common/services/service-data.service';
 import {environment} from '../../../../environments/environment';
+import {LocalStorageService} from '../../../common/services/local-storage.service';
 
 @Component({
   selector: 'app-service-car',
@@ -13,7 +14,6 @@ export class ServiceCarComponent implements OnInit, OnChanges, OnDestroy {
   @Input() public serviceId: any;
   @Input() public serviceName: any;
   @Input() public esDate: any;  // 时间初始化
-  @Output() public windowChange = new EventEmitter();
   /***********************基础信息************************/
   public vehicleAmountCountClean: any;
   public carTimeSelect = [
@@ -34,6 +34,7 @@ export class ServiceCarComponent implements OnInit, OnChanges, OnDestroy {
   public carTimeTypes: any;
   constructor(
     private serviceSrv: ServiceDataService,
+    private localService: LocalStorageService,
     private router: Router,
     private datePipe: DatePipe
   ) { }
@@ -87,7 +88,7 @@ export class ServiceCarComponent implements OnInit, OnChanges, OnDestroy {
   }
   public parkClick(e): void {
     this.alertCarShow = true;
-    this.windowChange.emit(false);
+    this.localService.windowVideoShow.next(false);
     document.body.className = 'ui-overflow-hidden';
     this.carTimeTypes = 'hour';
     this.carDistribution(1, this.carTimeTypes);
@@ -110,7 +111,7 @@ export class ServiceCarComponent implements OnInit, OnChanges, OnDestroy {
   public closeCarShow(): void {
     document.body.className = '';
     this.alertCarShow = false;
-    this.windowChange.emit(true);
+    this.localService.windowVideoShow.next(true);
   }
   public carExportClick() {
     const startTime = this.datePipe.transform(this.carStartTime, 'yyyyMMdd');

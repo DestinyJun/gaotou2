@@ -3,6 +3,7 @@ import {SelectVideoItem} from '../service-data.component';
 import {ServiceDataService} from '../../../common/services/service-data.service';
 import {DatePipe} from '@angular/common';
 import {environment} from '../../../../environments/environment';
+import {LocalStorageService} from '../../../common/services/local-storage.service';
 
 @Component({
   selector: 'app-service-upattr',
@@ -52,6 +53,7 @@ export class ServiceUpattrComponent implements OnInit {
     'fa fa-car'];
   constructor(
     private serviceSrv: ServiceDataService,
+    private localService: LocalStorageService,
     private datePipe: DatePipe
   ) { }
 
@@ -63,7 +65,7 @@ export class ServiceUpattrComponent implements OnInit {
     this.cars = [];
     this.serviceShopInfo = item;
     this.serviceShopShow = true;
-    this.windowChange.emit(false);
+    this.localService.windowVideoShow.next(false);
     document.body.className = 'ui-overflow-hidden';
     if (item.cameraList !== undefined) {
       this.addShopVideo(this.serviceShopInfo);
@@ -105,7 +107,7 @@ export class ServiceUpattrComponent implements OnInit {
     let videoUrlHtml = '';
     document.body.className = 'ui-overflow-hidden';
     this.videoPublicShow = true;
-    this.windowChange.emit(false);
+    this.localService.windowVideoShow.next(false);
     this.publicVideoTitle = e.cameraName;
     videoUrlHtml = videoUrlHtml + `
         <object classid="clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921"
@@ -212,7 +214,7 @@ export class ServiceUpattrComponent implements OnInit {
   public closeServiceShop(): void {
     document.body.className = '';
     this.serviceShopShow = false;
-    this.windowChange.emit(true);
+    this.localService.windowVideoShow.next(true);
   }
   // 服务区合同下载
   public servicesPactDown(): void {
@@ -285,6 +287,6 @@ export class ServiceUpattrComponent implements OnInit {
   public closePublicVideo() {
     document.body.className = '';
     this.videoPublicShow = false;
-    this.windowChange.emit(true);
+    this.localService.windowVideoShow.next(true);
   }
 }

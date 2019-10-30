@@ -14,7 +14,6 @@ export class Service3dComponent implements OnInit, OnChanges {
   @Input() public serviceId: any;
   @Input() public serviceName: any;
   @Input() public esDate: any;  // 时间初始化
-  @Output() public windowChange = new EventEmitter();
   // 3D柱状图配置
   public options3d: any;
   public options3dCopy: any;
@@ -61,7 +60,7 @@ export class Service3dComponent implements OnInit, OnChanges {
     this.outOptions3d = e;
     document.body.className = 'ui-overflow-hidden';
     this.alertBarShow = true;
-    this.windowChange.emit(false);
+    this.localService.windowVideoShow.next(false);
     this.alertBarTitle = this.outOptions3d.alertBarTitle;
     // 柱状图
     this.serviceDataSrv.search3DAlertBar({id: this.serviceId, types: this.outOptions3d.bar.types}).subscribe(
@@ -111,7 +110,7 @@ export class Service3dComponent implements OnInit, OnChanges {
   }
 
   public closeBarShow() {
-    this.windowChange.emit(true);
+    this.localService.windowVideoShow.next(true);
     this.alertBarShow = false;
     document.body.className = '';
   }

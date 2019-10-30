@@ -150,10 +150,6 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       }
     );
   }
-  // 组件通讯
-  public windowChanges(event) {
-    this.windowAlertStatus = event;
-  }
   /************************中部***************************/
   // 店铺、视频及方向
   public backCenterDate() {

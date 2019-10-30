@@ -14,7 +14,6 @@ export class ServiceInfoComponent implements OnInit, OnChanges, OnDestroy {
   @Input() serviceName: any;
   @Input() serviceInfo: any = null;
   @Input() esDate: any;
-  @Input() windowAlert: boolean;
   // 服务区基本信息
   public alertCrosswiseShow = false;
   public alterCommonAttributeValues = [];
@@ -23,6 +22,8 @@ export class ServiceInfoComponent implements OnInit, OnChanges, OnDestroy {
   public servicesPlan = false;
   public servicesMap = {};
   public alterServiceInfo = false;
+  public video1: any;
+  public video2: any;
   // 手动输入
   public incomeManualShow = false;
   public incomeManualDirectionSelect = [];
@@ -53,17 +54,6 @@ export class ServiceInfoComponent implements OnInit, OnChanges, OnDestroy {
     });
   }
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.hasOwnProperty('windowAlert')) {
-      if (changes.windowAlert.hasOwnProperty('firstChange')) {
-        if (changes.windowAlert.hasOwnProperty('firstChange')) {
-          if (this.windowAlert) {
-            this.openInfoVideo();
-          } else {
-            this.closeInfoVideo();
-          }
-        }
-      }
-    }
     if (this.serviceInfo) {
       this.serviceInfo.commonAttributeValues.map((val, index) => {
         this.alterCommonAttributeValues.push(this.cloneValue(val));
@@ -74,6 +64,15 @@ export class ServiceInfoComponent implements OnInit, OnChanges, OnDestroy {
       this.serviceInfo.downAttributeValues.attributeValues.map((val, index) => {
         this.alterDownAttributeValues.push(this.cloneValue(val));
       });
+      this.alterCommonAttributeValues.map((val) => {
+        if (val.attributeDesc === '公共监控1') {
+          this.video1 = val.value;
+        }
+        if (val.attributeDesc === '公共监控2') {
+          this.video2 = val.value;
+        }
+        });
+      this.openInfoVideo();
     }
     // 查询服务区方向
     this.serviceSrv.searchServiceDirection(this.serviceId).subscribe(
@@ -173,6 +172,8 @@ export class ServiceInfoComponent implements OnInit, OnChanges, OnDestroy {
           this.alterCommonAttributeValues = [];
           this.alterUpAttributeValues = [];
           this.alterDownAttributeValues = [];
+          document.body.className = '';
+          this.alertCrosswiseShow = false;
           window.alert(data.message);
           this.serviceSrv.searchSerAraItem(this.serviceId).subscribe(
             (value) => {
@@ -186,6 +187,15 @@ export class ServiceInfoComponent implements OnInit, OnChanges, OnDestroy {
               value.data.downAttributeValues.attributeValues.map((val, index) => {
                 this.alterDownAttributeValues.push(this.cloneValue(val));
               });
+              this.alterCommonAttributeValues.map((val) => {
+                if (val.attributeDesc === '公共监控1') {
+                  this.video1 = val.value;
+                }
+                if (val.attributeDesc === '公共监控2') {
+                  this.video2 = val.value;
+                }
+              });
+              this.openInfoVideo();
             }
           );
         }
@@ -342,12 +352,12 @@ export class ServiceInfoComponent implements OnInit, OnChanges, OnDestroy {
         const options = ['rtsp-tcp=true', ' network-caching=500'];
         // 视频1
         const vlc1 = window.document[`infoVideo1Url`];
-        const mrl1 = `rtsp://admin:Hik12345+@117.187.60.138:558`;
+        const mrl1 = this.video1;
         const itemIda = vlc1['playlist'].add(mrl1, 'asd', options);
         vlc1['playlist'].playItem(itemIda);
         // 视频2
         const vlc2 = window.document[`infoVideo1Ur2`];
-        const mrl2 = `rtsp://admin:Hik12345+@117.187.60.138:562`;
+        const mrl2 = this.video2;
         const itemIdb = vlc2['playlist'].add(mrl2, 'asd', options);
         vlc2['playlist'].playItem(itemIdb);
       }, 100);
