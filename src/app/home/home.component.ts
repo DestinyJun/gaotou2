@@ -23,9 +23,9 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.buildForm();
-    this.bgNum = Math.floor(Math.random() * (8 - 1)) + 1;
+    this.bgNum = Math.floor(Math.random() * (9 - 1)) + 1;
     this.timer = setInterval(() => {
-      this.bgNum = Math.floor(Math.random() * (8 - 1)) + 1;
+      this.bgNum = Math.floor(Math.random() * (9 - 1)) + 1;
     }, 180000);
   }
   ngOnDestroy(): void {
