@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 
@@ -8,10 +8,12 @@ import {Router} from '@angular/router';
   styleUrls: ['./home.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
   // 搜索
   public searchForm: FormGroup;
   public selectForm: FormGroup;
+  public bgNum: any;
+  public timer: any;
 
   constructor(
     private fb: FormBuilder,
@@ -21,8 +23,14 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.buildForm();
+    this.bgNum = 1;
+    this.timer = setInterval(() => {
+      this.bgNum = Math.floor(Math.random() * (8 - 1)) + 1;
+    }, 180000);
   }
-
+  ngOnDestroy(): void {
+    clearInterval(this.timer);
+  }
 
 
   // 搜索的创建表单
