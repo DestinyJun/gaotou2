@@ -311,7 +311,7 @@ export class ServiceInfoComponent implements OnInit, OnChanges, OnDestroy {
         <param name="AutoLoop" value="false"/>
         <param name="autoplay" value="true"/>
         <param name="Time" value="True"/>
-        <param name='volume' value='30'/>
+        <param name='volume' value='0'/>
         <param value="transparent" name="wmode">
         <embed pluginspage="http://www.videolan.org"
                type="application/x-vlc-plugin"
@@ -333,7 +333,7 @@ export class ServiceInfoComponent implements OnInit, OnChanges, OnDestroy {
         <param name="AutoLoop" value="false"/>
         <param name="autoplay" value="true"/>
         <param name="Time" value="True"/>
-        <param name='volume' value='30'/>
+        <param name='volume' value='0'/>
         <param value="transparent" name="wmode">
         <embed pluginspage="http://www.videolan.org"
                type="application/x-vlc-plugin"
