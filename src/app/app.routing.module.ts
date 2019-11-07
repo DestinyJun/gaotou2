@@ -10,13 +10,14 @@ const routes: Routes = [
   {
     path: 'home',
     loadChildren: 'app/home/home.module#HomeModule',
+    runGuardsAndResolvers: 'always',
     canActivate: [LoginGuard]
   },
   {path: '**', component: LoginComponent}
 ];
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(routes, {onSameUrlNavigation: 'reload'})
   ],
   exports: [RouterModule]
 })

@@ -311,13 +311,15 @@ export class ServiceInfoComponent implements OnInit, OnChanges, OnDestroy {
         <param name="AutoLoop" value="false"/>
         <param name="autoplay" value="true"/>
         <param name="Time" value="True"/>
-        <param name='volume' value='0'/>
+        <param name='volume' value='1'/>
         <param value="transparent" name="wmode">
         <embed pluginspage="http://www.videolan.org"
                type="application/x-vlc-plugin"
                version="VideoLAN.VLCPlugin.2"
                width="100%"
                height="100%"
+               volume="false"
+               controls="false"
                text="Waiting for video"
                name="infoVideo1Url"
         />
@@ -340,6 +342,8 @@ export class ServiceInfoComponent implements OnInit, OnChanges, OnDestroy {
                version="VideoLAN.VLCPlugin.2"
                width="100%"
                height="100%"
+               volume="false"
+               controls="false"
                text="Waiting for video"
                name="infoVideo1Ur2"
         />

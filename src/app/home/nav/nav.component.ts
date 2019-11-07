@@ -1,5 +1,5 @@
 import {Component, HostListener, OnInit, ViewEncapsulation} from '@angular/core';
-import {Router} from '@angular/router';
+import {NavigationEnd, Router} from '@angular/router';
 import {LocalStorageService} from '../../common/services/local-storage.service';
 import {LoginService} from '../../common/services/login.service';
 
@@ -92,6 +92,7 @@ export class NavComponent implements OnInit {
          }]
      }*/
   ];
+  public navDirection = 'left';
   selectedFile: TreeNode;
   public visibleSidebar2: true;
   public urlList: any;
@@ -134,6 +135,15 @@ export class NavComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        if (event.url.includes('/home/camera')) {
+          this.navDirection = 'right';
+        } else {
+          this.navDirection = 'left';
+        }
+      }
+      });
     this.urlList = this.localSessionStorage.getObject('urlList');
     this.urlClass = this.localSessionStorage.getObject('urlClass');
     this.filesTree2 = this.tableTreeInitialize(this.urlList);

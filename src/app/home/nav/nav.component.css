@@ -2,16 +2,21 @@
 .nav{
   margin-top: 1vh;
   position: fixed;
-  left: 0;
   top: 52%;
   border:1px solid #3B425C;
   width: 50px;
   overflow: hidden;
   color: #87FFFF;
   background: #026FEC;
-  z-index: 9999;
+  z-index: 99999;
   font-size: 0.5rem;
   transition: all 1s;
+}
+.direct-left{
+  left: 0
+}
+.direct-right{
+  right: 0
 }
 .nav>.list-group{
   margin-bottom: 0;

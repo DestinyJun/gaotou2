@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="nav" [ngStyle]="{opacity: navOpacity, height: navHeight}">
+  <div class="nav" [ngStyle]="{opacity: navOpacity, height: navHeight}" [ngClass]="navDirection==='left'?'direct-left':'direct-right'">
     <ul class="list-group">
      <!-- <li *ngFor="let item of urlList;let i =index" class="list-group-item" [routerLink]="[item?.url, {id: 1, name: '久长服务区'}]">
         <i [class]="urlIcon[urlClass[i]]" aria-hidden="true" data-toggle="tooltip" data-placement="right" [title]="item?.menuName"></i>
@@ -26,7 +26,7 @@
   </div>
 </div>
 <div class="nav-sidebar">
-  <p-sidebar [(visible)]="visibleSidebar2" position="left" [baseZIndex]="12000" [showCloseIcon]="false">
+  <p-sidebar [(visible)]="visibleSidebar2" [position]="navDirection" [baseZIndex]="12000" [showCloseIcon]="false">
     <p-scrollPanel [style]="{width: '100%', height: '100%'}" styleClass="nav-scroll">
     <h4 style="font-weight:normal;text-align: center">高投集团</h4>
     <p-tree [value]="filesTree2" selectionMode="single" [(selection)]="selectedFile"

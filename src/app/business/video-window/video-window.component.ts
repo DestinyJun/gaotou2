@@ -40,7 +40,6 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.clientIP = this.localService.getObject('clientIP');
-    console.log(in_ips(this.clientIP));
     this.videoWindowService.getVideosUrl(this.localService.getObject('userDTO').id).subscribe(
       (val) => {
         if (val.data) {
@@ -277,13 +276,15 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
         <param name="AutoLoop" value="false"/>
         <param name="autoplay" value="true"/>
         <param name="Time" value="True"/>
-        <param name='volume' value='30'/>
+        <param name='volume' value='0'/>
         <param value="transparent" name="wmode">
         <embed pluginspage="http://www.videolan.org"
                type="application/x-vlc-plugin"
                version="VideoLAN.VLCPlugin.2"
                width="100%"
                height="100%"
+               volume="false"
+                controls="false"
                text="Waiting for video"
                name="vlc${flag}"
         />
