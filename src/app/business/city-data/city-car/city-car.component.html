@@ -2,7 +2,11 @@
   <!--日车流量实时统计-->
   <div class="city-vehicle-amount">
     <app-title-one [height]="'3vh'" [option]="{title: cityName + '今日车辆流动数量'}"></app-title-one>
-    <app-number-show [option]="vehicleAmount"></app-number-show>
+    <h2 [countUp]="carNumber" [options]="carNumberOption" style="text-align: center;
+    letter-spacing: 5px;
+    font-size: 2rem;
+    color: #05eff1;
+    font-weight: 900;">0</h2>
   </div>
   <!--车型日分布占比-->
   <div class="city-vehicle-pie">

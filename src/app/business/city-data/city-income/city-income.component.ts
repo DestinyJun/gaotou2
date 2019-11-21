@@ -1,6 +1,7 @@
 import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
 import {Router} from '@angular/router';
 import {DatePipe} from '@angular/common';
+import { CountUpOptions } from 'countup.js';
 import {CityDataService} from '../../../common/services/city-data.service';
 import {environment} from '../../../../environments/environment';
 
@@ -14,6 +15,12 @@ export class CityIncomeComponent implements OnInit, OnChanges, OnDestroy {
   @Input() cityName: any;
   @Input() esDate: any;
   public incomeAmountCountClean: any;
+  public incomeNumber: number;
+  public incomeNumberOption: CountUpOptions = {
+    useGrouping: false,
+    duration: 3,
+    suffix: '<small style="color: white;font-size: 1rem;">元</small>'
+  };
   // 收入监控
   public incomeAmount: any;
   public optionsIncomeModel: any;
@@ -51,6 +58,7 @@ export class CityIncomeComponent implements OnInit, OnChanges, OnDestroy {
     this.citySrv.searchIncomeTotal({id: this.cityId}).subscribe(
       (value) => {
         if (value.status === '200') {
+          this.incomeNumber = value.data;
           this.incomeAmount = {
             number: value.data,
             units: '元'

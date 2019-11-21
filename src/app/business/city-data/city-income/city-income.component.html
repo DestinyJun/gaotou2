@@ -2,7 +2,11 @@
   <!--日收入实时统计-->
   <div class="city-income-amount">
     <app-title-one [height]="'3vh'" [option]="{title: cityName + '高速服务区实时收入'}"></app-title-one>
-    <app-number-show [option]="incomeAmount"></app-number-show>
+    <h2 [countUp]="incomeNumber" [options]="incomeNumberOption" style="text-align: center;
+    letter-spacing: 5px;
+    font-size: 2rem;
+    color: #05eff1;
+    font-weight: 900;">0</h2>
   </div>
   <!--收入日分布占比-->
   <div class="city-income-pie">

@@ -14,7 +14,6 @@ import { LoginRemindComponent } from './login-remind/login-remind.component';
 import {ExampleDataService} from './common/services/example-data.service';
 import {GtLoadingModule} from './common/components/gt-loading/gt-loading.module';
 
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -28,7 +27,7 @@ import {GtLoadingModule} from './common/components/gt-loading/gt-loading.module'
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    GtLoadingModule
+    GtLoadingModule,
   ],
   providers: [
     LoginService,

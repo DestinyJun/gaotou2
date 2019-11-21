@@ -31,7 +31,12 @@
         <span>{{this.flagName}}今日客流量：</span>
         <div class="text-center">
           <span style="font-size: 0.875rem">{{persons?.total.length === 0?'当前暂无客流数据': ''}}</span>
-          <span *ngFor="let item of persons?.total">{{item}}</span>
+          <!--<span *ngFor="let item of persons?.total">{{item}}</span>-->
+          <span [countUp]="personNumber" [options]="personNumberOption" style="text-align: center;
+    letter-spacing: 5px;
+    font-size: 1.2rem;
+    color: #05eff1;
+    font-weight: 600;">0</span>
         </div>
         <span>人/次</span>
       </div>
@@ -39,7 +44,7 @@
   </div>
 </div>
 <!--服务区级人流分布弹窗-->
-<!--<div class="bg-box" *ngIf="serviceZonePersonAlert" >
+<!--<div class="bspbox" *ngIf="serviceZonePersonAlert" >
   <div class="alert-window" style="height:50vh; margin-top: -25vh;width: 50vw;margin-left: -25vw">
     <div class="alert-window-header">
       <div class="row">
@@ -114,7 +119,12 @@
             <p>
               <b>总人数：</b>
               <b style="font-size:1rem">{{persons?.total.length === 0? '当前暂无客流数据': ''}}</b>
-              <span *ngFor="let item of persons?.total">{{item}}</span>
+              <!--<span *ngFor="let item of persons?.total">{{item}}</span>-->
+              <span [countUp]="personNumber" [options]="personNumberOption" style="text-align: center;
+    letter-spacing: 5px;
+    font-size: 1.2rem;
+    color: #05eff1;
+    font-weight: 600;">0</span>
               <small *ngIf="!(persons?.total.length === 0)">人/次</small>
             </p>
           </div>

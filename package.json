@@ -26,6 +26,7 @@
     "angularx-qrcode": "^1.1.0",
     "bootstrap": "^3.3.7",
     "core-js": "^2.4.1",
+    "countup.js-angular2": "^7.3.0",
     "echarts": "^4.1.0",
     "echarts-gl": "^1.1.1",
     "font-awesome": "^4.7.0",

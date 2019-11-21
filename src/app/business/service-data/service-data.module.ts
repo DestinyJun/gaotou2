@@ -21,6 +21,7 @@ import { ServiceUpattrComponent } from './service-upattr/service-upattr.componen
 import { ServiceDownattrComponent } from './service-downattr/service-downattr.component';
 import {EchartsBarDoubleModule} from '../../common/components/echart-bar-double/echarts-bar-double.module';
 import {EchartPieCircleAModule} from 'app/common/components/echart-pie-circle-a/echart-pie-circle-a.module';
+import {CountUpModule} from 'countup.js-angular2';
 
 @NgModule({
   imports: [
@@ -39,7 +40,8 @@ import {EchartPieCircleAModule} from 'app/common/components/echart-pie-circle-a/
     InputDropdownModule,
     DropdownModule,
     EchartsBarDoubleModule,
-    EchartPieCircleAModule
+    EchartPieCircleAModule,
+    CountUpModule
   ],
   declarations: [
     ServiceDataComponent,

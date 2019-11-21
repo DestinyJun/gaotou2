@@ -112,7 +112,7 @@
 .vehicle-amount>p>b{
   font-size: 1.1rem;
 }
-.vehicle-amount>p>span{
+/*.vehicle-amount>p>span{
   display: inline-block;
   width: 1.6vw;
   height: 5vh;
@@ -121,11 +121,13 @@
   text-align: center;
   margin-right: 0.3vw;
   background: #5095E0;
-}
+}*/
+/*
 .vehicle-amount>p>small{
   font-size: 1rem;
   color: white;
 }
+*/
 
 .vehicle-distribute{
   padding-top: 2vh;

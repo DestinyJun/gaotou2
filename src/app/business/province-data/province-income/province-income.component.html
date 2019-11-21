@@ -2,7 +2,12 @@
   <!--实时收入-->
   <div class="province-income-amount">
     <app-title-one [height]="'3vh'" [option]="{title: provinceName + '高速服务区实时收入'}"></app-title-one>
-    <app-number-show [option]="incomeAmount"></app-number-show>
+    <!--<app-number-show [option]="incomeAmount"></app-number-show>-->
+    <h2 [countUp]="incomeNumber" [options]="incomeNumberOption" style="text-align: center;
+    letter-spacing: 5px;
+    font-size: 2rem;
+    color: #05eff1;
+    font-weight: 900;">0</h2>
   </div>
   <!--收入占比-->
   <div class="province-income-pie">

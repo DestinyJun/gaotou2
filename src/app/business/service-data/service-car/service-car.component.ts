@@ -4,7 +4,7 @@ import {DatePipe} from '@angular/common';
 import {ServiceDataService} from '../../../common/services/service-data.service';
 import {environment} from '../../../../environments/environment';
 import {LocalStorageService} from '../../../common/services/local-storage.service';
-
+import { CountUpOptions } from 'countup.js';
 @Component({
   selector: 'app-service-car',
   templateUrl: './service-car.component.html',
@@ -16,6 +16,12 @@ export class ServiceCarComponent implements OnInit, OnChanges, OnDestroy {
   @Input() public esDate: any;  // 时间初始化
   /***********************基础信息************************/
   public vehicleAmountCountClean: any;
+  public carNumber: number;
+  public carNumberOption: CountUpOptions = {
+    useGrouping: false,
+    duration: 3,
+    suffix: '<small style="color: white;font-size: 1rem;">辆</small>'
+  };
   public carTimeSelect = [
     {name: '时', code: 'hour'},
     {name: '天', code: 'day'},
@@ -57,6 +63,7 @@ export class ServiceCarComponent implements OnInit, OnChanges, OnDestroy {
     this.serviceSrv.searchCarTotal({id: this.serviceId}).subscribe(
       (value) => {
         if (value.status === '200') {
+          this.carNumber = value.data;
           this.vehicleAmount = {
             number: value.data,
             units: '辆'

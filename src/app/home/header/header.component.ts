@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {LocalStorageService} from '../../common/services/local-storage.service';
 import {HttpClient} from '@angular/common/http';
+import { CountUpOptions } from 'countup.js';
 import {environment} from '../../../environments/environment';
 @Component({
   selector: 'app-header',
@@ -18,6 +19,11 @@ export class HeaderComponent implements OnInit {
   public serviceName: string;
   public serviceSearchListShow = false;
   public serviceSearchList = [];
+  public personNumber: number;
+  public personNumberOption: CountUpOptions = {
+    useGrouping: false,
+    duration: 3,
+  };
   // 弹窗
   public serviceZonePersonAlert = false;
   public cityPersonAlert = false;
@@ -57,6 +63,7 @@ export class HeaderComponent implements OnInit {
     });
     // 客流
     this.localService.persons.subscribe((value) => {
+      this.personNumber = parseInt(value.total.join(''), 10);
       this.persons = value;
     });
   }

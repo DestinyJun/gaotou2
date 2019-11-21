@@ -2,6 +2,7 @@ import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@an
 import {Router} from '@angular/router';
 import {CityDataService} from '../../../common/services/city-data.service';
 import {DatePipe} from '@angular/common';
+import { CountUpOptions } from 'countup.js';
 import {environment} from '../../../../environments/environment';
 
 @Component({
@@ -15,6 +16,12 @@ export class CityCarComponent implements OnInit, OnChanges, OnDestroy {
   @Input() public esDate: any;  // 时间初始化
   /***********************基础信息************************/
   public vehicleAmountCountClean: any;
+  public carNumber: number;
+  public carNumberOption: CountUpOptions = {
+    useGrouping: false,
+    duration: 3,
+    suffix: '<small style="color: white;font-size: 1rem;">辆</small>'
+  };
   // 车辆监控
   public vehicleAmount: any;
   public optionsCarModel: any; // 车辆饼状图
@@ -52,6 +59,7 @@ export class CityCarComponent implements OnInit, OnChanges, OnDestroy {
     this.citySrv.searchCarTotal({id: this.cityId}).subscribe(
       (value) => {
         if (value.status === '200') {
+          this.carNumber = value.data;
           this.vehicleAmount = {
             number: value.data,
             units: '辆'

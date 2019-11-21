@@ -28,7 +28,6 @@ export class EchartCrossbarComponent implements OnInit, OnChanges {
     const barData = [];
     const barArea = [];
     this.option.data.yAxis.map((val, index) => {
-      console.log(val.serviceAreaId);
       // if ()
       this.serviceZoneId.push(val);
       barArea.push(val.serviceName);

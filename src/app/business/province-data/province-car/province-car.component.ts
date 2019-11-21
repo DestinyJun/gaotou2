@@ -2,6 +2,7 @@ import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@an
 import {FinanceDataService} from '../../../common/services/finance-data.service';
 import {Router} from '@angular/router';
 import {DatePipe} from '@angular/common';
+import { CountUpOptions } from 'countup.js';
 import {environment} from '../../../../environments/environment';
 
 @Component({
@@ -15,6 +16,12 @@ export class ProvinceCarComponent implements OnInit, OnChanges, OnDestroy {
   @Input() public esDate: any;  // 时间初始化
   /***********************基础信息************************/
   public vehicleAmountCountClean: any;
+  public carNumber: number;
+  public carNumberOption: CountUpOptions = {
+    useGrouping: false,
+    duration: 3,
+    suffix: '<small style="color: white;font-size: 1rem;">辆</small>'
+  };
   // 车辆监控
   public vehicleAmount: any;
   public optionsCarModel: any; // 车辆饼状图
@@ -42,7 +49,7 @@ export class ProvinceCarComponent implements OnInit, OnChanges, OnDestroy {
     this.vehicleAmountCountClean = setInterval(() => {
       this.vehicleAmountCount();
       this.CarTypes();
-    }, 3000);
+    }, 5000);
   }
   ngOnDestroy(): void {
     clearInterval(this.vehicleAmountCountClean);
@@ -51,8 +58,8 @@ export class ProvinceCarComponent implements OnInit, OnChanges, OnDestroy {
   public vehicleAmountCount(): void {
     this.provinceSrv.searchCarTotal({id: this.provinceId}).subscribe(
       (value) => {
-        // console.log(value);
         if (value.status === '200') {
+          this.carNumber = value.data;
           this.vehicleAmount = {
             number: value.data,
             units: '辆'

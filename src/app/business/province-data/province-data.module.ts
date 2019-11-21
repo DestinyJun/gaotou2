@@ -21,7 +21,7 @@ import {EchartBarDoubleAModule} from '../../common/components/echart-bar-double-
 import {EchartPieCircleAModule} from '../../common/components/echart-pie-circle-a/echart-pie-circle-a.module';
 import {EchartsScatterAModule} from 'app/common/components/echarts-scatter-a/echarts-scatter-a.module';
 import {GtDialogAModule} from '../../common/components/gt-dialog-a/gt-dialog-a.module';
-
+import { CountUpModule } from 'countup.js-angular2';
 @NgModule({
   imports: [
     CommonModule,
@@ -39,7 +39,8 @@ import {GtDialogAModule} from '../../common/components/gt-dialog-a/gt-dialog-a.m
     EchartBarDoubleAModule,
     EchartPieCircleAModule,
     EchartsScatterAModule,
-    GtDialogAModule
+    GtDialogAModule,
+    CountUpModule
   ],
   declarations: [
     ProvinceDataComponent,

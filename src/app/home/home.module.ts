@@ -13,6 +13,7 @@ import {EchartNationaPersonModule, EchartProvincePersonModule} from '../common/w
 import {ScrollPanelModule} from 'primeng/primeng';
 import {SidebarModule} from 'primeng/sidebar';
 import {TreeModule} from 'primeng/tree';
+import {CountUpModule} from 'countup.js-angular2';
 @NgModule({
   imports: [
     CommonModule,
@@ -25,7 +26,8 @@ import {TreeModule} from 'primeng/tree';
     EchartProvincePersonModule,
     ScrollPanelModule,
     SidebarModule,
-    TreeModule
+    TreeModule,
+    CountUpModule
   ],
   declarations: [
     HomeComponent,

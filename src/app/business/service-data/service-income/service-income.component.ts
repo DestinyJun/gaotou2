@@ -3,6 +3,7 @@ import {Router} from '@angular/router';
 import {DatePipe} from '@angular/common';
 import {ServiceDataService} from '../../../common/services/service-data.service';
 import {environment} from '../../../../environments/environment';
+import { CountUpOptions } from 'countup.js';
 import {LocalStorageService} from '../../../common/services/local-storage.service';
 
 @Component({
@@ -22,6 +23,12 @@ export class ServiceIncomeComponent implements OnInit, OnChanges, OnDestroy {
     {name: '年', code: 'year'},
   ];
   public incomeAmountCountClean: any;
+  public incomeNumber: number;
+  public incomeNumberOption: CountUpOptions = {
+    useGrouping: false,
+    duration: 3,
+    suffix: '<small style="color: white;font-size: 1rem;">元</small>'
+  };
   // 收入监控
   public incomeAmount: any;
   public optionsIncomeModel: any;
@@ -64,6 +71,7 @@ export class ServiceIncomeComponent implements OnInit, OnChanges, OnDestroy {
     this.serviceSrv.searchIncomeTotal({id: this.serviceId}).subscribe(
       (value) => {
         if (value.status === '200') {
+          this.incomeNumber = value.data;
           this.incomeAmount = {
             number: value.data,
             units: '元'

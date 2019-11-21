@@ -2,6 +2,7 @@ import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@an
 import {FinanceDataService} from '../../../common/services/finance-data.service';
 import {Router} from '@angular/router';
 import {DatePipe} from '@angular/common';
+import { CountUpOptions } from 'countup.js';
 import {environment} from '../../../../environments/environment';
 
 @Component({
@@ -14,6 +15,12 @@ export class ProvinceIncomeComponent implements OnInit, OnChanges, OnDestroy {
   @Input() provinceName: any;
   @Input() esDate: any;
   public incomeAmountCountClean: any;
+  public incomeNumber: number;
+  public incomeNumberOption: CountUpOptions = {
+    useGrouping: false,
+    duration: 3,
+    suffix: '<small style="color: white;font-size: 1rem;">元</small>'
+  };
   // 收入监控
   public incomeAmount: any;
   public optionsIncomeModel: any;
@@ -41,7 +48,7 @@ export class ProvinceIncomeComponent implements OnInit, OnChanges, OnDestroy {
     this.incomeAmountCountClean = setInterval(() => {
       this.incomeAmountCount();
       this.IncomeTypes();
-    }, 3000);
+    }, 5000);
   }
   ngOnDestroy(): void {
     clearInterval(this.incomeAmountCountClean);
@@ -51,6 +58,7 @@ export class ProvinceIncomeComponent implements OnInit, OnChanges, OnDestroy {
     this.provinceSrv.searchIncomeTotal({id: this.provinceId}).subscribe(
       (value) => {
         if (value.status === '200') {
+          this.incomeNumber = value.data;
           this.incomeAmount = {
             number: value.data,
             units: '元'
