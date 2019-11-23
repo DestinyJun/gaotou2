@@ -13,7 +13,8 @@
     <div class="service-income-pie-title title text-center">
       <p>{{serviceName}}当日收入类型占比分析</p>
     </div>
-    <app-echart-pie [option]="optionsIncomeModel" [height]="'20vh'" (pieClick)="incomeClick($event)"></app-echart-pie>
+    <!--<app-echart-pie [option]="optionsIncomeModel" [height]="'20vh'" (pieClick)="incomeClick($event)"></app-echart-pie>-->
+    <app-echarts-ring-pie [option]="optionsIncomeModel" [height]="'20vh'" (pieClick)="incomeClick($event)"></app-echarts-ring-pie>
   </div>
   <!--收入类型弹窗-->
   <div class="bg-box" *ngIf="alertIncomeShow">

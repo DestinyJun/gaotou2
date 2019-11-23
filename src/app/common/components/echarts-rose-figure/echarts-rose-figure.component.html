@@ -1,0 +1,8 @@
+<div echarts autoResize
+   [ngStyle]="{'height': height}"
+   [options]="optionsRose"
+   (chartInit)="optionsRosePieInit($event)"
+   (chartClick)="optionsRosePieClick($event)"
+>
+</div>
+<!--[merge]="updateOptionsRose"-->

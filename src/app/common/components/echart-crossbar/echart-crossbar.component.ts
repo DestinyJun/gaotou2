@@ -33,6 +33,7 @@ export class EchartCrossbarComponent implements OnInit, OnChanges {
       barArea.push(val.serviceName);
     });
     // console.log(this.serviceZoneId);
+    // console.log(this.serviceZoneId);
     // console.log(this.option.data.yAxis);
     this.option.data.barDatas.map((val, index) => {
       barData.push(
@@ -51,6 +52,14 @@ export class EchartCrossbarComponent implements OnInit, OnChanges {
       );
     });
     this.crosswiseBar = {
+     /* title: {
+        text: this.option.title,
+        left: 'center',
+        textStyle: {
+          color: '#05EFF1',
+          fontSize: 14
+        }
+      },*/
       tooltip : {
         trigger: 'axis',
         axisPointer : {            // 坐标轴指示器，坐标轴触发有效
@@ -97,6 +106,9 @@ export class EchartCrossbarComponent implements OnInit, OnChanges {
           }
         },
       },
+      animation: true,
+      animationDuration: 4000,
+      animationDurationUpdate: 4000,
       series: barData
     };
   }

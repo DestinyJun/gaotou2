@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
 import {FinanceDataService} from '../../../common/services/finance-data.service';
 
 @Component({
@@ -6,9 +6,14 @@ import {FinanceDataService} from '../../../common/services/finance-data.service'
   templateUrl: './province-crosswise.component.html',
   styleUrls: ['./province-crosswise.component.less']
 })
-export class ProvinceCrosswiseComponent implements OnInit, OnChanges {
+export class ProvinceCrosswiseComponent implements OnInit,OnDestroy {
   @Input() provinceId: any;
   @Input() provinceName: any;
+  public provinceTimer: any;
+  public provinceTypes = ['revenue', 'vehicle', 'passenger'];
+  public provinceColor = ['#22C2F0', '#4AE2D5', '#CB427B'];
+  public provinceTitle = ['业态收入排名', '车流量排名', '客流量排名'];
+  public provinceNumber = 0;
   // 全国业态经营数据前十排名
   public crosswiseBar = {};
   public barStatus1 = true;
@@ -25,10 +30,17 @@ export class ProvinceCrosswiseComponent implements OnInit, OnChanges {
     private provinceSrv: FinanceDataService,
   ) { }
 
-  ngOnInit() {}
-  ngOnChanges(changes: SimpleChanges): void {
+  ngOnInit() {
     // 业态经营数据前十排名
     this.backCrosswiseBar('revenue');
+    this.provinceNumber = 1;
+    this.provinceTimer = setInterval(() => {
+      this.backCrosswiseBar(this.provinceTypes[this.provinceNumber]);
+      this.provinceNumber++;
+      if (this.provinceNumber === 3) {
+        this.provinceNumber = 0;
+      }
+    }, 5000);
   }
   // 业态经营数据前十排名相关操作
   public backCrosswiseBar(type): void {
@@ -42,9 +54,10 @@ export class ProvinceCrosswiseComponent implements OnInit, OnChanges {
               obj.splice(index + 1, 1);
             }
           });
+          value.data.barDatas = [value.data.barDatas[0]];
           this.crosswiseBar = {
             data: value.data,
-            color: ['#2307EF', '#3B78B1', '#04A6BB']
+            color: [this.provinceColor[this.provinceNumber]],
           };
         }
       }
@@ -78,5 +91,8 @@ export class ProvinceCrosswiseComponent implements OnInit, OnChanges {
   }
   public provinceDialogClose(event): void {
     this.crosswiseTitleDialog = false;
+  }
+  ngOnDestroy(): void {
+    clearInterval(this.provinceTimer);
   }
 }

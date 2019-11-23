@@ -20,6 +20,11 @@ export class ProvinceDataComponent implements OnInit, OnDestroy {
   public province: any;
   public city: any;
   public provinceId: any;
+  // 3D柱状图配置
+  public options3d: any;
+  public options3dCopy: any;
+  public optionsNumber = 0;
+  public optionTimer: any;
   constructor(
     private dataService: DataService,
     private router: Router,
@@ -58,9 +63,14 @@ export class ProvinceDataComponent implements OnInit, OnDestroy {
         }, 3000);
       }
     );
+    this.packOption3();
+    this.optionTimer = setInterval(() => {
+      this.packOption3();
+    }, 8000);
   }
   ngOnDestroy(): void {
     clearInterval(this.personAmountCountClean);
+    clearInterval(this.optionTimer);
   }
   public updataEcharts(): void {
     // 地图数据
@@ -133,5 +143,35 @@ export class ProvinceDataComponent implements OnInit, OnDestroy {
         // window.alert('此服务区暂无数据');
       }
     }
+  }
+
+  // 3D柱状图
+  public packOption3() {
+    const types1 = ['revenue', 'passenger', 'vehicle'];
+    const colors = ['#031845', '#00C800', '#eb64fb'];
+    const types2 = ['electric', 'water'];
+    // 车流客流人流
+    this.financeDataService.search3DBar({id: this.provinceId, parameter: [types1[this.optionsNumber]]}).subscribe(
+      (val) => {
+        if (val.status === '200') {
+          this.options3d = {
+            data: val.data,
+            color: colors[this.optionsNumber],
+          };
+        }
+      }
+    );
+    this.optionsNumber++;
+    if (this.optionsNumber >= types1.length) {
+      this.optionsNumber = 0;
+    }
+   /* // 用电量用水量
+    this.financeDataService.search3DBar({id: this.provinceId, parameter: ['electric']}).subscribe(
+      (val) => {
+        if (val.status === '200') {
+          this.options3dCopy = val.data;
+        }
+      }
+    );*/
   }
 }

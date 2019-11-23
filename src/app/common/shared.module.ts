@@ -17,6 +17,9 @@ import { EventOfficeComponent } from './components/event-office/event-office.com
 import { EventPersonComponent } from './components/event-person/event-person.component';
 import { EchartBmapComponent } from './components/echart-bmap/echart-bmap.component';
 import { EchartsCityBmapComponent } from './components/echarts-city-bmap/echarts-city-bmap.component';
+import { EchartsRoseFigureComponent } from './components/echarts-rose-figure/echarts-rose-figure.component';
+import { EchartsRingPieComponent } from './components/echarts-ring-pie/echarts-ring-pie.component';
+import { EchartsAreaChartComponent } from './components/echarts-area-chart/echarts-area-chart.component';
 @NgModule({
   declarations: [
     Echart3dComponent,
@@ -31,7 +34,10 @@ import { EchartsCityBmapComponent } from './components/echarts-city-bmap/echarts
     EventOfficeComponent,
     EventPersonComponent,
     EchartBmapComponent,
-    EchartsCityBmapComponent
+    EchartsCityBmapComponent,
+    EchartsRoseFigureComponent,
+    EchartsRingPieComponent,
+    EchartsAreaChartComponent
   ],
   imports: [
     CommonModule,
@@ -56,7 +62,10 @@ import { EchartsCityBmapComponent } from './components/echarts-city-bmap/echarts
     EventOfficeComponent,
     EventPersonComponent,
     EchartBmapComponent,
-    EchartsCityBmapComponent
+    EchartsCityBmapComponent,
+    EchartsRoseFigureComponent,
+    EchartsRingPieComponent,
+    EchartsAreaChartComponent
   ],
   providers: []
 })

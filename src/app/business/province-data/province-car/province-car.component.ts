@@ -85,6 +85,7 @@ export class ProvinceCarComponent implements OnInit, OnChanges, OnDestroy {
             total: '',
             color: ['#00CAE2', '#2307EF', '#4791D8']
           };
+          // console.log(this.optionsCarModel);
         }
       }
     );

@@ -14,7 +14,8 @@
     <div class="province-income-title title text-center">
       <p>{{provinceName}}高速服务区实时收入</p>
     </div>
-    <app-echart-pie [option]="optionsIncomeModel" [height]="'20vh'" (pieClick)="incomeClick($event)"></app-echart-pie>
+    <!--<app-echart-pie [option]="optionsIncomeModel" [height]="'20vh'" (pieClick)="incomeClick($event)"></app-echart-pie>-->
+    <app-echarts-ring-pie [option]="optionsIncomeModel" [height]="'20vh'" (pieClick)="incomeClick($event)"></app-echarts-ring-pie>
   </div>
   <!--弹窗-->
   <div class="bg-box" *ngIf="alertIncomeShow">

@@ -14,7 +14,8 @@
     <div class="province-vehicle-pie-title text-center">
       <p>{{provinceName}}当日车型分布类型占比</p>
     </div>
-    <app-echart-pie [option]="optionsCarModel" [height]="'20vh'" (pieClick)="parkClick($event)"></app-echart-pie>
+    <!--<app-echart-pie [option]="optionsCarModel" [height]="'20vh'" (pieClick)="parkClick($event)"></app-echart-pie>-->
+    <app-echarts-rose-figure [height]="'20vh'" [option]="optionsCarModel" (pieClick)="parkClick($event)"></app-echarts-rose-figure>
   </div>
   <!--车辆类型弹窗-->
   <div class="bg-box" *ngIf="alertCarShow">

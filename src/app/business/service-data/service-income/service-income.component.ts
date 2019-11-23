@@ -61,7 +61,7 @@ export class ServiceIncomeComponent implements OnInit, OnChanges, OnDestroy {
     this.incomeAmountCountClean = setInterval(() => {
       this.incomeAmountCount();
       this.IncomeTypes();
-    }, 3000);
+    }, 5000);
   }
   ngOnDestroy(): void {
     clearInterval(this.incomeAmountCountClean);

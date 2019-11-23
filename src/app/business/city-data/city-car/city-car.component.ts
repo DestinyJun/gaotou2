@@ -49,7 +49,7 @@ export class CityCarComponent implements OnInit, OnChanges, OnDestroy {
     this.vehicleAmountCountClean = setInterval(() => {
       this.vehicleAmountCount();
       this.CarTypes();
-    }, 3000);
+    }, 5000);
   }
   ngOnDestroy(): void {
     clearInterval(this.vehicleAmountCountClean);
