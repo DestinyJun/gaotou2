@@ -30,6 +30,9 @@ export class City3dComponent implements OnInit, OnChanges, OnDestroy {
   public video1: any;
   public video2: any;
   public timer: any;
+  public persons: any;
+  public personNumber = 1;
+  public personTitle = '全国';
   constructor(
     private router: Router,
     private cityDataSrv: CityDataService,
@@ -39,14 +42,26 @@ export class City3dComponent implements OnInit, OnChanges, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.videoChange();
+    // 客流
+    this.localService.persons.subscribe((value) => {
+      if (this.personNumber === 1) {
+        this.persons = value.province;
+        this.personNumber = 2;
+        this.personTitle = '全国';
+      } else {
+        this.persons = value.city;
+        this.personNumber = 1;
+        this.personTitle = '贵州省';
+      }
+    });
+    /*this.videoChange();
     this.localService.windowVideoShow.subscribe((value) => {
       if (value) {
         this.openInfoVideo();
       } else {
         this.closeInfoVideo();
       }
-    });
+    });*/
   }
   ngOnChanges(changes: SimpleChanges): void {
     this.packOption3();
@@ -228,7 +243,9 @@ export class City3dComponent implements OnInit, OnChanges, OnDestroy {
     this.video2 = videlUrls[number2];
     this.openInfoVideo();
   }
-
+  public personShow() {
+    this.localService.personsShow.next(true);
+  }
   ngOnDestroy(): void {
     clearInterval(this.timer);
   }

@@ -60,7 +60,7 @@ export class CityDataComponent implements OnInit, OnDestroy {
         // 实时数据
         this.personAmountCountClean = setInterval(() => {
           this.getPerson();
-        }, 3000);
+        }, 8000);
       }
     );
     this.packOption3();

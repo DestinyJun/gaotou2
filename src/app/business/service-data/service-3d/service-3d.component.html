@@ -1,7 +1,7 @@
 <!--3d柱状图-->
-<div class="province-3d">
-  <app-title-one [height]="'3vh'" [option]="{title: serviceName + '高速服务区业态数据3D统计图'}"></app-title-one>
-  <app-echart3d
+<div class="province-3d" (click)="personShow()">
+  <app-title-one [height]="'3vh'" [option]="{title: personTitle + '客流来源排名'}"></app-title-one>
+  <!--<app-echart3d
     [option]="options3d"
     [color]="['#9B90D5', '#46E7E2', '#78F991']"
     (outOptions3d)="onOutOptions3d($event)"
@@ -10,7 +10,8 @@
     [option]="options3dCopy"
     [color]="['#D06052', '#E29F39', '#2BB5F0']"
     (outOptions3d)="onOutOptions3d($event)"
-  ></app-echart3d>
+  ></app-echart3d>-->
+  <app-echarts-bar-tem [option]="persons"></app-echarts-bar-tem>
   <!--3D柱状图弹窗 -->
   <div class="province-3d-alert" *ngIf="alertBarShow">
     <div class="content">

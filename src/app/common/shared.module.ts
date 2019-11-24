@@ -21,6 +21,7 @@ import { EchartsRoseFigureComponent } from './components/echarts-rose-figure/ech
 import { EchartsRingPieComponent } from './components/echarts-ring-pie/echarts-ring-pie.component';
 import { EchartsAreaChartComponent } from './components/echarts-area-chart/echarts-area-chart.component';
 import { EchartsLineMoveComponent } from './components/echarts-line-move/echarts-line-move.component';
+import {EchartsBarTemComponent} from './components/echart-bar-tem/echarts-bar-tem.component';
 @NgModule({
   declarations: [
     Echart3dComponent,
@@ -39,7 +40,8 @@ import { EchartsLineMoveComponent } from './components/echarts-line-move/echarts
     EchartsRoseFigureComponent,
     EchartsRingPieComponent,
     EchartsAreaChartComponent,
-    EchartsLineMoveComponent
+    EchartsLineMoveComponent,
+    EchartsBarTemComponent
   ],
   imports: [
     CommonModule,
@@ -68,7 +70,8 @@ import { EchartsLineMoveComponent } from './components/echarts-line-move/echarts
     EchartsRoseFigureComponent,
     EchartsRingPieComponent,
     EchartsAreaChartComponent,
-    EchartsLineMoveComponent
+    EchartsLineMoveComponent,
+    EchartsBarTemComponent
   ],
   providers: []
 })

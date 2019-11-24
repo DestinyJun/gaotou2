@@ -1,6 +1,6 @@
 <!--3d柱状图-->
-<div class="province-3d">
-  <app-title-one [height]="'3vh'" [option]="{title: cityName + '服务区随机视频查看'}"></app-title-one>
+<div class="province-3d" (click)="personShow()">
+  <app-title-one [height]="'3vh'" [option]="{title: personTitle + '客流来源排名'}"></app-title-one>
   <!--<app-echart3d
     [option]="options3d"
     [color]="['#9B90D5', '#46E7E2', '#78F991']"
@@ -11,10 +11,11 @@
     [color]="['#D06052', '#E29F39']"
     (outOptions3d)="onOutOptions3d($event)"
   ></app-echart3d>-->
-  <div class="information-video">
+  <!--<div class="information-video">
     <div id="infoVideo1"></div>
     <div id="infoVideo2"></div>
-  </div>
+  </div>-->
+  <app-echarts-bar-tem [option]="persons"></app-echarts-bar-tem>
   <!--3D柱状图弹窗 -->
   <div class="province-3d-alert" *ngIf="alertBarShow">
     <div class="content">

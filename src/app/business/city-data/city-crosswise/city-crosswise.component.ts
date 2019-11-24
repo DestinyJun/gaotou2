@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
 import {CityDataService} from '../../../common/services/city-data.service';
 
 @Component({
@@ -6,11 +6,16 @@ import {CityDataService} from '../../../common/services/city-data.service';
   templateUrl: './city-crosswise.component.html',
   styleUrls: ['./city-crosswise.component.less']
 })
-export class CityCrosswiseComponent implements OnInit, OnChanges {
+export class CityCrosswiseComponent implements OnInit, OnChanges, OnDestroy {
   @Input() cityId: any;
   @Input() cityName: any;
+  public cityTimer: any;
+  public cityTypes = ['revenue', 'vehicle', 'passenger'];
+  public cityColor = ['#22C2F0', '#4AE2D5', '#CB427B'];
+  public cityTitle = ['业态收入排名', '车流量排名', '客流量排名'];
+  public cityNumber = 0;
   // 全国业态经营数据前十排名
-  public crosswiseBar = {};
+  public crosswiseBar: any;
   public barStatus1 = true;
   public barStatus2 = false;
   public barStatus3 = false;
@@ -25,7 +30,18 @@ export class CityCrosswiseComponent implements OnInit, OnChanges {
     private citySrv: CityDataService,
   ) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    // 业态经营数据前十排名
+    this.backCrosswiseBar('revenue');
+    this.cityNumber = 1;
+    this.cityTimer = setInterval(() => {
+      this.backCrosswiseBar(this.cityTypes[this.cityNumber]);
+      this.cityNumber++;
+      if (this.cityNumber === 3) {
+        this.cityNumber = 0;
+      }
+    }, 8000);
+  }
   ngOnChanges(changes: SimpleChanges): void {
     // 业态经营数据前十排名
     this.backCrosswiseBar('revenue');
@@ -42,9 +58,10 @@ export class CityCrosswiseComponent implements OnInit, OnChanges {
               obj.splice(index + 1, 1);
             }
           });
+          value.data.barDatas = [value.data.barDatas[0]];
           this.crosswiseBar = {
             data: value.data,
-            color: ['#2307EF', '#3B78B1', '#04A6BB']
+            color: [this.cityColor[this.cityNumber]],
           };
         }
       }
@@ -78,5 +95,8 @@ export class CityCrosswiseComponent implements OnInit, OnChanges {
   }
   public cityDialogClose(event): void {
     this.cityDialogShow = false;
+  }
+  ngOnDestroy(): void {
+    clearInterval(this.cityTimer);
   }
 }

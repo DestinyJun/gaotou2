@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {FinanceDataService} from '../../../common/services/finance-data.service';
 
 @Component({
@@ -6,7 +6,7 @@ import {FinanceDataService} from '../../../common/services/finance-data.service'
   templateUrl: './province-crosswise.component.html',
   styleUrls: ['./province-crosswise.component.less']
 })
-export class ProvinceCrosswiseComponent implements OnInit,OnDestroy {
+export class ProvinceCrosswiseComponent implements OnInit, OnDestroy {
   @Input() provinceId: any;
   @Input() provinceName: any;
   public provinceTimer: any;
@@ -15,7 +15,7 @@ export class ProvinceCrosswiseComponent implements OnInit,OnDestroy {
   public provinceTitle = ['业态收入排名', '车流量排名', '客流量排名'];
   public provinceNumber = 0;
   // 全国业态经营数据前十排名
-  public crosswiseBar = {};
+  public crosswiseBar: any;
   public barStatus1 = true;
   public barStatus2 = false;
   public barStatus3 = false;
@@ -40,7 +40,7 @@ export class ProvinceCrosswiseComponent implements OnInit,OnDestroy {
       if (this.provinceNumber === 3) {
         this.provinceNumber = 0;
       }
-    }, 5000);
+    }, 8000);
   }
   // 业态经营数据前十排名相关操作
   public backCrosswiseBar(type): void {

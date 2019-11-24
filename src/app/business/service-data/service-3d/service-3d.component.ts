@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {Router} from '@angular/router';
 import {LocalStorageService} from '../../../common/services/local-storage.service';
 import {DatePipe} from '@angular/common';
@@ -25,13 +25,29 @@ export class Service3dComponent implements OnInit, OnChanges {
   public bar3dExcelShow = false;  // 3D图统计的表格导出
   public startTime3d: Date; // 时间选择器
   public endTime3d: Date; // 时间选择器
+  public persons: any;
+  public personNumber = 1;
+  public personTitle = '全国';
   constructor(
     private router: Router,
     private serviceDataSrv: ServiceDataService,
     private localService: LocalStorageService,
     private datePipe: DatePipe,
   ) { }
-  ngOnInit() {}
+  ngOnInit() {
+    // 客流
+    this.localService.persons.subscribe((value) => {
+      if (this.personNumber === 1) {
+        this.persons = value.province;
+        this.personNumber = 2;
+        this.personTitle = '全国';
+      } else {
+        this.persons = value.city;
+        this.personNumber = 1;
+        this.personTitle = '贵州省';
+      }
+    });
+  }
   ngOnChanges(changes: SimpleChanges): void {
     this.packOption3();
   }
@@ -114,7 +130,9 @@ export class Service3dComponent implements OnInit, OnChanges {
     this.alertBarShow = false;
     document.body.className = '';
   }
-
+  public personShow() {
+    this.localService.personsShow.next(true);
+  }
   public bar3dExportClick() {
     const startTime = this.datePipe.transform(this.startTime3d, 'yyyyMMdd');
     const endTime = this.datePipe.transform(this.endTime3d, 'yyyyMMdd');

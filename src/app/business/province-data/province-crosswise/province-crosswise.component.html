@@ -2,7 +2,7 @@
   <app-title-one
     (click)="provinceDialogOpen($event)"
     [height]="'3vh'"
-    [option]="{title: provinceName + provinceTitle[provinceNumber]}"></app-title-one>
+    [option]="{title: provinceName + '服务区'+ crosswiseBar?.data?.barDatas[0].title+ 'TOP10'}"></app-title-one>
  <!-- <div class="crosswise-btn text-center" (click)="clickBtn($event)">
     <span [ngStyle]="{'background': barStatus1?'#1F0BC4': '#27375B'}">业态收入/万元</span>
     <span [ngStyle]="{'background': barStatus2?'#1F0BC4': '#3B78B1'}">车流量/辆</span>

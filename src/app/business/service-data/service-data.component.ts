@@ -116,7 +116,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
     // 实时客流
     this.personAmountCountClean = setInterval(() => {
       this.getPerson();
-    }, 3000);
+    }, 8000);
     // 实时店铺信息
     this.incomeShopInfoClean = setInterval(() => {
       this.backCenterDate();

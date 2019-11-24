@@ -19,12 +19,12 @@ export class EchartCrossbarComponent implements OnInit, OnChanges {
 
   ngOnInit() {}
   ngOnChanges(changes: SimpleChanges): void {
-    if (JSON.stringify(this.option) !== '{}') {
-      this.backCrosswiseBar('revenue');
+    if (this.option) {
+      this.backCrosswiseBar();
     }
   }
   // 统计图渲染
-  public backCrosswiseBar(type) {
+  public backCrosswiseBar() {
     const barData = [];
     const barArea = [];
     this.option.data.yAxis.map((val, index) => {

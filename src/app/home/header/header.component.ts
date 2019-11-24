@@ -66,6 +66,10 @@ export class HeaderComponent implements OnInit {
       this.personNumber = parseInt(value.total.join(''), 10);
       this.persons = value;
     });
+    // 客流
+    this.localService.personsShow.subscribe((value) => {
+      this.cityPersonAlert = true;
+    });
   }
   public serviceSearchChange(e): void {
     if (e.keyCode === 13) {
@@ -114,7 +118,7 @@ export class HeaderComponent implements OnInit {
   public closePersonAlert() {
       this.serviceZonePersonAlert = false;
       this.cityPersonAlert = false;
-    this.localService.windowVideoShow.next(true);
+      this.localService.windowVideoShow.next(true);
       this.localService.videoShow.next(this.cityPersonAlert);
   }
 }
