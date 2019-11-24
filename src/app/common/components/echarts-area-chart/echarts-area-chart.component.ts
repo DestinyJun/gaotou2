@@ -54,20 +54,20 @@ export class EchartsAreaChartComponent implements OnInit, OnChanges, OnDestroy {
           margin: 30,
           color: '#01FFFF'
         },
-        axisLine: {
-          show: false
-        },
         axisTick: {
           show: true,
           length: 25,
           lineStyle: {
-            color: '#ffffff1f'
+            color: 'rgba(255,255,255,0.1)'
           }
+        },
+        axisLine: {
+          show: false
         },
         splitLine: {
           show: true,
           lineStyle: {
-            color: '#ffffff1f'
+            color: 'rgba(255,255,255,0.1)'
           }
         }
       },
@@ -78,18 +78,17 @@ export class EchartsAreaChartComponent implements OnInit, OnChanges, OnDestroy {
           margin: 20,
           color: '#01FFFF'
         },
-
         axisTick: {
           show: true,
           length: 15,
           lineStyle: {
-            color: '#ffffff1f',
+            color: 'rgba(255,255,255,0.1)'
           }
         },
         splitLine: {
           show: true,
           lineStyle: {
-            color: '#ffffff1f'
+            color: 'rgba(255,255,255,0.1)'
           }
         },
         axisLine: {
@@ -139,7 +138,7 @@ export class EchartsAreaChartComponent implements OnInit, OnChanges, OnDestroy {
               },
                 {
                   offset: 1,
-                  color: '#3fbbff0d'
+                  color: '#5F6679'
                 }
               ], false),
             }

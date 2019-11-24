@@ -92,7 +92,7 @@ export class NavComponent implements OnInit {
          }]
      }*/
   ];
-  public navDirection = 'right';
+  public navDirection = 'left';
   selectedFile: TreeNode;
   public visibleSidebar2: true;
   public urlList: any;
@@ -137,10 +137,10 @@ export class NavComponent implements OnInit {
   ngOnInit() {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
-        if (event.url.includes('/home/serzon')) {
-          this.navDirection = 'left';
-        } else {
+        if (event.url.includes('/home/camera')) {
           this.navDirection = 'right';
+        } else {
+          this.navDirection = 'left';
         }
       }
       });

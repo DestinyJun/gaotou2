@@ -132,6 +132,7 @@ export class Service3dComponent implements OnInit, OnChanges {
   }
   public personShow() {
     this.localService.personsShow.next(true);
+    this.localService.windowVideoShow.next(false);
   }
   public bar3dExportClick() {
     const startTime = this.datePipe.transform(this.startTime3d, 'yyyyMMdd');
