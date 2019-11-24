@@ -20,6 +20,7 @@ import { EchartsCityBmapComponent } from './components/echarts-city-bmap/echarts
 import { EchartsRoseFigureComponent } from './components/echarts-rose-figure/echarts-rose-figure.component';
 import { EchartsRingPieComponent } from './components/echarts-ring-pie/echarts-ring-pie.component';
 import { EchartsAreaChartComponent } from './components/echarts-area-chart/echarts-area-chart.component';
+import { EchartsLineMoveComponent } from './components/echarts-line-move/echarts-line-move.component';
 @NgModule({
   declarations: [
     Echart3dComponent,
@@ -37,7 +38,8 @@ import { EchartsAreaChartComponent } from './components/echarts-area-chart/echar
     EchartsCityBmapComponent,
     EchartsRoseFigureComponent,
     EchartsRingPieComponent,
-    EchartsAreaChartComponent
+    EchartsAreaChartComponent,
+    EchartsLineMoveComponent
   ],
   imports: [
     CommonModule,
@@ -65,7 +67,8 @@ import { EchartsAreaChartComponent } from './components/echarts-area-chart/echar
     EchartsCityBmapComponent,
     EchartsRoseFigureComponent,
     EchartsRingPieComponent,
-    EchartsAreaChartComponent
+    EchartsAreaChartComponent,
+    EchartsLineMoveComponent
   ],
   providers: []
 })

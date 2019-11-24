@@ -31,7 +31,7 @@ export class EchartsAreaChartComponent implements OnInit, OnChanges, OnDestroy {
     });
     this.areaChart = {
       title: {
-        text: `年度${this.option.data.yData[0]}走势统计`,
+        text: `${this.option.title}年度${this.option.data.yData[0]}走势统计`,
         left: 'center',
         top: '2%',
         textStyle: {

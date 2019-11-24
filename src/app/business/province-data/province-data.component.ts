@@ -24,6 +24,7 @@ export class ProvinceDataComponent implements OnInit, OnDestroy {
   public options3d: any;
   public options3dCopy: any;
   public optionsNumber = 0;
+  public optionsNumberCopy = 0;
   public optionTimer: any;
   constructor(
     private dataService: DataService,
@@ -64,8 +65,10 @@ export class ProvinceDataComponent implements OnInit, OnDestroy {
       }
     );
     this.packOption3();
+    this.packOption3Copy();
     this.optionTimer = setInterval(() => {
       this.packOption3();
+      this.packOption3Copy();
     }, 8000);
   }
   ngOnDestroy(): void {
@@ -149,7 +152,6 @@ export class ProvinceDataComponent implements OnInit, OnDestroy {
   public packOption3() {
     const types1 = ['revenue', 'passenger', 'vehicle'];
     const colors = ['#031845', '#00C800', '#eb64fb'];
-    const types2 = ['electric', 'water'];
     // 车流客流人流
     this.financeDataService.search3DBar({id: this.provinceId, parameter: [types1[this.optionsNumber]]}).subscribe(
       (val) => {
@@ -157,6 +159,7 @@ export class ProvinceDataComponent implements OnInit, OnDestroy {
           this.options3d = {
             data: val.data,
             color: colors[this.optionsNumber],
+            title: this.dataToggle
           };
         }
       }
@@ -165,13 +168,23 @@ export class ProvinceDataComponent implements OnInit, OnDestroy {
     if (this.optionsNumber >= types1.length) {
       this.optionsNumber = 0;
     }
-   /* // 用电量用水量
-    this.financeDataService.search3DBar({id: this.provinceId, parameter: ['electric']}).subscribe(
+  }
+  public packOption3Copy() {
+    const typesCopy = ['electric', 'water'];
+    // 用电量用水量
+    this.financeDataService.search3DBar({id: this.provinceId, parameter: [typesCopy[this.optionsNumberCopy]]}).subscribe(
       (val) => {
         if (val.status === '200') {
-          this.options3dCopy = val.data;
+          this.options3dCopy = {
+            data: val.data,
+            title: this.dataToggle
+          };
         }
       }
-    );*/
+    );
+    this.optionsNumberCopy++;
+    if (this.optionsNumberCopy >= typesCopy.length) {
+      this.optionsNumberCopy = 0;
+    }
   }
 }

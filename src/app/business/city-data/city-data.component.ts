@@ -18,6 +18,13 @@ export class CityDataComponent implements OnInit, OnDestroy {
   // 省市联动
   public dataToggle: string;
   public cityId: any;
+  public provinceId: any;
+  // 3D柱状图配置
+  public options3d: any;
+  public options3dCopy: any;
+  public optionsNumber = 0;
+  public optionsNumberCopy = 0;
+  public optionTimer: any;
   constructor(
     private dataService: DataService,
     private router: Router,
@@ -56,9 +63,16 @@ export class CityDataComponent implements OnInit, OnDestroy {
         }, 3000);
       }
     );
+    this.packOption3();
+    this.packOption3Copy();
+    this.optionTimer = setInterval(() => {
+      this.packOption3();
+      this.packOption3Copy();
+    }, 8000);
   }
   ngOnDestroy(): void {
     clearInterval(this.personAmountCountClean);
+    clearInterval(this.optionTimer);
   }
 
   /*********************************数据初始化*****************************/
@@ -125,6 +139,45 @@ export class CityDataComponent implements OnInit, OnDestroy {
         this.router.navigate(['/home/serzone', {id: 28, name: param.areaName}]);
         // window.alert('此服务区暂无数据');
       }
+    }
+  }
+  // 3D柱状图
+  public packOption3() {
+    const types1 = ['revenue', 'passenger', 'vehicle'];
+    const colors = ['#031845', '#00C800', '#eb64fb'];
+    // 车流客流人流
+    this.cityDataService.search3DBar({id: this.cityId, parameter: [types1[this.optionsNumber]]}).subscribe(
+      (val) => {
+        if (val.status === '200') {
+          this.options3d = {
+            data: val.data,
+            color: colors[this.optionsNumber],
+            title: this.dataToggle
+          };
+        }
+      }
+    );
+    this.optionsNumber++;
+    if (this.optionsNumber >= types1.length) {
+      this.optionsNumber = 0;
+    }
+  }
+  public packOption3Copy() {
+    const typesCopy = ['electric', 'water'];
+    // 用电量用水量
+    this.cityDataService.search3DBar({id: this.cityId, parameter: [typesCopy[this.optionsNumberCopy]]}).subscribe(
+      (val) => {
+        if (val.status === '200') {
+          this.options3dCopy = {
+            data: val.data,
+            title: this.dataToggle
+          };
+        }
+      }
+    );
+    this.optionsNumberCopy++;
+    if (this.optionsNumberCopy >= typesCopy.length) {
+      this.optionsNumberCopy = 0;
     }
   }
 }

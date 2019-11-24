@@ -1,7 +1,7 @@
 <!--3d柱状图-->
 <div class="province-3d">
-  <app-title-one [height]="'3vh'" [option]="{title: cityName + '高速服务区业态数据3D统计图'}"></app-title-one>
-  <app-echart3d
+  <app-title-one [height]="'3vh'" [option]="{title: cityName + '服务区随机视频查看'}"></app-title-one>
+  <!--<app-echart3d
     [option]="options3d"
     [color]="['#9B90D5', '#46E7E2', '#78F991']"
     (outOptions3d)="onOutOptions3d($event)"
@@ -10,7 +10,11 @@
     [option]="options3dCopy"
     [color]="['#D06052', '#E29F39']"
     (outOptions3d)="onOutOptions3d($event)"
-  ></app-echart3d>
+  ></app-echart3d>-->
+  <div class="information-video">
+    <div id="infoVideo1"></div>
+    <div id="infoVideo2"></div>
+  </div>
   <!--3D柱状图弹窗 -->
   <div class="province-3d-alert" *ngIf="alertBarShow">
     <div class="content">

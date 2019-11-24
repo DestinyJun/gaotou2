@@ -21,12 +21,14 @@
         <div class="city-center-echart">
           <div class="col-lg-6 col-md-6">
             <div class="echart-bar">
-              <app-echarts-bar-double [title]="'市级速公路/客流统计'"></app-echarts-bar-double>
+              <!--<app-echarts-bar-double [title]="'市级速公路/客流统计'"></app-echarts-bar-double>-->
+              <app-echarts-area-chart [height]="'height: 34vh;'" [option]="options3d"></app-echarts-area-chart>
             </div>
           </div>
           <div class="col-lg-6 col-md-6" [title]="'市级突发事件处理概况'">
             <div class="echart-circle">
-              <app-echart-pie-circle-a></app-echart-pie-circle-a>
+              <!--<app-echart-pie-circle-a></app-echart-pie-circle-a>-->
+              <app-echarts-line-move [height]="'height: 34vh;'" [option]="options3dCopy"></app-echarts-line-move>
             </div>
           </div>
         </div>

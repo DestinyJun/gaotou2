@@ -40,12 +40,14 @@
         <div class="echart">
           <div class="col-lg-3-6 col-md-6">
             <div class="echart-bar">
-              <app-echarts-bar-double [title]="'服务区速公路/客流统计'"></app-echarts-bar-double>
+              <!--<app-echarts-bar-double [title]="'服务区速公路/客流统计'"></app-echarts-bar-double>-->
+              <app-echarts-area-chart [height]="'height: 34vh;'" [option]="options3d"></app-echarts-area-chart>
             </div>
           </div>
           <div class="col-lg-3-6 col-md-6">
             <div class="echart-circle">
-              <app-echart-pie-circle-a [title]="'服务区突发事件处理概况'"></app-echart-pie-circle-a>
+              <!--<app-echart-pie-circle-a [title]="'服务区突发事件处理概况'"></app-echart-pie-circle-a>-->
+              <app-echarts-line-move [height]="'height: 34vh;'" [option]="options3dCopy"></app-echarts-line-move>
             </div>
           </div>
         </div>

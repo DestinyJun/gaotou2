@@ -38,6 +38,12 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
   public incomeBottomData: any;
   public publicTopVideoGroup = [];
   public publicBottomVideoGroup = [];
+  // 3D柱状图配置
+  public options3d: any;
+  public options3dCopy: any;
+  public optionsNumber = 0;
+  public optionsNumberCopy = 0;
+  public optionTimer: any;
   constructor(
     private fb: FormBuilder,
     private routerInfo: ActivatedRoute,
@@ -92,6 +98,12 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
         this.upData();
       }
     );
+    this.packOption3();
+    this.packOption3Copy();
+    this.optionTimer = setInterval(() => {
+      this.packOption3();
+      this.packOption3Copy();
+    }, 8000);
   }
 
   ngOnDestroy(): void {
@@ -218,5 +230,44 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       }
     }
     return car;
+  }
+  // 3D柱状图
+  public packOption3() {
+    const types1 = ['revenue', 'passenger', 'vehicle'];
+    const colors = ['#031845', '#00C800', '#eb64fb'];
+    // 车流客流人流
+    this.serareaService.search3DBar({id: this.serviceZoneID, parameter: [types1[this.optionsNumber]]}).subscribe(
+      (val) => {
+        if (val.status === '200') {
+          this.options3d = {
+            data: val.data,
+            color: colors[this.optionsNumber],
+            title: this.serviceZoneTitle
+          };
+        }
+      }
+    );
+    this.optionsNumber++;
+    if (this.optionsNumber >= types1.length) {
+      this.optionsNumber = 0;
+    }
+  }
+  public packOption3Copy() {
+    const typesCopy = ['electric', 'water'];
+    // 用电量用水量
+    this.serareaService.search3DBar({id: this.serviceZoneID, parameter: [typesCopy[this.optionsNumberCopy]]}).subscribe(
+      (val) => {
+        if (val.status === '200') {
+          this.options3dCopy = {
+            data: val.data,
+            title: this.serviceZoneTitle
+          };
+        }
+      }
+    );
+    this.optionsNumberCopy++;
+    if (this.optionsNumberCopy >= typesCopy.length) {
+      this.optionsNumberCopy = 0;
+    }
   }
 }

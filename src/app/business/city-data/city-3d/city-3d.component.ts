@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
 import {Router} from '@angular/router';
 import {LocalStorageService} from '../../../common/services/local-storage.service';
 import {DatePipe} from '@angular/common';
@@ -11,7 +11,7 @@ import {environment} from '../../../../environments/environment';
   templateUrl: './city-3d.component.html',
   styleUrls: ['./city-3d.component.less']
 })
-export class City3dComponent implements OnInit, OnChanges {
+export class City3dComponent implements OnInit, OnChanges, OnDestroy {
   @Input() public cityId: any;
   @Input() public cityName: any;
   @Input() public esDate: any;  // 时间初始化
@@ -26,6 +26,10 @@ export class City3dComponent implements OnInit, OnChanges {
   public bar3dExcelShow = false;  // 3D图统计的表格导出
   public startTime3d: Date; // 时间选择器
   public endTime3d: Date; // 时间选择器
+  // 视频配置
+  public video1: any;
+  public video2: any;
+  public timer: any;
   constructor(
     private router: Router,
     private cityDataSrv: CityDataService,
@@ -34,7 +38,16 @@ export class City3dComponent implements OnInit, OnChanges {
     private exampleService: ExampleDataService
   ) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.videoChange();
+    this.localService.windowVideoShow.subscribe((value) => {
+      if (value) {
+        this.openInfoVideo();
+      } else {
+        this.closeInfoVideo();
+      }
+    });
+  }
   ngOnChanges(changes: SimpleChanges): void {
     this.packOption3();
   }
@@ -126,5 +139,97 @@ export class City3dComponent implements OnInit, OnChanges {
     } else {
       window.alert('请把数据选择全在提交');
     }
+  }
+  // 视频加载与清空
+  public openInfoVideo(): void {
+    const infoVideo1Url = `
+       <object classid="clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921"
+            id="infoVideo1Url" codebase="" width="100%" height="100%" events="True">
+        <param name="mrl" value=""/>
+        <param name="src" value=""/>
+        <param name="controls" value="false"/>
+        <param name="ShowDisplay" value="true"/>
+        <param name="AutoLoop" value="false"/>
+        <param name="autoplay" value="true"/>
+        <param name="Time" value="True"/>
+        <param name='volume' value='1'/>
+        <param value="transparent" name="wmode">
+        <embed pluginspage="http://www.videolan.org"
+               type="application/x-vlc-plugin"
+               version="VideoLAN.VLCPlugin.2"
+               width="100%"
+               height="100%"
+               volume="false"
+               controls="false"
+               text="Waiting for video"
+               name="infoVideo1Url"
+        />
+    </object>
+      `;
+    const infoVideo2Url = `
+       <object classid="clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921"
+            id="infoVideo1Ur2" codebase="" width="100%" height="100%" events="True">
+        <param name="mrl" value=""/>
+        <param name="src" value=""/>
+        <param name="controls" value="false"/>
+        <param name="ShowDisplay" value="true"/>
+        <param name="AutoLoop" value="false"/>
+        <param name="autoplay" value="true"/>
+        <param name="Time" value="True"/>
+        <param name='volume' value='0'/>
+        <param value="transparent" name="wmode">
+        <embed pluginspage="http://www.videolan.org"
+               type="application/x-vlc-plugin"
+               version="VideoLAN.VLCPlugin.2"
+               width="100%"
+               height="100%"
+               volume="false"
+               controls="false"
+               text="Waiting for video"
+               name="infoVideo1Ur2"
+        />
+    </object>
+      `;
+    setTimeout(() => {
+      document.getElementById('infoVideo1').innerHTML = infoVideo1Url;
+      document.getElementById('infoVideo2').innerHTML = infoVideo2Url;
+      setTimeout(() => {
+        const options = ['rtsp-tcp=true', ' network-caching=500'];
+        // 视频1
+        const vlc1 = window.document[`infoVideo1Url`];
+        const mrl1 = this.video1;
+        const itemIda = vlc1['playlist'].add(mrl1, 'asd', options);
+        vlc1['playlist'].playItem(itemIda);
+        // 视频2
+        const vlc2 = window.document[`infoVideo1Ur2`];
+        const mrl2 = this.video2;
+        const itemIdb = vlc2['playlist'].add(mrl2, 'asd', options);
+        vlc2['playlist'].playItem(itemIdb);
+      }, 100);
+    }, 100);
+  }
+  public closeInfoVideo(): void {
+    document.getElementById('infoVideo1').innerHTML = '';
+    document.getElementById('infoVideo2').innerHTML = '';
+  }
+  public videoChange() {
+    const videlUrls = [
+      'rtsp://admin:Hik12345+@117.187.60.146:563',
+      'rtsp://admin:Hik12345+@117.187.60.146:558',
+      'rtsp://admin:Hik12345+@117.187.60.146:561',
+      'rtsp://admin:Hik12345+@117.187.60.146:569',
+      'rtsp://admin:Hik12345+@117.187.60.146:571',
+      'rtsp://admin:Hik12345+@117.187.60.138:564',
+      'rtsp://admin:a12345678@117.187.60.138:617'
+    ];
+    const number1 = Math.floor(Math.random() * (6));
+    const number2 = Math.floor(Math.random() * (6));
+    this.video1 = videlUrls[number1];
+    this.video2 = videlUrls[number2];
+    this.openInfoVideo();
+  }
+
+  ngOnDestroy(): void {
+    clearInterval(this.timer);
   }
 }
