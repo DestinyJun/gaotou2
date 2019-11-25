@@ -1,0 +1,128 @@
+<div class="event-list">
+  <table class="table">
+    <!--<caption>Optional table caption.</caption>-->
+    <thead>
+    <tr>
+      <th>#</th>
+      <th>事件</th>
+      <th>状态</th>
+      <th>日期</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <th scope="row">1</th>
+      <td>车辆卡口无数据传输..</td>
+      <td><button pButton type="button" label="处理中" class="ui-button-warning"></button></td>
+      <td>2019-11-09 12:21</td>
+    </tr>
+    <tr>
+      <th scope="row">2</th>
+      <td>德克士收银设备不能联网...</td>
+      <td><button pButton type="button" label="未处理" class="ui-button-danger"></button></td>
+      <td>2019-10-17 09:21</td>
+    </tr>
+    <tr>
+      <th scope="row">3</th>
+      <td>小圆满前台摄像头损坏...</td>
+      <td><button pButton type="button" label="已处理" class="ui-button-success"></button></td>
+      <td>2019-08-23 15:33</td>
+    </tr>
+    <tr>
+      <th scope="row">3</th>
+      <td>广场卫生持续检查...</td>
+      <td><button pButton type="button" label="跟进中" class="ui-button-info"></button></td>
+      <td>2019-08-19 09:03</td>
+    </tr>
+    </tbody>
+  </table>
+  <div class="btn-group">
+    <button pButton type="button" label="用电状况" class="ui-button-danger" (click)="closeEventShow()"></button>
+    <!--<button pButton type="button" label="用电状况" class="ui-button-info" style="background: #6C757D;border-color: #6C757D"></button>-->
+    <button pButton type="button" label="用水状况" (click)="closeEventShow()"></button>
+    <button pButton type="button" label="设备运行状况" class="ui-button-success" (click)="closeEventShow()"></button>
+    <button pButton type="button" label="排污状况" class="ui-button-warning" (click)="closeEventShow()"></button>
+    <!--<button pButton type="button" label="设备工程类事件" class="ui-button-danger" style="background: #17A2B8;border-color: #17A2B8"></button>-->
+  </div>
+  <!--<div class="weui-cells">
+    <div class="weui-cell weui-cell_access" style="background-color: rgba(233,18,36,0.3);">
+      <div class="weui-cell__bd">
+        <span style="vertical-align: middle">阿花服务区酒店起火...</span>
+        <span class="weui-badge" style="margin-left: 5px;background-color: #F43530;">总部</span>
+      </div>
+      <div class="weui-cell__ft"></div>
+    </div>
+    <div class="weui-cell weui-cell_access" style="background-color: rgba(136,72,152,0.3);">
+      <div class="weui-cell__bd">
+        <span style="vertical-align: middle">阿妹服务区门口有人打架...</span>
+        <span class="weui-badge" style="margin-left: 5px;background-color: #884898;">片区</span>
+      </div>
+      <div class="weui-cell__ft"></div>
+    </div>
+    <div class="weui-cell weui-cell_access" style="background-color: rgba(255,186,1,0.3);">
+      <div class="weui-cell__bd">
+        <span style="vertical-align: middle">久长服务区水管爆了...</span>
+        <span class="weui-badge" style="margin-left: 5px;background-color: #FFBA01;">服务区</span>
+      </div>
+      <div class="weui-cell__ft"></div>
+    </div>
+    <div class="weui-cell weui-cell_access" style="background-color: rgba(233,18,36,0.3);">
+      <div class="weui-cell__bd">
+        <span style="vertical-align: middle">阿花服务区酒店起火...</span>
+        <span class="weui-badge" style="margin-left: 5px;background-color: #F43530;">总部</span>
+      </div>
+      <div class="weui-cell__ft"></div>
+    </div>
+    <div class="weui-cell weui-cell_access" style="background-color: rgba(136,72,152,0.3);">
+      <div class="weui-cell__bd">
+        <span style="vertical-align: middle">阿妹服务区门口有人打架...</span>
+        <span class="weui-badge" style="margin-left: 5px;background-color: #884898;">片区</span>
+      </div>
+      <div class="weui-cell__ft"></div>
+    </div>
+    <div class="weui-cell weui-cell_access" style="background-color: rgba(255,186,1,0.3);">
+      <div class="weui-cell__bd">
+        <span style="vertical-align: middle">久长服务区水管爆了...</span>
+        <span class="weui-badge" style="margin-left: 5px;background-color: #FFBA01;">服务区</span>
+      </div>
+      <div class="weui-cell__ft"></div>
+    </div>
+    <div class="weui-cell weui-cell_access" style="background-color: rgba(233,18,36,0.3);">
+      <div class="weui-cell__bd">
+        <span style="vertical-align: middle">阿花服务区酒店起火...</span>
+        <span class="weui-badge" style="margin-left: 5px;background-color: #F43530;">总部</span>
+      </div>
+      <div class="weui-cell__ft"></div>
+    </div>
+    <div class="weui-cell weui-cell_access" style="background-color: rgba(136,72,152,0.3);">
+      <div class="weui-cell__bd">
+        <span style="vertical-align: middle">阿妹服务区门口有人打架...</span>
+        <span class="weui-badge" style="margin-left: 5px;background-color: #884898;">片区</span>
+      </div>
+      <div class="weui-cell__ft"></div>
+    </div>
+    <div class="weui-cell weui-cell_access" style="background-color: rgba(255,186,1,0.3);">
+      <div class="weui-cell__bd">
+        <span style="vertical-align: middle">久长服务区水管爆了...</span>
+        <span class="weui-badge" style="margin-left: 5px;background-color: #FFBA01;">服务区</span>
+      </div>
+      <div class="weui-cell__ft"></div>
+    </div>
+  </div>-->
+  <!--3D柱状图弹窗 -->
+  <div class="province-3d-alert" *ngIf="eventShow">
+    <div class="content">
+      <div class="header">
+        <span class="title pull-left">{{eventTitle}}</span>
+        <div class="closex pull-right" (click)="closeEventHide()">
+          <i class="fa fa-window-close " aria-hidden="true"></i>
+        </div>
+      </div>
+      <div class="row charts">
+        <h3 class="text-center">
+          待开发中，敬请期待.....
+        </h3>
+      </div>
+    </div>
+  </div>
+</div>

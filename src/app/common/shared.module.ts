@@ -22,6 +22,7 @@ import { EchartsRingPieComponent } from './components/echarts-ring-pie/echarts-r
 import { EchartsAreaChartComponent } from './components/echarts-area-chart/echarts-area-chart.component';
 import { EchartsLineMoveComponent } from './components/echarts-line-move/echarts-line-move.component';
 import {EchartsBarTemComponent} from './components/echart-bar-tem/echarts-bar-tem.component';
+import {ManagerEventComponent} from './components/manager-event/manager-event.component';
 @NgModule({
   declarations: [
     Echart3dComponent,
@@ -41,7 +42,8 @@ import {EchartsBarTemComponent} from './components/echart-bar-tem/echarts-bar-te
     EchartsRingPieComponent,
     EchartsAreaChartComponent,
     EchartsLineMoveComponent,
-    EchartsBarTemComponent
+    EchartsBarTemComponent,
+    ManagerEventComponent
   ],
   imports: [
     CommonModule,
@@ -71,7 +73,8 @@ import {EchartsBarTemComponent} from './components/echart-bar-tem/echarts-bar-te
     EchartsRingPieComponent,
     EchartsAreaChartComponent,
     EchartsLineMoveComponent,
-    EchartsBarTemComponent
+    EchartsBarTemComponent,
+    ManagerEventComponent
   ],
   providers: []
 })
