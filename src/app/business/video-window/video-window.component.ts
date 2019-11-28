@@ -179,7 +179,6 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
   }
   // 视频初始化
   public videoInitialize (item): void {
-    console.log(item);
     for (let i = 0; i < item.length; i++) {
       if (item[i].showLocation === 1) {
         this.videoRecord[0] = item[i].id;
@@ -329,8 +328,6 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
   }
   // 上下行树数据格式化
   public initializeSourceDesTree(data, locationNumber): any {
-    // console.log(data);
-    // console.log(locationNumber);
     data.map((item, i) => {
       item.cameraList = item.cameraList.filter((prop, j) => {
         return prop.showLocation === locationNumber;
