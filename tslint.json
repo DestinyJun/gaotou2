@@ -10,6 +10,7 @@
       true,
       "check-space"
     ],
+    "disable-next-line":"import-blacklist",
     "curly": true,
     "deprecation": {
       "severity": "warn"

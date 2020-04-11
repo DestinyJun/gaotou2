@@ -14,6 +14,7 @@ import {ScrollPanelModule} from 'primeng/primeng';
 import {SidebarModule} from 'primeng/sidebar';
 import {TreeModule} from 'primeng/tree';
 import {CountUpModule} from 'countup.js-angular2';
+import {FinanceDataService} from '../common/services/finance-data.service';
 @NgModule({
   imports: [
     CommonModule,
@@ -36,7 +37,7 @@ import {CountUpModule} from 'countup.js-angular2';
     FooterComponent,
     MessageWindowComponent,
   ],
-  providers: [],
+  providers: [FinanceDataService],
   entryComponents: [NavComponent]
 })
 export class HomeModule { }

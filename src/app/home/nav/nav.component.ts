@@ -1,7 +1,7 @@
 import {Component, HostListener, OnInit, ViewEncapsulation} from '@angular/core';
 import {NavigationEnd, Router} from '@angular/router';
 import {LocalStorageService} from '../../common/services/local-storage.service';
-import {LoginService} from '../../common/services/login.service';
+import {ApiService} from '../../common/services/api.service';
 
 export interface TreeNode {
   id?: any;
@@ -22,6 +22,7 @@ export interface TreeNode {
   selectable?: boolean;
   parentId?: boolean;
   dataLevel?: any;
+  router?: string;
 }
 
 
@@ -130,7 +131,7 @@ export class NavComponent implements OnInit {
   constructor(
     private router: Router,
     private localSessionStorage: LocalStorageService,
-    private logins: LoginService
+    private apiSrv: ApiService
   ) {
   }
 
@@ -144,78 +145,77 @@ export class NavComponent implements OnInit {
         }
       }
       });
-    this.urlList = this.localSessionStorage.getObject('urlList');
-    this.urlClass = this.localSessionStorage.getObject('urlClass');
-    this.filesTree2 = this.tableTreeInitialize(this.urlList);
+    this.apiSrv.getRouter({companyId: this.localSessionStorage.get('companyId')}).subscribe((res) => {
+      const arr = [
+        {
+          label: '全国',
+          expandedIcon: 'fa fa-globe',
+          collapsedIcon:  'fa fa-globe',
+          router:  '/home/whole',
+          children: res.date.provinceList
+        }
+      ];
+      this.filesTree2 = this.tableTreeInitialize(arr);
+    });
   }
 
   // 递归调用重组数据结构
   public tableTreeInitialize(data): any {
     const oneChild: TreeNode[] = [];
-    for (let i = 0; i < data.length; i++) {
-      if (data[i]['isData']) {
-        for (let j = 0; j < data[i]['dataModels'].length; j++) {
-          const childnode: TreeNode = {};
-          childnode.leaf = true;
-          if (data[i].menuName === '全国大数据业态') {
-            childnode.expandedIcon = 'fa fa-globe';
-            childnode.collapsedIcon = 'fa fa-globe';
-          }
-          if (data[i].menuName === '省大数据业态') {
-            childnode.expandedIcon = 'fa fa-bar-chart';
-            childnode.collapsedIcon = 'fa fa-bar-chart';
-          }
-          if (data[i].menuName === '市大数据业态') {
-            childnode.expandedIcon = 'fa fa-line-chart';
-            childnode.collapsedIcon = 'fa fa-line-chart';
-          }
-          if (data[i].menuName === '服务区大数据业态') {
-            childnode.expandedIcon = 'fa fa-free-code-camp';
-            childnode.collapsedIcon = 'fa fa-free-code-camp';
-          }
-          childnode.label = data[i]['dataModels'][j]['name'];
-          childnode.data = data[i]['url'];
-          childnode.leaf = data[i]['isLeaf'];
-          childnode.id = data[i]['dataModels'][j]['id'];
-          childnode.parentId = data[i]['id'];
-          childnode.dataLevel = data[i]['dataLevel'];
-          if (!data[i].menu) {
-            childnode.children = [];
-          } else {
-            childnode.children = this.tableTreeInitialize(data[i].menu);
-          }
-          oneChild.push(childnode);
+    data.forEach((item, index) => {
+      const childnode: TreeNode = {};
+      if (Object.keys(item).includes('label')) {
+        childnode.label = item.label;
+        childnode.expandedIcon = item.expandedIcon;
+        childnode.collapsedIcon = item.collapsedIcon;
+        childnode.router = item.router;
+        if (!(item.children)) {
+          childnode.children = [];
         }
-      } else {
-        const childnode: TreeNode = {};
-        childnode.leaf = true;
-        if (data[i].menuName === '视频监控') {
-          childnode.expandedIcon = 'fa fa-camera-retro';
-          childnode.collapsedIcon = 'fa fa-camera-retro';
+        else {
+          childnode.children = this.tableTreeInitialize(item.children);
         }
-        if (data[i].menuName === '个人信息') {
-          childnode.expandedIcon = 'fa fa-user-circle-o';
-          childnode.collapsedIcon = 'fa fa-user-circle-o';
+      }
+      if (Object.keys(item).includes('provinceName')) {
+        childnode.label = item.provinceName;
+        childnode.id = item.provinceId;
+        childnode.expandedIcon = 'fa fa-bar-chart';
+        childnode.collapsedIcon = 'fa fa-bar-chart';
+        childnode.router = '/home/province';
+        if (!(item.areaList)) {
+          childnode.children = [];
         }
-        childnode.label = data[i]['menuName'];
-        childnode.data = data[i]['url'];
-        childnode.leaf = data[i]['isLeaf'];
-        childnode.id = data[i]['id'];
-        if (!data[i].menu) {
+        else {
+          childnode.children = this.tableTreeInitialize(item.areaList);
+        }
+      }
+      if (Object.keys(item).includes('areaName')) {
+        childnode.label = item.areaName;
+        childnode.id = item.areaCode;
+        childnode.expandedIcon = 'fa fa-line-chart';
+        childnode.collapsedIcon = 'fa fa-line-chart';
+        childnode.router = '/home/city';
+        if (!(item.serviceAreaList)) {
           childnode.children = [];
         } else {
-          childnode.children = this.tableTreeInitialize(data[i].menu);
+          childnode.children = this.tableTreeInitialize(item.serviceAreaList);
         }
-        oneChild.push(childnode);
       }
-    }
+      if (Object.keys(item).includes('serviceAreaName')) {
+        childnode.label = item.serviceAreaName;
+        childnode.id = item.serviceAreaId;
+        childnode.expandedIcon = 'fa fa-free-code-camp';
+        childnode.collapsedIcon = 'fa fa-free-code-camp';
+        childnode.router = '/home/serzone';
+        childnode.children = [];
+      }
+      oneChild.push(childnode);
+    });
     return oneChild;
   }
 
   public nodeSelect(event) {
-    this.router.navigate([`${event.node.data}`, {id: event.node.id, name: event.node.label}]);
-    // console.log(event);
-    // this.messageService.add({severity: 'info', summary: 'Node Selected', detail: event.node.label});
+    this.router.navigate([`${event.node.router}`, {id: event.node.id, name: event.node.label}]);
   }
 
   public nodeUnselect(e) {
@@ -224,11 +224,11 @@ export class NavComponent implements OnInit {
 
   public nodeExpand(event) {
     if (event.node) {
-      this.logins.getChildrenRouter({menuId: event.node.parentId, dataModelId: event.node.id, dataLevel: event.node.dataLevel}).subscribe(
+      /*this.logins.getChildrenRouter({menuId: event.node.parentId, dataModelId: event.node.id, dataLevel: event.node.dataLevel}).subscribe(
         (val) => {
           event.node.children = this.tableTreeInitialize(val.data);
         }
-      );
+      );*/
     }
   }
 }

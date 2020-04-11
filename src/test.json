@@ -1,0 +1,176 @@
+{
+  "date": {
+    "totalPassenger": 159096,
+    "realTimeVehicleFlow": {
+      "totalVehicle": 37603,
+      "vehicleTypeNumList": [
+        {
+          "vehicleTypeCode": "x003",
+          "vehicleTypeName": "小车",
+          "totalVehicle": 22947
+        },
+        {
+          "vehicleTypeCode": "x002",
+          "vehicleTypeName": "客车",
+          "totalVehicle": 4692
+        },
+        {
+          "vehicleTypeCode": "x001",
+          "vehicleTypeName": "货车",
+          "totalVehicle": 9964
+        }
+      ]
+    },
+    "provincePassengerFlowRankList": [
+      {
+        "provinceName": "贵州",
+        "number": 91370
+      },
+      {
+        "provinceName": "重庆",
+        "number": 12844
+      },
+      {
+        "provinceName": "四川",
+        "number": 7782
+      },
+      {
+        "provinceName": "广东",
+        "number": 7758
+      },
+      {
+        "provinceName": "河南",
+        "number": 4130
+      },
+      {
+        "provinceName": "浙江",
+        "number": 4071
+      },
+      {
+        "provinceName": "安徽",
+        "number": 3734
+      },
+      {
+        "provinceName": "湖南",
+        "number": 3637
+      }
+    ],
+    "flowTop10": [
+
+
+      {
+        "name": "清水江服务区",
+        "values": 8715
+      },
+      {
+        "name": "久长服务区",
+        "values": 4487
+      },
+      {
+        "name": "遵义服务区",
+        "values": 3358
+      },
+      {
+        "name": "麻江服务区",
+        "values": 3143
+      },
+      {
+        "name": "三棵树服务区",
+        "values": 2849
+      },
+      {
+        "name": "牟珠洞服务区",
+        "values": 2811
+      },
+      {
+        "name": "锦屏服务区",
+        "values": 1933
+      },
+      {
+        "name": "四格服务区",
+        "values": 1573
+      },
+      {
+        "name": "白杨坪服务区",
+        "values": 1518
+      },
+      {
+        "name": "永乐服务区",
+        "values": 1360
+      }
+    ],
+    "storeTypeIncomePieChart": {
+      "total": 100.0,
+      "storeTypeIncomeList": [
+        {
+          "storeTypeId": 11,
+          "storeTypeName": "商超",
+          "value": 100.0
+        }
+      ]
+    },
+    "dataTrend": {
+      "xDate": [
+        "一月",
+        "二月",
+        "三月",
+        "四月",
+        "五月",
+        "六月",
+        "七月",
+        "八月",
+        "九月",
+        "十月",
+        "十一月",
+        "十二月"
+      ],
+      "yDate": [
+        0,
+        0,
+        250415,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "serviceAreaCoordinateInfoList": null,
+    "wedataTrend": {
+    "xDate": [
+      "一月",
+      "二月",
+      "三月",
+      "四月",
+      "五月",
+      "六月",
+      "七月",
+      "八月",
+      "九月",
+      "十月",
+      "十一月",
+      "十二月"
+    ],
+    "yDate": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+},
+"message": "查询成功",
+"status": 1000
+}

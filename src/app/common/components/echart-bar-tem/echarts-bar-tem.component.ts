@@ -39,10 +39,9 @@ export class EchartsBarTemComponent implements OnInit, OnChanges {
         return 1;
       }
     });
-    this.option = this.option.reverse();
     for (let i = 0; i < 8; i++) {
-      area.push(this.option[i].name);
-      data.push(this.option[i].value);
+      area.push(this.option[i].provinceName);
+      data.push(this.option[i].number);
     }
     data.map((val, index) => {
       data1.push(data[0] - 1);

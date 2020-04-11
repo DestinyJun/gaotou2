@@ -53,6 +53,6 @@ import { CountUpModule } from 'countup.js-angular2';
     ProvinceEvnpersonComponent
   ],
   entryComponents: [],
-  providers: [FinanceDataService, DataService, DatePipe]
+  providers: [DataService, DatePipe]
 })
 export class ProvinceDataModule { }

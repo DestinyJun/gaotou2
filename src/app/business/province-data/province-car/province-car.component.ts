@@ -13,7 +13,7 @@ import {environment} from '../../../../environments/environment';
 export class ProvinceCarComponent implements OnInit, OnChanges, OnDestroy {
   @Input() public provinceId: any;
   @Input() public provinceName: any;
-  @Input() public esDate: any;  // 时间初始化
+  @Input() public data: any;
   /***********************基础信息************************/
   public vehicleAmountCountClean: any;
   public carNumber: number;
@@ -42,20 +42,24 @@ export class ProvinceCarComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnInit() {}
   ngOnChanges(changes: SimpleChanges): void {
+    if (this.data) {
+      this.carNumber = this.data.totalVehicle;
+      this.optionsCarModel = this.data.vehicleTypeNumList;
+    }
     // 实时数据
-    this.vehicleAmountCount();
-    this.CarTypes();
+   /* this.vehicleAmountCount();
+    this.CarTypes();*/
     // 车流监控
-    this.vehicleAmountCountClean = setInterval(() => {
+   /* this.vehicleAmountCountClean = setInterval(() => {
       this.vehicleAmountCount();
       this.CarTypes();
-    }, 5000);
+    }, 5000);*/
   }
   ngOnDestroy(): void {
     clearInterval(this.vehicleAmountCountClean);
   }
 // 车流监控
-  public vehicleAmountCount(): void {
+  /*public vehicleAmountCount(): void {
     this.provinceSrv.searchCarTotal({id: this.provinceId}).subscribe(
       (value) => {
         if (value.status === '200') {
@@ -67,8 +71,8 @@ export class ProvinceCarComponent implements OnInit, OnChanges, OnDestroy {
         }
       }
     );
-  }
-  public CarTypes() {
+  }*/
+  /*public CarTypes() {
     this.provinceSrv.searchCarTotalPie({id: this.provinceId}).subscribe(
       (value) => {
         if (value.status === '200') {
@@ -89,8 +93,8 @@ export class ProvinceCarComponent implements OnInit, OnChanges, OnDestroy {
         }
       }
     );
-  }
-  public parkClick(e): void {
+  }*/
+  /*public parkClick(e): void {
     this.alertCarTitle = e.name;
     this.alertCarShow = true;
     document.body.className = 'ui-overflow-hidden';
@@ -127,63 +131,5 @@ export class ProvinceCarComponent implements OnInit, OnChanges, OnDestroy {
         };
       }
     );
-  }
-  public carDistributionPaging(e): void {
-    const carTypes = {
-      '总数': 'total',
-      '小车': 1,
-      '客车': 2,
-      '货车': 3,
-    };
-    this.provinceSrv.searchCarAlertTable({id: this.provinceId, type: carTypes[this.carOptionType], page: e, nums: 10}).subscribe(
-      (val) => {
-        this.carTableData = val.data;
-      }
-    );
-  }
-  public closeCarShow(): void {
-    document.body.className = '';
-    this.alertCarShow = false;
-  }
-  public optionsCarPieClick(e) {
-    this.router.navigate(['/home/city', {id: e.data.id, name: e.name}]);
-  }
-  public carBtnClick(e): void {
-    if (e.srcElement.innerText === '小车') {
-      this.alertCarTitle = '小车';
-      this.arryCarPie = [];
-      this.carTableData = [];
-      this.carDistribution({name: e.srcElement.innerText });
-    }  else if (e.srcElement.innerText === '客车') {
-      this.alertCarTitle = '客车';
-      this.arryCarPie = [];
-      this.carTableData = [];
-      this.carDistribution({name: e.srcElement.innerText });
-    } else if (e.srcElement.innerText === '货车') {
-      this.alertCarTitle = '货车';
-      this.arryCarPie = [];
-      this.carTableData = [];
-      this.carDistribution({name: e.srcElement.innerText });
-    } else if (e.srcElement.innerText === '总数') {
-      this.alertCarTitle = '总数';
-      this.arryCarPie = [];
-      this.carTableData = [];
-      this.carDistribution({name: e.srcElement.innerText });
-    }
-  }
-  public carTableClick(e) {
-    this.router.navigate(['/home/serzone', {id: e.serviceAreaId, name: e.serviceName}]);
-  }
-  // 车流监控：表格导出
-  public carExportClick() {
-    const startTime = this.datePipe.transform(this.carStartTime, 'yyyyMMdd');
-    const endTime = this.datePipe.transform(this.carEndTime, 'yyyyMMdd');
-    if (this.carStartTime && this.carEndTime) {
-      window.location.assign(
-        `${environment.urlc}/report/province/vihicle/2/startDate/${startTime}/endDate/${endTime}`
-      );
-    } else {
-      window.alert('请把数据选择全在提交');
-    }
-  }
+  }*/
 }

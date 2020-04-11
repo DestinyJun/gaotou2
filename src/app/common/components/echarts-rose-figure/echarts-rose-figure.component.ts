@@ -76,17 +76,18 @@ export class EchartsRoseFigureComponent implements OnInit, OnChanges, OnDestroy 
   ngOnChanges(changes: SimpleChanges): void {
     if (this.option) {
       this.optionsPie(this.option);
+      // console.log(this.option);
     }
   }
 
   public optionsPie(option): void {
     const barData = [];
     this.nameList = [];
-    option.data.map((val) => {
-      this.nameList.push(val.name);
+    option.map((val) => {
+      this.nameList.push(val.vehicleTypeName);
       barData.push({
-          value: val.value,
-          name: val.name,
+          value: val.totalVehicle,
+          name: val.vehicleTypeName,
         });
     });
     this.updateOptionsRose = {

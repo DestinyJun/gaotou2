@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
-import {LoginService} from '../common/services/login.service';
+import {ApiService} from '../common/services/api.service';
 import {LocalStorageService} from '../common/services/local-storage.service';
 
 @Component({
@@ -20,7 +20,7 @@ export class LoginComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private route: Router,
-    private loginService: LoginService,
+    private apiSrv: ApiService,
     private localSessionStorage: LocalStorageService
   ) {
   }
@@ -38,37 +38,12 @@ export class LoginComponent implements OnInit {
   public onSubmit() {
     this.loginLoading = true;
     if (this.myFromModule.valid) {
-      this.loginService.getLogin(this.myFromModule.value).subscribe(
+      this.apiSrv.getLogin(this.myFromModule.value).subscribe(
         (value) => {
-          if (value.status === '200') {
-            this.localSessionStorage.setObject('clientIP', value.message);
-            // 初始化路由信息
-            this.loginService.getRouter(value.data.authentication.accessToken).subscribe(
-              (routerInfo) => {
-                if (routerInfo.status === '200') {
-                  routerInfo.data.routers.map((item) => {
-                    this.urlClass.push(item.split('/')[2]);
-                  });
-                  value.data.urlClass = this.urlClass;
-                  value.data.urlList =  routerInfo.data.menuAscxs;
-                  // 本地存储信息
-                  for (const prop in value.data) {
-                    if (value.data.hasOwnProperty(prop)) {
-                      this.localSessionStorage.setObject(prop, value.data[prop]);
-                    }
-                  }
-                  this.loginLoading = false;
-                  this.route.navigate([value.data.homePageRoute]);
-                } else {
-                  window.alert('初始化菜单失败');
-                }
-              });
-          }
-          else {
-            this.loginLoading = false;
-            this.localSessionStorage.loading.next({display: false});
-            window.alert(value.message);
-          }
+          this.loginLoading = false;
+          this.localSessionStorage.set('accessToken', value.key);
+          this.localSessionStorage.set('companyId', value.companyId);
+          this.route.navigate(['/home/whole']);
         });
     } else {
       this.loginLoading = false;

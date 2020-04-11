@@ -5,9 +5,9 @@
     <div class="province-left">
       <div class="col-lg-3 col-md-3">
         <!--3d柱状图-->
-        <app-province-3d [esDate]="esDate" [provinceId]="provinceId" [provinceName]="dataToggle"></app-province-3d>
+        <app-province-3d [provinceName]="provinceName" [personAmount]="data?.provincePassengerFlowRankList"></app-province-3d>
         <!--车辆统计-->
-        <app-province-car [esDate]="esDate" [provinceId]="provinceId" [provinceName]="dataToggle"></app-province-car>
+        <app-province-car [provinceId]="provinceId" [provinceName]="provinceName" [data]="data?.realTimeVehicleFlow"></app-province-car>
       </div>
     </div>
     <!--中间-->
@@ -17,7 +17,7 @@
         <div class="province-center-map">
           <app-echart-bmap
             [height]="'50vh'"
-            [option]="{minZoom:7,maxZoom:9,center:[106.645779,26.654099],zoom: 8, area:dataToggle.substring(0, dataToggle.length - 1)}"
+            [option]="{minZoom:7,maxZoom:9,center:[106.645779,26.654099],zoom: 8, area:provinceName.substring(0, provinceName.length - 1)}"
             [points]="mapPoints"
             (cityClick)="mapCityClick($event)"
           ></app-echart-bmap>
@@ -26,14 +26,12 @@
         <div class="province-center-echarts">
           <div class="col-lg-6 col-md-6">
             <div class="echart-bar">
-              <!--<app-echarts-bar-double [title]="'省级速公路/客流统计'"></app-echarts-bar-double>-->
-              <app-echarts-area-chart [height]="'height: 34vh;'" [option]="options3d"></app-echarts-area-chart>
+<!--              <app-echarts-area-chart [height]="'height: 34vh;'" [option]="options3d"></app-echarts-area-chart>-->
             </div>
           </div>
           <div class="col-lg-6 col-md-6">
             <div class="echart-circle">
-              <!--<app-echart-pie-circle-a [title]="'省级突发事件处理概况'"></app-echart-pie-circle-a>-->
-              <app-echarts-line-move [height]="'height: 34vh;'" [option]="options3dCopy"></app-echarts-line-move>
+<!--              <app-echarts-line-move [height]="'height: 34vh;'" [option]="options3dCopy"></app-echarts-line-move>-->
             </div>
           </div>
         </div>
@@ -43,9 +41,9 @@
     <div class="province-right">
       <div class="col-lg-3 col-md-3">
         <!--业态前十排名柱状图-->
-        <app-province-crosswise [provinceId]="provinceId" [provinceName]="dataToggle"></app-province-crosswise>
+<!--        <app-province-crosswise [provinceId]="provinceId" [provinceName]="dataToggle"></app-province-crosswise>-->
         <!--收入统计-->
-        <app-province-income [esDate]="esDate" [provinceId]="provinceId" [provinceName]="dataToggle"></app-province-income>
+<!--        <app-province-income [esDate]="esDate" [provinceId]="provinceId" [provinceName]="dataToggle"></app-province-income>-->
       </div>
     </div>
   </div>

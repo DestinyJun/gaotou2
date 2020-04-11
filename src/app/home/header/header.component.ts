@@ -3,7 +3,6 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {LocalStorageService} from '../../common/services/local-storage.service';
 import {HttpClient} from '@angular/common/http';
 import { CountUpOptions } from 'countup.js';
-import {environment} from '../../../environments/environment';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -36,11 +35,11 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit() {
     const that = this;
-    this.http.get(`${environment.urls}/common/config/getServiceAreaCoordinate/2`).subscribe(
+   /* this.http.get(`${environment.urls}/common/config/getServiceAreaCoordinate/2`).subscribe(
       (val) => {
         this.serviceNameArray = val;
       }
-    );
+    );*/
     window.onclick = function (event) {
       if (
         event.srcElement.className === 'saerch-list-li' ||
