@@ -25,7 +25,7 @@ export class ProvinceEvnstatComponent implements OnInit, OnChanges {
   }
   // 事件类型统计
   public initialize(): void {
-    this.provinceSrv.searchEventCategory().subscribe(
+    /*this.provinceSrv.searchEventCategory().subscribe(
       (value) => {
         if (value.status === '200') {
           this.provinceSrv.searchEventCategoryCount({id: this.provinceId, list: value.data}).subscribe(
@@ -37,7 +37,7 @@ export class ProvinceEvnstatComponent implements OnInit, OnChanges {
           );
         }
       }
-    );
+    );*/
   }
   public tableEventClick(item): void {
    this.eventTypesTitle = item.eventCategoryName;

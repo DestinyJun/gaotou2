@@ -26,12 +26,17 @@
         <div class="province-center-echarts">
           <div class="col-lg-6 col-md-6">
             <div class="echart-bar">
-<!--              <app-echarts-area-chart [height]="'height: 34vh;'" [option]="options3d"></app-echarts-area-chart>-->
+              <app-echarts-area-chart
+                [height]="'height: 34vh;'"
+                [option]="data?.dataTrend"
+                [title]="top10TypeTitle[top10TypeName][0]"
+                [color]="top10TypeTitle[top10TypeName][1]">
+              </app-echarts-area-chart>
             </div>
           </div>
           <div class="col-lg-6 col-md-6">
             <div class="echart-circle">
-<!--              <app-echarts-line-move [height]="'height: 34vh;'" [option]="options3dCopy"></app-echarts-line-move>-->
+              <app-echarts-line-move [height]="'height: 34vh;'" [option]="data?.wedataTrend" [title]="eleWaterTile['electricr']"></app-echarts-line-move>
             </div>
           </div>
         </div>
@@ -41,9 +46,9 @@
     <div class="province-right">
       <div class="col-lg-3 col-md-3">
         <!--业态前十排名柱状图-->
-<!--        <app-province-crosswise [provinceId]="provinceId" [provinceName]="dataToggle"></app-province-crosswise>-->
+        <app-province-crosswise [provinceId]="provinceId" [provinceName]="provinceName" [data]="data?.flowTop10" [type]="top10TypeName"></app-province-crosswise>
         <!--收入统计-->
-<!--        <app-province-income [esDate]="esDate" [provinceId]="provinceId" [provinceName]="dataToggle"></app-province-income>-->
+        <app-province-income  [provinceId]="provinceId" [provinceName]="provinceName" [data]="data?.storeTypeIncomePieChart"></app-province-income>
       </div>
     </div>
   </div>

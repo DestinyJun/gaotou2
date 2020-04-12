@@ -9,10 +9,12 @@ import {Router} from '@angular/router';
 export class EchartCrossbarComponent implements OnInit, OnChanges {
   @Input() public option: any;
   @Input() public height: any;
+  @Input() public color: any;
+  @Input() public name: any;
   @Input() public width = 'auto';
   public crosswiseBar = {};
   public serviceZoneId = [];
-  public setServiceAreaId: any; // 获取争取服务区id，路由传输
+  public setServiceAreaId: any;
   constructor(
     private router: Router
   ) { }
@@ -25,41 +27,14 @@ export class EchartCrossbarComponent implements OnInit, OnChanges {
   }
   // 统计图渲染
   public backCrosswiseBar() {
+    const yAxisData  = [];
     const barData = [];
-    const barArea = [];
-    this.option.data.yAxis.map((val, index) => {
-      // if ()
-      this.serviceZoneId.push(val);
-      barArea.push(val.serviceName);
-    });
-    // console.log(this.serviceZoneId);
-    // console.log(this.serviceZoneId);
-    // console.log(this.option.data.yAxis);
-    this.option.data.barDatas.map((val, index) => {
-      barData.push(
-        {
-          name: val.title,
-          type: 'bar',
-          stack: '总量',
-          color: this.option.color[index],
-          label: {
-            normal: {
-              show: true,
-            }
-          },
-          data: val.datas,
-        }
-      );
+    this.option = this.option.reverse();
+    this.option.map((val) => {
+      yAxisData .push(val.name);
+      barData.push(val.values);
     });
     this.crosswiseBar = {
-     /* title: {
-        text: this.option.title,
-        left: 'center',
-        textStyle: {
-          color: '#05EFF1',
-          fontSize: 14
-        }
-      },*/
       tooltip : {
         trigger: 'axis',
         axisPointer : {            // 坐标轴指示器，坐标轴触发有效
@@ -90,10 +65,9 @@ export class EchartCrossbarComponent implements OnInit, OnChanges {
       },
       yAxis: {
         type: 'category',
-        // name: '万元/辆/人次',
         inverse: false,
         splitLine: {show: false},
-        data: barArea,
+        data: yAxisData ,
         axisLabel: {
           margin: 20,
         },
@@ -109,20 +83,29 @@ export class EchartCrossbarComponent implements OnInit, OnChanges {
       animation: true,
       animationDuration: 4000,
       animationDurationUpdate: 4000,
-      series: barData
+      series: [
+        {
+          name: this.name,
+          type: 'bar',
+          stack: '总量',
+          color: this.color,
+          label: {
+            normal: {
+              show: true,
+            }
+          },
+          data: barData,
+        }
+      ]
     };
   }
   /*统计图点击事件*/
   public rankingClick(e) {
-   /* console.log(this.serviceZoneId[e.dataIndex]);
-    console.log(e.name);*/
    this.serviceZoneId.forEach( v => {
-     // console.log(v);
      if (e.name === v.serviceName) {
        this.setServiceAreaId = v.serviceAreaId;
      }
    });
-   // console.log(this.serviceAreaId);
     this.router.navigate(['/home/serzone', {id: this.setServiceAreaId, name: e.name}]);
   }
 }

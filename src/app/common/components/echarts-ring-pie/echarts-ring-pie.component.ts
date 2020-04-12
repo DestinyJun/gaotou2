@@ -99,10 +99,10 @@ export class EchartsRingPieComponent implements OnInit, OnChanges, OnDestroy {
     const lineDate = [];
     const barData = [];
     this.nameList = [];
-    option.data.map((val, index) => {
-      this.nameList.push(val.name);
+    option.map((val, index) => {
+      this.nameList.push(val.storeTypeName);
       lineDate.push({
-        name: val.name,
+        name: val.storeTypeName,
         value: val.value,
         labelLine: {
           lineStyle: {
@@ -113,7 +113,7 @@ export class EchartsRingPieComponent implements OnInit, OnChanges, OnDestroy {
       });
       barData.push({
           value: val.value,
-          name: val.name,
+          name: val.storeTypeName,
           labelLine: {
             lineStyle: {
               color: colors[index]

@@ -13,8 +13,20 @@ export class ApiService {
   public getRouter(params): Observable<any> {
     return this.http.post(`/getLeftSelectionBar`, params);
   }
-  // 获取实时数据
-  public getInitData(params): Observable<any> {
+  // 获取省级实时数据
+  public getProvinceData(params): Observable<any> {
     return this.http.post(`/provinceRealTimeData`, params);
+  }
+  // 获取省级服务区坐标
+  public getProvinceMapPoints(params): Observable<any> {
+    return this.http.post(`/getPrvcServiceAreaCoordinateInfo`, params);
+  }
+  // 获取片区级实时数据
+  public getCityData(params): Observable<any> {
+    return this.http.post(`/areaRealTimeData`, params);
+  }
+  // 获取片区级服务区坐标
+  public getCityMapPoints(params): Observable<any> {
+    return this.http.post(`/getAreaServiceAreaCoordinateInfo`, params);
   }
 }

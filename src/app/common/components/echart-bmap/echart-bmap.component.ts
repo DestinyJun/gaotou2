@@ -156,38 +156,27 @@ export class EchartBmapComponent implements OnInit, OnChanges {
   }
   ngOnChanges(changes: SimpleChanges): void {
      if (this.points) {
-       this.finaSrv.searchAreaList({page: 1, nums: 1000}).subscribe(
-         (val) => {
-           if (val.status === '200') {
-             this.echartsMapInitialize(val.data.contents[0].administrativeAreaTree);
-           }
-         }
-       );
+       this.echartsMapInitialize();
      }
   }
-  public echartsMapInitialize(areas) {
+  public echartsMapInitialize() {
     // 服务区点
     const pointDatas = [];
-    this.points.map((val, index1) => {
+    this.points.map((item) => {
       const a = [];
-      val.attributeValueList.map((item, index2) => {
-        if (item.attributeDesc === '经度') {
-          a.push(item.attributeValue);
-        } else if (item.attributeDesc === '纬度') {
-          a.push(item.attributeValue);
-        }
-      });
+      a.push(item.longitude);
+      a.push(item.latitude);
       if (a) {
         a.push(150);
-        a.push(val.id);
+        a.push(item.serviceAreaId);
       }
-      pointDatas.push({name: val.name, value: a});
+      pointDatas.push({name: item.serviceAreaName, value: a});
     });
     /*获取地图数据*/
     const geoCoordMap = {};
     const datas = [];
-    const mapFeatures = this.es.getMap(this.option.area).geoJson.features;
-    mapFeatures.forEach(function(v) {
+    /*const mapFeatures = this.es.getMap(this.option.area).geoJson.features;*/
+    /*mapFeatures.forEach(function(v) {
       // 地区名称
       const name = v.properties.name;
       areas.map((val, idx, obj) => {
@@ -197,7 +186,7 @@ export class EchartBmapComponent implements OnInit, OnChanges {
     });
       // 地区经纬度
       geoCoordMap[name] = v.properties.cp;
-    });
+    });*/
     const convertData = function (data) {
       const res = [];
       for (let i = 0; i < data.length; i++) {

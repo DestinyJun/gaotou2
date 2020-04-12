@@ -1,14 +1,16 @@
-import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 
 @Component({
   selector: 'app-echarts-area-chart',
   templateUrl: './echarts-area-chart.component.html',
   styleUrls: ['./echarts-area-chart.component.less']
 })
-export class EchartsAreaChartComponent implements OnInit, OnChanges, OnDestroy {
+export class EchartsAreaChartComponent implements OnInit, OnChanges {
   @Input() public option: any;
   @Input() public height: any;
   @Input() public width = 'auto';
+  @Input() public title: any;
+  @Input() public color: any;
   public areaChart = {};
 
   constructor() {
@@ -25,13 +27,9 @@ export class EchartsAreaChartComponent implements OnInit, OnChanges, OnDestroy {
 
   // 统计图渲染
   public areaChartFun() {
-    const serData = [];
-    this.option.data.coordinate.map((val) => {
-      serData.push(val[3]);
-    });
     this.areaChart = {
       title: {
-        text: `${this.option.title}年度${this.option.data.yData[0]}走势统计`,
+        text: this.title,
         left: 'center',
         top: '2%',
         textStyle: {
@@ -49,7 +47,7 @@ export class EchartsAreaChartComponent implements OnInit, OnChanges, OnDestroy {
       xAxis: {
         type: 'category',
         boundaryGap: false,
-        data: this.option.data.xdata,
+        data: this.option.xDate,
         axisLabel: {
           margin: 30,
           color: '#01FFFF'
@@ -71,33 +69,35 @@ export class EchartsAreaChartComponent implements OnInit, OnChanges, OnDestroy {
           }
         }
       },
-      yAxis: [{
-        type: 'value',
-        position: 'right',
-        axisLabel: {
-          margin: 20,
-          color: '#01FFFF'
-        },
-        axisTick: {
-          show: true,
-          length: 15,
-          lineStyle: {
-            color: 'rgba(255,255,255,0.1)'
-          }
-        },
-        splitLine: {
-          show: true,
-          lineStyle: {
-            color: 'rgba(255,255,255,0.1)'
-          }
-        },
-        axisLine: {
-          lineStyle: {
-            color: '#fff',
-            width: 2
+      yAxis: [
+        {
+          type: 'value',
+          position: 'right',
+          axisLabel: {
+            margin: 20,
+            color: '#01FFFF'
+          },
+          axisTick: {
+            show: true,
+            length: 15,
+            lineStyle: {
+              color: 'rgba(255,255,255,0.1)'
+            }
+          },
+          splitLine: {
+            show: true,
+            lineStyle: {
+              color: 'rgba(255,255,255,0.1)'
+            }
+          },
+          axisLine: {
+            lineStyle: {
+              color: '#fff',
+              width: 2
+            }
           }
         }
-      }],
+      ],
       animation: true,
       animationDuration: 3000,
       animationDurationUpdate: 3000,
@@ -134,7 +134,7 @@ export class EchartsAreaChartComponent implements OnInit, OnChanges, OnDestroy {
             normal: {
               color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
                 offset: 0,
-                color: this.option.color
+                color: this.color
               },
                 {
                   offset: 1,
@@ -143,16 +143,9 @@ export class EchartsAreaChartComponent implements OnInit, OnChanges, OnDestroy {
               ], false),
             }
           },
-          data: serData,
+          data: this.option.yDate,
         }
       ]
     };
-  }
-
-  // 统计图点击事件
-  public areaChartClick(e) {
-  }
-
-  ngOnDestroy(): void {
   }
 }
