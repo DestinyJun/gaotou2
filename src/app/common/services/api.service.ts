@@ -29,4 +29,12 @@ export class ApiService {
   public getCityMapPoints(params): Observable<any> {
     return this.http.post(`/getAreaServiceAreaCoordinateInfo`, params);
   }
+  // 获取服务区级实时数据
+  public getAreaData(params): Observable<any> {
+    return this.http.post(`/serviceAreaRealTimeData`, params);
+  }
+  // 获取服务区店铺数据
+  public getAreaShopData(params): Observable<any> {
+    return this.http.post(`/getServiceAreaCamera`, params);
+  }
 }

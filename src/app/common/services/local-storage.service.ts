@@ -6,11 +6,11 @@ export class LocalStorageService {
   public accessToken: string;
   public eventBus: Subject<any> = new Subject<any>(); // 头部数据信息
   public persons: Subject<any> = new Subject<any>(); // 客流
-  public personsShow: Subject<any> = new Subject<any>(); // 客流
+  public personsShow: Subject<any> = new Subject<any>(); // 客流显示弹窗控制
   public loading: Subject<any> = new Subject<any>(); // 加载动画控制
   public videoShow: Subject<any> = new Subject<any>(); // 视频加载控制
   public windowVideoShow: Subject<any> = new Subject<any>(); // 服务区视频加载控制
-  public userSessionStorage: any;
+  public userSessionStorage =  sessionStorage;
   constructor() {
     if (!sessionStorage) {
       throw new Error('Current browser does not support Local Storage');
@@ -31,6 +31,9 @@ export class LocalStorageService {
   }
   public remove(key: string): any {
     this.userSessionStorage.removeItem(key);
+  }
+  public clears(): void {
+    this.userSessionStorage.clear();
   }
 }
 

@@ -14,8 +14,8 @@ export class ProvinceDataComponent implements OnInit, OnDestroy {
   public provinceId: any;
   public data: any;
   public index = 0;
-  public top10Type = ['revenue', 'vehicle', 'passenger'];
-  public top10TypeName = 'passenger';
+  public top10Type = ['vehicle', 'passenger', 'revenue'];
+  public top10TypeName = null;
   public top10TypeTitle = {
     revenue: ['贵州省年度业态收入走势统计', '#031845'],
     vehicle: ['贵州省年度车流量排走势统计', '#00C800'],
@@ -37,23 +37,23 @@ export class ProvinceDataComponent implements OnInit, OnDestroy {
     // 路由接受参数
     this.routerInfo.params.subscribe(
       (params) => {
+        this.index = 0;
         clearInterval(this.clearTimer);
         this.provinceName = params.name;
         this.provinceId = params.id;
         // 发射业态数据名称
         this.localService.eventBus.next({title: params.name + '高速业态大数据', flagState: 'finance', flagName: this.provinceName});
-        // 数据初始化
+        // 数据初始化及实时刷新数据
         this.provinceInit();
+        this.clearTimer = setInterval(() => {
+          this.provinceInit();
+        }, 8000);
         // 获取服务器坐标点
         this.apiSrv.getProvinceMapPoints({provinceId: this.provinceId}).subscribe(((res) => {
           this.mapPoints = res.date;
         }));
       }
     );
-    // 实时刷新数据
-    this.clearTimer = setInterval(() => {
-      this.provinceInit();
-    }, 8000);
   }
 
   ngOnDestroy(): void {
@@ -70,6 +70,10 @@ export class ProvinceDataComponent implements OnInit, OnDestroy {
     };
     this.apiSrv.getProvinceData(params).subscribe((res) => {
       this.data = res.date;
+      // 发射客流
+      this.localService.persons.next({
+        total: res.date.totalPassenger.toString().split(''),
+      });
     });
     this.index++;
     if (this.index > 2) {
@@ -78,7 +82,7 @@ export class ProvinceDataComponent implements OnInit, OnDestroy {
   }
 
   // 地图点击事件
-  public mapCityClick(param): void {
+  public mapClick(param): void {
     /*if (param.areaName === undefined) {
       if (param.cityName === '贵阳市') {
         this.router.navigate(['/home/city', {id: 3, name: param.cityName}]);

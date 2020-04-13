@@ -70,6 +70,11 @@ export class HeaderComponent implements OnInit {
       this.cityPersonAlert = true;
     });
   }
+  public logOut(): void {
+    this.localService.remove('accessToken');
+    this.localService.remove('companyId');
+    this.router.navigate(['/login']);
+  }
   public serviceSearchChange(e): void {
     if (e.keyCode === 13) {
       if (this.serviceName === undefined) {

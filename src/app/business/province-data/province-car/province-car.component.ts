@@ -7,7 +7,6 @@ import { CountUpOptions } from 'countup.js';
   styleUrls: ['./province-car.component.less']
 })
 export class ProvinceCarComponent implements OnInit, OnChanges {
-  @Input() public provinceId: any;
   @Input() public provinceName: any;
   @Input() public data: any;
   public carNumber: number;

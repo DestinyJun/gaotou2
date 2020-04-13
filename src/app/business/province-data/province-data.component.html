@@ -1,13 +1,16 @@
 <div class="province">
-  <!--*****************大数据可视化***********************-->
   <div class="row">
     <!--左边-->
     <div class="province-left">
       <div class="col-lg-3 col-md-3">
-        <!--3d柱状图-->
-        <app-province-3d [provinceName]="provinceName" [personAmount]="data?.provincePassengerFlowRankList"></app-province-3d>
+        <app-province-3d
+          [personAmount]="data?.provincePassengerFlowRankList">
+        </app-province-3d>
         <!--车辆统计-->
-        <app-province-car [provinceId]="provinceId" [provinceName]="provinceName" [data]="data?.realTimeVehicleFlow"></app-province-car>
+        <app-province-car
+          [provinceName]="provinceName"
+          [data]="data?.realTimeVehicleFlow">
+        </app-province-car>
       </div>
     </div>
     <!--中间-->
@@ -19,7 +22,7 @@
             [height]="'50vh'"
             [option]="{minZoom:7,maxZoom:9,center:[106.645779,26.654099],zoom: 8, area:provinceName.substring(0, provinceName.length - 1)}"
             [points]="mapPoints"
-            (cityClick)="mapCityClick($event)"
+            (cityClick)="mapClick($event)"
           ></app-echart-bmap>
         </div>
         <!--事件监控-->
@@ -36,7 +39,11 @@
           </div>
           <div class="col-lg-6 col-md-6">
             <div class="echart-circle">
-              <app-echarts-line-move [height]="'height: 34vh;'" [option]="data?.wedataTrend" [title]="eleWaterTile['electricr']"></app-echarts-line-move>
+              <app-echarts-line-move
+                [height]="'height: 34vh;'"
+                [option]="data?.wedataTrend"
+                [title]="eleWaterTile['electricr']">
+              </app-echarts-line-move>
             </div>
           </div>
         </div>
@@ -46,9 +53,16 @@
     <div class="province-right">
       <div class="col-lg-3 col-md-3">
         <!--业态前十排名柱状图-->
-        <app-province-crosswise [provinceId]="provinceId" [provinceName]="provinceName" [data]="data?.flowTop10" [type]="top10TypeName"></app-province-crosswise>
+        <app-province-crosswise
+          [provinceName]="provinceName"
+          [data]="data?.flowTop10"
+          [type]="top10TypeName">
+        </app-province-crosswise>
         <!--收入统计-->
-        <app-province-income  [provinceId]="provinceId" [provinceName]="provinceName" [data]="data?.storeTypeIncomePieChart"></app-province-income>
+        <app-province-income
+          [provinceName]="provinceName"
+          [data]="data?.storeTypeIncomePieChart">
+        </app-province-income>
       </div>
     </div>
   </div>

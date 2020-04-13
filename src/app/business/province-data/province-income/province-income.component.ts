@@ -7,7 +7,6 @@ import { CountUpOptions } from 'countup.js';
   styleUrls: ['./province-income.component.less']
 })
 export class ProvinceIncomeComponent implements OnInit, OnChanges {
-  @Input() provinceId: any;
   @Input() provinceName: any;
   @Input() data: any;
   public incomeNumber: number;

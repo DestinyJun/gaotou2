@@ -21,13 +21,15 @@
     </div>
     <div class="header-admin">
       <!--头像-->
-      <img class="header-admin-img img-circle" src="assets/images/timg.jpg" alt="" [routerLink]="['/home/personal']"   >
+<!--      [routerLink]="['/home/personal']"-->
+      <img class="header-admin-img img-circle" src="assets/images/timg.jpg" title="退出" (click)="logOut()">
       <!--时钟-->
       <div class="header-admin-time text-center">
         <span>北京时间 <span style="margin-left: 0.2vw">{{dataTime | date:'yyyy-MM-dd HH:mm:ss'}}</span></span>
       </div>
       <!--客流-->
-      <div *ngIf="flagState" class="header-admin-flow text-center" (click)="personClick()">
+<!--      (click)="personClick()"-->
+      <div *ngIf="flagState" class="header-admin-flow text-center">
         <span>{{flagName}}今日客流量：</span>
         <div class="text-center">
           <span style="font-size: 0.875rem">{{persons?.total.length === 0?'当前暂无客流数据': ''}}</span>

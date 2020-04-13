@@ -22,8 +22,7 @@ export class LoginComponent implements OnInit {
     private route: Router,
     private apiSrv: ApiService,
     private localSessionStorage: LocalStorageService
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
     this.myFromModule = this.fb.group({

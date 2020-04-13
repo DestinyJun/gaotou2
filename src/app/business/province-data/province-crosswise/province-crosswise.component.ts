@@ -1,13 +1,11 @@
-import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
-import {FinanceDataService} from '../../../common/services/finance-data.service';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 
 @Component({
   selector: 'app-province-crosswise',
   templateUrl: './province-crosswise.component.html',
   styleUrls: ['./province-crosswise.component.less']
 })
-export class ProvinceCrosswiseComponent implements OnInit, OnDestroy, OnChanges {
-  @Input() provinceId: any;
+export class ProvinceCrosswiseComponent implements OnInit, OnChanges {
   @Input() provinceName: any;
   @Input() data: any;
   @Input() type: any;
@@ -19,17 +17,20 @@ export class ProvinceCrosswiseComponent implements OnInit, OnDestroy, OnChanges 
   public top10Title = null;
   public top10Color = null;
   public crosswiseBar: any;
-  constructor() { }
 
-  ngOnInit() {}
-  ngOnChanges(changes: SimpleChanges): void {
-      if ('type' in changes) {
-        this.top10Title = this.top10Type[this.type][0];
-        this.top10Color = this.top10Type[this.type][1];
-      }
-      if (this.data) {
-        this.crosswiseBar = this.data;
-      }
+  constructor() {
   }
-  ngOnDestroy(): void {}
+
+  ngOnInit() {
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if ('type' in changes) {
+      this.top10Title = this.top10Type[this.type][0];
+      this.top10Color = this.top10Type[this.type][1];
+    }
+    if (this.data) {
+      this.crosswiseBar = this.data;
+    }
+  }
 }

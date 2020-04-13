@@ -1,5 +1,8 @@
-<div class="echart-bar-tem"
+<div
+  *ngIf="!(barTemOption === null)"
+  class="echart-bar-tem"
   echarts
   [options]="barTemOption"
   [autoResize]="true">
 </div>
+<div *ngIf="barTemOption === null" class="echart-bar-tem">暂无数据！</div>

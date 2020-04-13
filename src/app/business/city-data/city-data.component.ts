@@ -14,18 +14,11 @@ export class CityDataComponent implements OnInit, OnDestroy {
   public cityId: any;
   public data: any;
   public index = 0;
-  public top10Type = ['revenue', 'vehicle', 'passenger'];
-  public top10TypeName = 'passenger';
-  public top10TypeTitle = {
-    revenue: ['贵州省年度业态收入走势统计', '#031845'],
-    vehicle: ['贵州省年度车流量排走势统计', '#00C800'],
-    passenger: ['贵州省年度客流量走势统计', '#eb64fb']
-  };
+  public top10Type = ['vehicle', 'passenger', 'revenue'];
+  public top10TypeName = null;
+  public top10TypeTitle: any;
   public eleWaterType = 'electricr';
-  public eleWaterTile = {
-    electricr: '贵州省年度用电走势统计',
-    water: '贵州省年度用水电走势统计',
-  };
+  public eleWaterTile: any;
   constructor(
     private routerInfo: ActivatedRoute,
     private apiSrv: ApiService,
@@ -36,23 +29,32 @@ export class CityDataComponent implements OnInit, OnDestroy {
     // 路由接受参数
     this.routerInfo.params.subscribe(
       (params) => {
+        this.index = 0;
         clearInterval(this.clearTimer);
         this.cityName = params.name;
         this.cityId = params.id;
+        this.eleWaterTile = {
+          electricr: `${this.cityName}年度用电走势统计`,
+          water: `${this.cityName}年度用水电走势统计`,
+        };
+        this.top10TypeTitle = {
+          revenue: [`${this.cityName}年度业态收入走势统计`, '#031845'],
+          vehicle: [`${this.cityName}年度车流量排走势统计`, '#00C800'],
+          passenger: [`${this.cityName}年度客流量走势统计`, '#eb64fb']
+        };
         // 发射也太数据名称
         this.localService.eventBus.next({title: this.cityName + '高速业态大数据', flagState: 'city', flagName: this.cityName});
-        // 数据初始化
+        // 数据初始化及实时刷新数据
         this.cityInit();
+        this.clearTimer = setInterval(() => {
+          this.cityInit();
+        }, 8000);
         // 获取服务器坐标点
-        this.apiSrv.getCityMapPoints({provinceId: this.cityId}).subscribe(((res) => {
+        this.apiSrv.getCityMapPoints({areaCode: this.cityId}).subscribe(((res) => {
           this.mapPoints = res.date;
         }));
       }
     );
-    // 实时刷新数据
-   /* this.clearTimer = setInterval(() => {
-      this.cityInit();
-    }, 8000);*/
   }
   ngOnDestroy(): void {
     clearInterval(this.clearTimer);
@@ -66,12 +68,34 @@ export class CityDataComponent implements OnInit, OnDestroy {
       weType: this.eleWaterType
     };
     this.apiSrv.getCityData(params).subscribe((res) => {
-      console.log(res);
       this.data = res.date;
+      // 发射客流
+      this.localService.persons.next({
+        total: res.date.totalPassenger.toString().split(''),
+      });
     });
     this.index++;
     if (this.index > 2) {
       this.index = 0;
     }
+  }
+  // 地图点击事件
+  public mapClick(param): void {
+    /*if (param.areaName === undefined) {
+      if (param.cityName === '贵阳市') {
+        this.router.navigate(['/home/city', {id: 3, name: param.cityName}]);
+      } else {
+        this.router.navigate(['/home/city', {id: 5, name: param.cityName}]);
+        // window.alert(`很抱歉${param.cityName}暂无数据`);
+      }
+    }
+    else {
+      if (param.areaName === '久长服务区') {
+        this.router.navigate(['/home/serzone', {id: 1, name: param.areaName}]);
+      } else {
+        this.router.navigate(['/home/serzone', {id: 28, name: param.areaName}]);
+        // window.alert('此服务区暂无数据');
+      }
+    }*/
   }
 }

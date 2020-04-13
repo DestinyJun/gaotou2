@@ -26,13 +26,6 @@ export class PersonalComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.personalService.getUsers(this.localSessionStorage.getObject('authentication').accessToken).subscribe(
-      (value) => {
-        if (value.status === '200') {
-          this.userInfo = value.data.userDTO;
-        }
-      }
-    );
     // 发射实时客流
     this.getPerson();
     // 发射业太数据名称
@@ -98,7 +91,8 @@ export class PersonalComponent implements OnInit {
     }
   }
   public logOut(): void {
-    this.localSessionStorage.userSessionStorage = {};
+    this.localSessionStorage.remove('accessToken');
+    this.localSessionStorage.remove('companyId');
   }
   public goBack (): void {
     window.history.back();

@@ -7,17 +7,19 @@ import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core'
 })
 export class EchartsBarTemComponent implements OnInit, OnChanges {
   @Input() option: any;
-  public barTemOption: any = {};
+  public barTemOption: any = null;
 
-  constructor() {
-  }
+  constructor() {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (this.option) {
-      this.chartInit();
+      if (this.option.length > 0) {
+        this.chartInit();
+      } else {
+        this.barTemOption = null;
+      }
     }
   }
 
@@ -50,14 +52,6 @@ export class EchartsBarTemComponent implements OnInit, OnChanges {
       data4.push(index);
     });
     this.barTemOption = {
-      /*title: {
-        text: '全国省级收入排名TOP-10',
-        textStyle: {
-          color: '#ffffff',
-          fontSize: 14
-        },
-        left: 'center'
-      },*/
       grid: {
         left: '8%',
         top: '6%',

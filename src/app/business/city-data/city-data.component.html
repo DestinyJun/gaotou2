@@ -3,32 +3,44 @@
   <div class="row">
     <div class="city-left">
       <div class="col-lg-3 col-md-3">
-<!--        <app-city-3d [esDate]="esDate" [cityId]="cityId" [cityName]="dataToggle"></app-city-3d>-->
+        <app-city-3d
+          [personAmount]="data?.provincePassengerFlowRankList">
+        </app-city-3d>
         <!--车辆统计-->
-<!--        <app-city-car [esDate]="esDate" [cityId]="cityId" [cityName]="dataToggle"></app-city-car>-->
+        <app-city-car
+          [cityName]="cityName"
+          [data]="data?.realTimeVehicleFlow">
+        </app-city-car>
       </div>
     </div>
     <div class="city-center">
       <div class="col-lg-6 col-md-6">
         <div class="city-center-map">
-          <!--<app-echarts-city-bmap
+          <app-echart-bmap
             [height]="'50vh'"
-            [option]="{area: dataToggle}"
+            [option]="{minZoom:7,maxZoom:9,center:[106.645779,26.654099],zoom: 8, area:'贵州省'.substring(0, '贵州省'.length - 1)}"
             [points]="mapPoints"
-            (cityClick)="mapCityClick($event)"
-          ></app-echarts-city-bmap>-->
+            (cityClick)="mapClick($event)"
+          ></app-echart-bmap>
         </div>
         <div class="city-center-echart">
           <div class="col-lg-6 col-md-6">
             <div class="echart-bar">
-              <!--<app-echarts-bar-double [title]="'市级速公路/客流统计'"></app-echarts-bar-double>-->
-<!--              <app-echarts-area-chart [height]="'height: 34vh;'" [option]="options3d"></app-echarts-area-chart>-->
+              <app-echarts-area-chart
+                [height]="'height: 34vh;'"
+                [option]="data?.dataTrend"
+                [title]="top10TypeTitle[top10TypeName][0]"
+                [color]="top10TypeTitle[top10TypeName][1]">
+              </app-echarts-area-chart>
             </div>
           </div>
           <div class="col-lg-6 col-md-6" [title]="'市级突发事件处理概况'">
             <div class="echart-circle">
-              <!--<app-echart-pie-circle-a></app-echart-pie-circle-a>-->
-<!--              <app-echarts-line-move [height]="'height: 34vh;'" [option]="options3dCopy"></app-echarts-line-move>-->
+              <app-echarts-line-move
+                [height]="'height: 34vh;'"
+                [option]="data?.wedataTrend"
+                [title]="eleWaterTile['electricr']">
+              </app-echarts-line-move>
             </div>
           </div>
         </div>
@@ -37,9 +49,16 @@
     <div class="city-right">
       <div class="col-lg-3 col-md-3">
         <!--业态前十排名柱状图-->
-<!--        <app-city-crosswise [cityId]="cityId" [cityName]="dataToggle"></app-city-crosswise>-->
+        <app-city-crosswise
+          [cityName]="cityName"
+          [data]="data?.flowTop10"
+          [type]="top10TypeName">
+        </app-city-crosswise>
         <!--收入统计-->
-<!--        <app-city-income [esDate]="esDate" [cityId]="cityId" [cityName]="dataToggle"></app-city-income>-->
+        <app-city-income
+          [cityName]="cityName"
+          [data]="data?.storeTypeIncomePieChart">
+        </app-city-income>
       </div>
     </div>
   </div>

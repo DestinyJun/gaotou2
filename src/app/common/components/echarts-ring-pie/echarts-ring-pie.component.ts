@@ -231,7 +231,7 @@ export class EchartsRingPieComponent implements OnInit, OnChanges, OnDestroy {
       if (this.selectIndex >= names.length) {
         this.selectIndex = 0;
       }
-    }, 3000);
+    }, 5000);
   }
 
   ngOnDestroy(): void {
