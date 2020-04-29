@@ -37,4 +37,8 @@ export class ApiService {
   public getAreaShopData(params): Observable<any> {
     return this.http.post(`/getServiceAreaCamera`, params);
   }
+  // 获取视频列表
+  public getVideoList(params): Observable<any> {
+    return this.http.post(`/getCameraCall`, params);
+  }
 }

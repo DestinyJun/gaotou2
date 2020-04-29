@@ -153,6 +153,13 @@ export class NavComponent implements OnInit {
           collapsedIcon:  'fa fa-globe',
           router:  '/home/whole',
           children: res.date.provinceList
+        },
+        {
+          label: '视频监控',
+          expandedIcon: 'fa fa-play',
+          collapsedIcon:  'fa fa-play',
+          router:  '/home/camera',
+          children: []
         }
       ];
       this.filesTree2 = this.tableTreeInitialize(arr);

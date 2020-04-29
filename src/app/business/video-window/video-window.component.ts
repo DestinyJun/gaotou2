@@ -3,6 +3,7 @@ import {VideoWindowService} from '../../common/services/video-window.service';
 import {LocalStorageService} from '../../common/services/local-storage.service';
 import {TreeNode} from '../../common/model/video-window.model';
 import {in_ips} from '../../common/tools/in_ips';
+import {ApiService} from '../../common/services/api.service';
 @Component({
   selector: 'app-video-window',
   templateUrl: './video-window.component.html',
@@ -35,18 +36,11 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
   constructor(
     private videoWindowService: VideoWindowService,
     private localService: LocalStorageService,
+    private apiService: ApiService
   ) {
   }
 
   ngOnInit() {
-    this.clientIP = this.localService.getObject('clientIP');
-    this.videoWindowService.getVideosUrl(this.localService.getObject('userDTO').id).subscribe(
-      (val) => {
-        if (val.data) {
-          this.videoInitialize(val.data);
-        }
-      }
-    );
     // 发射实时客流
     this.getPerson();
     // 发射业太数据名称
@@ -77,14 +71,15 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
   }
   public getUploadDate() {
     this.loading = true;
-    this.videoWindowService.searchAreaList().subscribe(
+    this.apiService.getVideoList({companyId: this.localService.get('companyId')}).subscribe(
       (val) => {
-        if (val.status === '200') {
+        if (val.status === 1000) {
           this.areas = val.data;
-          this.areaTree1 = this.initializeTree(val.data);
-          this.areaTree2 = this.initializeTree(val.data);
-          this.areaTree3 = this.initializeTree(val.data);
-          this.areaTree4 = this.initializeTree(val.data);
+          this.videoInitialize([val.data.oneCameraList[0], val.data.twoCameraList[0], val.data.threeCameraList[0], val.data.fourCameraList[0]]);
+          this.areaTree1 = this.initializeVideoTree(val.data.oneCameraList);
+          this.areaTree2 = this.initializeVideoTree(val.data.twoCameraList);
+          this.areaTree3 = this.initializeVideoTree(val.data.threeCameraList);
+          this.areaTree4 = this.initializeVideoTree(val.data.fourCameraList);
           this.trees = [{
             label: '全国高速视频监控',
             children: [
@@ -101,7 +96,7 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
   }
   // 选择树结构
   public nodeExpand (event): void {
-    if (event.node.label === '一号监视窗口') {
+   /* if (event.node.label === '一号监视窗口') {
       this.showNumber = 1;
     } else if (event.node.label === '二号监视窗口') {
       this.showNumber = 2;
@@ -133,13 +128,13 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
         );
       }
       return;
-    }
+    }*/
   }
   public nodeSelect(event): void {
     if (event.node.level === 6) {
       this.videoInfo = event.node;
       this.videoLocation(event.node.outUrl, event.node.label, event.node.showLocation);
-      if (event.node.showLocation === 1) {
+   /*   if (event.node.showLocation === 1) {
         this.videoRecord[0] = event.node.id;
         this.videoWindowService.saveVideosUrl(this.localService.getObject('userDTO').id, this.videoRecord).subscribe(
           (val) => {
@@ -147,8 +142,8 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
           }
         );
         return;
-      }
-      if (event.node.showLocation === 2) {
+      }*/
+      /*if (event.node.showLocation === 2) {
         this.videoRecord[1] = event.node.id;
         this.videoWindowService.saveVideosUrl(this.localService.getObject('userDTO').id, this.videoRecord).subscribe(
           (val) => {
@@ -174,7 +169,7 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
           }
         );
         return;
-      }
+      }*/
     }
   }
   // 视频初始化
@@ -350,7 +345,6 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
     for (let i = 0; i < data.length; i++) {
       const childnode =  new TreeNode();
       childnode.label = data[i].cameraName;
-      childnode.id = data[i].id;
       childnode.outUrl = data[i].outUrl;
       childnode.showLocation = data[i].showLocation;
       childnode.level = 6;
