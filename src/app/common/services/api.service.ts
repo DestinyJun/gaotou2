@@ -41,4 +41,20 @@ export class ApiService {
   public getVideoList(params): Observable<any> {
     return this.http.post(`/getCameraCall`, params);
   }
+  // 获取客流分布
+  public getPersonDistribute(params): Observable<any> {
+    return this.http.post(`/getPassengerFlowDistribution`, params);
+  }
+  // 获取服务区店铺信息
+  public getStoreInfo(params): Observable<any> {
+    return this.http.post(`/getStroreInfo`, params);
+  }
+  // 获取车辆类型
+  public getCarType(): Observable<any> {
+    return this.http.post(`/getAllVehicleType`, {});
+  }
+  // 获取车辆分布信息
+  public getCarDistribute(params): Observable<any> {
+    return this.http.post(`/pageVehicleFolw`, params);
+  }
 }

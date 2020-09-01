@@ -105,6 +105,12 @@
   font-weight: 500;
   letter-spacing: 0.1vw;
 }
+.person-number{
+  text-align: center;
+  letter-spacing: 5px;
+  color: #05eff1;
+  font-weight: 600;
+}
 /*服务区客流弹窗*/
 .vehicle-amount{
   padding-top: 1vh;

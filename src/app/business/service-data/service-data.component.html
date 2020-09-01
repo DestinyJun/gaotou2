@@ -5,6 +5,7 @@
         <app-service-3d [personAmount]="timeData?.provincePassengerFlowRankList"></app-service-3d>
         <!--车辆统计-->
         <app-service-car
+          [serviceId]="serviceId"
           [serviceName]="serviceName"
           [data]="timeData?.realTimeVehicleFlow">
         </app-service-car>
@@ -13,11 +14,13 @@
     <div class="service-leader-center">
       <div class="col-lg-6 col-md-6">
         <div class="video-shop">
+          <!--上行数据-->
           <app-service-upattr
             [serviceInfo]="serviceInfo"
             [TopShopData]="timeData?.operatingIncome.upstreamStoreIncomeList"
             [topVideoList]="fixedData?.upstreamCameraGroupList"
           ></app-service-upattr>
+          <!--方向指引-->
           <div class="video-shop-center text-center">
             <!--上行-->
             <span>{{serviceInfo?.downAttributeValues?.source}}</span>
@@ -25,6 +28,7 @@
             <!--下行-->
             <span>{{serviceInfo?.upAttributeValues?.source}}</span>
           </div>
+          <!--下行数据-->
           <app-service-downattr
             [serviceInfo]="serviceInfo"
             [downShopData]="timeData?.operatingIncome.downStoreIncomeList"

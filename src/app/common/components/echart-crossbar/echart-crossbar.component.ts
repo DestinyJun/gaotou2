@@ -32,7 +32,7 @@ export class EchartCrossbarComponent implements OnInit, OnChanges {
     this.option = this.option.reverse();
     this.option.map((val) => {
       yAxisData .push(val.name);
-      barData.push(val.values);
+      barData.push({value: val.values, serviceAreaId: val.serviceAreaId, name: val.name});
     });
     this.crosswiseBar = {
       tooltip : {
@@ -101,11 +101,7 @@ export class EchartCrossbarComponent implements OnInit, OnChanges {
   }
   /*统计图点击事件*/
   public rankingClick(e) {
-   this.serviceZoneId.forEach( v => {
-     if (e.name === v.serviceName) {
-       this.setServiceAreaId = v.serviceAreaId;
-     }
-   });
-    this.router.navigate(['/home/serzone', {id: this.setServiceAreaId, name: e.name}]);
+    this.router.navigate(['/home/serzone', {id: e.data.serviceAreaId, name: e.data.name}]);
+    return;
   }
 }

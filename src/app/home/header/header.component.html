@@ -21,24 +21,29 @@
     </div>
     <div class="header-admin">
       <!--头像-->
-<!--      [routerLink]="['/home/personal']"-->
+      <!--[routerLink]="['/home/personal']"-->
       <img class="header-admin-img img-circle" src="assets/images/timg.jpg" title="退出" (click)="logOut()">
       <!--时钟-->
       <div class="header-admin-time text-center">
         <span>北京时间 <span style="margin-left: 0.2vw">{{dataTime | date:'yyyy-MM-dd HH:mm:ss'}}</span></span>
       </div>
       <!--客流-->
-<!--      (click)="personClick()"-->
-      <div *ngIf="flagState" class="header-admin-flow text-center">
+      <!---->
+      <div *ngIf="flagState" class="header-admin-flow text-center" (click)="personClick()">
         <span>{{flagName}}今日客流量：</span>
         <div class="text-center">
-          <span style="font-size: 0.875rem">{{persons?.total.length === 0?'当前暂无客流数据': ''}}</span>
+          <span
+            style="font-size: 0.875rem">
+            {{persons?.total.length === 0?'当前暂无客流数据': ''}}
+          </span>
           <!--<span *ngFor="let item of persons?.total">{{item}}</span>-->
-          <span *ngIf="!(persons?.total.length === 0)" [countUp]="personNumber" [options]="personNumberOption" style="text-align: center;
-    letter-spacing: 5px;
-    font-size: 1.2rem;
-    color: #05eff1;
-    font-weight: 600;">0</span>
+          <span
+            *ngIf="!(persons?.total.length === 0)"
+            [countUp]="personNumber"
+            [options]="personNumberOption"
+            class="person-number"
+            style="font-size: 1.2rem;">0
+          </span>
         </div>
         <span>人/次</span>
       </div>
@@ -122,11 +127,13 @@
               <b>总人数：</b>
               <b style="font-size:1rem">{{persons?.total.length === 0? '当前暂无客流数据': ''}}</b>
               <!--<span *ngFor="let item of persons?.total">{{item}}</span>-->
-              <span *ngIf="!(persons?.total.length === 0)" [countUp]="personNumber" [options]="personNumberOption" style="text-align: center;
-    letter-spacing: 5px;
-    font-size: 1.2rem;
-    color: #05eff1;
-    font-weight: 600;">0</span>
+              <span
+                *ngIf="!(persons?.total.length === 0)"
+                [countUp]="personNumber"
+                [options]="personNumberOption"
+                class="person-number"
+                style="font-size: 1.2rem;">0
+              </span>
               <small *ngIf="!(persons?.total.length === 0)">人/次</small>
             </p>
           </div>
@@ -135,10 +142,20 @@
       <!--人数分布-->
       <div class="row">
         <div class="col-ld-6 col-md-6 text-center">
-          <app-echart-nationa-person *ngIf="!(persons?.total.length === 0)" [option]="persons?.province" [height]="'68vh'" [width]="'100%'"></app-echart-nationa-person>
+          <app-echart-nationa-person
+            *ngIf="!(persons?.total.length === 0)"
+            [option]="this.provinceData"
+            [height]="'68vh'"
+            [width]="'100%'">
+          </app-echart-nationa-person>
         </div>
         <div class="col-ld-6 col-md-6 text-center">
-          <app-echart-province-person *ngIf="!(persons?.total.length === 0)" [option]="persons?.city" [height]="'68vh'" [width]="'100%'"></app-echart-province-person>
+          <app-echart-province-person
+            *ngIf="!(persons?.total.length === 0)"
+            [option]="this.cityData"
+            [height]="'68vh'"
+            [width]="'100%'">
+          </app-echart-province-person>
         </div>
       </div>
     </div>

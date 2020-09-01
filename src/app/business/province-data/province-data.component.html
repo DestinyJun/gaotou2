@@ -8,6 +8,7 @@
         </app-province-3d>
         <!--车辆统计-->
         <app-province-car
+          [provinceId]="provinceId"
           [provinceName]="provinceName"
           [data]="data?.realTimeVehicleFlow">
         </app-province-car>
@@ -22,7 +23,6 @@
             [height]="'50vh'"
             [option]="{minZoom:7,maxZoom:9,center:[106.645779,26.654099],zoom: 8, area:provinceName.substring(0, provinceName.length - 1)}"
             [points]="mapPoints"
-            (cityClick)="mapClick($event)"
           ></app-echart-bmap>
         </div>
         <!--事件监控-->

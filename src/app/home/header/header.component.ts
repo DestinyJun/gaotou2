@@ -3,6 +3,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {LocalStorageService} from '../../common/services/local-storage.service';
 import {HttpClient} from '@angular/common/http';
 import { CountUpOptions } from 'countup.js';
+import {ApiService} from '../../common/services/api.service';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -19,6 +20,11 @@ export class HeaderComponent implements OnInit {
   public serviceSearchListShow = false;
   public serviceSearchList = [];
   public personNumber: number;
+  public target = null;
+  public type = null;
+  public provinceData = null;
+  public cityData = null;
+  public serviceData = null;
   public personNumberOption: CountUpOptions = {
     useGrouping: false,
     duration: 3,
@@ -30,7 +36,8 @@ export class HeaderComponent implements OnInit {
     private routerInfo: ActivatedRoute,
     private localService: LocalStorageService,
     private http: HttpClient,
-    private router: Router
+    private router: Router,
+    private apiSrv: ApiService,
   ) { }
 
   ngOnInit() {
@@ -64,6 +71,8 @@ export class HeaderComponent implements OnInit {
     this.localService.persons.subscribe((value) => {
       this.personNumber = parseInt(value.total.join(''), 10);
       this.persons = value;
+      this.target = value.target;
+      this.type = value.type;
     });
     // 客流
     this.localService.personsShow.subscribe((value) => {
@@ -109,15 +118,34 @@ export class HeaderComponent implements OnInit {
   }
   // 客流量弹窗
   public personClick() {
-    /*if (this.flagState === 'serzone') {
-      this.serviceZonePersonAlert = true;
-    } else {
+    const params = {
+      companyId: this.localService.get('companyId'),
+      target: this.target,
+      type: this.type
+    };
+    this.apiSrv.getPersonDistribute(params).subscribe((res) => {
+      this.provinceData = res.date.province.map((item) => ({name: item.provinceName, value: item.number}));
+      this.cityData = res.date.guizhou.map((item) => {
+        let name = '';
+        if (item.provinceName === '铜仁地区') {
+          name = '铜仁市';
+        } else if (item.provinceName === '毕节地区') {
+          name = '毕节市';
+        } else {
+          name = item.provinceName;
+        }
+        return {name: name, value: item.number};
+      });
+      if (this.flagState === 'serzone') {
+        this.serviceZonePersonAlert = true;
+      } else {
+        this.cityPersonAlert = true;
+        this.localService.videoShow.next(this.cityPersonAlert);
+      }
       this.cityPersonAlert = true;
       this.localService.videoShow.next(this.cityPersonAlert);
-    }*/
-    this.cityPersonAlert = true;
-    this.localService.videoShow.next(this.cityPersonAlert);
-    this.localService.windowVideoShow.next(false);
+      this.localService.windowVideoShow.next(false);
+    });
   }
   public closePersonAlert() {
       this.serviceZonePersonAlert = false;

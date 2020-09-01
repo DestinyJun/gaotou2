@@ -55,7 +55,7 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
         this.serviceInit();
         this.clearTimer = setInterval(() => {
           this.serviceInit();
-        }, 8000);
+        }, 800000);
       }
     );
   }
@@ -76,6 +76,8 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
       // 发射客流
       this.localService.persons.next({
         total: res.date.totalPassenger.toString().split(''),
+        target: this.serviceId,
+        type: 3,
       });
     });
     this.index++;

@@ -6,7 +6,6 @@ import {ServiceDataRoutingModule} from './service-data.routing.module';
 import { ServiceDataService } from '../../common/services/service-data.service';
 import {CalendarModule, ScrollPanelModule, DropdownModule} from 'primeng/primeng';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {DataService} from '../../common/services/data.service';
 import {ButtonModule} from 'primeng/button';
 import {EchartLineAreaModule, EchartsLineBrokenModule, InputDropdownModule, PagingModule} from '../../common/wenjun';
 import {ImageZoomModule} from '../../common/components/image-zoom/image-zoom.module';
@@ -55,6 +54,6 @@ import {CountUpModule} from 'countup.js-angular2';
     ServiceUpattrComponent,
     ServiceDownattrComponent
   ],
-  providers: [ServiceDataService, DataService, DatePipe]
+  providers: [ServiceDataService, DatePipe]
 })
 export class ServiceDataModule { }

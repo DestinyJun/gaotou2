@@ -104,7 +104,8 @@ export class EchartsRoseFigureComponent implements OnInit, OnChanges, OnDestroy 
           radius: [60, 80],
           center: ['center', 'center'],
           color: this.colors,
-          silent: true,
+          silent: false,
+          hoverAnimation: true,
           avoidLabelOverlap: false,
           label: {
             normal: {
@@ -163,7 +164,7 @@ export class EchartsRoseFigureComponent implements OnInit, OnChanges, OnDestroy 
 
   // 开启动画效果
   public startSelectAnimate(myChart, firstSelectName, names) {
-    myChart.dispatchAction({
+     myChart.dispatchAction({
       type: 'highlight',
       name: firstSelectName
     });

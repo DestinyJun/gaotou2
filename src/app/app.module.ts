@@ -11,7 +11,6 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import { LoginRemindComponent } from './login-remind/login-remind.component';
-import {ExampleDataService} from './common/services/example-data.service';
 import {GtLoadingModule} from './common/components/gt-loading/gt-loading.module';
 import {InterceptorService} from './common/services/interceptor.service';
 
@@ -34,7 +33,6 @@ import {InterceptorService} from './common/services/interceptor.service';
     ApiService,
     LocalStorageService,
     LoginGuard,
-    ExampleDataService,
     {provide: LocationStrategy, useClass: HashLocationStrategy},
     {provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true},
   ],

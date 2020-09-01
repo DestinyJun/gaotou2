@@ -23,9 +23,3 @@ export class TreeNode {
   outUrl?: string;
   showLocation?: number;
 }
-export class ServiceAreaNode {
-  id?: number;
-  areaName?: string;
-  parentId?: number;
-  administrativeAreaList?: ServiceAreaNode[];
-}

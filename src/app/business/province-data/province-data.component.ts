@@ -2,6 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {LocalStorageService} from '../../common/services/local-storage.service';
 import {ApiService} from '../../common/services/api.service';
+
 @Component({
   selector: 'app-finance-data',
   templateUrl: './province-data.component.html',
@@ -47,7 +48,7 @@ export class ProvinceDataComponent implements OnInit, OnDestroy {
         this.provinceInit();
         this.clearTimer = setInterval(() => {
           this.provinceInit();
-        }, 8000);
+        }, 80000000);
         // 获取服务器坐标点
         this.apiSrv.getProvinceMapPoints({provinceId: this.provinceId}).subscribe(((res) => {
           this.mapPoints = res.date;
@@ -73,31 +74,13 @@ export class ProvinceDataComponent implements OnInit, OnDestroy {
       // 发射客流
       this.localService.persons.next({
         total: res.date.totalPassenger.toString().split(''),
+        target: this.provinceId,
+        type: 1,
       });
     });
     this.index++;
     if (this.index > 2) {
       this.index = 0;
     }
-  }
-
-  // 地图点击事件
-  public mapClick(param): void {
-    /*if (param.areaName === undefined) {
-      if (param.cityName === '贵阳市') {
-        this.router.navigate(['/home/city', {id: 3, name: param.cityName}]);
-      } else {
-        this.router.navigate(['/home/city', {id: 5, name: param.cityName}]);
-        // window.alert(`很抱歉${param.cityName}暂无数据`);
-      }
-    }
-    else {
-      if (param.areaName === '久长服务区') {
-        this.router.navigate(['/home/serzone', {id: 1, name: param.areaName}]);
-      } else {
-        this.router.navigate(['/home/serzone', {id: 28, name: param.areaName}]);
-        // window.alert('此服务区暂无数据');
-      }
-    }*/
   }
 }
