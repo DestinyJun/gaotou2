@@ -42,11 +42,6 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit() {
     const that = this;
-   /* this.http.get(`${environment.urls}/common/config/getServiceAreaCoordinate/2`).subscribe(
-      (val) => {
-        this.serviceNameArray = val;
-      }
-    );*/
     window.onclick = function (event) {
       if (
         event.srcElement.className === 'saerch-list-li' ||
@@ -78,11 +73,6 @@ export class HeaderComponent implements OnInit {
     this.localService.personsShow.subscribe((value) => {
       this.cityPersonAlert = true;
     });
-  }
-  public logOut(): void {
-    this.localService.remove('accessToken');
-    this.localService.remove('companyId');
-    this.router.navigate(['/login']);
   }
   public serviceSearchChange(e): void {
     if (e.keyCode === 13) {

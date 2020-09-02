@@ -1,106 +1,102 @@
 <!--个人信息-->
 <div class="content">
-<div class="content-header">
-  <h4 class="text-center">
-    个人信息
-    <small>General Information</small>
-  </h4>
-</div>
-<div class="content-information">
-  <div class="form-horizontal">
-    <div class="form-group">
-      <label for="realName" class="col-sm-1 control-label" disabled="">姓名</label>
-      <div class="col-sm-5">
-        <input type="text" class="form-control" id="realName" name="realName" [value]="userInfo.realName" disabled>
+  <div class="content-header">
+    <h4 class="text-center">
+      个人信息
+      <small>General Information</small>
+    </h4>
+  </div>
+  <div class="content-information">
+    <div class="form-horizontal">
+      <div class="form-group">
+        <label for="realName" class="col-sm-1 control-label" disabled="">姓名</label>
+        <div class="col-sm-5">
+          <input type="text" class="form-control" id="realName" name="realName" [value]="userInfo.realName" disabled>
+        </div>
+        <label for="telNumber" class="col-sm-1 control-label">电话</label>
+        <div class="col-sm-5">
+          <input type="text" class="form-control" id="telNumber" name="telNumber" [(ngModel)]="userInfo.telNumber" [ngStyle]="{'background': !btnProfileTxt?'#C9302C': ''}" [disabled]="btnProfileTxt">
+        </div>
       </div>
-      <label for="dutyName" class="col-sm-1 control-label">职务</label>
-      <div class="col-sm-5">
-        <input type="text" class="form-control" id="dutyName" name="dutyName" [value]="userInfo.dutyName" disabled>
+      <div class="form-group">
+        <label for="email" class="col-sm-1 control-label">邮箱</label>
+        <div class="col-sm-5">
+          <input type="text" class="form-control" id="email" name="email" [(ngModel)]="userInfo.email"
+                 [ngStyle]="{'background': !btnProfileTxt?'#C9302C': ''}" [disabled]="btnProfileTxt">
+        </div>
+        <label for="adress" class="col-sm-1 control-label">地址</label>
+        <div class="col-sm-5">
+          <input type="text" class="form-control" id="adress" name="remark" [(ngModel)]="userInfo.address"
+                 [ngStyle]="{'background': !btnProfileTxt?'#C9302C': ''}" [disabled]="btnProfileTxt">
+        </div>
       </div>
-    </div>
-    <div class="form-group">
-      <label for="deptName" class="col-sm-1 control-label">所属部门</label>
-      <div class="col-sm-5">
-        <input type="text" class="form-control" id="deptName" name="deptName" [value]="userInfo.deptName" disabled>
+      <div class="form-group">
+        <label for="gender" class="col-sm-1 control-label">性别</label>
+        <div class="col-sm-5">
+          <input type="text" class="form-control" *ngIf="btnProfileTxt" id="gender" name="gender"
+                 [value]="userInfo.gender=== '1'?'男': '女'" [ngStyle]="{'background': !btnProfileTxt?'#C9302C': ''}"
+                 [disabled]="btnProfileTxt">
+          <p-radioButton *ngIf="!btnProfileTxt" name="groupname" value="1" label="男"
+                         [(ngModel)]="userInfo.gender"></p-radioButton>
+          <p-radioButton *ngIf="!btnProfileTxt" name="groupname" value="2" label="女"
+                         [(ngModel)]="userInfo.gender"></p-radioButton>
+        </div>
+        <label for="remark" class="col-sm-1 control-label">备注</label>
+        <div class="col-sm-5">
+          <input type="text" class="form-control" id="remark" name="remark" [value]="userInfo.remark" disabled>
+        </div>
+       <!-- <label for="birthday" class="col-sm-1 control-label">生日</label>
+        <div class="col-sm-5">
+          <input type="text" *ngIf="btnProfileTxt" class="form-control" id="birthday" name="birthday"
+                 [value]="userInfo.birthday" [ngStyle]="{'background': !btnProfileTxt?'#C9302C': ''}"
+                 [disabled]="btnProfileTxt">
+          <p-calendar *ngIf="!btnProfileTxt" [locale]="esDate" placeholder="请选择生日......"
+                      (onSelect)="onSelectTime($event)" [monthNavigator]="true" [yearNavigator]="true"
+                      yearRange="2000:2030" dateFormat="yy-mm-dd"></p-calendar>
+        </div>-->
       </div>
-      <label for="organizationName" class="col-sm-1 control-label">所属公司</label>
-      <div class="col-sm-5">
-        <input type="text" class="form-control" id="organizationName" name="organizationName" [value]="userInfo.organizationName" disabled>
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="remark" class="col-sm-1 control-label">备注</label>
-      <div class="col-sm-5">
-        <input type="text" class="form-control" id="remark" name="remark" [value]="userInfo.remark" disabled>
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="email" class="col-sm-1 control-label">邮箱</label>
-      <div class="col-sm-5">
-        <input type="text" class="form-control" id="email" name="email" [(ngModel)]="userInfo.email" [ngStyle]="{'background': !btnProfileTxt?'#C9302C': ''}" [disabled]="btnProfileTxt">
-      </div>
-      <label for="adress" class="col-sm-1 control-label" >地址</label>
-      <div class="col-sm-5">
-        <input type="text" class="form-control" id="adress" name="remark" [(ngModel)]="userInfo.address" [ngStyle]="{'background': !btnProfileTxt?'#C9302C': ''}" [disabled]="btnProfileTxt">
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="gender" class="col-sm-1 control-label" >性别</label>
-      <div class="col-sm-5">
-        <input type="text" class="form-control" *ngIf="btnProfileTxt" id="gender" name="gender" [value]="userInfo.gender=== '1'?'男': '女'" [ngStyle]="{'background': !btnProfileTxt?'#C9302C': ''}" [disabled]="btnProfileTxt">
-        <p-radioButton *ngIf="!btnProfileTxt" name="groupname" value="1" label="男" [(ngModel)]="userInfo.gender"></p-radioButton>
-        <p-radioButton *ngIf="!btnProfileTxt" name="groupname" value="2" label="女" [(ngModel)]="userInfo.gender"></p-radioButton>
-      </div>
-      <label for="birthday" class="col-sm-1 control-label" >生日</label>
-      <div class="col-sm-5">
-        <input type="text" *ngIf="btnProfileTxt" class="form-control" id="birthday" name="birthday" [value]="userInfo.birthday" [ngStyle]="{'background': !btnProfileTxt?'#C9302C': ''}" [disabled]="btnProfileTxt">
-        <p-calendar *ngIf="!btnProfileTxt" [locale]="esDate" placeholder="请选择生日......" (onSelect)="onSelectTime($event)" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2030" dateFormat="yy-mm-dd"></p-calendar>
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="telNumber" class="col-sm-1 control-label" >电话</label>
-      <div class="col-sm-5">
-        <input type="text" class="form-control" id="telNumber" name="telNumber" [(ngModel)]="userInfo.telNumber" [ngStyle]="{'background': !btnProfileTxt?'#C9302C': ''}" [disabled]="btnProfileTxt">
-      </div>
-    </div>
-    <div class="form-group text-center style-border">
-      <button class="btn btn-lg" type="button" [ngClass]="{'btn-primary': !btnProfileTxt, 'btn-danger': btnProfileTxt}" (click)="btnProfileTxt = !btnProfileTxt;">修改</button>
-      <button class="btn btn-lg" type="button" [ngClass]="{'btn-primary': btnProfileTxt, 'btn-danger': !btnProfileTxt}" style="margin-left: 1vw" (click)="updateProfileClick()">提交</button>
     </div>
   </div>
-</div>
-<!--密码分割线-->
-<div class="content-header">
-  <h4 class="text-center">
-    密码修改
-    <small>Change Password</small>
-  </h4>
-</div>
-<div class="content-information">
-  <div class="form-horizontal">
-    <div *ngIf="!btnPasswordTxt" class="form-group">
-      <label for="oldPassword" class="col-sm-1 control-label">原密码</label>
-      <div class="col-sm-5">
-        <input type="password" class="form-control" id="oldPassword" [(ngModel)]="updatePassword.oldPassword" name="name">
+  <!--密码分割线-->
+  <div class="content-header">
+    <h4 class="text-center">
+      密码修改
+      <small>Change Password</small>
+    </h4>
+  </div>
+  <div class="content-information">
+    <div class="form-horizontal">
+      <div *ngIf="!btnPasswordTxt" class="form-group">
+        <label for="oldPassword" class="col-sm-1 control-label">原密码</label>
+        <div class="col-sm-5">
+          <input type="password" class="form-control" id="oldPassword" [(ngModel)]="updatePassword.originalPassword"
+                 name="name">
+        </div>
+        <label for="newPassword" class="col-sm-1 control-label">新密码</label>
+        <div class="col-sm-5">
+          <input type="password" class="form-control" id="newPassword" [(ngModel)]="updatePassword.latestPassword"
+                 name="duty">
+        </div>
       </div>
-      <label for="newPassword" class="col-sm-1 control-label">新密码</label>
-      <div class="col-sm-5">
-        <input type="password" class="form-control" id="newPassword" [(ngModel)]="updatePassword.newPassword" name="duty">
+      <div *ngIf="!btnPasswordTxt" class="form-group">
+        <label for="confirmPassword" class="col-sm-1 control-label">确认新密码</label>
+        <div class="col-sm-5">
+          <input type="password" class="form-control" id="confirmPassword" [(ngModel)]="confirmPassword" name="name">
+        </div>
       </div>
-    </div>
-    <div *ngIf="!btnPasswordTxt" class="form-group">
-      <label for="confirmPassword" class="col-sm-1 control-label">确认新密码</label>
-      <div class="col-sm-5">
-        <input type="password" class="form-control" id="confirmPassword" [(ngModel)]="confirmPassword" name="name">
+      <div class="form-group text-center style-border">
+        <button *ngIf="btnPasswordTxt" class="btn btn-lg btn-primary" type="button" (click)="btnPasswordTxt=false">
+          修改密码
+        </button>
+        <button *ngIf="!btnPasswordTxt" class="btn btn-lg btn-primary" type="button" (click)="updatePasswordClick()">
+          确认修改
+        </button>
+        <button class="btn btn-lg btn-danger" type="button" style="margin-left: 1vw" (click)="logOut()"
+                [routerLink]="['/login']">退出登录
+        </button>
+        <button class="btn btn-lg btn-info" type="button" style="margin-left: 1vw" (click)="goBack()">返回</button>
       </div>
-    </div>
-    <div class="form-group text-center style-border">
-      <button *ngIf="btnPasswordTxt" class="btn btn-lg btn-primary" type="button" (click)="btnPasswordTxt=false">修改密码</button>
-      <button *ngIf="!btnPasswordTxt" class="btn btn-lg btn-primary" type="button" (click)="updatePasswordClick()">确认修改</button>
-      <button class="btn btn-lg btn-danger" type="button" style="margin-left: 1vw" (click)="logOut()" [routerLink]="['/login']">退出登录</button>
-      <button class="btn btn-lg btn-info" type="button" style="margin-left: 1vw" (click)="goBack()">返回</button>
     </div>
   </div>
-</div>
 </div>
 

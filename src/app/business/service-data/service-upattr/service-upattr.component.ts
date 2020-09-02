@@ -128,8 +128,8 @@ export class ServiceUpattrComponent implements OnInit, OnChanges {
       this.videoShopList = [];
       this.cars = [];
       this.serviceShopShow = true;
-      this.localService.windowVideoShow.next(false);
       document.body.className = 'ui-overflow-hidden';
+      this.localService.windowVideoShow.next(false);
       if (this.serviceShopInfo.cameraList !== undefined) {
         this.addShopVideo(this.serviceShopInfo);
       }
@@ -164,6 +164,11 @@ export class ServiceUpattrComponent implements OnInit, OnChanges {
         }
       }
     );*/
+  }
+  public closeServiceShop(): void {
+    document.body.className = '';
+    this.serviceShopShow = false;
+    this.localService.windowVideoShow.next(true);
   }
   public addShopVideo(item) {
     this.videoShopList = [];
@@ -213,11 +218,6 @@ export class ServiceUpattrComponent implements OnInit, OnChanges {
         }, 100);
       }, 100);
     }
-  }
-  public closeServiceShop(): void {
-    document.body.className = '';
-    this.serviceShopShow = false;
-    this.localService.windowVideoShow.next(true);
   }
   public openMerchantVideo(): void {
     this.videoBottomShopUrl = `

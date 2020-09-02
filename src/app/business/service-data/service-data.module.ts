@@ -13,9 +13,6 @@ import {Service3dComponent} from './service-3d/service-3d.component';
 import {ServiceCarComponent} from './service-car/service-car.component';
 import {ServiceIncomeComponent} from './service-income/service-income.component';
 import { ServiceInfoComponent } from './service-info/service-info.component';
-import { ServiceEvnReportComponent } from './service-evn-report/service-evn-report.component';
-import { ServiceToiletComponent } from './service-toilet/service-toilet.component';
-import { ServiceEvnDealComponent } from './service-evn-deal/service-evn-deal.component';
 import { ServiceUpattrComponent } from './service-upattr/service-upattr.component';
 import { ServiceDownattrComponent } from './service-downattr/service-downattr.component';
 import {EchartsBarDoubleModule} from '../../common/components/echart-bar-double/echarts-bar-double.module';
@@ -48,9 +45,6 @@ import {CountUpModule} from 'countup.js-angular2';
     ServiceCarComponent,
     ServiceIncomeComponent,
     ServiceInfoComponent,
-    ServiceEvnReportComponent,
-    ServiceToiletComponent,
-    ServiceEvnDealComponent,
     ServiceUpattrComponent,
     ServiceDownattrComponent
   ],

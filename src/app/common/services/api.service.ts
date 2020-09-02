@@ -57,4 +57,16 @@ export class ApiService {
   public getCarDistribute(params): Observable<any> {
     return this.http.post(`/pageVehicleFolw`, params);
   }
+  // 获取收入类型
+  public getIncomeType(): Observable<any> {
+    return this.http.post(`/getAllStoreType`, {});
+  }
+  // 获取收入分布信息
+  public getIncomeDistribute(params): Observable<any> {
+    return this.http.post(`/pageIncome`, params);
+  }
+  // 修改密码
+  public updatePassword(params): Observable<any> {
+    return this.http.post(`/modifyPwd`, params);
+  }
 }

@@ -13,7 +13,102 @@
     <div class="city-income-pie-title text-center">
       <p>{{cityName}}高速服务区实时收入</p>
     </div>
-    <app-echarts-ring-pie [option]="optionsIncomeModel" [height]="'20vh'"></app-echarts-ring-pie>
+    <app-echarts-ring-pie
+      [option]="optionsIncomeModel"
+      [height]="'20vh'"
+      (pieClick)="incomeParkClick($event)">
+    </app-echarts-ring-pie>
+  </div>
+  <!--收入类型弹窗-->
+  <div class="bg-box" *ngIf="incomeAlertShow">
+    <div class="alert-window">
+      <div class="alert-window-header">
+        <div class="row">
+          <div class="col-ld-12 col-md-12">
+            <span>{{cityName}}今日{{incomeAlertTitle}}车辆分布统计</span>
+            <div class="pull-right" (click)="incomeCloseShow()">
+              <i class="fa fa-window-close " aria-hidden="true"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="alert-window-content">
+        <div class="row">
+          <div class="col-ld-6 col-md-6 echart-btn">
+            <app-echart-pie
+              [option]="incomeOptionsType"
+              [height]="'55vh'"
+              (pieClick)="incomeOptionsPieClick($event)">
+            </app-echart-pie>
+          </div>
+          <div class="col-ld-6 col-md-6">
+            <div class="alert-window-content-table">
+              <div class="toggle-btn">
+                <button
+                  *ngFor="let item of incomeBtnList;let i = index"
+                  class="btn"
+                  [ngClass]="item.bgc"
+                  [ngStyle]="{'background':item.isHeight?'black': ''}"
+                  (click)="incomeBtnClick(incomeBtnList, i)"
+                >
+                  {{item.storeTypeName}}
+                </button>
+                <div class="toggle-btn-area pull-right" style="">
+                  <!--<span (click)="incomeExcelShow = true">表格导出</span>-->
+                </div>
+              </div>
+              <div class="content-table">
+                <p-scrollPanel [style]="{width: '100%', height: '40vh'}">
+                  <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                      <th>{{incomeAlertTitle}}排名</th>
+                      <th [ngStyle]="{'background':incomeAlertTitle === '总收入'?'black': ''}">总收入</th>
+                      <th *ngIf="!(incomeAlertTitle === '总收入')" [ngStyle]="{'background':!(incomeAlertTitle === '总收入')?'black': ''}">{{incomeAlertTitle}}收入(元）</th>
+                      <th>服务区</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let item of incomeTableData?.datas;let i=index">
+                      <td >{{item?.rank}}</td>
+                      <td [ngStyle]="{'background':incomeAlertTitle === '总收入'?'black': ''}">{{item?.total}}</td>
+                      <td *ngIf="!(incomeAlertTitle === '总收入')" [ngStyle]="{'background':!(incomeAlertTitle === '总收入')?'black': ''}">{{item?.typeTotal}}</td>
+                      <td class="content-table-car" (click)="incomeTableClick(item)">{{item.regionName}}</td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </p-scrollPanel>
+              </div>
+              <app-paging [option]="{total: incomeTableData?.totalRecord,row: 8}" (pageClick)="incomeDistributionPaging($event)"></app-paging>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="bg-excel" *ngIf="incomeExcelShow">
+        <div class="alert-window-excel">
+          <div class="alert-window-excel-header">
+            <span>车辆数据表格导出</span>
+            <div class="pull-right" (click)="incomeExcelShow = false">
+              <i class="fa fa-window-close " aria-hidden="true"></i>
+            </div>
+          </div>
+          <div class="alert-window-excel-content">
+            <div class="alert-window-excel-content-list">
+              <label>请选择开始时间：</label>
+              <!--              <p-calendar placeholder="请点击选择时间......" [locale]="esDate" [(ngModel)]="carStartTime" [monthNavigator]="true" [yearNavigator]="true" dateFormat="yymmdd"  yearRange="2017:2030"></p-calendar>-->
+            </div>
+            <div class="alert-window-excel-content-list">
+              <label>请选择结束时间：</label>
+              <!--              <p-calendar placeholder="请点击选择时间......" [locale]="esDate" [(ngModel)]="carEndTime" [monthNavigator]="true" [yearNavigator]="true" dateFormat="yymmdd"  yearRange="2017:2030"></p-calendar>-->
+            </div>
+          </div>
+          <div class="alert-window-excel-footer text-center">
+            <span (click)="incomeExportClick();incomeExcelShow = false">确认导出</span>
+            <span (click)="incomeExcelShow = false">取消导出</span>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 

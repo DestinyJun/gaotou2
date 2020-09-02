@@ -69,6 +69,7 @@ export class ServiceCarComponent implements OnInit, OnChanges {
     this.alertCarTitle = e.name;
     this.alertCarShow = true;
     document.body.className = 'ui-overflow-hidden';
+    this.localService.windowVideoShow.next(false);
     this.arryCarPie = [];
     this.carDistribution(null, 1);
   }
@@ -121,6 +122,7 @@ export class ServiceCarComponent implements OnInit, OnChanges {
   public closeCarShow(): void {
     document.body.className = '';
     this.alertCarShow = false;
+    this.localService.windowVideoShow.next(true);
   }
   public carDistributionPaging(e): void {
     this.carDistribution(null, e);

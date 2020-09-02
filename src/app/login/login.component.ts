@@ -42,8 +42,13 @@ export class LoginComponent implements OnInit {
           this.loginLoading = false;
           this.localSessionStorage.set('accessToken', value.key);
           this.localSessionStorage.set('companyId', value.companyId);
+          this.localSessionStorage.setObject('user', JSON.stringify(value.user));
           this.route.navigate(['/home/whole']);
-        });
+        },
+        error => {
+          this.loginLoading = false;
+        }
+        );
     } else {
       this.loginLoading = false;
       window.alert('请输入合法的用户名和密码');

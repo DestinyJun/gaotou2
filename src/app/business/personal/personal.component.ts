@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {LocalStorageService} from '../../common/services/local-storage.service';
 import {UpdatePassword, UpdateUser, User} from '../../common/model/personal.model';
 import {DatePipe} from '@angular/common';
-import {PersonalService} from '../../common/services/personal.service';
+import {ApiService} from '../../common/services/api.service';
 
 @Component({
   selector: 'app-personal',
@@ -18,18 +18,19 @@ export class PersonalComponent implements OnInit {
   public userInfo: User = new User;
   public confirmPassword: any;
   public updateUser = new UpdateUser('', '', '', '', '', '', '');
-  public updatePassword = new UpdatePassword('', '', '');
+  public updatePassword = new UpdatePassword('', '');
   constructor(
-    private personalService: PersonalService,
-    private localSessionStorage: LocalStorageService,
+    private apiSrv: ApiService,
+    private localStorageSrv: LocalStorageService,
     private datePipe: DatePipe
   ) { }
 
   ngOnInit() {
+    this.userInfo = JSON.parse(this.localStorageSrv.getObject('user'));
     // 发射实时客流
     this.getPerson();
     // 发射业太数据名称
-    this.localSessionStorage.eventBus.next({title: '个人信息', flagState: false, flagName: '全国'});
+    this.localStorageSrv.eventBus.next({title: '个人信息', flagState: false, flagName: '全国'});
     // 时间初始化
     this.esDate = {
       firstDayOfWeek: 0,
@@ -44,7 +45,7 @@ export class PersonalComponent implements OnInit {
   }
   // 客流
   public getPerson(): void {
-    this.localSessionStorage.persons.next({
+    this.localStorageSrv.persons.next({
       total: [],
       province: [],
       city: []
@@ -55,45 +56,25 @@ export class PersonalComponent implements OnInit {
     this.updateUser.birthday = this.datePipe.transform(event, 'yyyy-mm-dd');
     this.userInfo.birthday = this.datePipe.transform(event, 'yyyy-MM-dd');
   }
-  // 更新个人信息
-  public updateProfileClick() {
-    this.btnProfileTxt = true;
-    for (const prop in this.updateUser) {
-      if (this.updateUser.hasOwnProperty(prop)) {
-        this.updateUser[prop] = this.userInfo[prop];
-      }
-    }
-    if (this.updateUser) {
-      this.personalService.updateProfile(this.updateUser).subscribe(
-        (value) => {
-          if (value.status === '200') {
-            window.alert(value.message);
-          }
-        }
-      );
-    }
-  }
+  // 修改密码
   public updatePasswordClick() {
-    if (this.confirmPassword === this.updatePassword.newPassword) {
-      this.updatePassword.userName = JSON.parse(this.localSessionStorage.userSessionStorage.userDTO).userName;
-      this.personalService.updatePassword(this.updatePassword).subscribe(
+    if (this.confirmPassword === this.updatePassword.latestPassword) {
+      this.apiSrv.updatePassword(this.updatePassword).subscribe(
         (value) => {
-          if (value.status === '500') {
-            window.confirm(value.message);
-          } else if (value.status === '200') {
-            window.confirm(value.message);
-            this.btnPasswordTxt = true;
-          }
+          window.confirm(value.message);
         }
       );
     } else {
       window.confirm('两处输入的密码不一致，请重新输入');
     }
   }
+  // 退出登录
   public logOut(): void {
-    this.localSessionStorage.remove('accessToken');
-    this.localSessionStorage.remove('companyId');
+    this.localStorageSrv.remove('accessToken');
+    this.localStorageSrv.remove('companyId');
+    this.localStorageSrv.remove('user');
   }
+  // 返回上一页
   public goBack (): void {
     window.history.back();
   }

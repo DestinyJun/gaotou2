@@ -21,7 +21,6 @@
             [height]="'50vh'"
             [option]="{minZoom:7,maxZoom:9,center:[106.645779,26.654099],zoom: 8, area:'贵州省'.substring(0, '贵州省'.length - 1)}"
             [points]="mapPoints"
-            (cityClick)="mapClick($event)"
           ></app-echart-bmap>
         </div>
         <div class="city-center-echart">
@@ -58,7 +57,8 @@
         <!--收入统计-->
         <app-city-income
           [cityName]="cityName"
-          [data]="data?.storeTypeIncomePieChart">
+          [data]="data?.storeTypeIncomePieChart"
+          [cityId]="cityId">
         </app-city-income>
       </div>
     </div>

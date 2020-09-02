@@ -13,6 +13,12 @@ export class User {
   organizationName?: any;
   realName?: any;
   remark?: any;
+  companyId?: any;
+  enabled?: any;
+  password?: any;
+  salt?: any;
+  userCode?: any;
+  userName?: any;
 }
 
 export class UpdateUser {
@@ -28,9 +34,8 @@ export class UpdateUser {
 }
 export class UpdatePassword {
   constructor(
-    public oldPassword?: any,
-    public newPassword?: any,
-    public userName?: any,
+    public originalPassword?: any,
+    public latestPassword?: any,
   ) {}
 }
 

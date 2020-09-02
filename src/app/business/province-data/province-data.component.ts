@@ -48,7 +48,7 @@ export class ProvinceDataComponent implements OnInit, OnDestroy {
         this.provinceInit();
         this.clearTimer = setInterval(() => {
           this.provinceInit();
-        }, 80000000);
+        }, 8000);
         // 获取服务器坐标点
         this.apiSrv.getProvinceMapPoints({provinceId: this.provinceId}).subscribe(((res) => {
           this.mapPoints = res.date;
