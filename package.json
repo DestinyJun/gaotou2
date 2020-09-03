@@ -6,7 +6,7 @@
     "ng": "ng",
     "start-dev": "ng serve --open --env=dev --host 0.0.0.0 --port 3030",
     "start-prod": "ng serve --open --env=devprod --host 0.0.0.0 --port 3030",
-    "build": "ng build --prod --base-href /wsd/",
+    "build": "ng build --prod --base-href /gt/",
     "build-dev": "ng build --base-href /gtdev/",
     "test": "ng test",
     "lint": "ng lint",
