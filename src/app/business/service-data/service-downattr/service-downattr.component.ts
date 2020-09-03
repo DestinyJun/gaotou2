@@ -18,7 +18,6 @@ interface SelectVideoItem {
 export class ServiceDownattrComponent implements OnInit {
   @Input() public downShopData: any;
   @Input() public downVideoList = [];
-  @Input() public serviceInfo: any = null;
   public videoList = [];
   public videoOpen = [];
   public publicVideoTitle: string;
@@ -262,11 +261,11 @@ export class ServiceDownattrComponent implements OnInit {
   }
   // 服务区合同下载
   public servicesPactDown(): void {
-    if (this.serviceInfo.contractUrl === null) {
+   /* if (this.serviceInfo.contractUrl === null) {
       window.alert('合同暂未上传');
       return;
     }
-    window.open(`${this.serviceInfo.contractUrlPrefix}${this.serviceInfo.contractUrl}`);
+    window.open(`${this.serviceInfo.contractUrlPrefix}${this.serviceInfo.contractUrl}`);*/
   }
   public shopImageZoom(e): void {
     if (e) {

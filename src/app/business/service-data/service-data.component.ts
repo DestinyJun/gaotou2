@@ -49,8 +49,8 @@ export class ServiceDataComponent implements OnInit, OnDestroy {
         this.apiSrv.getAreaShopData({
           companyId: this.localService.get('companyId'),
           serviceAreaId: this.serviceId}).subscribe((res) => {
-            console.log(res);
             this.fixedData = res.date;
+            this.serviceInfo = {...res.date.serviceAreaDetailedInfo, downDescribe: res.date.downDescribe, upstreamDescribe: res.date.upstreamDescribe };
         });
         // 数据初始化及实时刷新数据
         this.serviceInit();

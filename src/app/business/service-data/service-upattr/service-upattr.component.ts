@@ -18,7 +18,6 @@ interface SelectVideoItem {
 export class ServiceUpattrComponent implements OnInit, OnChanges {
   @Input() public TopShopData: any;
   @Input() public topVideoList: any;
-  @Input() public serviceInfo: any = null;
   @Output() public windowChange = new EventEmitter();
   public videoList = [];
   public videoOpen = [];
@@ -264,11 +263,11 @@ export class ServiceUpattrComponent implements OnInit, OnChanges {
   }
   // 服务区合同下载
   public servicesPactDown(): void {
-    if (this.serviceInfo.contractUrl === null) {
+    /*if (this.serviceInfo.contractUrl === null) {
       window.alert('合同暂未上传');
       return;
     }
-    window.open(`${this.serviceInfo.contractUrlPrefix}${this.serviceInfo.contractUrl}`);
+    window.open(`${this.serviceInfo.contractUrlPrefix}${this.serviceInfo.contractUrl}`);*/
   }
   public shopImageZoom(e): void {
     if (e) {

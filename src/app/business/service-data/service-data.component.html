@@ -16,21 +16,19 @@
         <div class="video-shop">
           <!--上行数据-->
           <app-service-upattr
-            [serviceInfo]="serviceInfo"
             [TopShopData]="timeData?.operatingIncome.upstreamStoreIncomeList"
             [topVideoList]="fixedData?.upstreamCameraGroupList"
           ></app-service-upattr>
           <!--方向指引-->
           <div class="video-shop-center text-center">
             <!--上行-->
-            <span>{{serviceInfo?.downAttributeValues?.source}}</span>
+            <span>{{serviceInfo?.upstreamDescribe}}</span>
             <img src="assets/images/jiantou.png" alt="" style="height: 3vh;width: auto;">
             <!--下行-->
-            <span>{{serviceInfo?.upAttributeValues?.source}}</span>
+            <span>{{serviceInfo?.downDescribe}}</span>
           </div>
           <!--下行数据-->
           <app-service-downattr
-            [serviceInfo]="serviceInfo"
             [downShopData]="timeData?.operatingIncome.downStoreIncomeList"
             [downVideoList]="fixedData?.downCameraGroupList"
           ></app-service-downattr>
@@ -63,7 +61,7 @@
         <!--服务区基本信息-->
         <app-service-info
           [serviceName]="serviceName"
-          [serviceInfo]="fixedData?.serviceAreaDetailedInfo"
+          [serviceInfo]="serviceInfo"
         ></app-service-info>
         <!--收入统计-->
         <app-service-income

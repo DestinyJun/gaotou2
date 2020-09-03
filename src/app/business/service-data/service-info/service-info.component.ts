@@ -11,14 +11,13 @@ export class ServiceInfoComponent implements OnInit, OnChanges {
   @Input() serviceName: any;
   @Input() serviceInfo: any = null;
   public alterServiceInfo = false;
-  public video1 = 'rtsp://admin:Hik12345+@117.187.60.146:560';
-  public video2 = 'rtsp://admin:Hik12345+@117.187.60.146:562';
+  public video1 = null;
+  public video2 = null;
   public commonAttributeValues = []; // 公共属性
   public upAttributeValues = []; // 上行属性
   public downAttributeValues = []; // 下行属性
   constructor(private localService: LocalStorageService) { }
   ngOnInit() {
-    this.openInfoVideo();
     this.localService.windowVideoShow.subscribe((value) => {
       if (value) {
         this.openInfoVideo();
@@ -32,6 +31,12 @@ export class ServiceInfoComponent implements OnInit, OnChanges {
       this.upAttributeValues = this.serviceInfo.fieldTreeList[1].field;
       this.downAttributeValues = this.serviceInfo.fieldTreeList[2].field;
       this.commonAttributeValues = this.serviceInfo.fieldTreeList[3].field;
+      const arr = this.commonAttributeValues.filter((item) => item.fieldId === 38  || item.fieldId === 39);
+      if (arr.length >= 2) {
+        this.video1 = arr[0].fieldValues;
+        this.video2 = arr[1].fieldValues;
+      }
+      this.openInfoVideo();
     }
   }
   public openServiceInfo(): void {
@@ -39,6 +44,9 @@ export class ServiceInfoComponent implements OnInit, OnChanges {
     this.closeInfoVideo();
   }
   public openInfoVideo(): void {
+    if (!this.video1) {
+      return;
+    }
     const infoVideo1Url = `
        <object classid="clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921"
             id="infoVideo1Url" codebase="" width="100%" height="100%" events="True">
