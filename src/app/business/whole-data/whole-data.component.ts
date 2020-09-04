@@ -288,10 +288,10 @@ export class WholeDataComponent implements OnInit, OnChanges {
   // map clikc
   public wholeMapClick (event): void {
     if (event.name === '贵州') {
-      this.router.navigate(['/home/province', {id: 2, name: event.name + '省'}]);
+      this.router.navigate(['/home/province', {id: 53, name: event.name + '省'}]);
     } else {
-      this.router.navigate(['/home/province', {id: 6, name: event.name + '省'}]);
-      // window.alert(addComp.province + '暂无数据，敬请期待');
+      // this.router.navigate(['/home/province', {id: 6, name: event.name + '省'}]);
+      window.alert(event.name + '省暂无数据，敬请期待');
     }
   }
 }

@@ -57,8 +57,10 @@ export class InterceptorService implements HttpInterceptor {
         }
       }),
       catchError((err: HttpErrorResponse) => {
-        if (err['NOTLANDED'] === 1012) {
-          this.router.navigate(['/login']);
+        if (err.status === 1012) {
+          if (window.confirm('当前账户已在另外客户端上线，请您重新登录！')) {
+            this.router.navigate(['/login']);
+          }
         } else {
           window.alert(`${err.message}，错误码：${err.status}`);
         }

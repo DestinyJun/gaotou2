@@ -83,7 +83,7 @@
             </p>
             <p>今日收入：{{serviceShopInfo?.revenue}}元</p>
             <p class="hetong">店铺合同：<span (click)="servicesPactDown()">点击查看合同</span></p>
-            <p>店铺摄像头布局图：{{!serviceShopInfo.cameraDistributionGraph?'该商家暂无摄像头布局图':''}}</p>
+            <!--<p>店铺摄像头布局图：{{!serviceShopInfo.cameraDistributionGraph?'该商家暂无摄像头布局图':''}}</p>-->
             <app-image-zoom
               *ngIf="serviceShopInfo.cameraDistributionGraph"
               [option]="{url: serviceShopInfo.graphPrefix + serviceShopInfo.cameraDistributionGraph}"
@@ -117,13 +117,13 @@
           <div class="shop-echart-title">
             <span>店家业态数据统计</span>
             <span class="table-export" style="margin-right: 6vw;">
-               <app-input-dropdown
+               <!--<app-input-dropdown
                  [option]="storeInfoSelect"
                  [height]="'3vh'"
                  [background]="'#1a2128'"
                  [dropdownBackground]="'rgba(26,33,40,0.8)'"
                  [hover]="'#5595D5'"
-                 (dropdownClick)="storeSelectTime($event)"></app-input-dropdown>
+                 (dropdownClick)="storeSelectTime($event)"></app-input-dropdown>-->
             </span>
             <!--<span class="table-export" (click)="serviceShopShowExport=true; cancelserviceShopVideo()">
               表格导出
