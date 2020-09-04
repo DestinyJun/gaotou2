@@ -124,6 +124,15 @@ export class ServiceUpattrComponent implements OnInit, OnChanges {
   public openServiceShop(item): void {
     this.apiSrv.getStoreInfo({storeId: item.storeId}).subscribe((res) => {
       this.serviceShopInfo = {...res.date, revenue: item.value };
+      this.shopEchartArea = {
+        data: res.date.dataTrend,
+        title: `${item.storeName}业态数据面积图分析`,
+      };
+      this.shopEchartLine = {
+        data: res.date.dataTrend,
+        title: `${item.storeName}今日业态数据走势分析`,
+        color: ['#36B9AB', '#6ACD72', '#0A30BF', '#027204', '#E36E57']
+      };
       this.videoShopList = [];
       this.cars = [];
       this.serviceShopShow = true;
@@ -133,8 +142,8 @@ export class ServiceUpattrComponent implements OnInit, OnChanges {
         this.addShopVideo(this.serviceShopInfo);
       }
     });
-   /* // 折线图
-    this.serviceSrv.searchServiceShopLine({
+    // 折线图
+   /* this.serviceSrv.searchServiceShopLine({
       id: item.id,
       yIndex: ['revenue', 'passenger', 'electric', 'water', 'washing_out']}).subscribe(
       (val) => {
@@ -148,17 +157,6 @@ export class ServiceUpattrComponent implements OnInit, OnChanges {
             data: val.data,
             title: `${item.storeName}今日业态数据走势分析`,
             color: ['#36B9AB', '#6ACD72', '#0A30BF', '#027204', '#E36E57']
-          };
-        }
-      }
-    );
-    // 面积图
-    this.serviceSrv.searchServiceShopArea(item.id).subscribe(
-      (val) => {
-        if (val.status === '200') {
-          this.shopEchartArea = {
-            data: val.data,
-            title: `${item.storeName}业态数据面积图分析`,
           };
         }
       }

@@ -20,8 +20,8 @@ export class EchartLineAreaComponent implements OnInit, OnChanges {
     }
   }
   public initializeLine (): void {
-    const areaMouth = this.option.data.xData;
-    const areaData = this.option.data.coordinate;
+    const areaMouth = this.option.data.xDate;
+    const areaData = this.option.data.yDate;
     this.optionsLine = {
       title: {
         text: `${this.option.title}`,
@@ -35,9 +35,14 @@ export class EchartLineAreaComponent implements OnInit, OnChanges {
       tooltip: {trigger: 'axis', axisPointer: {type: 'shadow'}},
       xAxis: {
         type: 'category',
+        name: '日期（单位/日）',
+        nameLocation: 'start',
+        nameTextStyle: {
+          color: 'r#fff'
+        },
         boundaryGap: false,
         axisLine: {show: true, lineStyle: {color: '#6173A3'}},
-        axisLabel: {interval: 'auto', textStyle: {color: '#fff', fontSize: 14}},
+        axisLabel: {interval: 'auto', textStyle: {color: '#BCC4D6', fontSize: 14}},
         axisTick: {show: false},
         data: areaMouth
       },
